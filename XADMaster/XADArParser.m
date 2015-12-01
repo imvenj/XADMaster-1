@@ -115,14 +115,14 @@ static uint64_t ParseOctal(const uint8_t *ptr,int maxlen)
 
 		NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 			name,XADFileNameKey,
-			[NSNumber numberWithUnsignedLongLong:size],XADFileSizeKey,
-			[NSNumber numberWithUnsignedLongLong:size],XADCompressedSizeKey,
-			[NSNumber numberWithUnsignedLongLong:size],XADDataLengthKey,
+			@(size),XADFileSizeKey,
+			@(size),XADCompressedSizeKey,
+			@(size),XADDataLengthKey,
 			[NSNumber numberWithUnsignedLongLong:offs],XADDataOffsetKey,
 			[NSDate dateWithTimeIntervalSince1970:timestamp],XADLastModificationDateKey,
-			[NSNumber numberWithInt:owner],XADPosixUserKey,
-			[NSNumber numberWithInt:group],XADPosixGroupKey,
-			[NSNumber numberWithInt:mode],XADPosixPermissionsKey,
+			@(owner),XADPosixUserKey,
+			@(group),XADPosixGroupKey,
+			@(mode),XADPosixPermissionsKey,
 			[self XADStringWithString:@"None"],XADCompressionNameKey,
 		nil];
 

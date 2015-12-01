@@ -11,8 +11,7 @@
 	uint8_t table[256];
 }
 
--(id)initWithHandle:(CSHandle *)handle length:(off_t)length password:(NSData *)passdata;
--(void)dealloc;
+-(instancetype)initWithHandle:(CSHandle *)handle length:(off_t)length password:(NSData *)passdata;
 
 -(void)resetBlockStream;
 -(void)calculateKey;

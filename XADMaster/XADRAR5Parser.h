@@ -34,8 +34,6 @@ typedef struct RAR5Block
 @end
 
 @interface XADEmbeddedRAR5Parser:XADRAR5Parser
-{
-}
 
 -(NSString *)formatName;
 

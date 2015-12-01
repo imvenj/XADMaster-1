@@ -117,7 +117,7 @@
 
 			NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 				path,XADFileNameKey,
-				[NSNumber numberWithBool:YES],XADIsDirectoryKey,
+				@YES,XADIsDirectoryKey,
 			nil];
 
 			[entries addObject:dict];
@@ -150,21 +150,21 @@
 
 				NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 					path,XADFileNameKey,
-					[NSNumber numberWithUnsignedInt:resourcelength],XADFileSizeKey,
-					[NSNumber numberWithUnsignedInt:resourcecomplen],XADCompressedSizeKey,
+					@(resourcelength),XADFileSizeKey,
+					@(resourcecomplen),XADCompressedSizeKey,
 					[NSDate XADDateWithTimeIntervalSince1904:modificationdate],XADLastModificationDateKey,
 					[NSDate XADDateWithTimeIntervalSince1904:creationdate],XADCreationDateKey,
-					[NSNumber numberWithUnsignedInt:type],XADFileTypeKey,
-					[NSNumber numberWithUnsignedInt:creator],XADFileCreatorKey,
-					[NSNumber numberWithInt:finderflags],XADFinderFlagsKey,
+					@(type),XADFileTypeKey,
+					@(creator),XADFileCreatorKey,
+					@(finderflags),XADFinderFlagsKey,
 					[self XADStringWithString:flags&2?@"LZH+RLE":@"RLE"],XADCompressionNameKey,
 
-					[NSNumber numberWithBool:YES],XADIsResourceForkKey,
-					[NSNumber numberWithUnsignedInt:resourcecomplen],XADDataLengthKey,
+					@YES,XADIsResourceForkKey,
+					@(resourcecomplen),XADDataLengthKey,
 					[NSNumber numberWithLongLong:fileoffs],XADDataOffsetKey,
 					[NSNumber numberWithBool:flags&2?YES:NO],@"CompactProLZH",
-					[NSNumber numberWithInt:flags],@"CompactProFlags",
-					[NSNumber numberWithUnsignedInt:crc],crckey,
+					@(flags),@"CompactProFlags",
+					@(crc),crckey,
 					[NSNumber numberWithUnsignedInt:volume],@"CompactProVolume",
 				nil];
 
@@ -179,20 +179,20 @@
 
 				NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 					path,XADFileNameKey,
-					[NSNumber numberWithUnsignedInt:datalength],XADFileSizeKey,
-					[NSNumber numberWithUnsignedInt:datacomplen],XADCompressedSizeKey,
+					@(datalength),XADFileSizeKey,
+					@(datacomplen),XADCompressedSizeKey,
 					[NSDate XADDateWithTimeIntervalSince1904:modificationdate],XADLastModificationDateKey,
 					[NSDate XADDateWithTimeIntervalSince1904:creationdate],XADCreationDateKey,
-					[NSNumber numberWithUnsignedInt:type],XADFileTypeKey,
-					[NSNumber numberWithUnsignedInt:creator],XADFileCreatorKey,
-					[NSNumber numberWithInt:finderflags],XADFinderFlagsKey,
+					@(type),XADFileTypeKey,
+					@(creator),XADFileCreatorKey,
+					@(finderflags),XADFinderFlagsKey,
 					[self XADStringWithString:flags&4?@"LZH+RLE":@"RLE"],XADCompressionNameKey,
 
 					[NSNumber numberWithLongLong:fileoffs+resourcecomplen],XADDataOffsetKey,
-					[NSNumber numberWithUnsignedInt:datacomplen],XADDataLengthKey,
+					@(datacomplen),XADDataLengthKey,
 					[NSNumber numberWithBool:flags&4?YES:NO],@"CompactProLZH",
-					[NSNumber numberWithInt:flags],@"CompactProFlags",
-					[NSNumber numberWithUnsignedInt:crc],crckey,
+					@(flags),@"CompactProFlags",
+					@(crc),crckey,
 					[NSNumber numberWithUnsignedInt:volume],@"CompactProVolume",
 				nil];
 
@@ -208,14 +208,14 @@
 -(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum
 {
 	CSHandle *handle=[self handleAtDataOffsetForDictionary:dict];
-	off_t size=[[dict objectForKey:XADFileSizeKey] longLongValue];
+	off_t size=[dict[XADFileSizeKey] longLongValue];
 
-	if([[dict objectForKey:@"CompactProLZH"] boolValue])
+	if([dict[@"CompactProLZH"] boolValue])
 	handle=[[[XADCompactProLZHHandle alloc] initWithHandle:handle blockSize:0x1fff0] autorelease];
 
 	handle=[[[XADCompactProRLEHandle alloc] initWithHandle:handle length:size] autorelease];
 
-	NSNumber *crc=[dict objectForKey:@"CompactProCRC32"];
+	NSNumber *crc=dict[@"CompactProCRC32"];
 	if(checksum&&crc)
 	handle=[XADCRCHandle IEEECRC32HandleWithHandle:handle length:size correctCRC:~[crc unsignedIntValue] conditioned:YES];
 

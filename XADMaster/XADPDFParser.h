@@ -9,8 +9,7 @@
 +(int)requiredHeaderSize;
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name;
 
--(id)init;
--(void)dealloc;
+-(instancetype)init;
 
 -(void)parse;
 -(NSString *)compressionNameForStream:(PDFStream *)stream excludingLast:(BOOL)excludelast;
@@ -29,7 +28,7 @@
 	int numchannels,currentchannel;
 }
 
--(id)initWithHandle:(CSHandle *)parent length:(off_t)length
+-(instancetype)initWithHandle:(CSHandle *)parent length:(off_t)length
 numberOfChannels:(int)numberofchannels palette:(NSData *)palettedata;
 
 -(void)resetByteStream;

@@ -89,7 +89,7 @@
 		NSString *description=[NSString localizedNameOfStringEncoding:CFStringConvertEncodingToNSStringEncoding(*encodings)];
 		if(name)
 		{
-			[array addObject:[NSArray arrayWithObjects:description,name,nil]];
+			[array addObject:@[description,name]];
 		}
 		encodings++;
 	}

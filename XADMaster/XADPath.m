@@ -29,7 +29,7 @@ static BOOL IsDataASCIIOrSeparator(NSData *data,const char *separators);
 	XADPath *lastpath=nil;
 	for(int i=0;i<count;i++)
 	{
-		NSString *component=[components objectAtIndex:i];
+		NSString *component=components[i];
 
 		//if(i==0 && [component isEqual:@"."]) continue; // Skip leading . paths.
 
@@ -50,7 +50,7 @@ static BOOL IsDataASCIIOrSeparator(NSData *data,const char *separators);
 	XADPath *lastpath=nil;
 	for(int i=0;i<count;i++)
 	{
-		NSString *component=[components objectAtIndex:i];
+		NSString *component=components[i];
 
 		//if(i==0 && [component isEqual:@"."]) continue; // Skip leading . paths.
 
@@ -119,7 +119,7 @@ separators:(const char *)pathseparators
 
 
 
--(id)init
+-(instancetype)init
 {
 	if((self=[super init]))
 	{
@@ -130,7 +130,7 @@ separators:(const char *)pathseparators
 	return self;
 }
 
--(id)initWithParent:(XADPath *)parentpath
+-(instancetype)initWithParent:(XADPath *)parentpath
 {
 	if((self=[super init]))
 	{
@@ -143,7 +143,7 @@ separators:(const char *)pathseparators
 	return self;
 }
 
--(id)initWithPath:(XADPath *)path parent:(XADPath *)parentpath
+-(instancetype)initWithPath:(XADPath *)path parent:(XADPath *)parentpath
 {
 	return [self initWithParent:parentpath];
 }
@@ -217,7 +217,7 @@ separators:(const char *)pathseparators
 
 	for(int i=0;i<count2;i++)
 	{
-		if(![[components1 objectAtIndex:i] isEqual:[components2 objectAtIndex:i]]) return NO;
+		if(![components1[i] isEqual:components2[i]]) return NO;
 	}
 
 	return YES;
@@ -272,7 +272,7 @@ separators:(const char *)pathseparators
 	// Drop . anywhere in the path
 	for(int i=0;i<[components count];)
 	{
-		NSString *component=[components objectAtIndex:i];
+		NSString *component=components[i];
 		if([component isEqual:@"."]) [components removeObjectAtIndex:i];
 		else i++;
 	}
@@ -280,8 +280,8 @@ separators:(const char *)pathseparators
 	// Drop all .. that can be dropped
 	for(int i=1;i<[components count];)
 	{
-		NSString *component1=[components objectAtIndex:i-1];
-		NSString *component2=[components objectAtIndex:i];
+		NSString *component1=components[i-1];
+		NSString *component2=components[i];
 		if(![component1 isEqual:@".."]&&[component2 isEqual:@".."])
 		{
 			[components removeObjectAtIndex:i];
@@ -336,7 +336,7 @@ separators:(const char *)pathseparators
 {
 	NSArray *components=[self canonicalPathComponentsWithEncodingName:encoding];
 	if([components count]==0) return @"";
-	else return [components objectAtIndex:0];
+	else return components[0];
 }
 
 -(XADPath *)pathByDeletingLastPathComponent
@@ -423,7 +423,7 @@ separators:(const char *)pathseparators
 	int first=0;
 
 	// Drop "/" at the start of the path.
-	if(count && [[components objectAtIndex:0] isEqual:@"/"]) first++;
+	if(count && [components[0] isEqual:@"/"]) first++;
 
 	if(first==count) return @".";
 
@@ -432,7 +432,7 @@ separators:(const char *)pathseparators
 	{
 		if(i!=first) [string appendString:@"/"];
 
-		NSString *component=[components objectAtIndex:i];
+		NSString *component=components[i];
 
 		// Replace ".." components with "__Parent__". ".." components in the middle
 		// of the path have already been collapsed by canonicalPathComponents.
@@ -472,13 +472,13 @@ separators:(const char *)pathseparators
 	int count=[components count];
 
 	if(count==0) return @".";
-	else if(count==1) return [components objectAtIndex:0];
+	else if(count==1) return components[0];
 
 	NSMutableString *string=[NSMutableString string];
 
 	for(int i=0;i<count;i++)
 	{
-		NSString *component=[components objectAtIndex:i];
+		NSString *component=components[i];
 
 		if(i==0 && [component isEqual:@"/"]) continue;
 		if(i!=0) [string appendString:@"/"];
@@ -611,7 +611,7 @@ separators:(const char *)pathseparators
 	// "." and ".." components have already been stripped earlier.
 	while(first<count)
 	{
-		NSString *component=[components objectAtIndex:first];
+		NSString *component=components[first];
 		if(![component isEqual:@".."]&&![component isEqual:@"/"]) break;
 		first++;
 	}
@@ -621,7 +621,7 @@ separators:(const char *)pathseparators
 	XADPath *lastpath=nil;
 	for(int i=first;i<count;i++)
 	{
-		NSString *component=[components objectAtIndex:i];
+		NSString *component=components[i];
 		XADPath *path=[[[XADStringPath alloc] initWithComponentString:component parent:lastpath] autorelease];
 		lastpath=path;
 	}
@@ -651,7 +651,7 @@ separators:(const char *)pathseparators
 
 @implementation XADStringPath
 
--(id)initWithComponentString:(NSString *)pathstring
+-(instancetype)initWithComponentString:(NSString *)pathstring
 {
 	if((self=[super init]))
 	{
@@ -660,7 +660,7 @@ separators:(const char *)pathseparators
 	return self;
 }
 
--(id)initWithComponentString:(NSString *)pathstring parent:(XADPath *)parentpath
+-(instancetype)initWithComponentString:(NSString *)pathstring parent:(XADPath *)parentpath
 {
 	if((self=[super initWithParent:parentpath]))
 	{
@@ -669,7 +669,7 @@ separators:(const char *)pathseparators
 	return self;
 }
 
--(id)initWithPath:(XADStringPath *)path parent:(XADPath *)parentpath
+-(instancetype)initWithPath:(XADStringPath *)path parent:(XADPath *)parentpath
 {
 	return [self initWithComponentString:path->string parent:parentpath];
 }
@@ -755,7 +755,7 @@ separators:(const char *)pathseparators
 
 @implementation XADRawPath
 
--(id)initWithData:(NSData *)bytedata source:(XADStringSource *)stringsource
+-(instancetype)initWithData:(NSData *)bytedata source:(XADStringSource *)stringsource
 separators:(const char *)pathseparators
 {
 	if((self=[super init]))
@@ -767,7 +767,7 @@ separators:(const char *)pathseparators
 	return self;
 }
 
--(id)initWithData:(NSData *)bytedata source:(XADStringSource *)stringsource
+-(instancetype)initWithData:(NSData *)bytedata source:(XADStringSource *)stringsource
 separators:(const char *)pathseparators parent:(XADPath *)parentpath
 {
 	if((self=[super initWithParent:parentpath]))
@@ -779,7 +779,7 @@ separators:(const char *)pathseparators parent:(XADPath *)parentpath
 	return self;
 }
 
--(id)initWithPath:(XADRawPath *)path parent:(XADPath *)parentpath
+-(instancetype)initWithPath:(XADRawPath *)path parent:(XADPath *)parentpath
 {
 	return [self initWithData:path->data source:path->source
 	separators:path->separators parent:parentpath];

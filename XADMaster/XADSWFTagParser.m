@@ -20,7 +20,7 @@ NSString *SWFNoMoreTagsException=@"SWFNoMoreTagsException";
 	return [[[XADSWFTagParser alloc] initWithHandle:handle] autorelease];
 }
 
--(id)initWithHandle:(CSHandle *)handle
+-(instancetype)initWithHandle:(CSHandle *)handle
 {
 	if((self=[super init]))
 	{

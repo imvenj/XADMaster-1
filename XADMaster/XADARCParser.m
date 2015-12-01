@@ -148,9 +148,9 @@ name:(NSString *)name
 		{
 			NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 				path,XADFileNameKey,
-				[NSNumber numberWithBool:YES],XADIsDirectoryKey,
+				@YES,XADIsDirectoryKey,
 				[NSDate XADDateWithMSDOSDate:date time:time],XADLastModificationDateKey,
-				[NSNumber numberWithInt:method],@"ARCMethod",
+				@(method),@"ARCMethod",
 			nil];
 
 			[self addEntryWithDictionary:dict];
@@ -166,8 +166,8 @@ name:(NSString *)name
 				[NSNumber numberWithUnsignedLongLong:dataoffset],XADDataOffsetKey,
 				[NSNumber numberWithUnsignedLong:compsize],XADDataLengthKey,
 				[NSDate XADDateWithMSDOSDate:date time:time],XADLastModificationDateKey,
-				[NSNumber numberWithInt:method],@"ARCMethod",
-				[NSNumber numberWithInt:crc16],@"ARCCRC16",
+				@(method),@"ARCMethod",
+				@(crc16),@"ARCCRC16",
 			nil];
 
 			NSString *methodname=nil;
@@ -186,13 +186,13 @@ name:(NSString *)name
 				case 0x0b: methodname=@"Distilled"; break;
 				case 0x7f: methodname=@"Compressed"; break;
 			}
-			if(methodname) [dict setObject:[self XADStringWithString:methodname] forKey:XADCompressionNameKey];
+			if(methodname) dict[XADCompressionNameKey] = [self XADStringWithString:methodname];
 
 			if(method&0x80)
 			{
-				[dict setObject:[NSNumber numberWithUnsignedInt:loadaddress] forKey:@"ARCArchimedesLoadAddress"];
-				[dict setObject:[NSNumber numberWithUnsignedInt:execaddress] forKey:@"ARCArchimedesExecAddress"];
-				[dict setObject:[NSNumber numberWithUnsignedInt:fileattrs] forKey:@"ARCArchimedesFileAttributes"];
+				dict[@"ARCArchimedesLoadAddress"] = @(loadaddress);
+				dict[@"ARCArchimedesExecAddress"] = @(execaddress);
+				dict[@"ARCArchimedesFileAttributes"] = @(fileattrs);
 			}
 
 			[self addEntryWithDictionary:dict];
@@ -204,12 +204,12 @@ name:(NSString *)name
 
 -(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum
 {
-	if([dict objectForKey:XADIsDirectoryKey]) return nil;
+	if(dict[XADIsDirectoryKey]) return nil;
 
 	CSHandle *handle=[self handleAtDataOffsetForDictionary:dict];
-	int method=[[dict objectForKey:@"ARCMethod"] intValue];
-	int crc=[[dict objectForKey:@"ARCCRC16"] intValue];
-	uint32_t length=[[dict objectForKey:XADFileSizeKey] unsignedIntValue];
+	int method=[dict[@"ARCMethod"] intValue];
+	int crc=[dict[@"ARCCRC16"] intValue];
+	uint32_t length=[dict[XADFileSizeKey] unsignedIntValue];
 
 	// TODO: We should somehow figure out if an ARC file is actually encrypted.
 	// However, there seems to be no way to do this, so the client has to
@@ -337,7 +337,7 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 		if(bytes[1]==1) nextoffs=datasize+0x19;
 		else nextoffs=datasize+0x1d;
 
-		[props setObject:[NSNumber numberWithInt:nextoffs] forKey:@"ARCSFXOffset"];
+		props[@"ARCSFXOffset"] = [NSNumber numberWithInt:nextoffs];
 		return YES;
 	}
 
@@ -351,7 +351,7 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 		if(bytes[1+3]==1) nextoffs=datasize+0x19+3;
 		else nextoffs=datasize+0x1d+3;
 
-		[props setObject:[NSNumber numberWithInt:nextoffs] forKey:@"ARCSFXOffset"];
+		props[@"ARCSFXOffset"] = [NSNumber numberWithInt:nextoffs];
 		return YES;
 	}
 
@@ -363,7 +363,7 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 		{
 			if(IsARCHeader(&bytes[i],length-i,NO))
 			{
-				[props setObject:[NSNumber numberWithInt:i] forKey:@"ARCSFXOffset"];
+				props[@"ARCSFXOffset"] = @(i);
 				return YES;
 			}
 		}
@@ -376,7 +376,7 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 {
 	CSHandle *fh=[self handle];
 
-	off_t offs=[[[self properties] objectForKey:@"ARCSFXOffset"] longLongValue];
+	off_t offs=[[self properties][@"ARCSFXOffset"] longLongValue];
 
 	[fh seekToFileOffset:offs];
 

@@ -105,9 +105,9 @@
 			end=start+94+datacompsize+rsrccompsize+2;
 
 			datadesc=[NSMutableDictionary dictionaryWithObjectsAndKeys:
-				[NSNumber numberWithLongLong:start+94],@"Offset",
+				@(start+94),@"Offset",
 				[NSNumber numberWithLongLong:datasize+rsrcsize],@"Length",
-				[NSNumber numberWithInt:crc],@"CRC",
+				@(crc),@"CRC",
 			nil];
 		}
 		else
@@ -136,11 +136,11 @@
 			}
 
 			datadesc=[NSMutableDictionary dictionaryWithObjectsAndKeys:
-				[NSNumber numberWithLongLong:start],@"Offset",
-				[NSNumber numberWithLongLong:end-start],@"Length",
+				@(start),@"Offset",
+				@(end-start),@"Length",
 				[NSNumber numberWithLongLong:datasize+rsrcsize+94],@"UncompressedLength",
-				[NSNumber numberWithInt:crc],@"CRC",
-				[NSNumber numberWithInt:crypto],@"Crypto",
+				@(crc),@"CRC",
+				@(crypto),@"Crypto",
 			nil];
 		}
 
@@ -148,19 +148,19 @@
 		{
 			[self addEntryWithDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 				name,XADFileNameKey,
-				[NSNumber numberWithUnsignedInt:type],XADFileTypeKey,
-				[NSNumber numberWithUnsignedInt:creator],XADFileCreatorKey,
-				[NSNumber numberWithInt:finderflags],XADFinderFlagsKey,
-				[NSNumber numberWithUnsignedInt:datasize],XADFileSizeKey,
-				[NSNumber numberWithUnsignedInt:datacompsize],XADCompressedSizeKey,
+				@(type),XADFileTypeKey,
+				@(creator),XADFileCreatorKey,
+				@(finderflags),XADFinderFlagsKey,
+				@(datasize),XADFileSizeKey,
+				@(datacompsize),XADCompressedSizeKey,
 				[NSDate XADDateWithTimeIntervalSince1904:modification],XADLastModificationDateKey,
 				[NSDate XADDateWithTimeIntervalSince1904:creation],XADCreationDateKey,
 				[self XADStringWithString:comp?@"Huffman":@"None"],XADCompressionNameKey,
-				[NSNumber numberWithBool:encrypted],XADIsEncryptedKey,
+				@(encrypted),XADIsEncryptedKey,
 
 				datadesc,XADSolidObjectKey,
-				[NSNumber numberWithUnsignedInt:0],XADSolidOffsetKey,
-				[NSNumber numberWithUnsignedInt:datasize],XADSolidLengthKey,
+				@0U,XADSolidOffsetKey,
+				@(datasize),XADSolidLengthKey,
 			nil]];
 		}
 
@@ -168,20 +168,20 @@
 		{
 			[self addEntryWithDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 				name,XADFileNameKey,
-				[NSNumber numberWithUnsignedInt:type],XADFileTypeKey,
-				[NSNumber numberWithUnsignedInt:creator],XADFileCreatorKey,
-				[NSNumber numberWithInt:finderflags],XADFinderFlagsKey,
-				[NSNumber numberWithUnsignedInt:rsrcsize],XADFileSizeKey,
-				[NSNumber numberWithUnsignedInt:rsrccompsize],XADCompressedSizeKey,
+				@(type),XADFileTypeKey,
+				@(creator),XADFileCreatorKey,
+				@(finderflags),XADFinderFlagsKey,
+				@(rsrcsize),XADFileSizeKey,
+				@(rsrccompsize),XADCompressedSizeKey,
 				[NSDate XADDateWithTimeIntervalSince1904:modification],XADLastModificationDateKey,
 				[NSDate XADDateWithTimeIntervalSince1904:creation],XADCreationDateKey,
 				[self XADStringWithString:comp?@"Huffman":@"None"],XADCompressionNameKey,
-				[NSNumber numberWithBool:encrypted],XADIsEncryptedKey,
-				[NSNumber numberWithBool:YES],XADIsResourceForkKey,
+				@(encrypted),XADIsEncryptedKey,
+				@YES,XADIsResourceForkKey,
 
 				datadesc,XADSolidObjectKey,
-				[NSNumber numberWithUnsignedInt:datasize],XADSolidOffsetKey,
-				[NSNumber numberWithUnsignedInt:rsrcsize],XADSolidLengthKey,
+				@(datasize),XADSolidOffsetKey,
+				@(rsrcsize),XADSolidLengthKey,
 			nil]];
 		}
 
@@ -196,15 +196,15 @@
 
 -(CSHandle *)handleForSolidStreamWithObject:(id)obj wantChecksum:(BOOL)checksum
 {
-	off_t offs=[[obj objectForKey:@"Offset"] longLongValue];
-	off_t len=[[obj objectForKey:@"Length"] longLongValue];
+	off_t offs=[obj[@"Offset"] longLongValue];
+	off_t len=[obj[@"Length"] longLongValue];
 	CSHandle *handle=[[self handle] nonCopiedSubHandleFrom:offs length:len];
 
-	NSNumber *uncomplennum=[obj objectForKey:@"UncompressedLength"];
+	NSNumber *uncomplennum=obj[@"UncompressedLength"];
 	if(uncomplennum)
 	{
 		off_t uncomplen=[uncomplennum longLongValue];
-		int crypto=[[obj objectForKey:@"Crypto"] intValue];
+		int crypto=[obj[@"Crypto"] intValue];
 
 		if(crypto==1)
 		{
@@ -224,7 +224,7 @@
 	if(checksum)
 	{
 		handle=[XADCRCHandle CCITTCRC16HandleWithHandle:handle length:[handle fileSize]
-		correctCRC:[[obj objectForKey:@"CRC"] intValue] conditioned:NO];
+		correctCRC:[obj[@"CRC"] intValue] conditioned:NO];
 	}
 
 	return handle;

@@ -52,9 +52,9 @@ static NSData *ConvertTiledIconToPNG(uint8_t *tiledata,uint16_t *palette);
 	[fh skipBytes:8];
 	uint32_t info_offs=[fh readUInt32LE];
 
-	[properties setObject:gametitle forKey:@"NDSGameTitle"];
-	[properties setObject:gamecode forKey:@"NDSGameCode"];
-	[properties setObject:makercode forKey:@"NDSMakerCode"];
+	properties[@"NDSGameTitle"] = gametitle;
+	properties[@"NDSGameCode"] = gamecode;
+	properties[@"NDSMakerCode"] = makercode;
 
 	BOOL homebrew;
 	const uint8_t *makerbytes=[makercode bytes];
@@ -117,19 +117,19 @@ static NSData *ConvertTiledIconToPNG(uint8_t *tiledata,uint16_t *palette);
 		NSData *pngdata=ConvertTiledIconToPNG(tiledata,palette);
 		[self addEntryWithDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 			[basepath pathByAppendingXADStringComponent:[self XADStringWithString:@"Icon.png"]],XADFileNameKey,
-			[NSNumber numberWithUnsignedLong:[pngdata length]],XADFileSizeKey,
-			[NSNumber numberWithUnsignedLong:0x210],XADCompressedSizeKey,
+			@([pngdata length]),XADFileSizeKey,
+			@0x210UL,XADCompressedSizeKey,
 			pngdata,@"NDSData",
 		nil]];
 
 		NSString *filenames[6]=
 		{
-			[NSString stringWithUTF8String:"\346\227\245\346\234\254\350\252\236.txt"],
+			@"\346\227\245\346\234\254\350\252\236.txt",
 			@"English.txt",
-			[NSString stringWithUTF8String:"Fran\303\247ais.txt"],
+			@"Fran\303\247ais.txt",
 			@"Deutsch.txt",
 			@"Italiano.txt",
-			[NSString stringWithUTF8String:"Espa\303\261ol.txt"],
+			@"Espa\303\261ol.txt",
 		};
 		for(int i=0;i<6;i++)
 		{
@@ -146,8 +146,8 @@ static NSData *ConvertTiledIconToPNG(uint8_t *tiledata,uint16_t *palette);
 
 			[self addEntryWithDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 				[basepath pathByAppendingXADStringComponent:[self XADStringWithString:filenames[i]]],XADFileNameKey,
-				[NSNumber numberWithUnsignedLong:[data length]],XADFileSizeKey,
-				[NSNumber numberWithUnsignedLong:0x100],XADCompressedSizeKey,
+				@([data length]),XADFileSizeKey,
+				@0x100UL,XADCompressedSizeKey,
 				data,@"NDSData",
 			nil]];
 		}
@@ -247,7 +247,7 @@ static NSData *ConvertTiledIconToPNG(uint8_t *tiledata,uint16_t *palette);
 							[NSNumber numberWithUnsignedLong:end-start],XADCompressedSizeKey,
 							[NSNumber numberWithUnsignedLong:end-start],XADDataLengthKey,
 							[NSNumber numberWithUnsignedLong:start],XADDataOffsetKey,
-							[NSNumber numberWithInt:currid],@"NDSFileID",
+							@(currid),@"NDSFileID",
 						nil]];
 						
 						[fh seekToFileOffset:pos];
@@ -263,7 +263,7 @@ static NSData *ConvertTiledIconToPNG(uint8_t *tiledata,uint16_t *palette);
 
 -(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum
 {
-	NSData *data=[dict objectForKey:@"NDSData"];
+	NSData *data=dict[@"NDSData"];
 	if(data) return [CSMemoryHandle memoryHandleForReadingData:data];
 	else return [self handleAtDataOffsetForDictionary:dict];
 }

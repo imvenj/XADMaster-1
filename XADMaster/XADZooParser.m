@@ -61,13 +61,13 @@
 			[NSNumber numberWithUnsignedLong:compsize],XADCompressedSizeKey,
 			[NSNumber numberWithUnsignedLong:dataoffset],XADDataOffsetKey,
 			[NSNumber numberWithUnsignedLong:compsize],XADDataLengthKey,
-			[NSNumber numberWithInt:type],@"ZooType",
-			[NSNumber numberWithInt:method],@"ZooMethod",
-			[NSNumber numberWithInt:crc16],@"ZooCRC16",
-			[NSNumber numberWithInt:creatorversion],@"ZooCreatorVersion",
-			[NSNumber numberWithInt:minversion],@"ZooMinimumVersion",
-			[NSNumber numberWithInt:deleted],@"ZooIsDeleted",
-			[NSNumber numberWithInt:structure],@"ZooStructure",
+			@(type),@"ZooType",
+			@(method),@"ZooMethod",
+			@(crc16),@"ZooCRC16",
+			@(creatorversion),@"ZooCreatorVersion",
+			@(minversion),@"ZooMinimumVersion",
+			@(deleted),@"ZooIsDeleted",
+			@(structure),@"ZooStructure",
 			shortnamedata,@"ZooShortnameData",
 		nil];
 
@@ -78,7 +78,7 @@
 			case 1: methodname=@"LZW"; break;
 			case 2: methodname=@"LZH"; break;
 		}
-		if(methodname) [dict setObject:[self XADStringWithString:methodname] forKey:XADCompressionNameKey];
+		if(methodname) dict[XADCompressionNameKey] = [self XADStringWithString:methodname];
 
 		XADPath *path=nil;
 		NSTimeZone *timezone=nil;
@@ -91,7 +91,7 @@
 
 			if(tzoffs<128) timezone=[NSTimeZone timeZoneForSecondsFromGMT:tzoffs*15*60];
 			else timezone=[NSTimeZone timeZoneForSecondsFromGMT:(tzoffs-256)*15*60];
-			[dict setObject:[NSNumber numberWithInt:tzoffs] forKey:@"ZooTimeZone"];
+			dict[@"ZooTimeZone"] = @(tzoffs);
 
 			NSData *longnamedata=nil,*dirdata=nil;
 			int longnamelength=0,dirlength=0;
@@ -120,35 +120,35 @@
 				dirdata=[dirdata subdataWithRange:NSMakeRange(0,dirlength-1)];
 			}
 
-			if(longnamedata) [dict setObject:longnamedata forKey:@"ZooLongNameData"];
-			if(dirdata) [dict setObject:dirdata forKey:@"ZooDirectoryData"];
+			if(longnamedata) dict[@"ZooLongNameData"] = longnamedata;
+			if(dirdata) dict[@"ZooDirectoryData"] = dirdata;
 
 			int totalnamelength=2+longnamelength+dirlength;
 
 			if(varlength>totalnamelength+2)
 			{
 				int system=[fh readUInt16LE];
-				[dict setObject:[NSNumber numberWithInt:system] forKey:@"ZooSystem"];
+				dict[@"ZooSystem"] = @(system);
 			}
 
 			if(varlength>totalnamelength+5)
 			{
 				int perm=[fh readUInt16LE];
 				perm+=[fh readUInt8]<<16;
-				[dict setObject:[NSNumber numberWithInt:perm] forKey:@"ZooPermissions"];
+				dict[@"ZooPermissions"] = @(perm);
 			}
 
 			int generation=0;
 			if(varlength>totalnamelength+6)
 			{
 				generation=[fh readUInt8];
-				[dict setObject:[NSNumber numberWithInt:generation] forKey:@"ZooGeneration"];
+				dict[@"ZooGeneration"] = @(generation);
 			}
 
 			if(varlength>totalnamelength+8)
 			{
 				int extraversion=[fh readUInt16LE];
-				[dict setObject:[NSNumber numberWithInt:extraversion] forKey:@"ZooExtraVersion"];
+				dict[@"ZooExtraVersion"] = @(extraversion);
 			}
 
 			if(longnamedata||dirdata||generation)
@@ -174,11 +174,10 @@
 			}
 		}
 
-		if(path) [dict setObject:path forKey:XADFileNameKey];
-		else [dict setObject:[self XADPathWithData:shortnamedata separators:XADNoPathSeparator] forKey:XADFileNameKey];
+		if(path) dict[XADFileNameKey] = path;
+		else dict[XADFileNameKey] = [self XADPathWithData:shortnamedata separators:XADNoPathSeparator];
 
-		[dict setObject:[NSDate XADDateWithMSDOSDate:date time:time timeZone:timezone]
-		forKey:XADLastModificationDateKey];
+		dict[XADLastModificationDateKey] = [NSDate XADDateWithMSDOSDate:date time:time timeZone:timezone];
 
 		if(commentoffset&&commentlength)
 		{
@@ -191,7 +190,7 @@
 			if(bytes[commentlength-1]==0)
 			commentdata=[commentdata subdataWithRange:NSMakeRange(0,commentlength-1)];
 
-			[dict setObject:[self XADStringWithData:commentdata] forKey:XADCommentKey];
+			dict[XADCommentKey] = [self XADStringWithData:commentdata];
 		}
 
 		[self addEntryWithDictionary:dict];
@@ -203,9 +202,9 @@
 -(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum
 {
 	CSHandle *handle=[self handleAtDataOffsetForDictionary:dict];
-	int method=[[dict objectForKey:@"ZooMethod"] intValue];
-	int crc=[[dict objectForKey:@"ZooCRC16"] intValue];
-	uint32_t length=[[dict objectForKey:XADFileSizeKey] unsignedIntValue];
+	int method=[dict[@"ZooMethod"] intValue];
+	int crc=[dict[@"ZooCRC16"] intValue];
+	uint32_t length=[dict[XADFileSizeKey] unsignedIntValue];
 
 	switch(method)
 	{

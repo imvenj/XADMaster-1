@@ -65,25 +65,25 @@
 	NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 		[parser XADPathWithData:namepart separators:XADNoPathSeparator],XADFileNameKey,
 		[parser XADStringWithString:compname],XADCompressionNameKey,
-		[NSNumber numberWithLongLong:end-dataoffset-2],XADCompressedSizeKey,
+		@(end-dataoffset-2),XADCompressedSizeKey,
 		[NSNumber numberWithUnsignedLongLong:dataoffset],XADDataOffsetKey,
-		[NSNumber numberWithLongLong:end-dataoffset],XADDataLengthKey,
-		[NSNumber numberWithInt:type],@"CrunchType",
-		[NSNumber numberWithInt:version1],@"CrunchReferenceRevision",
-		[NSNumber numberWithInt:version2],@"CrunchSignificantRevision",
-		[NSNumber numberWithInt:errordetection],@"CrunchErrorDetection",
+		@(end-dataoffset),XADDataLengthKey,
+		@(type),@"CrunchType",
+		@(version1),@"CrunchReferenceRevision",
+		@(version2),@"CrunchSignificantRevision",
+		@(errordetection),@"CrunchErrorDetection",
 	nil];
 
-	if(comment) [dict setObject:[parser XADStringWithData:comment] forKey:XADCommentKey];
+	if(comment) dict[XADCommentKey] = [parser XADStringWithData:comment];
 
 	return dict;
 }
 
 +(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum handle:(CSHandle *)handle
 {
-	int type=[[dict objectForKey:@"CrunchType"] intValue];
-	int version2=[[dict objectForKey:@"CrunchSignificantRevision"] intValue];
-	int errordetection=[[dict objectForKey:@"CrunchErrorDetection"] intValue];
+	int type=[dict[@"CrunchType"] intValue];
+	int version2=[dict[@"CrunchSignificantRevision"] intValue];
+	int errordetection=[dict[@"CrunchErrorDetection"] intValue];
 	BOOL old=(version2&0xf0)==0x10;
 	BOOL haschecksum=errordetection==0;
 
@@ -130,7 +130,7 @@
 	NSMutableDictionary *dict=[XADCrunchParser parseWithHandle:fh
 	endOffset:[fh fileSize] parser:self];
 
-	XADPath *filename=[dict objectForKey:XADFileNameKey];
+	XADPath *filename=dict[XADFileNameKey];
 	NSData *namedata=[filename data];
 	const char *bytes=[namedata bytes];
 	int length=[namedata length];
@@ -141,7 +141,7 @@
 	if(tolower(bytes[length-2])=='b')
 	if(tolower(bytes[length-1])=='r')
 	{
-		[dict setObject:[NSNumber numberWithBool:YES] forKey:XADIsArchiveKey];
+		dict[XADIsArchiveKey] = @YES;
 	}
 
 	[self addEntryWithDictionary:dict];

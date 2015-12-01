@@ -79,7 +79,7 @@ static NSData *CreateNewJPEGHeaderWithColourProfile(NSData *fileheader,NSData *p
 		if(!curr) [stack removeLastObject];
 		else
 		{
-			NSString *type=[curr objectForKey:@"Type"];
+			NSString *type=curr[@"Type"];
 			if([type isEqual:@"Pages"])
 			{
 				[stack addObject:[[curr arrayForKey:@"Kids"] objectEnumerator]];
@@ -87,13 +87,13 @@ static NSData *CreateNewJPEGHeaderWithColourProfile(NSData *fileheader,NSData *p
 			else if([type isEqual:@"Page"])
 			{
 				page++;
-				NSDictionary *xobjects=[[curr objectForKey:@"Resources"] objectForKey:@"XObject"];
+				NSDictionary *xobjects=curr[@"Resources"][@"XObject"];
 				NSEnumerator *enumerator=[xobjects objectEnumerator];
 				id object;
 				while(object=[enumerator nextObject])
 				{
 					if([object isKindOfClass:[PDFStream class]]&&[object isImage])
-					[order setObject:[NSNumber numberWithInt:page] forKey:[object reference]];
+					order[[object reference]] = @(page);
 				}
 			}
 			else @throw @"Invalid PDF structure";
@@ -109,16 +109,16 @@ static NSData *CreateNewJPEGHeaderWithColourProfile(NSData *fileheader,NSData *p
 	while(image=[enumerator nextObject])
 	{
 		PDFObjectReference *ref=[image reference];
-		NSNumber *page=[order objectForKey:ref];
+		NSNumber *page=order[ref];
 
 		NSString *name;
 		if(page) name=[NSString stringWithFormat:@"Page %@, object %d",page,[ref number]];
 		else name=[NSString stringWithFormat:@"Object %d",[ref number]];
 
-		NSString *imgname=[[image dictionary] objectForKey:@"Name"];
+		NSString *imgname=[image dictionary][@"Name"];
 		if(imgname) name=[NSString stringWithFormat:@"%@ (%@)",name,imgname];
 
-		NSNumber *length=[[image dictionary] objectForKey:@"Length"];
+		NSNumber *length=[image dictionary][@"Length"];
 		NSArray *decode=[image imageDecodeArray];
 
 		int width=[image imageWidth];
@@ -141,26 +141,26 @@ static NSData *CreateNewJPEGHeaderWithColourProfile(NSData *fileheader,NSData *p
 //if([image imageType]==PDFCMYKImageType) [self reportInterestingFileWithReason:@"CMYK JPEG"];
 //if([[image imageColourSpaceName] isEqual:@"ICCBased"]) [self reportInterestingFileWithReason:@"JPEG with ICC profile"];
 			NSString *compname=[self compressionNameForStream:image excludingLast:YES];
-			[dict setObject:[self XADStringWithString:compname] forKey:XADCompressionNameKey];
+			dict[XADCompressionNameKey] = [self XADStringWithString:compname];
 
 			if(![image hasMultipleFilters] && !isencrypted && !colourprofile)
-			[dict setObject:length forKey:XADFileSizeKey];
+			dict[XADFileSizeKey] = length;
 
-			[dict setObject:@"JPEG" forKey:@"PDFStreamType"];
+			dict[@"PDFStreamType"] = @"JPEG";
 
-			if(colourprofile) [dict setObject:colourprofile forKey:@"PDFJPEGColourProfile"];
+			if(colourprofile) dict[@"PDFJPEGColourProfile"] = colourprofile;
 
 			name=[name stringByAppendingPathExtension:@"jpg"];
 		}
 		else if([image isJPEG2000Image])
 		{
 			NSString *compname=[self compressionNameForStream:image excludingLast:YES];
-			[dict setObject:[self XADStringWithString:compname] forKey:XADCompressionNameKey];
+			dict[XADCompressionNameKey] = [self XADStringWithString:compname];
 
 			if(![image hasMultipleFilters] && !isencrypted)
-			[dict setObject:length forKey:XADFileSizeKey];
+			dict[XADFileSizeKey] = length;
 
-			[dict setObject:@"JPEG" forKey:@"PDFStreamType"];
+			dict[@"PDFStreamType"] = @"JPEG";
 
 			name=[name stringByAppendingPathExtension:@"jp2"];
 		}
@@ -216,8 +216,8 @@ static NSData *CreateNewJPEGHeaderWithColourProfile(NSData *fileheader,NSData *p
 							{
 								int palettecomponents=[image numberOfImagePaletteComponents];
 
-								[dict setObject:palettedata forKey:@"PDFTIFFExpandedPaletteData"];
-								[dict setObject:[NSNumber numberWithInt:palettecomponents] forKey:@"PDFTIFFExpandedComponents"];
+								dict[@"PDFTIFFExpandedPaletteData"] = palettedata;
+								dict[@"PDFTIFFExpandedComponents"] = @(palettecomponents);
 
 								// Override image parameters.
 								type=[image imagePaletteType];
@@ -273,8 +273,8 @@ static NSData *CreateNewJPEGHeaderWithColourProfile(NSData *fileheader,NSData *p
 				case PDFGrayImageType:
 					if(decode)
 					{
-						float zeropoint=[[decode objectAtIndex:0] floatValue];
-						float onepoint=[[decode objectAtIndex:1] floatValue];
+						float zeropoint=[decode[0] floatValue];
+						float onepoint=[decode[1] floatValue];
 						if(zeropoint>onepoint) [entries addObject:TIFFShortEntry(262,0)]; // PhotoMetricInterpretation = WhiteIsZero
 						else [entries addObject:TIFFShortEntry(262,1)]; // PhotoMetricInterpretation = BlackIsZero
 					}
@@ -320,19 +320,19 @@ static NSData *CreateNewJPEGHeaderWithColourProfile(NSData *fileheader,NSData *p
 			off_t headersize=[headerdata length];
 
 			NSString *compname=[self compressionNameForStream:image excludingLast:NO];
-			[dict setObject:[self XADStringWithString:compname] forKey:XADCompressionNameKey];
+			dict[XADCompressionNameKey] = [self XADStringWithString:compname];
 
-			[dict setObject:[NSNumber numberWithLongLong:headersize+bytesperrow*height] forKey:XADFileSizeKey];
-			[dict setObject:[NSNumber numberWithLongLong:bytesperrow*height] forKey:@"PDFTIFFDataLength"];
-			[dict setObject:headerdata forKey:@"PDFTIFFHeader"];
-			[dict setObject:@"TIFF" forKey:@"PDFStreamType"];
+			dict[XADFileSizeKey] = @(headersize+bytesperrow*height);
+			dict[@"PDFTIFFDataLength"] = [NSNumber numberWithLongLong:bytesperrow*height];
+			dict[@"PDFTIFFHeader"] = headerdata;
+			dict[@"PDFStreamType"] = @"TIFF";
 
 			name=[name stringByAppendingPathExtension:@"tiff"];
 		}
 
 		giveup:
-		[dict setObject:[self XADPathWithString:name] forKey:XADFileNameKey];
-		if(isencrypted) [dict setObject:[NSNumber numberWithBool:YES] forKey:XADIsEncryptedKey];
+		dict[XADFileNameKey] = [self XADPathWithString:name];
+		if(isencrypted) dict[XADIsEncryptedKey] = @YES;
 
 		[self addEntryWithDictionary:dict];
 	}
@@ -357,7 +357,7 @@ static NSData *CreateNewJPEGHeaderWithColourProfile(NSData *fileheader,NSData *p
 
 		for(int i=count-1;i>=0;i--)
 		{
-			NSString *name=[filter objectAtIndex:i];
+			NSString *name=filter[i];
 			if([name hasSuffix:@"Decode"]) name=[name substringToIndex:[name length]-6];
 			if(i!=count-1) [string appendString:@"+"];
 			[string appendString:name];
@@ -370,14 +370,14 @@ static NSData *CreateNewJPEGHeaderWithColourProfile(NSData *fileheader,NSData *p
 
 -(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum
 {
-	NSString *streamtype=[dict objectForKey:@"PDFStreamType"];
-	PDFStream *stream=[dict objectForKey:@"PDFStream"];
+	NSString *streamtype=dict[@"PDFStreamType"];
+	PDFStream *stream=dict[@"PDFStream"];
 
 	if([streamtype isEqual:@"JPEG"])
 	{
 		CSHandle *handle=[stream JPEGHandle];
 
-		NSData *profile=[dict objectForKey:@"PDFJPEGColourProfile"];
+		NSData *profile=dict[@"PDFJPEGColourProfile"];
 		if(profile)
 		{
 			NSData *fileheader=[handle readDataOfLengthAtMost:256];
@@ -407,16 +407,16 @@ static NSData *CreateNewJPEGHeaderWithColourProfile(NSData *fileheader,NSData *p
 		CSHandle *handle=[stream handle];
 		if(!handle) return nil;
 
-		NSNumber *length=[dict objectForKey:@"PDFTIFFDataLength"];
+		NSNumber *length=dict[@"PDFTIFFDataLength"];
 		if(length) handle=[handle nonCopiedSubHandleOfLength:[length longLongValue]];
 
-		NSData *header=[dict objectForKey:@"PDFTIFFHeader"];
+		NSData *header=dict[@"PDFTIFFHeader"];
 		if(!header) return nil;
 
-		NSData *palette=[dict objectForKey:@"PDFTIFFExpandedPaletteData"];
+		NSData *palette=dict[@"PDFTIFFExpandedPaletteData"];
 		if(palette)
 		{
-			int components=[[dict objectForKey:@"PDFTIFFExpandedComponents"] intValue];
+			int components=[dict[@"PDFTIFFExpandedComponents"] intValue];
 
 			handle=[[[XAD8BitPaletteExpansionHandle alloc] initWithHandle:handle
 			length:[stream imageWidth]*[stream imageHeight]*components
@@ -442,8 +442,8 @@ static NSData *CreateNewJPEGHeaderWithColourProfile(NSData *fileheader,NSData *p
 static int SortPages(id first,id second,void *context)
 {
 	NSDictionary *order=(NSDictionary *)context;
-	NSNumber *firstpage=[order objectForKey:[first reference]];
-	NSNumber *secondpage=[order objectForKey:[second reference]];
+	NSNumber *firstpage=order[[first reference]];
+	NSNumber *secondpage=order[[second reference]];
 	if(!firstpage&&!secondpage) return 0;
 	else if(!firstpage) return 1;
 	else if(!secondpage) return -1;
@@ -452,52 +452,42 @@ static int SortPages(id first,id second,void *context)
 
 static NSDictionary *TIFFShortEntry(int tag,int value)
 {
-	return [NSDictionary dictionaryWithObjectsAndKeys:
-		[NSNumber numberWithInt:tag],@"Tag",
-		[NSNumber numberWithInt:3],@"Type",
-		[NSNumber numberWithInt:1],@"Count",
-		[NSNumber numberWithInt:value],@"Value",
-	nil];
+	return @{@"Tag": @(tag),
+		@"Type": @3,
+		@"Count": @1,
+		@"Value": @(value)};
 }
 
 
 static NSDictionary *TIFFLongEntry(int tag,int value)
 {
-	return [NSDictionary dictionaryWithObjectsAndKeys:
-		[NSNumber numberWithInt:tag],@"Tag",
-		[NSNumber numberWithInt:4],@"Type",
-		[NSNumber numberWithInt:1],@"Count",
-		[NSNumber numberWithInt:value],@"Value",
-	nil];
+	return @{@"Tag": @(tag),
+		@"Type": @4,
+		@"Count": @1,
+		@"Value": @(value)};
 }
 
 static NSDictionary *TIFFLongEntryForImageStart(int tag)
 {
-	return [NSDictionary dictionaryWithObjectsAndKeys:
-		[NSNumber numberWithInt:tag],@"Tag",
-		[NSNumber numberWithInt:4],@"Type",
-		[NSNumber numberWithInt:1],@"Count",
-	nil];
+	return @{@"Tag": @(tag),
+		@"Type": @4,
+		@"Count": @1};
 }
 
 static NSDictionary *TIFFShortArrayEntry(int tag,NSData *data)
 {
-	return [NSDictionary dictionaryWithObjectsAndKeys:
-		[NSNumber numberWithInt:tag],@"Tag",
-		[NSNumber numberWithInt:3],@"Type",
-		[NSNumber numberWithInt:[data length]/2],@"Count",
-		data,@"Data",
-	nil];
+	return @{@"Tag": @(tag),
+		@"Type": @3,
+		@"Count": @([data length]/2),
+		@"Data": data};
 }
 
 static NSDictionary *TIFFUndefinedArrayEntry(int tag,NSData *data)
 {
-	return [NSDictionary dictionaryWithObjectsAndKeys:
-		[NSNumber numberWithInt:tag],@"Tag",
-		[NSNumber numberWithInt:7],@"Type",
-		[NSNumber numberWithInt:[data length]],@"Count",
-		data,@"Data",
-	nil];
+	return @{@"Tag": @(tag),
+		@"Type": @7,
+		@"Count": @([data length]),
+		@"Data": data};
 }
 
 static NSData *CreateTIFFHeaderWithEntries(NSArray *entries)
@@ -523,7 +513,7 @@ static NSData *CreateTIFFHeaderWithEntries(NSArray *entries)
 	enumerator=[entries objectEnumerator];
 	while((entry=[enumerator nextObject]))
 	{
-		NSData *data=[entry objectForKey:@"Data"];
+		NSData *data=entry[@"Data"];
 		int length=[data length];
 		datasize+=(length+1)&~1;
 	}
@@ -534,9 +524,9 @@ static NSData *CreateTIFFHeaderWithEntries(NSArray *entries)
 	enumerator=[entries objectEnumerator];
 	while((entry=[enumerator nextObject]))
 	{
-		NSNumber *tag=[entry objectForKey:@"Tag"];
-		NSNumber *type=[entry objectForKey:@"Type"];
-		NSNumber *count=[entry objectForKey:@"Count"];
+		NSNumber *tag=entry[@"Tag"];
+		NSNumber *type=entry[@"Type"];
+		NSNumber *count=entry[@"Count"];
 
 		[header writeUInt16LE:[tag intValue]];
 		[header writeUInt16LE:[type intValue]];
@@ -544,13 +534,13 @@ static NSData *CreateTIFFHeaderWithEntries(NSArray *entries)
 
 		if([count intValue]==1)
 		{
-			NSNumber *value=[entry objectForKey:@"Value"];
+			NSNumber *value=entry[@"Value"];
 			if(value) [header writeUInt32LE:[value unsignedIntValue]];
 			else [header writeUInt32LE:imagestart];
 		}
 		else
 		{
-			NSData *data=[entry objectForKey:@"Data"];
+			NSData *data=entry[@"Data"];
 			[header writeUInt32LE:dataoffset];
 
 			int length=[data length];
@@ -565,7 +555,7 @@ static NSData *CreateTIFFHeaderWithEntries(NSArray *entries)
 	enumerator=[entries objectEnumerator];
 	while((entry=[enumerator nextObject]))
 	{
-		NSData *data=[entry objectForKey:@"Data"];
+		NSData *data=entry[@"Data"];
 		[header writeData:data];
 		if([data length]&1) [header writeUInt8:0];
 	}

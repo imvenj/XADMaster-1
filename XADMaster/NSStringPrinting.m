@@ -2,6 +2,8 @@
 
 #ifdef __MINGW32__
 #include <windows.h>
+#else
+#include <sys/ioctl.h>
 #endif
 
 @implementation NSString (Printing)
@@ -76,8 +78,6 @@
 }
 
 #else
-
-#include <sys/ioctl.h>
 
 +(int)terminalWidth
 {

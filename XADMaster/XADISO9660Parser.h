@@ -11,8 +11,7 @@
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data
 name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props;
 
--(id)init;
--(void)dealloc;
+-(instancetype)init;
 
 -(void)parse;
 -(void)parseVolumeDescriptorAtBlock:(uint32_t)block;

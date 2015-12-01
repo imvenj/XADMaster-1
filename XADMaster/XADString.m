@@ -143,7 +143,7 @@ encodingName:(NSString *)encoding
 
 
 
--(id)initWithData:(NSData *)bytedata source:(XADStringSource *)stringsource
+-(instancetype)initWithData:(NSData *)bytedata source:(XADStringSource *)stringsource
 {
 	if((self=[super init]))
 	{
@@ -154,7 +154,7 @@ encodingName:(NSString *)encoding
 	return self;
 }
 
--(id)initWithString:(NSString *)knownstring
+-(instancetype)initWithString:(NSString *)knownstring
 {
 	if((self=[super init]))
 	{
@@ -321,7 +321,7 @@ encodingName:(NSString *)encoding
 
 @implementation XADStringSource
 
--(id)init
+-(instancetype)init
 {
 	if((self=[super init]))
 	{
@@ -367,7 +367,7 @@ encodingName:(NSString *)encoding
 			XADMacOSJapaneseStringEncodingName,[XADShiftJISStringEncodingName lowercaseString],
 		nil];
 
-		NSString *macalternative=[macalternatives objectForKey:[encoding lowercaseString]];
+		NSString *macalternative=macalternatives[[encoding lowercaseString]];
 		if(macalternative) return macalternative;
 	}
 

@@ -48,7 +48,7 @@ static NSMutableData *MakeBMPContainer(int width,int height,uint32_t length,int 
 			[NSNumber numberWithUnsignedLong:datalen],XADCompressedSizeKey,
 			[NSNumber numberWithUnsignedLong:datalen],XADDataLengthKey,
 			[NSNumber numberWithUnsignedLong:dataoffs+offset],XADDataOffsetKey,
-			[NSNumber numberWithInt:method],@"NSAMethod",
+			@(method),@"NSAMethod",
 		nil];
 
 		NSString *methodname=nil;
@@ -59,7 +59,7 @@ static NSMutableData *MakeBMPContainer(int width,int height,uint32_t length,int 
 			case 2: methodname=@"LZSS"; break;
 			case 4: methodname=@"Bzip2"; break;
 		}
-		if(methodname) [dict setObject:[self XADStringWithString:methodname] forKey:XADCompressionNameKey];
+		if(methodname) dict[XADCompressionNameKey] = [self XADStringWithString:methodname];
 
 		[self addEntryWithDictionary:dict retainPosition:YES];
 	}
@@ -68,8 +68,8 @@ static NSMutableData *MakeBMPContainer(int width,int height,uint32_t length,int 
 -(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum
 {
 	CSHandle *handle=[self handleAtDataOffsetForDictionary:dict];
-	int method=[[dict objectForKey:@"NSAMethod"] intValue];
-	uint32_t length=[[dict objectForKey:XADFileSizeKey] unsignedIntValue];
+	int method=[dict[@"NSAMethod"] intValue];
+	uint32_t length=[dict[XADFileSizeKey] unsignedIntValue];
 
 	switch(method)
 	{

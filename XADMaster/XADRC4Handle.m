@@ -4,7 +4,7 @@
 
 @implementation XADRC4Handle
 
--(id)initWithHandle:(CSHandle *)handle key:(NSData *)keydata
+-(instancetype)initWithHandle:(CSHandle *)handle key:(NSData *)keydata
 {
 	if((self=[super initWithName:[handle name] length:[handle fileSize]]))
 	{
@@ -51,7 +51,7 @@
 	return [[(XADRC4Engine *)[[self class] alloc] initWithKey:key] autorelease];
 }
 
--(id)initWithKey:(NSData *)key
+-(instancetype)initWithKey:(NSData *)key
 {
 	if((self=[super init]))
 	{

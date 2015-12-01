@@ -26,16 +26,16 @@
 	NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 		[self XADPathWithUnseparatedString:contentname],XADFileNameKey,
 		[self XADStringWithString:@"Compress"],XADCompressionNameKey,
-		[NSNumber numberWithLongLong:3],XADDataOffsetKey,
-		[NSNumber numberWithInt:flags],@"CompressFlags",
+		@3LL,XADDataOffsetKey,
+		@(flags),@"CompressFlags",
 	nil];
 
 	if([contentname matchedByPattern:@"\\.(tar|cpio|pax)$" options:REG_ICASE])
-	[dict setObject:[NSNumber numberWithBool:YES] forKey:XADIsArchiveKey];
+	dict[XADIsArchiveKey] = @YES;
 
 	off_t size=[[self handle] fileSize];
 	if(size!=CSHandleMaxLength)
-	[dict setObject:[NSNumber numberWithLongLong:size-3] forKey:XADCompressedSizeKey];
+	dict[XADCompressedSizeKey] = @(size-3);
 
 	[self addEntryWithDictionary:dict];
 }
@@ -43,7 +43,7 @@
 -(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum
 {
 	return [[[XADCompressHandle alloc] initWithHandle:[self handleAtDataOffsetForDictionary:dict]
-	flags:[[dict objectForKey:@"CompressFlags"] intValue]] autorelease];
+	flags:[dict[@"CompressFlags"] intValue]] autorelease];
 }
 
 -(NSString *)formatName { return @"Compress"; }

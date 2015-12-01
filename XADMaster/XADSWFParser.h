@@ -7,8 +7,7 @@
 	NSMutableArray *dataobjects;
 }
 
--(id)init;
--(void)dealloc;
+-(instancetype)init;
 
 +(int)requiredHeaderSize;
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name;

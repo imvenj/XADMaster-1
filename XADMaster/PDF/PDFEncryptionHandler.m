@@ -18,7 +18,7 @@ static const char PDFPasswordPadding[32]=
 
 +(BOOL)isEncryptedForTrailerDictionary:(NSDictionary *)trailer
 {
-	return [trailer objectForKey:@"Encrypt"]!=nil;
+	return trailer[@"Encrypt"]!=nil;
 }
 
 -(id)initWithEncryptDictionary:(NSDictionary *)encryptdict permanentID:(NSData *)permanentiddata;
@@ -35,7 +35,7 @@ static const char PDFPasswordPadding[32]=
 		revision=[encrypt intValueForKey:@"R" default:0];
 
 		// TODO: Figure out resolving and encryption
-		NSString *filter=[encrypt objectForKey:@"Filter"];
+		NSString *filter=encrypt[@"Filter"];
 		if(![filter isEqual:@"Standard"] ||
 		(version!=1 && version!=2 && version!=4) ||
 		(revision!=2 && revision!=3 && revision!=4))
@@ -55,24 +55,24 @@ static const char PDFPasswordPadding[32]=
 		{
 			algorithms=[[NSMutableDictionary dictionary] retain];
 
-			NSDictionary *filters=[encrypt objectForKey:@"CF"];
+			NSDictionary *filters=encrypt[@"CF"];
 			NSEnumerator *enumerator=[filters keyEnumerator];
 			NSString *key;
 			while(key=[enumerator nextObject])
 			{
-				NSDictionary *dict=[filters objectForKey:key];
-				NSString *cfm=[dict objectForKey:@"CFM"];
+				NSDictionary *dict=filters[key];
+				NSString *cfm=dict[@"CFM"];
 				int length=[dict intValueForKey:@"Length" default:5];
 
-				if([cfm isEqual:@"V2"]) [algorithms setObject:[[[PDFRC4Algorithm alloc] initWithLength:length handler:self] autorelease] forKey:key];
-				else if([cfm isEqual:@"AESV2"]) [algorithms setObject:[[[PDFAESAlgorithm alloc] initWithLength:length handler:self] autorelease] forKey:key];
+				if([cfm isEqual:@"V2"]) algorithms[key] = [[[PDFRC4Algorithm alloc] initWithLength:length handler:self] autorelease];
+				else if([cfm isEqual:@"AESV2"]) algorithms[key] = [[[PDFAESAlgorithm alloc] initWithLength:length handler:self] autorelease];
 				else [NSException raise:PDFUnsupportedEncryptionException format:@"PDF encryption module \"%@\" is not supported.",cfm];
 			}
 
-			[algorithms setObject:[[PDFNoAlgorithm new] autorelease] forKey:@"Identity"];
+			algorithms[@"Identity"] = [[PDFNoAlgorithm new] autorelease];
 
-			stringalgorithm=[[algorithms objectForKey:[encrypt stringForKey:@"StrF" default:@"Identity"]] retain];
-			streamalgorithm=[[algorithms objectForKey:[encrypt stringForKey:@"StmF" default:@"Identity"]] retain];
+			stringalgorithm=[algorithms[[encrypt stringForKey:@"StrF" default:@"Identity"]] retain];
+			streamalgorithm=[algorithms[[encrypt stringForKey:@"StmF" default:@"Identity"]] retain];
 		}
 
 		needspassword=![self setPassword:@""];
@@ -104,7 +104,7 @@ static const char PDFPasswordPadding[32]=
 	else if(version==2) key=[self documentKeyOfLength:[encrypt intValueForKey:@"Length" default:40]/8];
 	else if(version==4) key=[self documentKeyOfLength:16]; // This is total bullshit, but the specs don't say what to actually do for version 4.
 
-	NSData *udata=[[encrypt objectForKey:@"U"] rawData];
+	NSData *udata=[encrypt[@"U"] rawData];
 
 	if(revision==2)
 	{
@@ -139,8 +139,8 @@ static const char PDFPasswordPadding[32]=
 	if(length<5) length=5;
 	if(length>16) length=16;
 
-	NSNumber *num=[NSNumber numberWithInt:length];
-	NSData *key=[keys objectForKey:num];
+	NSNumber *num=@(length);
+	NSData *key=keys[num];
 	if(key) return key;
 
 	PDFMD5Engine *md5=[PDFMD5Engine engine];
@@ -155,7 +155,7 @@ static const char PDFPasswordPadding[32]=
 	}
 	else [md5 updateWithBytes:passbytes length:32];
 
-	[md5 updateWithData:[[encrypt objectForKey:@"O"] rawData]];
+	[md5 updateWithData:[encrypt[@"O"] rawData]];
 
 	unsigned int p=[encrypt unsignedIntValueForKey:@"P" default:0];
 	unsigned char pbytes[4]={p&0xff,(p>>8)&0xff,(p>>16)&0xff,p>>24};
@@ -174,7 +174,7 @@ static const char PDFPasswordPadding[32]=
 	for(int i=0;i<50;i++) digest=[PDFMD5Engine digestForBytes:[digest bytes] length:length];
 
 	key=[digest subdataWithRange:NSMakeRange(0,length)];
-	[keys setObject:key forKey:num];
+	keys[num] = key;
 
 	return key;
 }
@@ -205,11 +205,11 @@ static const char PDFPasswordPadding[32]=
 
 -(CSHandle *)decryptStream:(PDFStream *)stream
 {
-	NSString *filter=[[[stream dictionary] arrayForKey:@"Filter"] objectAtIndex:0];
+	NSString *filter=[[stream dictionary] arrayForKey:@"Filter"][0];
 	if([filter isEqual:@"Crypt"])
 	{
-		NSDictionary *decodeparms=[[[stream dictionary] arrayForKey:@"DecodeParms"] objectAtIndex:0];
-		PDFEncryptionAlgorithm *algorithm=[algorithms objectForKey:[decodeparms stringForKey:@"Name" default:@"Identity"]];
+		NSDictionary *decodeparms=[[stream dictionary] arrayForKey:@"DecodeParms"][0];
+		PDFEncryptionAlgorithm *algorithm=algorithms[[decodeparms stringForKey:@"Name" default:@"Identity"]];
 		return [algorithm decryptedHandle:[stream rawHandle] reference:[stream reference]];
 	}
 	else

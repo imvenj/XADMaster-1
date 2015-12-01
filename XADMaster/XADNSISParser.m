@@ -85,22 +85,19 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 	{
 		if(IsOlderSignature(bytes+offs)) 
 		{
-			[props setObject:[NSNumber numberWithLongLong:offs]
-			forKey:@"NSISOlderOffset"];
+			props[@"NSISOlderOffset"] = @(offs);
 			return YES;
 		}
 
 		if(IsOldSignature(bytes+offs))
 		{
-			[props setObject:[NSNumber numberWithLongLong:offs]
-			forKey:@"NSISOldOffset"];
+			props[@"NSISOldOffset"] = @(offs);
 			return YES;
 		}
 
 		if(IsNewSignature(bytes+offs))
 		{
-			[props setObject:[NSNumber numberWithLongLong:offs]
-			forKey:@"NSISNewOffset"];
+			props[@"NSISNewOffset"] = @(offs);
 			return YES;
 		}
 	}
@@ -131,7 +128,7 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 
 	NSNumber *offs;
 
-	offs=[[self properties] objectForKey:@"NSISOlderOffset"];
+	offs=[self properties][@"NSISOlderOffset"];
 	if(offs)
 	{
 		[fh seekToFileOffset:[offs longLongValue]];
@@ -139,7 +136,7 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 		return;
 	}
 
-	offs=[[self properties] objectForKey:@"NSISOldOffset"];
+	offs=[self properties][@"NSISOldOffset"];
 	if(offs)
 	{
 		[fh seekToFileOffset:[offs longLongValue]];
@@ -147,7 +144,7 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 		return;
 	}
 
-	offs=[[self properties] objectForKey:@"NSISNewOffset"];
+	offs=[self properties][@"NSISNewOffset"];
 	if(offs)
 	{
 		[fh seekToFileOffset:[offs longLongValue]];
@@ -418,7 +415,7 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 
 static NSComparisonResult CompareEntryDataOffsets(id first,id second,void *context)
 {
-	return [[first objectForKey:@"NSISDataOffset"] compare:[second objectForKey:@"NSISDataOffset"]];
+	return [first[@"NSISDataOffset"] compare:second[@"NSISDataOffset"]];
 }
 
 static NSComparisonResult CompareEntryFileNames(id first,id second,void *context)
@@ -449,8 +446,8 @@ newDateTimeOrder:(BOOL)neworder
 		{
 			uint32_t overwrite=args[0];
 			uint32_t filename=args[1];
-			NSNumber *offs=[NSNumber numberWithUnsignedInt:args[2]];
-			NSNumber *block=[blocks objectForKey:offs];
+			NSNumber *offs=@(args[2]);
+			NSNumber *block=blocks[offs];
 			uint32_t datetimelow,datetimehigh;
 
 			if(neworder)
@@ -482,18 +479,17 @@ newDateTimeOrder:(BOOL)neworder
 
 				if(datetimehigh!=0xffffffff && datetimelow!=0xffffffff)
 				{
-					[dict setObject:[NSDate XADDateWithWindowsFileTimeLow:datetimelow high:datetimehigh]
-					forKey:XADLastModificationDateKey];
+					dict[XADLastModificationDateKey] = [NSDate XADDateWithWindowsFileTimeLow:datetimelow high:datetimehigh];
 				}
 
 				if((len&0x80000000) || solidhandle)
 				{
-					[dict setObject:[self compressionName] forKey:XADCompressionNameKey];
+					dict[XADCompressionNameKey] = [self compressionName];
 				}
 				else
 				{
-					[dict setObject:[self XADStringWithString:@"None"] forKey:XADCompressionNameKey];
-					[dict setObject:[NSNumber numberWithUnsignedInt:len&0x7fffffff] forKey:XADFileSizeKey];
+					dict[XADCompressionNameKey] = [self XADStringWithString:@"None"];
+					dict[XADFileSizeKey] = @(len&0x7fffffff);
 				}
 
 				[files addObject:dict];
@@ -581,13 +577,13 @@ newDateTimeOrder:(BOOL)neworder
 	if([array count]<2) return;
 
 	NSMutableArray *rest=[NSMutableArray array];
-	NSMutableDictionary *last=[array objectAtIndex:0];
+	NSMutableDictionary *last=array[0];
 	NSValue *first=[NSValue valueWithNonretainedObject:last];
 	for(int i=1;i<[array count];i++)
 	{
-		NSMutableDictionary *dict=[array objectAtIndex:i];
+		NSMutableDictionary *dict=array[i];
 
-		if([[dict objectForKey:@"NSISDataOffset"] isEqual:[last objectForKey:@"NSISDataOffset"]])
+		if([dict[@"NSISDataOffset"] isEqual:last[@"NSISDataOffset"]])
 		{
 			[rest addObject:dict];
 			[array removeObjectAtIndex:i];
@@ -595,9 +591,9 @@ newDateTimeOrder:(BOOL)neworder
 		}
 		else
 		{
-			[dict setObject:[NSNumber numberWithBool:YES] forKey:XADIsSolidKey];
-			[dict setObject:first forKey:XADFirstSolidEntryKey];
-			[last setObject:[NSValue valueWithNonretainedObject:dict] forKey:XADNextSolidEntryKey];
+			dict[XADIsSolidKey] = @YES;
+			dict[XADFirstSolidEntryKey] = first;
+			last[XADNextSolidEntryKey] = [NSValue valueWithNonretainedObject:dict];
 			last=dict;
 		}
 	}
@@ -621,7 +617,7 @@ newDateTimeOrder:(BOOL)neworder
 			uint32_t blocklen=[fh readUInt32LE];
 			if([fh atEndOfFile]) break; // hit the CRC in a solid file
 			uint32_t reallen=blocklen&0x7fffffff;
-			[dict setObject:[NSNumber numberWithUnsignedInt:blocklen] forKey:[NSNumber numberWithInt:size]];
+			dict[[NSNumber numberWithInt:size]] = @(blocklen);
 			[fh skipBytes:reallen];
 			size+=reallen+4;
 		}
@@ -716,7 +712,7 @@ foundStride:(int *)strideptr foundPhase:(int *)phaseptr
 
 			if(overwrite<4)
 			if(filenameoffs<stringendoffs-stringoffs)
-			if([blocks objectForKey:[NSNumber numberWithInt:dataoffs]])
+			if(blocks[[NSNumber numberWithInt:dataoffs]])
 			{
 				int pos=i/4;
 				for(int k=0;k<numpossiblestrides;k++)
@@ -1115,7 +1111,7 @@ stringStartOffset:(int)stringoffs stringEndOffset:(int)stringendoffs currentPath
 	}
 
 	NSArray *parts;
-	if([string length]==0) parts=[NSArray array];
+	if([string length]==0) parts=@[];
 	else parts=[string componentsSeparatedByString:@"\\"];
 
 	XADPath *path=[XADPath pathWithStringComponents:parts];
@@ -1238,7 +1234,7 @@ stringStartOffset:(int)stringoffs stringEndOffset:(int)stringendoffs currentPath
 
 -(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum
 {
-	return [self handleForBlockAtOffset:[[dict objectForKey:@"NSISDataOffset"] unsignedIntValue]];
+	return [self handleForBlockAtOffset:[dict[@"NSISDataOffset"] unsignedIntValue]];
 }
 
 -(NSString *)formatName { return @"NSIS"; }

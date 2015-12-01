@@ -8,6 +8,7 @@
 
 
 @implementation XADSimpleUnarchiver
+@synthesize delegate;
 
 +(XADSimpleUnarchiver *)simpleUnarchiverForPath:(NSString *)path
 {
@@ -21,12 +22,12 @@
 	return [[[self alloc] initWithArchiveParser:archiveparser] autorelease];
 }
 
--(id)initWithArchiveParser:(XADArchiveParser *)archiveparser
+-(instancetype)initWithArchiveParser:(XADArchiveParser *)archiveparser
 {
 	return [self initWithArchiveParser:archiveparser entries:nil];
 }
 
--(id)initWithArchiveParser:(XADArchiveParser *)archiveparser entries:(NSArray *)entryarray
+-(instancetype)initWithArchiveParser:(XADArchiveParser *)archiveparser entries:(NSArray *)entryarray
 {
 	if((self=[super init]))
 	{
@@ -131,8 +132,6 @@
 
 -(NSArray *)reasonsForInterest { return reasonsforinterest; }
 
--(id)delegate { return delegate; }
--(void)setDelegate:(id)newdelegate { delegate=newdelegate; }
 
 -(NSString *)password { return [parser password]; }
 -(void)setPassword:(NSString *)password
@@ -252,7 +251,7 @@
 	NSDictionary *dict;
 	while((dict=[enumerator nextObject]))
 	{
-		NSNumber *num=[dict objectForKey:XADFileSizeKey];
+		NSNumber *num=dict[XADFileSizeKey];
 		if(!num)
 		{
 			if(ignoreunknown) continue;
@@ -283,8 +282,8 @@
 		NSArray *keys=[renames allKeys];
 		if([keys count]==1)
 		{
-			NSString *key=[keys objectAtIndex:0];
-			id value=[[renames objectForKey:key] objectForKey:@"."];
+			NSString *key=keys[0];
+			id value=renames[key][@"."];
 			if(value!=[NSNull null]) return value;
 		}
 	}
@@ -329,8 +328,8 @@
 		// Check if we have a single entry, which is an archive.
 		if([entries count]==1)
 		{
-			NSDictionary *entry=[entries objectAtIndex:0];
-			NSNumber *archnum=[entry objectForKey:XADIsArchiveKey];
+			NSDictionary *entry=entries[0];
+			NSNumber *archnum=entry[XADIsArchiveKey];
 			BOOL isarc=archnum&&[archnum boolValue];
 			if(isarc) return [self _setupSubArchiveForEntryWithDataFork:entry resourceFork:nil];
 		}
@@ -339,18 +338,18 @@
 		// of the same archive.
 		if([entries count]==2)
 		{
-			NSDictionary *first=[entries objectAtIndex:0];
-			NSDictionary *second=[entries objectAtIndex:1];
-			XADPath *name1=[first objectForKey:XADFileNameKey];
-			XADPath *name2=[second objectForKey:XADFileNameKey];
-			NSNumber *archnum1=[first objectForKey:XADIsArchiveKey];
-			NSNumber *archnum2=[second objectForKey:XADIsArchiveKey];
+			NSDictionary *first=entries[0];
+			NSDictionary *second=entries[1];
+			XADPath *name1=first[XADFileNameKey];
+			XADPath *name2=second[XADFileNameKey];
+			NSNumber *archnum1=first[XADIsArchiveKey];
+			NSNumber *archnum2=second[XADIsArchiveKey];
 			BOOL isarc1=archnum1&&[archnum1 boolValue];
 			BOOL isarc2=archnum2&&[archnum2 boolValue];
 
 			if([name1 isEqual:name2] && (isarc1||isarc2))
 			{
-				NSNumber *resnum=[first objectForKey:XADIsResourceForkKey];
+				NSNumber *resnum=first[XADIsResourceForkKey];
 				NSDictionary *datafork,*resourcefork;
 				if(resnum&&[resnum boolValue])
 				{
@@ -364,7 +363,7 @@
 				}
 
 				// TODO: Handle resource forks for archives that require them.
-				NSNumber *archnum=[datafork objectForKey:XADIsArchiveKey];
+				NSNumber *archnum=datafork[XADIsArchiveKey];
 				if(archnum&&[archnum boolValue]) return [self _setupSubArchiveForEntryWithDataFork:datafork resourceFork:resourcefork];
 			}
 		}
@@ -408,14 +407,14 @@
 	enumerator=[entries objectEnumerator];
 	while((entry=[enumerator nextObject]))
 	{
-		NSNumber *dirnum=[entry objectForKey:XADIsDirectoryKey];
+		NSNumber *dirnum=entry[XADIsDirectoryKey];
 		BOOL isdir=dirnum && [dirnum boolValue];
 
 		// If we have not given up on calculating a total size, and this
 		// is not a directory, add the size of the current item.
 		if(totalsize>=0 && !isdir)
 		{
-			NSNumber *size=[entry objectForKey:XADFileSizeKey];
+			NSNumber *size=entry[XADFileSizeKey];
 
 			// Disable accurate progress calculation if any sizes are unknown.
 			if(size) totalsize+=[size longLongValue];
@@ -456,7 +455,7 @@
 	{
 		if([self _shouldStop]) return XADBreakError;
 
-		if(totalsize>=0) currsize=[[entry objectForKey:XADFileSizeKey] longLongValue];
+		if(totalsize>=0) currsize=[entry[XADFileSizeKey] longLongValue];
 
 		XADError error=[unarchiver extractEntryWithDictionary:entry];
 		if(error==XADBreakError) return XADBreakError;
@@ -660,11 +659,11 @@
 	// if this one has the same first first path component as the earlier ones.
 	if(lookslikesolo || !toplevelname)
 	{
-		NSString *safepath=[[entry objectForKey:XADFileNameKey] sanitizedPathString];
+		NSString *safepath=[entry[XADFileNameKey] sanitizedPathString];
 		NSArray *components=[safepath pathComponents];
 
 		NSString *firstcomp;
-		if([components count]>0) firstcomp=[components objectAtIndex:0];
+		if([components count]>0) firstcomp=components[0];
 		else firstcomp=@"";
 
 		if(!toplevelname)
@@ -713,7 +712,7 @@
 	if(currunarchiver==subunarchiver) [self _testForSoloItems:dict];
 
 	// Decode name.
-	XADPath *xadpath=[dict objectForKey:XADFileNameKey];
+	XADPath *xadpath=dict[XADFileNameKey];
 	NSString *encodingname=nil;
 	if(delegate && ![xadpath encodingIsKnown])
 	{
@@ -749,7 +748,7 @@
 		// If any index filters have been added, require that one matches.
 		if(indices)
 		{
-			NSNumber *indexnum=[dict objectForKey:XADIndexKey];
+			NSNumber *indexnum=dict[XADIndexKey];
 			int index=[indexnum intValue];
 			if(![indices containsIndex:index]) return NO;
 		}
@@ -763,8 +762,8 @@
 	int numcomponents=[components count];
 	for(int i=0;i<numcomponents;i++)
 	{
-		NSString *component=[components objectAtIndex:i];
-		NSMutableDictionary *pathdict=[parent objectForKey:component];
+		NSString *component=components[i];
+		NSMutableDictionary *pathdict=parent[component];
 		if(!pathdict)
 		{
 			// This path has not been encountered yet. First, build a
@@ -778,20 +777,20 @@
 			{
 				// Store path and dictionary in path hierarchy.
 				pathdict=[NSMutableDictionary dictionaryWithObject:path forKey:@"."];
-				[parent setObject:pathdict forKey:component];
+				parent[component] = pathdict;
 			}
 			else
 			{
 				// If skipping was requested, store a marker in the path hierarchy
 				// for future requests, and skip.
 				pathdict=[NSMutableDictionary dictionaryWithObject:[NSNull null] forKey:@"."];
-				[parent setObject:pathdict forKey:component];
+				parent[component] = pathdict;
 				return NO;
 			}
 		}
 		else
 		{
-			path=[pathdict objectForKey:@"."];
+			path=pathdict[@"."];
 
 			// Check if this path was marked as skipped earlier.
 			if((id)path==[NSNull null]) return NO;
@@ -816,7 +815,7 @@
 	int style=[unarch macResourceForkStyle];
 	if(style==XADMacOSXForkStyle || style==XADHFVExplorerAppleDoubleForkStyle)
 	{
-		NSNumber *resnum=[dict objectForKey:XADIsResourceForkKey];
+		NSNumber *resnum=dict[XADIsResourceForkKey];
 		if(resnum && [resnum boolValue]) [resourceforks addObject:path];
 	}
 
@@ -915,7 +914,7 @@ fileFraction:(double)fileratio estimatedTotalFraction:(double)totalratio
 		#ifdef __APPLE__
 		if(dict && [self macResourceForkStyle]==XADMacOSXForkStyle)
 		{
-			NSNumber *resnum=[dict objectForKey:XADIsResourceForkKey];
+			NSNumber *resnum=dict[XADIsResourceForkKey];
 			if(resnum && [resnum boolValue])
 			{
 				// If this entry is a resource fork, check if the resource fork
@@ -938,7 +937,7 @@ fileFraction:(double)fileratio estimatedTotalFraction:(double)totalratio
 		// Just kludge this by ignoring collisions for data forks if a resource was written earlier.
 		if(dict && [self macResourceForkStyle]==XADHFVExplorerAppleDoubleForkStyle)
 		{
-			NSNumber *resnum=[dict objectForKey:XADIsResourceForkKey];
+			NSNumber *resnum=dict[XADIsResourceForkKey];
 			if(!resnum || ![resnum boolValue])
 			{
 				NSString *forkpath=[[path stringByDeletingLastPathComponent] stringByAppendingPathComponent:

@@ -2,8 +2,6 @@
 #import "CSStreamHandle.h"
 
 @interface XADGzipParser:XADArchiveParser
-{
-}
 
 +(int)requiredHeaderSize;
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name;
@@ -15,8 +13,6 @@
 @end
 
 @interface XADGzipSFXParser:XADGzipParser
-{
-}
 
 +(int)requiredHeaderSize;
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data
@@ -36,8 +32,7 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props;
 	uint32_t crc;
 }
 
--(id)initWithHandle:(CSHandle *)handle;
--(void)dealloc;
+-(instancetype)initWithHandle:(CSHandle *)handle;
 -(void)resetStream;
 -(int)streamAtMost:(int)num toBuffer:(void *)buffer;
 -(BOOL)hasChecksum;

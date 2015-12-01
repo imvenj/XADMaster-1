@@ -2,6 +2,9 @@
 #import "XADException.h"
 
 @implementation XADCABBlockReader
+@synthesize handle = parent;
+@synthesize compressedLength = complen;
+@synthesize uncompressedLength = uncomplen;
 
 -(id)initWithHandle:(CSHandle *)handle reservedBytes:(int)reserved
 {
@@ -52,14 +55,6 @@
 		}
 	}
 }
-
-
-
--(CSHandle *)handle { return parent; }
-
--(off_t)compressedLength { return complen; }
-
--(off_t)uncompressedLength { return uncomplen; }
 
 -(void)restart
 {

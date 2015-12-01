@@ -31,11 +31,11 @@
 	nil];
 
 	if([contentname matchedByPattern:@"\\.(tar|cpio|pax)$" options:REG_ICASE])
-	[dict setObject:[NSNumber numberWithBool:YES] forKey:XADIsArchiveKey];
+	dict[XADIsArchiveKey] = @YES;
 
 	off_t filesize=[[self handle] fileSize];
 	if(filesize!=CSHandleMaxLength)
-	[dict setObject:[NSNumber numberWithUnsignedLongLong:filesize] forKey:XADCompressedSizeKey];
+	dict[XADCompressedSizeKey] = @(filesize);
 
 	[self addEntryWithDictionary:dict];
 }

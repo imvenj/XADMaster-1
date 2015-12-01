@@ -139,38 +139,38 @@
 		off_t pos=[fh offsetInFile];
 
 		NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
-			[NSNumber numberWithInt:devmajor],@"CpioDevMajor",
-			[NSNumber numberWithInt:devminor],@"CpioDevMinor",
-			[NSNumber numberWithInt:ino],@"CpioIno",
-			[NSNumber numberWithInt:mode],XADPosixPermissionsKey,
-			[NSNumber numberWithInt:uid],XADPosixUserKey,
-			[NSNumber numberWithInt:gid],XADPosixGroupKey,
-			[NSNumber numberWithInt:nlink],@"CpioNlink",
+			@(devmajor),@"CpioDevMajor",
+			@(devminor),@"CpioDevMinor",
+			@(ino),@"CpioIno",
+			@(mode),XADPosixPermissionsKey,
+			@(uid),XADPosixUserKey,
+			@(gid),XADPosixGroupKey,
+			@(nlink),@"CpioNlink",
 			[self XADPathWithData:namedata separators:XADUnixPathSeparator],XADFileNameKey,
 			[NSDate dateWithTimeIntervalSince1970:mtime],XADLastModificationDateKey,
 			[NSNumber numberWithLongLong:filesize],XADFileSizeKey,
 			[NSNumber numberWithLongLong:filesize+pad],XADCompressedSizeKey,
 			[NSNumber numberWithLongLong:filesize],XADDataLengthKey,
-			[NSNumber numberWithLongLong:pos],XADDataOffsetKey,
+			@(pos),XADDataOffsetKey,
 		nil];
 
 		int type=mode&0xf000;
 
 		if(type==0x4000)
 		{
-			[dict setObject:[NSNumber numberWithBool:YES] forKey:XADIsDirectoryKey];
+			dict[XADIsDirectoryKey] = @YES;
 		}
 
 		if(type==0x2000||type==0x6000)
 		{
-			[dict setObject:[NSNumber numberWithInt:rdevmajor] forKey:XADDeviceMajorKey];
-			[dict setObject:[NSNumber numberWithInt:rdevminor] forKey:XADDeviceMinorKey];
+			dict[XADDeviceMajorKey] = @(rdevmajor);
+			dict[XADDeviceMinorKey] = @(rdevminor);
 		}
 
 		if(haschecksum)
 		if(type==0x8000)
 		{
-			[dict setObject:[NSNumber numberWithInt:checksum] forKey:@"CpioChecksum"];
+			dict[@"CpioChecksum"] = @(checksum);
 		}
 
 		[self addEntryWithDictionary:dict];
@@ -185,9 +185,9 @@
 
 	if(checksum)
 	{
-		NSNumber *check=[dict objectForKey:@"CpioChecksum"];
+		NSNumber *check=dict[@"CpioChecksum"];
 		if(check) handle=[[[XADChecksumHandle alloc] initWithHandle:handle
-		length:[[dict objectForKey:XADDataLengthKey] longLongValue]
+		length:[dict[XADDataLengthKey] longLongValue]
 		correctChecksum:[check intValue] mask:0xffffffff] autorelease];
 	}
 

@@ -34,7 +34,7 @@
 	if(!dirname) dirname=@".";
 
 	NSArray *dircontents=[XADPlatform contentsOfDirectoryAtPath:dirname];
-	if(!dircontents) return [NSArray array];
+	if(!dircontents) return @[];
 
 	NSString *parts[256]={nil};
 
@@ -83,7 +83,7 @@
 	CSHandle *fh=[self handle];
 
 	NSArray *handles=[self volumes];
-	if(!handles) handles=[NSArray arrayWithObject:fh];
+	if(!handles) handles=@[fh];
 
 	XADSkipHandle *sh=[self skipHandle];
 	off_t curroffset=0;
@@ -131,19 +131,19 @@
 	{
 		NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 			[self XADPathWithData:namedata separators:XADNoPathSeparator],XADFileNameKey,
-			[NSNumber numberWithLongLong:rsrclength],XADFileSizeKey,
-			[NSNumber numberWithLongLong:curroffset*rsrclength/(datalength+rsrclength)],XADCompressedSizeKey,
-			[NSNumber numberWithLongLong:0],XADSkipOffsetKey,
-			[NSNumber numberWithLongLong:rsrclength],XADSkipLengthKey,
-			[NSNumber numberWithUnsignedInt:type],XADFileTypeKey,
-			[NSNumber numberWithUnsignedInt:creator],XADFileCreatorKey,
-			[NSNumber numberWithInt:finderflags],XADFinderFlagsKey,
+			@(rsrclength),XADFileSizeKey,
+			@(curroffset*rsrclength/(datalength+rsrclength)),XADCompressedSizeKey,
+			@0LL,XADSkipOffsetKey,
+			@(rsrclength),XADSkipLengthKey,
+			@(type),XADFileTypeKey,
+			@(creator),XADFileCreatorKey,
+			@(finderflags),XADFinderFlagsKey,
 			[NSDate XADDateWithTimeIntervalSince1904:creation],XADCreationDateKey,
 			[NSDate XADDateWithTimeIntervalSince1904:modification],XADLastModificationDateKey,
-			[NSNumber numberWithBool:YES],XADIsResourceForkKey,
+			@YES,XADIsResourceForkKey,
 		nil];
 
-		if(isarchive) [dict setObject:[NSNumber numberWithBool:YES] forKey:XADIsArchiveKey];
+		if(isarchive) dict[XADIsArchiveKey] = @YES;
 
 		[self addEntryWithDictionary:dict];
 	}
@@ -152,18 +152,18 @@
 	{
 		NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 			[self XADPathWithData:namedata separators:XADNoPathSeparator],XADFileNameKey,
-			[NSNumber numberWithLongLong:datalength],XADFileSizeKey,
-			[NSNumber numberWithLongLong:datalength?curroffset*datalength/(datalength+rsrclength):0],XADCompressedSizeKey,
-			[NSNumber numberWithLongLong:rsrclength],XADSkipOffsetKey,
-			[NSNumber numberWithLongLong:datalength],XADSkipLengthKey,
-			[NSNumber numberWithUnsignedInt:type],XADFileTypeKey,
-			[NSNumber numberWithUnsignedInt:creator],XADFileCreatorKey,
-			[NSNumber numberWithInt:finderflags],XADFinderFlagsKey,
+			@(datalength),XADFileSizeKey,
+			@(datalength?curroffset*datalength/(datalength+rsrclength):0),XADCompressedSizeKey,
+			@(rsrclength),XADSkipOffsetKey,
+			@(datalength),XADSkipLengthKey,
+			@(type),XADFileTypeKey,
+			@(creator),XADFileCreatorKey,
+			@(finderflags),XADFinderFlagsKey,
 			[NSDate XADDateWithTimeIntervalSince1904:creation],XADCreationDateKey,
 			[NSDate XADDateWithTimeIntervalSince1904:modification],XADLastModificationDateKey,
 		nil];
 
-		if(isarchive) [dict setObject:[NSNumber numberWithBool:YES] forKey:XADIsArchiveKey];
+		if(isarchive) dict[XADIsArchiveKey] = @YES;
 
 		[self addEntryWithDictionary:dict];
 	}

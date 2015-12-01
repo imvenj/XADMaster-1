@@ -14,8 +14,7 @@ uint32_t CSInputNextRARVMNumber(CSInputBuffer *input);
 	RARVirtualMachine vm;
 }
 
--(id)init;
--(void)dealloc;
+-(instancetype)init;
 
 -(uint8_t *)memory;
 
@@ -64,8 +63,7 @@ static inline void XADRARVirtualMachineWrite8(XADRARVirtualMachine *self,uint32_
 	uint64_t fingerprint;
 }
 
--(id)initWithByteCode:(const uint8_t *)bytes length:(int)length;
--(void)dealloc;
+-(instancetype)initWithByteCode:(const uint8_t *)bytes length:(int)length;
 
 -(BOOL)parseByteCode:(const uint8_t *)bytes length:(int)length;
 -(void)parseOperandFromBuffer:(CSInputBuffer *)input addressingMode:(unsigned int *)modeptr
@@ -73,10 +71,10 @@ value:(uint32_t *)valueptr byteMode:(BOOL)bytemode isRelativeJump:(BOOL)isjump
 currentInstructionOffset:(int)instructionoffset;
 
 -(RAROpcode *)opcodes;
--(int)numberOfOpcodes;
+@property (readonly) NSInteger numberOfOpcodes;
 -(NSData *)staticData;
 -(NSMutableData *)globalBackup;
--(uint64_t)fingerprint;
+@property (readonly) uint64_t fingerprint;
 
 -(NSString *)disassemble;
 
@@ -92,8 +90,7 @@ currentInstructionOffset:(int)instructionoffset;
 	NSMutableData *globaldata;
 }
 
--(id)initWithProgramCode:(XADRARProgramCode *)code globalData:(NSData *)data registers:(uint32_t *)registers;
--(void)dealloc;
+-(instancetype)initWithProgramCode:(XADRARProgramCode *)code globalData:(NSData *)data registers:(uint32_t *)registers;
 
 -(XADRARProgramCode *)programCode;
 -(NSData *)globalData;

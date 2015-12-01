@@ -100,37 +100,37 @@
 
 	[self addEntryWithDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 		[self XADPathWithData:namedata separators:XADNoPathSeparator],XADFileNameKey,
-		[NSNumber numberWithUnsignedInt:datalen],XADFileSizeKey,
-		[NSNumber numberWithUnsignedInt:(datalen*4)/3],XADCompressedSizeKey,
-		[NSNumber numberWithUnsignedInt:type],XADFileTypeKey,
-		[NSNumber numberWithUnsignedInt:creator],XADFileCreatorKey,
-		[NSNumber numberWithUnsignedShort:flags],XADFinderFlagsKey,
-		[NSNumber numberWithLongLong:start],XADDataOffsetKey,
-		[NSNumber numberWithBool:isarc],XADIsArchiveKey,
+		@(datalen),XADFileSizeKey,
+		@((datalen*4)/3),XADCompressedSizeKey,
+		@(type),XADFileTypeKey,
+		@(creator),XADFileCreatorKey,
+		@(flags),XADFinderFlagsKey,
+		@(start),XADDataOffsetKey,
+		@(isarc),XADIsArchiveKey,
 		[NSNumber numberWithUnsignedInt:22+namelen],@"BinHexDataOffset",
 	nil]];
 
 	if(resourcelen)
 	[self addEntryWithDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 		[self XADPathWithData:namedata separators:XADNoPathSeparator],XADFileNameKey,
-		[NSNumber numberWithUnsignedInt:resourcelen],XADFileSizeKey,
+		@(resourcelen),XADFileSizeKey,
 		//[NSNumber numberWithUnsignedInt:(resourcelen*4)/3],XADCompressedSizeKey,
-		[NSNumber numberWithUnsignedInt:type],XADFileTypeKey,
-		[NSNumber numberWithUnsignedInt:creator],XADFileCreatorKey,
-		[NSNumber numberWithUnsignedShort:flags],XADFinderFlagsKey,
-		[NSNumber numberWithBool:YES],XADIsResourceForkKey,
-		[NSNumber numberWithLongLong:start],XADDataOffsetKey,
-		[NSNumber numberWithUnsignedInt:24+namelen+datalen],@"BinHexDataOffset",
+		@(type),XADFileTypeKey,
+		@(creator),XADFileCreatorKey,
+		@(flags),XADFinderFlagsKey,
+		@YES,XADIsResourceForkKey,
+		@(start),XADDataOffsetKey,
+		@(24+namelen+datalen),@"BinHexDataOffset",
 	nil]];
 }
 
 -(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum
 {
 	CSHandle *handle=[self handleAtDataOffsetForDictionary:dict];
-	off_t size=[[dict objectForKey:XADFileSizeKey] unsignedLongValue];
+	off_t size=[dict[XADFileSizeKey] unsignedLongValue];
 
 	XADBinHexHandle *fh=[[[XADBinHexHandle alloc] initWithHandle:handle] autorelease];
-	[fh seekToFileOffset:[[dict objectForKey:@"BinHexDataOffset"] longLongValue]];
+	[fh seekToFileOffset:[dict[@"BinHexDataOffset"] longLongValue]];
 
 	if(checksum) return [XADCRCSuffixHandle CCITTCRC16SuffixHandleWithHandle:[fh nonCopiedSubHandleOfLength:size]
 	CRCHandle:[fh nonCopiedSubHandleOfLength:size+2] bigEndianCRC:YES conditioned:NO];

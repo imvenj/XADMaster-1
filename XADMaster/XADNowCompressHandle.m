@@ -122,7 +122,7 @@ firstOffset:(uint32_t)firstoffset delta:(int32_t)delta
 {
 	if(nextfile>=[files count]) return NO;
 
-	uint32_t headeroffset=[[files objectAtIndex:nextfile] unsignedIntValue];
+	uint32_t headeroffset=[files[nextfile] unsignedIntValue];
 	[parent seekToFileOffset:headeroffset];
 
 	uint32_t firstoffset=[parent readUInt32BE];

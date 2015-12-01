@@ -14,7 +14,7 @@ extern NSString *LZWInvalidCodeException;
 	uint8_t buffer[4096];
 }
 
--(id)initWithHandle:(CSHandle *)handle earlyChange:(BOOL)earlychange;
+-(instancetype)initWithHandle:(CSHandle *)handle earlyChange:(BOOL)earlychange;
 
 -(void)clearTable;
 

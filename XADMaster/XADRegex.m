@@ -87,7 +87,7 @@ static BOOL IsRegexSpecialCharacter(unichar c)
 	return [NSString stringWithString:pattern];
 }
 
--(id)initWithPattern:(NSString *)pattern options:(int)options
+-(instancetype)initWithPattern:(NSString *)pattern options:(int)options
 {
 	if((self=[super init]))
 	{

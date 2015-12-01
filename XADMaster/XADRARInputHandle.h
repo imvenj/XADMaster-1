@@ -12,8 +12,7 @@
 	uint32_t crc,correctcrc;
 }
 
--(id)initWithRARParser:(XADRARParser *)parent parts:(NSArray *)partarray;
--(void)dealloc;
+-(instancetype)initWithRARParser:(XADRARParser *)parent parts:(NSArray *)partarray;
 
 -(void)resetStream;
 -(int)streamAtMost:(int)num toBuffer:(void *)buffer;

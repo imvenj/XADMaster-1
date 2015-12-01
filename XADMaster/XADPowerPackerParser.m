@@ -33,22 +33,22 @@ static NSData *PowerPackerUnpack(NSData *packeddata,int unpackedlength);
 	[self addEntryWithDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 		[self XADPathWithUnseparatedString:[[self name] stringByDeletingPathExtension]],XADFileNameKey,
 		[NSNumber numberWithLongLong:size],XADFileSizeKey,
-		[NSNumber numberWithLongLong:compsize],XADCompressedSizeKey,
+		@(compsize),XADCompressedSizeKey,
 		[self XADStringWithString:@"PowerPacker"],XADCompressionNameKey,
 
-		[NSNumber numberWithLongLong:4],XADDataOffsetKey,
-		[NSNumber numberWithLongLong:compsize],XADDataLengthKey,
+		@4LL,XADDataOffsetKey,
+		@(compsize),XADDataLengthKey,
 	nil]];
 }
 
 -(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum
 {
-	NSData *data=[dict objectForKey:@"PowerPackerFileContents"];
+	NSData *data=dict[@"PowerPackerFileContents"];
 	if(!data)
 	{
 		CSHandle *handle=[self handleAtDataOffsetForDictionary:dict];
-		data=PowerPackerUnpack([handle remainingFileContents],[[dict objectForKey:XADFileSizeKey] intValue]);
-		[(NSMutableDictionary *)dict setObject:data forKey:@"PowerPackerFileContents"];
+		data=PowerPackerUnpack([handle remainingFileContents],[dict[XADFileSizeKey] intValue]);
+		((NSMutableDictionary *)dict)[@"PowerPackerFileContents"] = data;
 	}
 
 	return [CSMemoryHandle memoryHandleForReadingData:data];

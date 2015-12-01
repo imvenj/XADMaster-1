@@ -38,8 +38,7 @@
 	int lengthtable[299+60+17+28];
 }
 
--(id)initWithRARParser:(XADRARParser *)parent files:(NSArray *)filearray;
--(void)dealloc;
+-(instancetype)initWithRARParser:(XADRARParser *)parent files:(NSArray *)filearray;
 
 -(void)resetBlockStream;
 -(int)produceBlockAtOffset:(off_t)pos;

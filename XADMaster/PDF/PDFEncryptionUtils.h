@@ -15,11 +15,11 @@ extern NSString *PDFMD5FinishedException;
 	BOOL done;
 }
 
-+(PDFMD5Engine *)engine;
++(instancetype)engine;
 +(NSData *)digestForData:(NSData *)data;
 +(NSData *)digestForBytes:(const void *)bytes length:(int)length;
 
--(id)init;
+-(instancetype)init;
 
 -(void)updateWithData:(NSData *)data;
 -(void)updateWithBytes:(const void *)bytes length:(unsigned long)length;
@@ -45,8 +45,7 @@ extern NSString *PDFMD5FinishedException;
 	uint8_t ivbuffer[16],streambuffer[16];
 }
 
--(id)initWithHandle:(CSHandle *)handle key:(NSData *)keydata;
--(void)dealloc;
+-(instancetype)initWithHandle:(CSHandle *)handle key:(NSData *)keydata;
 
 -(void)resetBlockStream;
 -(int)produceBlockAtOffset:(off_t)pos;

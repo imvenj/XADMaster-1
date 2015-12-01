@@ -158,17 +158,17 @@ static int FindStringLength(const uint8_t *buffer,int size,int offset)
 
 	NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 		[self XADPathWithData:namedata separators:XADUnixPathSeparator],XADFileNameKey,
-		[NSNumber numberWithLongLong:[fh offsetInFile]],XADDataOffsetKey,
-		[NSNumber numberWithBool:YES],XADIsArchiveKey,
+		@([fh offsetInFile]),XADDataOffsetKey,
+		@YES,XADIsArchiveKey,
 	nil];
 
 	off_t filesize=[fh fileSize];
 	if(filesize!=CSHandleMaxLength)
 	{
 		off_t length=filesize-[fh offsetInFile];
-		[dict setObject:[NSNumber numberWithLongLong:length] forKey:XADFileSizeKey];
-		[dict setObject:[NSNumber numberWithLongLong:length] forKey:XADCompressedSizeKey];
-		[dict setObject:[NSNumber numberWithLongLong:length] forKey:XADDataLengthKey];
+		dict[XADFileSizeKey] = @(length);
+		dict[XADCompressedSizeKey] = @(length);
+		dict[XADDataLengthKey] = @(length);
 	}
 
 	[self addEntryWithDictionary:dict];

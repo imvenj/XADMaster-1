@@ -14,7 +14,7 @@ struct ResourceOutputArguments
 	int fd,offset;
 };
 
-@interface XADPlatform (Private)
+@interface XADPlatform ()
 
 +(void)setComment:(NSString *)comment forPath:(NSString *)path;
 
@@ -46,7 +46,7 @@ unarchiver:(XADUnarchiver *)unarchiver toPath:(NSString *)destpath
 
 		if(S_ISLNK(st.st_mode))
 		{
-			NSNumber *sizenum=[dict objectForKey:XADFileSizeKey];
+			NSNumber *sizenum=dict[XADFileSizeKey];
 			if(!sizenum) return XADNoError;
 			else if([sizenum longLongValue]==0) return XADNoError;
 		}
@@ -108,7 +108,7 @@ preservePermissions:(BOOL)preservepermissions
 		NSString *key;
 		while((key=[enumerator nextObject]))
 		{
-			NSData *data=[extattrs objectForKey:key];
+			NSData *data=extattrs[key];
 
 			int namelen=[key lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
 			char namebytes[namelen+1];
@@ -119,7 +119,7 @@ preservePermissions:(BOOL)preservepermissions
 	}
 
 	// Set comment.
-	XADString *comment=[dict objectForKey:XADCommentKey];
+	XADString *comment=dict[XADCommentKey];
 	if(comment) [self setComment:[comment string] forPath:path];
 
 	// Attrlist structures.
@@ -128,9 +128,9 @@ preservePermissions:(BOOL)preservepermissions
 	uint8_t *attrptr=attrdata;
 
 	// Handle timestamps.
-	NSDate *creation=[dict objectForKey:XADCreationDateKey];
-	NSDate *modification=[dict objectForKey:XADLastModificationDateKey];
-	NSDate *access=[dict objectForKey:XADLastAccessDateKey];
+	NSDate *creation=dict[XADCreationDateKey];
+	NSDate *modification=dict[XADLastModificationDateKey];
+	NSDate *access=dict[XADLastAccessDateKey];
 
 	if(creation)
 	{
@@ -153,7 +153,7 @@ preservePermissions:(BOOL)preservepermissions
 
 	// Figure out permissions, or reuse the earlier value.
 	mode_t mode=st.st_mode;
-	NSNumber *permissions=[dict objectForKey:XADPosixPermissionsKey];
+	NSNumber *permissions=dict[XADPosixPermissionsKey];
 	if(permissions)
 	{
 		mode=[permissions unsignedShortValue];
@@ -289,14 +289,10 @@ preservePermissions:(BOOL)preservepermissions
 
 #else
 
-// NSURLQuarantinePropertiesKey only exists on 10.10, so don't dereference it,
-// but use it as a string. This code will not work on older versions, but is
-// not really important at all so we'll let it slide.
-
 +(id)readCloneableMetadataFromPath:(NSString *)path
 {
 	NSDictionary *value;
-    if([[NSURL fileURLWithPath:path] getResourceValue:&value forKey:@"NSURLQuarantinePropertiesKey" error:NULL])
+    if([[NSURL fileURLWithPath:path] getResourceValue:&value forKey:NSURLQuarantinePropertiesKey error:NULL])
 	{
 		return value;
 	}
@@ -305,7 +301,7 @@ preservePermissions:(BOOL)preservepermissions
 
 +(void)writeCloneableMetadata:(id)metadata toPath:(NSString *)path
 {
-	[[NSURL fileURLWithPath:path] setResourceValue:metadata forKey:@"NSURLQuarantinePropertiesKey" error:NULL];
+	[[NSURL fileURLWithPath:path] setResourceValue:metadata forKey:NSURLQuarantinePropertiesKey error:NULL];
 }
 
 #endif

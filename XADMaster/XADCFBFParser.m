@@ -158,27 +158,27 @@
 			{
 				NSMutableDictionary *entry=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 					[self decodeFileNameWithBytes:name length:numnamebytes],@"CFBFFileName",
-					[NSNumber numberWithInt:type],@"CFBFType",
-					[NSNumber numberWithInt:black],@"CFBFRedOrBlack",
-					[NSNumber numberWithUnsignedInt:leftchild],@"CFBFLeftChild",
-					[NSNumber numberWithUnsignedInt:rightchild],@"CFBFRightChild",
-					[NSNumber numberWithUnsignedInt:flags],@"CFBFFlags",
+					@(type),@"CFBFType",
+					@(black),@"CFBFRedOrBlack",
+					@(leftchild),@"CFBFLeftChild",
+					@(rightchild),@"CFBFRightChild",
+					@(flags),@"CFBFFlags",
 				nil];
 
 				if(type==1)
 				{
-					[entry setObject:[NSNumber numberWithBool:YES] forKey:XADIsDirectoryKey];
-					[entry setObject:[NSNumber numberWithUnsignedInt:rootnode] forKey:@"CFBFRootNode"];
+					entry[XADIsDirectoryKey] = @YES;
+					entry[@"CFBFRootNode"] = @(rootnode);
 				}
 				else if(type==2)
 				{
-					[entry setObject:[NSNumber numberWithLongLong:size] forKey:XADFileSizeKey];
-					[entry setObject:[NSNumber numberWithLongLong:size] forKey:XADCompressedSizeKey];
-					[entry setObject:[NSNumber numberWithUnsignedLongLong:firstsec] forKey:@"CFBFFirstSector"];
+					entry[XADFileSizeKey] = @(size);
+					entry[XADCompressedSizeKey] = @(size);
+					entry[@"CFBFFirstSector"] = [NSNumber numberWithUnsignedLongLong:firstsec];
 				}
 
-				if(created) [entry setObject:[NSDate XADDateWithWindowsFileTime:created] forKey:XADCreationDateKey];
-				if(modified) [entry setObject:[NSDate XADDateWithWindowsFileTime:modified] forKey:XADLastModificationDateKey];
+				if(created) entry[XADCreationDateKey] = [NSDate XADDateWithWindowsFileTime:created];
+				if(modified) entry[XADLastModificationDateKey] = [NSDate XADDateWithWindowsFileTime:modified];
 
 				[entries addObject:entry];
 			}
@@ -232,23 +232,23 @@
 
 -(void)processEntry:(uint32_t)n atPath:(XADPath *)path entries:(NSArray *)entries
 {
-	NSMutableDictionary *entry=[entries objectAtIndex:n];
+	NSMutableDictionary *entry=entries[n];
 
-	uint32_t left=[[entry objectForKey:@"CFBFLeftChild"] unsignedIntValue];
+	uint32_t left=[entry[@"CFBFLeftChild"] unsignedIntValue];
 	if(left!=0xffffffff) [self processEntry:left atPath:path entries:entries];
 
-	XADPath *filename=[path pathByAppendingXADStringComponent:[entry objectForKey:@"CFBFFileName"]];
-	[entry setObject:filename forKey:XADFileNameKey];
+	XADPath *filename=[path pathByAppendingXADStringComponent:entry[@"CFBFFileName"]];
+	entry[XADFileNameKey] = filename;
 	[self addEntryWithDictionary:entry];
 
-	int type=[[entry objectForKey:@"CFBFType"] intValue];
+	int type=[entry[@"CFBFType"] intValue];
 	if(type==1)
 	{
-		uint32_t root=[[entry objectForKey:@"CFBFRootNode"] unsignedIntValue];
+		uint32_t root=[entry[@"CFBFRootNode"] unsignedIntValue];
 		if(root!=0xffffffff) [self processEntry:root atPath:filename entries:entries];
 	}
 
-	uint32_t right=[[entry objectForKey:@"CFBFRightChild"] unsignedIntValue];
+	uint32_t right=[entry[@"CFBFRightChild"] unsignedIntValue];
 	if(right!=0xffffffff) [self processEntry:right atPath:path entries:entries];
 }
 
@@ -269,8 +269,8 @@
 -(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum
 {
 	CSHandle *handle=[self handle];
-	off_t size=[[dict objectForKey:XADFileSizeKey] longLongValue];
-	uint32_t first=[[dict objectForKey:@"CFBFFirstSector"] unsignedIntValue];
+	off_t size=[dict[XADFileSizeKey] longLongValue];
+	uint32_t first=[dict[@"CFBFFirstSector"] unsignedIntValue];
 
 	if(size>=minsize)
 	{

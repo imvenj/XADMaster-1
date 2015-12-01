@@ -89,7 +89,7 @@ static off_t ActualOffsetToSkip(XADSkipHandle *self,off_t pos)
 
 
 
--(id)initWithHandle:(CSHandle *)handle
+-(instancetype)initWithHandle:(CSHandle *)handle
 {
 	if((self=[super initWithName:[handle name]]))
 	{
@@ -101,7 +101,7 @@ static off_t ActualOffsetToSkip(XADSkipHandle *self,off_t pos)
 	return self;
 }
 
--(id)initAsCopyOf:(XADSkipHandle *)other
+-(instancetype)initAsCopyOf:(XADSkipHandle *)other
 {
 	if((self=[super initAsCopyOf:other]))
 	{

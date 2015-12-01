@@ -139,7 +139,7 @@ maximumLength:(int)maxlength shortestCodeIsZeros:(BOOL)zeros
 	maximumLength:maxlength shortestCodeIsZeros:zeros] autorelease];
 }
 
--(id)init
+-(instancetype)init
 {
 	if((self=[super init]))
 	{
@@ -157,7 +157,7 @@ maximumLength:(int)maxlength shortestCodeIsZeros:(BOOL)zeros
 	return self;
 }
 
--(id)initWithStaticTable:(int (*)[2])statictable
+-(instancetype)initWithStaticTable:(int (*)[2])statictable
 {
 	if((self=[super init]))
 	{
@@ -170,7 +170,7 @@ maximumLength:(int)maxlength shortestCodeIsZeros:(BOOL)zeros
 	return self;
 }
 
--(id)initWithLengths:(const int *)lengths numberOfSymbols:(int)numsymbols
+-(instancetype)initWithLengths:(const int *)lengths numberOfSymbols:(int)numsymbols
 maximumLength:(int)maxcodelength shortestCodeIsZeros:(BOOL)zeros
 {
 	if((self=[self init]))
@@ -326,7 +326,7 @@ static uint32_t ReverseN(uint32_t val,int length)
 
 -(void)_pushNode
 {
-	[stack addObject:[NSNumber numberWithInt:currnode]];
+	[stack addObject:@(currnode)];
 }
 
 -(void)_popNode

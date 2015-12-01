@@ -12,6 +12,8 @@
 
 
 @implementation PDFStream
+@synthesize dictionary = dict;
+@synthesize reference = ref;
 
 -(id)initWithDictionary:(NSDictionary *)dictionary fileHandle:(CSHandle *)filehandle
 offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser *)owner
@@ -35,19 +37,10 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 	[super dealloc];
 }
 
-
-
-
--(NSDictionary *)dictionary { return dict; }
-
--(PDFObjectReference *)reference { return ref; }
-
-
-
 -(BOOL)isImage
 {
-	NSString *type=[dict objectForKey:@"Type"];
-	NSString *subtype=[dict objectForKey:@"Subtype"];
+	NSString *type=dict[@"Type"];
+	NSString *subtype=dict[@"Subtype"];
 	return (!type||[type isEqual:@"XObject"])&&subtype&&[subtype isEqual:@"Image"]; // kludge for broken Ghostscript PDFs
 }
 
@@ -84,39 +77,39 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 
 
 
--(int)imageType
+-(PDFImageType)imageType
 {
 	if([dict boolValueForKey:@"ImageMask" default:NO]) return PDFMaskImageType;
 
-	id colourspace=[dict objectForKey:@"ColorSpace"];
+	id colourspace=dict[@"ColorSpace"];
 	return [self _typeForColourSpaceObject:colourspace];
 }
 
--(int)numberOfImageComponents
+-(NSInteger)numberOfImageComponents
 {
 	if([dict boolValueForKey:@"ImageMask" default:NO]) return 1;
 
-	id colourspace=[dict objectForKey:@"ColorSpace"];
+	id colourspace=dict[@"ColorSpace"];
 	return [self _numberOfComponentsForColourSpaceObject:colourspace];
 }
 
 -(NSString *)imageColourSpaceName
 {
-	id colourspace=[dict objectForKey:@"ColorSpace"];
+	id colourspace=dict[@"ColorSpace"];
 	return [self _nameForColourSpaceObject:colourspace];
 }
 
 
 
 
--(int)imagePaletteType
+-(PDFImageType)imagePaletteType
 {
 	id colourspace=[self _paletteColourSpaceObject];
 	if(!colourspace) return PDFUnsupportedImageType;
 	return [self _typeForColourSpaceObject:colourspace];
 }
 
--(int)numberOfImagePaletteComponents
+-(NSInteger)numberOfImagePaletteComponents
 {
 	id colourspace=[self _paletteColourSpaceObject];
 	if(!colourspace) return 0;
@@ -130,31 +123,31 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 	return [self _nameForColourSpaceObject:colourspace];
 }
 
--(int)numberOfImagePaletteColours
+-(NSInteger)numberOfImagePaletteColours
 {
-	id colourspace=[dict objectForKey:@"ColorSpace"];
+	id colourspace=dict[@"ColorSpace"];
 	if(!colourspace) return 0;
 
 	if(![colourspace isKindOfClass:[NSArray class]]) return 0;
 	if([colourspace count]!=4) return 0;
-	if(![[colourspace objectAtIndex:0] isEqual:@"Indexed"]) return 0;
+	if(![colourspace[0] isEqual:@"Indexed"]) return 0;
 
-	return [[colourspace objectAtIndex:2] intValue]+1;
+	return [colourspace[2] intValue]+1;
 }
 
 -(NSData *)imagePaletteData
 {
-	id colourspace=[dict objectForKey:@"ColorSpace"];
+	id colourspace=dict[@"ColorSpace"];
 	if(!colourspace) return nil;
 
 	if(![colourspace isKindOfClass:[NSArray class]]) return nil;
 	if([colourspace count]!=4) return nil;
-	if(![[colourspace objectAtIndex:0] isEqual:@"Indexed"]) return nil;
+	if(![colourspace[0] isEqual:@"Indexed"]) return nil;
 
 	int numcomponents=[self numberOfImagePaletteComponents];
 	int numcolours=[self numberOfImagePaletteColours];
 
-	id palette=[colourspace objectAtIndex:3];
+	id palette=colourspace[3];
 
 	NSData *data;
 	if([palette isKindOfClass:[PDFStream class]])
@@ -177,20 +170,20 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 
 -(id)_paletteColourSpaceObject
 {
-	id colourspace=[dict objectForKey:@"ColorSpace"];
+	id colourspace=dict[@"ColorSpace"];
 	if(!colourspace) return nil;
 
 	if(![colourspace isKindOfClass:[NSArray class]]) return nil;
 	if([colourspace count]!=4) return nil;
-	if(![[colourspace objectAtIndex:0] isEqual:@"Indexed"]) return nil;
+	if(![colourspace[0] isEqual:@"Indexed"]) return nil;
 
-	return [colourspace objectAtIndex:1];
+	return colourspace[1];
 }
 
 
 
 
--(int)_typeForColourSpaceObject:(id)colourspace
+-(PDFImageType)_typeForColourSpaceObject:(id)colourspace
 {
 	NSString *name;
 
@@ -203,15 +196,15 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 		int count=[colourspace count];
 		if(count<1) return PDFUnsupportedImageType;
 
-		name=[colourspace objectAtIndex:0];
+		name=colourspace[0];
 		if([name isEqual:@"ICCBased"])
 		{
 			if(count<2) return PDFUnsupportedImageType;
 
-			PDFStream *def=[colourspace objectAtIndex:1];
+			PDFStream *def=colourspace[1];
 			if(![def isKindOfClass:[PDFStream class]]) return PDFUnsupportedImageType;
 
-			NSString *alternate=[[def dictionary] objectForKey:@"Alternate"];
+			NSString *alternate=[def dictionary][@"Alternate"];
 			if(alternate)
 			{
 				name=alternate;
@@ -243,7 +236,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 	return PDFUnsupportedImageType;
 }
 
--(int)_numberOfComponentsForColourSpaceObject:(id)colourspace
+-(NSInteger)_numberOfComponentsForColourSpaceObject:(id)colourspace
 {
 	NSString *name;
 
@@ -256,12 +249,12 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 		int count=[colourspace count];
 		if(count<1) return 0;
 
-		name=[colourspace objectAtIndex:0];
+		name=colourspace[0];
 		if([name isEqual:@"ICCBased"])
 		{
 			if(count<2) return 0;
 
-			PDFStream *def=[colourspace objectAtIndex:1];
+			PDFStream *def=colourspace[1];
 			if(![def isKindOfClass:[PDFStream class]]) return 0;
 
 			return [[def dictionary] intValueForKey:@"N" default:0];
@@ -292,7 +285,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 		int count=[colourspace count];
 		if(count<1) return nil;
 
-		return [colourspace objectAtIndex:0];
+		return colourspace[0];
 	}
 	else return nil;
 }
@@ -302,7 +295,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 
 -(NSData *)imageICCColourProfile
 {
-	id colourspace=[dict objectForKey:@"ColorSpace"];
+	id colourspace=dict[@"ColorSpace"];
 	return [self _ICCColourProfileForColourSpaceObject:colourspace];
 }
 
@@ -317,12 +310,12 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 		int count=[colourspace count];
 		if(count<1) return nil;
 
-		NSString *name=[colourspace objectAtIndex:0];
+		NSString *name=colourspace[0];
 
 		if([name isEqual:@"ICCBased"])
 		{
 			if(count!=2) return nil;
-			id stream=[colourspace objectAtIndex:1];
+			id stream=colourspace[1];
 			if([stream isKindOfClass:[PDFStream class]]) return [[stream handle] remainingFileContents];
 			else return nil;
 		}
@@ -339,7 +332,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 		else if([name isEqual:@"Indexed"])
 		{
 			if(count!=4) return nil;
-			id palettespace=[colourspace objectAtIndex:1];
+			id palettespace=colourspace[1];
 			return [self _ICCColourProfileForColourSpaceObject:palettespace];
 		}
 		else if([name isEqual:@"Separation"])
@@ -360,7 +353,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 
 -(NSString *)imageSeparationName
 {
-	id colourspace=[dict objectForKey:@"ColorSpace"];
+	id colourspace=dict[@"ColorSpace"];
 	if(!colourspace) return nil;
 
 	if(![colourspace isKindOfClass:[NSArray class]]) return nil;
@@ -368,15 +361,15 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 	int count=[colourspace count];
 	if(count<2) return nil;
 
-	NSString *name=[colourspace objectAtIndex:0];
+	NSString *name=colourspace[0];
 	if(![name isEqual:@"Separation"]) return nil;
 
-	return [colourspace objectAtIndex:1];
+	return colourspace[1];
 }
 
 -(NSArray *)imageDecodeArray
 {
-	id decode=[dict objectForKey:@"Decode"];
+	id decode=dict[@"Decode"];
 	if(!decode) return nil;
 
 	if(![decode isKindOfClass:[NSArray class]]) return nil;
@@ -391,7 +384,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 
 -(BOOL)hasMultipleFilters
 {
-	id filter=[dict objectForKey:@"Filter"];
+	id filter=dict[@"Filter"];
 
 	if(!filter) return NO;
 	else if([filter isKindOfClass:[NSArray class]]) return [filter count]>1;
@@ -400,9 +393,9 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 
 -(NSString *)finalFilter
 {
-	id filter=[dict objectForKey:@"Filter"];
+	id filter=dict[@"Filter"];
 
-	if(!filter) return nil;
+	if(!filter) return NO;
 	else if([filter isKindOfClass:[NSArray class]]) return [filter lastObject];
 	else return filter;
 }
@@ -448,8 +441,8 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 
 		for(int i=0;i<count;i++)
 		{
-			handle=[self handleForFilterName:[filter objectAtIndex:i]
-			decodeParms:[decodeparms objectAtIndex:i] parentHandle:handle];
+			handle=[self handleForFilterName:filter[i]
+			decodeParms:decodeparms[i] parentHandle:handle];
 			if(!handle) return nil;
 		}
 	}
@@ -459,7 +452,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 
 -(CSHandle *)handleForFilterName:(NSString *)filtername decodeParms:(NSDictionary *)decodeparms parentHandle:(CSHandle *)parent
 {
-	if(!decodeparms) decodeparms=[NSDictionary dictionary];
+	if(!decodeparms) decodeparms=@{};
 
 	if([filtername isEqual:@"FlateDecode"])
 	{
@@ -497,15 +490,15 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 
 -(CSHandle *)predictorHandleForDecodeParms:(NSDictionary *)decodeparms parentHandle:(CSHandle *)parent
 {
-	NSNumber *predictor=[decodeparms objectForKey:@"Predictor"];
+	NSNumber *predictor=decodeparms[@"Predictor"];
 	if(!predictor) return parent;
 
 	int pred=[predictor intValue];
 	if(pred==1) return parent;
 
-	NSNumber *columns=[decodeparms objectForKey:@"Columns"];
-	NSNumber *colors=[decodeparms objectForKey:@"Colors"];
-	NSNumber *bitspercomponent=[decodeparms objectForKey:@"BitsPerComponent"];
+	NSNumber *columns=decodeparms[@"Columns"];
+	NSNumber *colors=decodeparms[@"Colors"];
+	NSNumber *bitspercomponent=decodeparms[@"BitsPerComponent"];
 
 	int cols=columns?[columns intValue]:1;
 	int comps=colors?[colors intValue]:1;

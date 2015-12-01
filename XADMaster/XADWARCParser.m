@@ -37,7 +37,7 @@
 			BOOL found=[fh scanForByteString:(const uint8_t *)"\r\n\r\nWARC/1.0\r\n" length:14];
 
 			off_t realendofrecord=[fh offsetInFile];
-			[lastrecord setObject:[NSNumber numberWithLongLong:realendofrecord] forKey:@"EndOfRecord"];
+			lastrecord[@"EndOfRecord"] = @(realendofrecord);
 
 			if(!found) break;
 
@@ -49,9 +49,9 @@
 
 		off_t contentstart=[fh offsetInFile];
 
-		NSString *recordid=[record objectForKey:@"WARC-Record-ID"];
-		NSString *contentlength=[record objectForKey:@"Content-Length"];
-		NSString *contenttype=[record objectForKey:@"Content-Type"];
+		NSString *recordid=record[@"WARC-Record-ID"];
+		NSString *contentlength=record[@"Content-Length"];
+		NSString *contenttype=record[@"Content-Type"];
 
 		if(!contentlength) [XADException raiseIllegalDataException];
 		NSScanner *scanner=[NSScanner scannerWithString:contentlength];
@@ -60,20 +60,20 @@
 
 		off_t endofrecord=contentstart+length;
 
-		[record setObject:[NSNumber numberWithLongLong:contentstart] forKey:@"ContentStart"];
-		[record setObject:[NSNumber numberWithLongLong:endofrecord] forKey:@"EndOfRecord"];
+		record[@"ContentStart"] = @(contentstart);
+		record[@"EndOfRecord"] = @(endofrecord);
 
 		if([contenttype hasPrefix:@"application/http"])
 		{
 			NSArray *headers=[self readHTTPHeadersWithHandle:fh];
 			off_t bodystart=[fh offsetInFile];
 
-			[record setObject:headers forKey:@"HTTPHeaders"];
-			[record setObject:[NSNumber numberWithLongLong:bodystart] forKey:@"HTTPBodyStart"];
+			record[@"HTTPHeaders"] = headers;
+			record[@"HTTPBodyStart"] = @(bodystart);
 		}
 
 		[recordarray addObject:record];
-		[records setObject:record forKey:recordid];
+		records[recordid] = record;
 
 		[fh seekToFileOffset:endofrecord+4];
 
@@ -90,14 +90,14 @@
 	NSMutableDictionary *record;
 	while((record=[enumerator nextObject]))
 	{
-		NSString *type=[record objectForKey:@"WARC-Type"];
-		NSArray *headers=[record objectForKey:@"HTTPHeaders"];
-		NSString *status=[headers objectAtIndex:0];
+		NSString *type=record[@"WARC-Type"];
+		NSArray *headers=record[@"HTTPHeaders"];
+		NSString *status=headers[0];
 
 		if([type isEqual:@"response"])
 		if([status matchedByPattern:@"^HTTP/[0-9]+\\.[0-9]+ 200"])
 		{
-			NSString *target=[record objectForKey:@"WARC-Target-URI"];
+			NSString *target=record[@"WARC-Target-URI"];
 
 			NSArray *components=[self pathComponentsForURLString:target];
 			if(components)
@@ -107,7 +107,7 @@
 				NSUInteger count=[components count];
 				for(NSUInteger i=0;i<count-1;i++)
 				{
-					NSString *component=[components objectAtIndex:i];
+					NSString *component=components[i];
 					dir=[self insertDirectory:component inDirectory:dir];
 				}
 
@@ -128,13 +128,13 @@
 	enumerator=[filerecords objectEnumerator];
 	while((record=[enumerator nextObject]))
 	{
-		NSString *target=[record objectForKey:@"WARC-Target-URI"];
-		NSNumber *startnum=[record objectForKey:@"HTTPBodyStart"];
-		NSNumber *endnum=[record objectForKey:@"EndOfRecord"];
-		NSArray *responseheaders=[record objectForKey:@"HTTPHeaders"];
-		XADPath *path=[record objectForKey:@"XADPath"];
+		NSString *target=record[@"WARC-Target-URI"];
+		NSNumber *startnum=record[@"HTTPBodyStart"];
+		NSNumber *endnum=record[@"EndOfRecord"];
+		NSArray *responseheaders=record[@"HTTPHeaders"];
+		XADPath *path=record[@"XADPath"];
 
-		NSNumber *lengthnum=[NSNumber numberWithLongLong:[endnum longLongValue]-[startnum longLongValue]];
+		NSNumber *lengthnum=@([endnum longLongValue]-[startnum longLongValue]);
 
 		NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 			path,XADFileNameKey,
@@ -146,15 +146,15 @@
 			responseheaders,@"WARCResponseHeaders",
 		nil];
 
-		NSString *requestid=[record objectForKey:@"WARC-Concurrent-To"];
-		NSDictionary *request=[records objectForKey:requestid];
+		NSString *requestid=record[@"WARC-Concurrent-To"];
+		NSDictionary *request=records[requestid];
 		if(request)
 		{
-			NSArray *requestheaders=[request objectForKey:@"HTTPHeaders"];
-			[dict setObject:requestheaders forKey:@"WARCRequestHeaders"];
+			NSArray *requestheaders=request[@"HTTPHeaders"];
+			dict[@"WARCRequestHeaders"] = requestheaders;
 
-			NSNumber *requeststartnum=[request objectForKey:@"HTTPBodyStart"];
-			NSNumber *requestlengthnum=[request objectForKey:@"HTTPBodyLength"];
+			NSNumber *requeststartnum=request[@"HTTPBodyStart"];
+			NSNumber *requestlengthnum=request[@"HTTPBodyLength"];
 			off_t start=[requeststartnum longLongValue];
 			off_t length=[requestlengthnum longLongValue];
 
@@ -163,7 +163,7 @@
 				[fh seekToFileOffset:start];
 				NSData *requestbody=[fh readDataOfLength:(int)length];
 
-				[dict setObject:requestbody forKey:@"WARCRequestBody"];
+				dict[@"WARCRequestBody"] = requestbody;
 			}
 		}
 
@@ -189,10 +189,10 @@
 		NSArray *matches=[line substringsCapturedByPattern:@"^([^:]+):[ \t]+(.*)$"];
 		if(matches)
 		{
-			NSString *key=[matches objectAtIndex:1];
-			NSString *value=[matches objectAtIndex:2];
+			NSString *key=matches[1];
+			NSString *value=matches[2];
 
-			[headers setObject:value forKey:key];
+			headers[key] = value;
 		}
 	}
 }
@@ -215,13 +215,13 @@
 {
 	NSArray *matches=[urlstring substringsCapturedByPattern:@"^https?://([^/]+)(/.*|())$"];
 	if(!matches) return nil;
-	NSString *host=[matches objectAtIndex:1];
-	NSString *path=[matches objectAtIndex:2];
+	NSString *host=matches[1];
+	NSString *path=matches[2];
 
-	if([path length]==0) return [NSArray arrayWithObject:host];
+	if([path length]==0) return @[host];
 
 	NSMutableArray *components=[[[path pathComponents] mutableCopy] autorelease];
-	[components replaceObjectAtIndex:0 withObject:host];
+	components[0] = host;
 
 	if([[components lastObject] isEqual:@"/"]) [components removeLastObject];
 
@@ -232,16 +232,16 @@
 
 -(NSMutableDictionary *)insertDirectory:(NSString *)name inDirectory:(NSMutableDictionary *)dir
 {
-	NSMutableDictionary *entry=[dir objectForKey:name];
+	NSMutableDictionary *entry=dir[name];
 
 	if(!entry)
 	{
 		// No such entry exists, so insert a new directory.
 		NSMutableDictionary *newdir=[NSMutableDictionary dictionary];
-		[dir setObject:newdir forKey:name];
+		dir[name] = newdir;
 		return newdir;
 	}
-	else if([entry objectForKey:@"/"])
+	else if(entry[@"/"])
 	{
 		// A file with the same name exists. Remove the file, insert a new directory,
 		// then insert the file in the new directory as "index.html".
@@ -249,7 +249,7 @@
 		[dir removeObjectForKey:name];
 
 		NSMutableDictionary *newdir=[NSMutableDictionary dictionary];
-		[dir setObject:newdir forKey:name];
+		dir[name] = newdir;
 
 		[self insertFile:@"index.html" record:entry inDirectory:newdir];
 
@@ -264,24 +264,24 @@
 
 -(void)insertFile:(NSString *)name record:(NSMutableDictionary *)record inDirectory:(NSMutableDictionary *)dir
 {
-	[record setObject:[NSNull null] forKey:@"/"]; // Mark the record as a file.
+	record[@"/"] = [NSNull null]; // Mark the record as a file.
 
-	NSMutableDictionary *entry=[dir objectForKey:name];
+	NSMutableDictionary *entry=dir[name];
 
 	if(!entry)
 	{
 		// No such entry exists, so insert the file.
-		[dir setObject:record forKey:name];
+		dir[name] = record;
 	}
-	else if([entry objectForKey:@"/"])
+	else if(entry[@"/"])
 	{
 		// A file with the same name already exists. Find an unused name to use instead.
 		NSString *newname;
 		int counter=1;
 		do { newname=[NSString stringWithFormat:@"%@.%d",name,counter++]; }
-		while([dir objectForKey:newname]);
+		while(dir[newname]);
 
-		[dir setObject:record forKey:newname];
+		dir[newname] = record;
 	}
 	else
 	{
@@ -297,13 +297,13 @@
 	NSString *name;
 	while((name=[enumerator nextObject]))
 	{
-		NSMutableDictionary *entry=[dir objectForKey:name];
+		NSMutableDictionary *entry=dir[name];
 		XADString *xadname=[self XADStringWithString:name];
 		XADPath *path=[parent pathByAppendingXADStringComponent:xadname];
 
-		if([entry objectForKey:@"/"])
+		if(entry[@"/"])
 		{
-			[entry setObject:path forKey:@"XADPath"];
+			entry[@"XADPath"] = path;
 		}
 		else
 		{

@@ -176,58 +176,58 @@ struct xadMasterBaseP *xadOpenLibrary(xadINT32 version);
 {
 	NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 		[self XADPathWithCString:(const char *)info->xfi_FileName separators:XADEitherPathSeparator],XADFileNameKey,
-		[NSNumber numberWithUnsignedLongLong:info->xfi_CrunchSize],XADCompressedSizeKey,
+		@(info->xfi_CrunchSize),XADCompressedSizeKey,
 		[NSValue valueWithPointer:info],@"LibXADFileInfo",
 	nil];
 
 	if(!(info->xfi_Flags&XADFIF_NOUNCRUNCHSIZE))
-	[dict setObject:[NSNumber numberWithUnsignedLongLong:info->xfi_Size] forKey:XADFileSizeKey];
+	dict[XADFileSizeKey] = @(info->xfi_Size);
 
 	if(!(info->xfi_Flags&XADFIF_NODATE))
 	{
 		xadUINT32 timestamp;
 		xadConvertDates(xmb,XAD_DATEXADDATE,&info->xfi_Date,XAD_GETDATEUNIX,&timestamp,TAG_DONE);
 
-		[dict setObject:[NSDate dateWithTimeIntervalSince1970:timestamp] forKey:XADLastModificationDateKey];
+		dict[XADLastModificationDateKey] = [NSDate dateWithTimeIntervalSince1970:timestamp];
 	}
 
 	//if(info->xfi_Flags&XADFIF_NOFILENAME)
 	// TODO: set no filename flag
 
 	if(info->xfi_Flags&XADFIF_UNIXPROTECTION)
-	[dict setObject:[NSNumber numberWithInt:info->xfi_UnixProtect] forKey:XADPosixPermissionsKey];
+	dict[XADPosixPermissionsKey] = [NSNumber numberWithInt:info->xfi_UnixProtect];
 
 	if(info->xfi_Protection)
-	[dict setObject:[NSNumber numberWithUnsignedInt:info->xfi_Protection] forKey:XADAmigaProtectionBitsKey];
+	dict[XADAmigaProtectionBitsKey] = @(info->xfi_Protection);
 
 	if(info->xfi_Flags&XADFIF_DIRECTORY)
-	[dict setObject:[NSNumber numberWithBool:YES] forKey:XADIsDirectoryKey];
+	dict[XADIsDirectoryKey] = @YES;
 
 	if(info->xfi_Flags&XADFIF_LINK)
-	[dict setObject:[self XADStringWithCString:(const char *)info->xfi_LinkName] forKey:XADLinkDestinationKey];
+	dict[XADLinkDestinationKey] = [self XADStringWithCString:(const char *)info->xfi_LinkName];
 
 	if(info->xfi_Flags&XADFIF_CRYPTED)
-	[dict setObject:[NSNumber numberWithBool:YES] forKey:XADIsEncryptedKey];
+	dict[XADIsEncryptedKey] = @YES;
 
 //	if(info->xfi_Flags&XADFIF_PARTIALFILE) // TODO: figure out what this is
 //	[dict setObject:[NSNumber numberWithBool:YES] forKey:XADIsPartialKey];
 
 	if(info->xfi_OwnerUID)
-	[dict setObject:[NSNumber numberWithInt:info->xfi_OwnerUID] forKey:XADPosixUserKey];
+	dict[XADPosixUserKey] = [NSNumber numberWithInt:info->xfi_OwnerUID];
 
 	if(info->xfi_OwnerGID)
-	[dict setObject:[NSNumber numberWithInt:info->xfi_OwnerGID] forKey:XADPosixGroupKey];
+	dict[XADPosixGroupKey] = [NSNumber numberWithInt:info->xfi_OwnerGID];
 
 	if(info->xfi_UserName)
-	[dict setObject:[self XADStringWithCString:(const char *)info->xfi_UserName] forKey:XADPosixUserNameKey];
+	dict[XADPosixUserNameKey] = [self XADStringWithCString:(const char *)info->xfi_UserName];
 
 	if(info->xfi_GroupName)
-	[dict setObject:[self XADStringWithCString:(const char *)info->xfi_GroupName] forKey:XADPosixGroupNameKey];
+	dict[XADPosixGroupNameKey] = [self XADStringWithCString:(const char *)info->xfi_GroupName];
 
 	if(info->xfi_Comment)
-	[dict setObject:[self XADStringWithCString:(const char *)info->xfi_Comment] forKey:XADCommentKey];
+	dict[XADCommentKey] = [self XADStringWithCString:(const char *)info->xfi_Comment];
 
-	if(archive->xaip_ArchiveInfo.xai_Flags&XADAIF_FILECORRUPT) [self setObject:[NSNumber numberWithBool:YES] forPropertyKey:XADIsCorruptedKey];
+	if(archive->xaip_ArchiveInfo.xai_Flags&XADAIF_FILECORRUPT) [self setObject:@YES forPropertyKey:XADIsCorruptedKey];
 
 	return dict;
 }
@@ -259,7 +259,7 @@ struct xadMasterBaseP *xadOpenLibrary(xadINT32 version);
 	NSMutableData *data;
 	xadERROR err;
 
-	struct xadFileInfo *info=[[dict objectForKey:@"LibXADFileInfo"] pointerValue];
+	struct xadFileInfo *info=[dict[@"LibXADFileInfo"] pointerValue];
 	if(info)
 	{
 		const char *pass=NULL;
@@ -280,9 +280,9 @@ struct xadMasterBaseP *xadOpenLibrary(xadINT32 version);
 	}
 	else
 	{
-		struct xadDiskInfo *info=[[dict objectForKey:@"LibXADDiskInfo"] pointerValue];
+		struct xadDiskInfo *info=[dict[@"LibXADDiskInfo"] pointerValue];
 
-		data=[NSMutableData dataWithCapacity:[[dict objectForKey:XADFileSizeKey] unsignedIntValue]];
+		data=[NSMutableData dataWithCapacity:[dict[XADFileSizeKey] unsignedIntValue]];
 
 		struct Hook outhook;
 		outhook.h_Entry=OutFunc;
@@ -331,7 +331,7 @@ static xadUINT32 InFunc(struct Hook *hook,xadPTR object,struct xadHookParam *par
 				for(int i=0;i<count;i++)
 				{
 					archive->xai_MultiVolume[i]=total;
-					total+=[[handles objectAtIndex:i] fileSize];
+					total+=[handles[i] fileSize];
 				}
 			}
 
@@ -417,6 +417,7 @@ static xadUINT32 OutFunc(struct Hook *hook,xadPTR object,struct xadHookParam *pa
 
 
 @implementation XADLibXADMemoryHandle
+@synthesize checksumCorrect = success;
 
 -(id)initWithData:(NSData *)data successfullyExtracted:(BOOL)wassuccess
 {

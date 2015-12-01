@@ -260,7 +260,7 @@ value:(uint32_t *)valueptr byteMode:(BOOL)bytemode isRelativeJump:(BOOL)isrel cu
 
 -(RAROpcode *)opcodes { return [opcodes mutableBytes]; }
 
--(int)numberOfOpcodes { return [opcodes length]/sizeof(RAROpcode); }
+-(NSInteger)numberOfOpcodes { return [opcodes length]/sizeof(RAROpcode); }
 
 -(NSData *)staticData { return staticdata; }
 

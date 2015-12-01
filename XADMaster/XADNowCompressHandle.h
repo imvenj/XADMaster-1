@@ -17,7 +17,7 @@
 	uint8_t inblock[0x8000],outblock[0x10000],dictionarycache[0x8000];
 }
 
--(id)initWithHandle:(CSHandle *)handle files:(NSMutableArray *)filesarray;
+-(instancetype)initWithHandle:(CSHandle *)handle files:(NSMutableArray *)filesarray;
 
 -(void)resetBlockStream;
 

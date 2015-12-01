@@ -71,7 +71,7 @@
 
 				NSData *data=[fh readDataOfLength:entrylen];
 				XADPath *path=[self XADPathWithData:data separators:XADNoPathSeparator];
-				[shared setObject:path forKey:XADFileNameKey];
+				shared[XADFileNameKey] = path;
 			}
 			break;
 
@@ -81,7 +81,7 @@
 
 				NSData *data=[fh readDataOfLength:entrylen];
 				XADString *comment=[self XADStringWithData:data];
-				[shared setObject:comment forKey:XADCommentKey];
+				shared[XADCommentKey] = comment;
 			}
 			break;
 
@@ -94,25 +94,25 @@
 				if(entrylen>=4)
 				{
 					uint32_t creation=[fh readUInt32BE]; 
-					[shared setObject:[NSDate XADDateWithTimeIntervalSince2000:creation] forKey:XADCreationDateKey];
+					shared[XADCreationDateKey] = [NSDate XADDateWithTimeIntervalSince2000:creation];
 				}
 
 				if(entrylen>=8)
 				{
 					uint32_t modification=[fh readUInt32BE];
-					[shared setObject:[NSDate XADDateWithTimeIntervalSince2000:modification] forKey:XADLastModificationDateKey];
+					shared[XADLastModificationDateKey] = [NSDate XADDateWithTimeIntervalSince2000:modification];
 				}
 
 				if(entrylen>=12)
 				{
 					uint32_t backup=[fh readUInt32BE];
-					[shared setObject:[NSDate XADDateWithTimeIntervalSince2000:backup] forKey:XADLastBackupDateKey];
+					shared[XADLastBackupDateKey] = [NSDate XADDateWithTimeIntervalSince2000:backup];
 				}
 
 				if(entrylen>=16)
 				{
 					uint32_t access=[fh readUInt32BE];
-					[shared setObject:[NSDate XADDateWithTimeIntervalSince2000:access] forKey:XADLastAccessDateKey];
+					shared[XADLastAccessDateKey] = [NSDate XADDateWithTimeIntervalSince2000:access];
 				}
 			}
 			break;
@@ -142,7 +142,7 @@
 					[XADAppleDouble parseAppleDoubleExtendedAttributesWithHandle:fh intoDictionary:extattrs];
 				}
 
-				if(extattrs) [shared setObject:extattrs forKey:XADExtendedAttributesKey];
+				if(extattrs) shared[XADExtendedAttributesKey] = extattrs;
 			}
 			break;
 		}
@@ -171,7 +171,7 @@
 			[NSNumber numberWithLongLong:rsrclen],XADCompressedSizeKey,
 			[NSNumber numberWithLongLong:rsrcoffs],XADDataOffsetKey,
 			[NSNumber numberWithLongLong:rsrclen],XADDataLengthKey,
-			[NSNumber numberWithBool:YES],XADIsResourceForkKey,
+			@YES,XADIsResourceForkKey,
 		nil];
 
 		[dict addEntriesFromDictionary:shared];

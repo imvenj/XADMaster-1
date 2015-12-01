@@ -432,9 +432,9 @@
 
 	NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 		[self XADPathWithString:name],XADFileNameKey,
-		[NSNumber numberWithLongLong:[data length]],XADFileSizeKey,
+		@([data length]),XADFileSizeKey,
 		[self XADStringWithString:[parser isCompressed]?@"Zlib":@"None"],XADCompressionNameKey,
-		[NSNumber numberWithInt:index],@"SWFDataIndex",
+		@(index),@"SWFDataIndex",
 	nil];
 	[self addEntryWithDictionary:dict];
 }
@@ -444,9 +444,9 @@ offset:(off_t)offset length:(off_t)length
 {
 	NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 		[self XADPathWithString:name],XADFileNameKey,
-		[NSNumber numberWithLongLong:length],XADFileSizeKey,
-		[NSNumber numberWithLongLong:length],@"SWFDataLength",
-		[NSNumber numberWithLongLong:offset],@"SWFDataOffset",
+		@(length),XADFileSizeKey,
+		@(length),@"SWFDataLength",
+		@(offset),@"SWFDataOffset",
 		[self XADStringWithString:[parser isCompressed]?@"Zlib":@"None"],XADCompressionNameKey,
 	nil];
 	[self addEntryWithDictionary:dict];
@@ -465,8 +465,8 @@ offset:(off_t)offset length:(off_t)length
 	NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 		[self XADPathWithString:name],XADFileNameKey,
 		[NSNumber numberWithLongLong:length+[data length]],XADFileSizeKey,
-		[NSNumber numberWithLongLong:length],@"SWFDataLength",
-		[NSNumber numberWithLongLong:offset],@"SWFDataOffset",
+		@(length),@"SWFDataLength",
+		@(offset),@"SWFDataOffset",
 		[self XADStringWithString:[parser isCompressed]?@"Zlib":@"None"],XADCompressionNameKey,
 		[NSNumber numberWithInt:index],@"SWFDataIndex",
 	nil];
@@ -480,12 +480,12 @@ offset:(off_t)offset length:(off_t)length
 	NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 		[self XADPathWithString:name],XADFileNameKey,
 		//[NSNumber numberWithLongLong:length],XADFileSizeKey,
-		[NSNumber numberWithLongLong:length],@"SWFDataLength",
-		[NSNumber numberWithLongLong:offset],@"SWFDataOffset",
-		[NSNumber numberWithInt:format],@"SWFLosslessFormat",
-		[NSNumber numberWithInt:width],@"SWFLosslessWidth",
-		[NSNumber numberWithInt:height],@"SWFLosslessHeight",
-		[NSNumber numberWithBool:alpha],@"SWFLosslessAlpha",
+		@(length),@"SWFDataLength",
+		@(offset),@"SWFDataOffset",
+		@(format),@"SWFLosslessFormat",
+		@(width),@"SWFLosslessWidth",
+		@(height),@"SWFLosslessHeight",
+		@(alpha),@"SWFLosslessAlpha",
 		[self XADStringWithString:@"Zlib"],XADCompressionNameKey,
 	nil];
 	[self addEntryWithDictionary:dict];
@@ -497,31 +497,31 @@ offset:(off_t)offset length:(off_t)length
 -(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum
 {
 	CSHandle *handle=nil;
-	NSNumber *offsetnum=[dict objectForKey:@"SWFDataOffset"];
-	NSNumber *lengthnum=[dict objectForKey:@"SWFDataLength"];
+	NSNumber *offsetnum=dict[@"SWFDataOffset"];
+	NSNumber *lengthnum=dict[@"SWFDataLength"];
 	if(offsetnum&&lengthnum)
 	{
 		handle=[[parser handle] nonCopiedSubHandleFrom:[offsetnum longLongValue]
 		length:[lengthnum longLongValue]];
 
-		NSNumber *formatnum=[dict objectForKey:@"SWFLosslessFormat"];
+		NSNumber *formatnum=dict[@"SWFLosslessFormat"];
 		if(formatnum)
 		{
 			return [CSMemoryHandle memoryHandleForReadingData:
 			[self convertLosslessFormat:[formatnum intValue]
-			width:[[dict objectForKey:@"SWFLosslessWidth"] intValue]
-			height:[[dict objectForKey:@"SWFLosslessHeight"] intValue]
-			alpha:[[dict objectForKey:@"SWFLosslessAlpha"] boolValue]
+			width:[dict[@"SWFLosslessWidth"] intValue]
+			height:[dict[@"SWFLosslessHeight"] intValue]
+			alpha:[dict[@"SWFLosslessAlpha"] boolValue]
 			handle:handle]];
 		}
 	}
 
 	CSHandle *datahandle=nil;
-	NSNumber *indexnum=[dict objectForKey:@"SWFDataIndex"];
+	NSNumber *indexnum=dict[@"SWFDataIndex"];
 	if(indexnum)
 	{
 		datahandle=[CSMemoryHandle memoryHandleForReadingData:
-		[dataobjects objectAtIndex:[indexnum intValue]]];
+		dataobjects[[indexnum intValue]]];
 	}
 
 	if(handle&&datahandle)

@@ -129,7 +129,7 @@ resourceForkLength:(off_t *)resourcelengthptr extendedAttributes:(NSDictionary *
 		NSString *name=[[[NSString alloc] initWithBytes:entries[minindex].namebytes
 		length:entries[minindex].namelen-1 encoding:NSUTF8StringEncoding] autorelease];
 
-		[extattrs setObject:data forKey:name];
+		extattrs[name] = data;
 	}
 }
 
@@ -162,7 +162,7 @@ extendedAttributes:(NSDictionary *)extattrs
 		// Ignore FinderInfo.
 		if([key isEqual:@"com.apple.FinderInfo"]) continue;
 
- 		NSData *data=[extattrs objectForKey:key];
+ 		NSData *data=extattrs[key];
 		NSData *keydata=[key dataUsingEncoding:NSUTF8StringEncoding];
 		int namelen=[keydata length]+1;
 		if(namelen>128) continue; // Skip entries with too long names.
@@ -171,7 +171,7 @@ extendedAttributes:(NSDictionary *)extattrs
 		attributeentrysize+=(11+namelen+3)&~3; // Aligned to 4 bytes.
 		attributedatasize+=[data length];
 
-		[encodedkeys setObject:keydata forKey:key];
+		encodedkeys[key] = keydata;
 	}
 
 	// Set FinderInfo size field and resource fork offset field.
@@ -193,7 +193,7 @@ extendedAttributes:(NSDictionary *)extattrs
 	[fh writeBytes:sizeof(header) fromBuffer:header];
 
 	// Write FinderInfo structure.
-	NSData *finderinfo=[extattrs objectForKey:@"com.apple.FinderInfo"];
+	NSData *finderinfo=extattrs[@"com.apple.FinderInfo"];
 	if(finderinfo)
 	{
 		if([finderinfo length]<32) [XADException raiseUnknownException];
@@ -237,8 +237,8 @@ extendedAttributes:(NSDictionary *)extattrs
 		NSString *key;
 		while((key=[enumerator nextObject]))
 		{
-			NSData *data=[extattrs objectForKey:key];
-			NSData *keydata=[encodedkeys objectForKey:key];
+			NSData *data=extattrs[key];
+			NSData *keydata=encodedkeys[key];
 			if(!keydata) continue;
 
 			int namelen=[keydata length]+1;
@@ -276,8 +276,8 @@ extendedAttributes:(NSDictionary *)extattrs
 		enumerator=[keys objectEnumerator];
 		while((key=[enumerator nextObject]))
 		{
-			NSData *data=[extattrs objectForKey:key];
-			NSData *keydata=[encodedkeys objectForKey:key];
+			NSData *data=extattrs[key];
+			NSData *keydata=encodedkeys[key];
 			if(!keydata) continue;
 
 			[fh writeData:data];

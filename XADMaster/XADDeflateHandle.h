@@ -18,9 +18,8 @@
 	int order[19];
 }
 
--(id)initWithHandle:(CSHandle *)handle length:(off_t)length;
--(id)initWithHandle:(CSHandle *)handle length:(off_t)length variant:(int)deflatevariant;
--(void)dealloc;
+-(instancetype)initWithHandle:(CSHandle *)handle length:(off_t)length;
+-(instancetype)initWithHandle:(CSHandle *)handle length:(off_t)length variant:(int)deflatevariant;
 
 -(void)setMetaTableOrder:(const int *)order;
 

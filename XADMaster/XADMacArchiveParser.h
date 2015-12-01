@@ -20,8 +20,7 @@ extern NSString *XADDisableMacForkExpansionKey;
 
 +(int)macBinaryVersionForHeader:(NSData *)header;
 
--(id)init;
--(void)dealloc;
+-(instancetype)init;
 
 -(void)parse;
 -(void)parseWithSeparateMacForks;

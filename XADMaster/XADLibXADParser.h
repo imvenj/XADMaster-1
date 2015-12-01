@@ -25,8 +25,7 @@
 +(int)requiredHeaderSize;
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name;
 
--(id)init;
--(void)dealloc;
+-(instancetype)init;
 
 -(void)parse;
 -(BOOL)newEntryCallback:(struct xadProgressInfo *)proginfo;
@@ -46,8 +45,8 @@
 	BOOL success;
 }
 
--(id)initWithData:(NSData *)data successfullyExtracted:(BOOL)wassuccess;
--(BOOL)hasChecksum;
--(BOOL)isChecksumCorrect;
+-(instancetype)initWithData:(NSData *)data successfullyExtracted:(BOOL)wassuccess;
+@property (NS_NONATOMIC_IOSONLY, readonly) BOOL hasChecksum;
+@property (NS_NONATOMIC_IOSONLY, readonly, getter=isChecksumCorrect) BOOL checksumCorrect;
 
 @end
