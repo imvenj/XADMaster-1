@@ -6332,6 +6332,7 @@
 				55CD16B61C4AEA49002C2B17 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};

@@ -53,21 +53,18 @@ framework module XADMaster {
 		}
 	}
 	
+	//XADArchive is deprecated
 	explicit module XADArchive {
 		header "XADArchive.h"
 	}
 	
-	explicit module XADUtilities {
-		explicit module CRC {
+	module XADUtilities {
+		module CRC {
 			header "CRC.h"
 		}
 		
-		explicit module LZW {
+		module LZW {
 			header "LZW.h"
-		}
-		
-		explicit module Regex {
-			header "XADRegex.h"
 		}
 	}
 	

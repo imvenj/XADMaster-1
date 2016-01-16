@@ -33,17 +33,16 @@ extern NSString *CSNotSupportedException;
 	uint8_t writebyte,writebitsleft;
 }
 
--(id)initWithName:(NSString *)descname;
--(id)initAsCopyOf:(CSHandle *)other;
--(void)dealloc;
+-(instancetype)initWithName:(NSString *)descname;
+-(instancetype)initAsCopyOf:(CSHandle *)other;
 -(void)close;
 
 
 // Methods implemented by subclasses
 
--(off_t)fileSize;
--(off_t)offsetInFile;
--(BOOL)atEndOfFile;
+@property (NS_NONATOMIC_IOSONLY, readonly) off_t fileSize;
+@property (NS_NONATOMIC_IOSONLY, readonly) off_t offsetInFile;
+@property (NS_NONATOMIC_IOSONLY, readonly) BOOL atEndOfFile;
 -(void)seekToFileOffset:(off_t)offs;
 -(void)seekToEndOfFile;
 -(void)pushBackByte:(int)byte;

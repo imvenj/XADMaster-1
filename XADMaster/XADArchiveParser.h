@@ -211,7 +211,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 name:(NSString *)name;
 
 -(void)parse;
--(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum;
+-(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow; use handleForEntryWithDictionary:wantChecksum:error: instead");
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *formatName;
 
 -(CSHandle *)handleForSolidStreamWithObject:(id)obj wantChecksum:(BOOL)checksum;

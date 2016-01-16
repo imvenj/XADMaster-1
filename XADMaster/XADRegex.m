@@ -7,6 +7,7 @@ static BOOL IsRegexSpecialCharacter(unichar c)
 }
 
 @implementation XADRegex
+@synthesize pattern = patternstring;
 
 +(XADRegex *)regexWithPattern:(NSString *)pattern options:(int)options
 { return [[[XADRegex alloc] initWithPattern:pattern options:options] autorelease]; }
@@ -151,9 +152,9 @@ static BOOL IsRegexSpecialCharacter(unichar c)
 	return NO;
 }
 
--(NSString *)stringForMatch:(int)n
+-(NSString *)stringForMatch:(NSInteger)n
 {
-	if(n>preg.re_nsub||n<0) [NSException raise:NSRangeException format:@"Index %d out of range for regex \"%@\"",n,self];
+	if(n>preg.re_nsub||n<0) [NSException raise:NSRangeException format:@"Index %ld out of range for regex \"%@\"",(long)n,self];
  	if(matches[n].rm_so==-1&&matches[n].rm_eo==-1) return nil;
 	return [[[NSString alloc] initWithBytes:[currdata bytes]+matches[n].rm_so
 	length:(long)(matches[n].rm_eo-matches[n].rm_so) encoding:NSUTF8StringEncoding] autorelease];
@@ -236,8 +237,6 @@ static BOOL IsRegexSpecialCharacter(unichar c)
 	[self finishMatching];
 	return [NSArray arrayWithArray:array];
 }
-
--(NSString *)pattern { return patternstring; }
 
 -(NSString *)description { return patternstring; }
 

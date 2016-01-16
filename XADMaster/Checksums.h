@@ -4,15 +4,15 @@
 
 @interface CSHandle (Checksums)
 
--(BOOL)hasChecksum;
--(BOOL)isChecksumCorrect;
+@property (readonly) BOOL hasChecksum;
+@property (readonly, getter=isChecksumCorrect) BOOL checksumCorrect;
 
 @end
 
 @interface CSSubHandle (Checksums)
 
--(BOOL)hasChecksum;
--(BOOL)isChecksumCorrect;
+@property (readonly) BOOL hasChecksum;
+@property (readonly, getter=isChecksumCorrect) BOOL checksumCorrect;
 
 @end
 
@@ -30,8 +30,7 @@
 	CSHandle *parent,*checksum;
 }
 
--(id)initWithHandle:(CSHandle *)handle checksumHandle:(CSHandle *)checksumhandle;
--(void)dealloc;
+-(instancetype)initWithHandle:(CSHandle *)handle checksumHandle:(CSHandle *)checksumhandle;
 
 -(off_t)fileSize;
 -(off_t)offsetInFile;
