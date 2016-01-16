@@ -8,7 +8,7 @@
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
 	const uint8_t *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
 	if(length<10) return NO;
 	return memcmp(bytes,"WARC/1.0\r\n",10)==0;

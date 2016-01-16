@@ -20,7 +20,7 @@ static inline uint32_t RotateRight(uint32_t val,int n) { return (val>>n)+(val<<(
 	if(!mkey||[mkey length]!=8) [XADException raiseIllegalDataException];
 
 	uint8_t passblock[8]={0,0,0,0,0,0,0,0};
-	int length=[passworddata length];
+	NSUInteger length=[passworddata length];
 	if(length>8) length=8;
 	memcpy(passblock,[passworddata bytes],length);
 

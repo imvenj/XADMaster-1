@@ -23,6 +23,7 @@ extern NSString *XADFinderFlags;
 @class UniversalDetector;
 @class XADArchive;
 @protocol XADArchiveDelegate <NSObject>
+@optional
 
 -(NSStringEncoding)archive:(XADArchive *)archive encodingForData:(NSData *)data guess:(NSStringEncoding)guess confidence:(float)confidence;
 -(XADAction)archive:(XADArchive *)archive nameDecodingDidFailForEntry:(int)n data:(NSData *)data;

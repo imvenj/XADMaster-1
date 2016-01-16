@@ -26,7 +26,7 @@
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
 	const uint8_t *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
 	if(length<8) return NO;
 
@@ -817,7 +817,7 @@ isLastEntry:(BOOL)islastentry
 	if(namedata)
 	{
 		const uint8_t *namebytes=[namedata bytes];
-		int namelength=[namedata length];
+		NSInteger namelength=[namedata length];
 
 		char *separators;
 		if(system==0)
@@ -845,7 +845,7 @@ isLastEntry:(BOOL)islastentry
 		if(prevdict)
 		{
 			const char *prevbytes=[prevname bytes];
-			int prevlength=[prevname length];
+			NSInteger prevlength=[prevname length];
 			if(prevlength<namelength)
 			{
 				int i=0;

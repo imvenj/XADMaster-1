@@ -27,6 +27,8 @@ typedef NS_ENUM(int, PDFImageType) {
 	PDFParser *parser;
 }
 
+NS_ASSUME_NONNULL_BEGIN
+
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary fileHandle:(CSHandle *)filehandle
 offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser *)owner;
 
@@ -47,20 +49,20 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 
 @property (NS_NONATOMIC_IOSONLY, readonly) PDFImageType imagePaletteType;
 @property (NS_NONATOMIC_IOSONLY, readonly) NSInteger numberOfImagePaletteComponents;
--(NSString *)imagePaletteColourSpaceName;
+@property (NS_NONATOMIC_IOSONLY, readonly, retain, nullable) NSString *imagePaletteColourSpaceName;
 @property (NS_NONATOMIC_IOSONLY, readonly) NSInteger numberOfImagePaletteColours;
--(NSData *)imagePaletteData;
--(id)_paletteColourSpaceObject;
+-(nullable NSData *)imagePaletteData;
+-(nullable id)_paletteColourSpaceObject;
 
 -(PDFImageType)_typeForColourSpaceObject:(id)colourspace;
 -(NSInteger)_numberOfComponentsForColourSpaceObject:(id)colourspace;
--(NSString *)_nameForColourSpaceObject:(id)colourspace;
+-(nullable NSString *)_nameForColourSpaceObject:(id)colourspace;
 
--(NSData *)imageICCColourProfile;
--(NSData *)_ICCColourProfileForColourSpaceObject:(id)colourspace;
+-(nullable NSData *)imageICCColourProfile;
+-(nullable NSData *)_ICCColourProfileForColourSpaceObject:(id)colourspace;
 
--(NSString *)imageSeparationName;
--(NSArray *)imageDecodeArray;
+-(nullable NSString *)imageSeparationName;
+-(nullable NSArray *)imageDecodeArray;
 
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL hasMultipleFilters;
 -(NSString *)finalFilter;
@@ -72,8 +74,6 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 -(CSHandle *)handleExcludingLast:(BOOL)excludelast decrypted:(BOOL)decrypted;
 -(CSHandle *)handleForFilterName:(NSString *)filtername decodeParms:(NSDictionary *)decodeparms parentHandle:(CSHandle *)parent;
 -(CSHandle *)predictorHandleForDecodeParms:(NSDictionary *)decodeparms parentHandle:(CSHandle *)parent;
-
--(NSString *)description;
 
 @end
 
@@ -123,3 +123,4 @@ components:(int)components bitsPerComponent:(int)bitspercomp;
 
 @end
 
+NS_ASSUME_NONNULL_END

@@ -27,7 +27,6 @@ separators:(const char *)pathseparators;
 
 @property (NS_NONATOMIC_IOSONLY, getter=isAbsolute, readonly) BOOL absolute;
 @property (NS_NONATOMIC_IOSONLY, getter=isEmpty, readonly) BOOL empty;
--(BOOL)isEqual:(id)other;
 -(BOOL)isCanonicallyEqual:(id)other;
 -(BOOL)isCanonicallyEqual:(id)other encodingName:(NSString *)encoding;
 -(BOOL)hasPrefix:(XADPath *)other;
@@ -89,7 +88,7 @@ separators:(const char *)pathseparators;
 -(id)copyWithZone:(NSZone *)zone;
 
 // Deprecated.
-@property (NS_NONATOMIC_IOSONLY, readonly, copy) XADPath *safePath; // Deprecated. Use sanitizedPathString: instead.
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) XADPath *safePath DEPRECATED_ATTRIBUTE; // Deprecated. Use sanitizedPathString: instead.
 
 // Subclass methods.
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL _isPartAbsolute;
@@ -128,9 +127,6 @@ separators:(const char *)pathseparators;
 -(BOOL)_canDecodePartWithEncodingName:(NSString *)encoding;
 -(void)_appendPathForPartToData:(NSMutableData *)data;
 @property (NS_NONATOMIC_IOSONLY, readonly, strong) XADStringSource *_sourceForPart;
-
--(BOOL)isEqual:(id)other;
-@property (NS_NONATOMIC_IOSONLY, readonly) NSUInteger hash;
 
 @end
 

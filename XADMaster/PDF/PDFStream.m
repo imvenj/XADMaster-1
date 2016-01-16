@@ -144,8 +144,8 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 	if([colourspace count]!=4) return nil;
 	if(![colourspace[0] isEqual:@"Indexed"]) return nil;
 
-	int numcomponents=[self numberOfImagePaletteComponents];
-	int numcolours=[self numberOfImagePaletteColours];
+	NSInteger numcomponents=[self numberOfImagePaletteComponents];
+	NSInteger numcolours=[self numberOfImagePaletteColours];
 
 	id palette=colourspace[3];
 
@@ -193,7 +193,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 	}
 	else if([colourspace isKindOfClass:[NSArray class]])
 	{
-		int count=[colourspace count];
+		NSInteger count=[colourspace count];
 		if(count<1) return PDFUnsupportedImageType;
 
 		name=colourspace[0];
@@ -246,7 +246,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 	}
 	else if([colourspace isKindOfClass:[NSArray class]])
 	{
-		int count=[colourspace count];
+		NSInteger count=[colourspace count];
 		if(count<1) return 0;
 
 		name=colourspace[0];
@@ -282,7 +282,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 	}
 	else if([colourspace isKindOfClass:[NSArray class]])
 	{
-		int count=[colourspace count];
+		NSInteger count=[colourspace count];
 		if(count<1) return nil;
 
 		return colourspace[0];
@@ -307,7 +307,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 	}
 	else if([colourspace isKindOfClass:[NSArray class]])
 	{
-		int count=[colourspace count];
+		NSInteger count=[colourspace count];
 		if(count<1) return nil;
 
 		NSString *name=colourspace[0];
@@ -358,7 +358,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 
 	if(![colourspace isKindOfClass:[NSArray class]]) return nil;
 
-	int count=[colourspace count];
+	NSInteger count=[colourspace count];
 	if(count<2) return nil;
 
 	NSString *name=colourspace[0];
@@ -374,7 +374,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 
 	if(![decode isKindOfClass:[NSArray class]]) return nil;
 
-	int n=[self numberOfImageComponents];
+	NSInteger n=[self numberOfImageComponents];
 	if([decode count]!=n*2) return nil;
 
 	return decode;
@@ -436,7 +436,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 
 	if(filter)
 	{
-		int count=[filter count];
+		NSInteger count=[filter count];
 		if(excludelast) count--;
 
 		for(int i=0;i<count;i++)

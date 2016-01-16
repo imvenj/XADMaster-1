@@ -880,7 +880,7 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext
 	if([sourcehandle respondsToSelector:@selector(handles)])
 	{
 		NSArray *handles=[(id)sourcehandle handles];
-		int count=[handles count];
+		NSInteger count=[handles count];
 		for(int i=0;i<count&&i<disk;i++) offset+=[(CSHandle *)handles[i] fileSize];
 	}
 
