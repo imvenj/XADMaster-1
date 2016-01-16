@@ -426,15 +426,13 @@
 
 -(XADError)_unarchiveRegularArchive
 {
-	NSEnumerator *enumerator;
 	NSDictionary *entry;
 
 	// Calculate total size and check if there is a single top-level item.
 	totalsize=0;
 	totalprogress=0;
 
-	enumerator=[entries objectEnumerator];
-	while((entry=[enumerator nextObject]))
+	for(entry in entries)
 	{
 		NSNumber *dirnum=entry[XADIsDirectoryKey];
 		BOOL isdir=dirnum && [dirnum boolValue];
@@ -479,8 +477,7 @@
 	// Run unarchiver on all entries.
 	[unarchiver setDelegate:self];
 
-	enumerator=[entries objectEnumerator];
-	while((entry=[enumerator nextObject]))
+	for (entry in entries)
 	{
 		if([self _shouldStop]) return XADBreakError;
 

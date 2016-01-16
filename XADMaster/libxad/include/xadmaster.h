@@ -33,7 +33,7 @@ typedef uint16_t           xadUINT16;
 typedef int16_t            xadINT16;
 typedef uint8_t            xadUINT8;
 typedef int8_t             xadINT8;
-typedef uint64_t           xadSize;
+typedef off_t              xadSize;
 typedef int64_t            xadSignSize;
 
 typedef void *             xadPTR;
@@ -41,7 +41,12 @@ typedef unsigned char      xadSTRING;
 typedef xadSTRING *        xadSTRPTR;
 typedef unsigned int       xadUINT;
 typedef int                xadINT;
+#ifdef __OBJC__
+typedef enum XADError : int XADError;
+typedef XADError           xadERROR;
+#else
 typedef xadINT             xadERROR;
+#endif
 typedef xadINT             xadBOOL;
 
 #define XADFALSE        0

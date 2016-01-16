@@ -3,7 +3,7 @@
 
 typedef struct CSInputBuffer
 {
-	CSHandle *parent;
+	__unsafe_unretained CSHandle *parent;
 	off_t startoffs;
 	BOOL eof;
 

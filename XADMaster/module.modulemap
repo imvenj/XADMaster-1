@@ -1,6 +1,77 @@
 framework module XADMaster {
-  umbrella header "XADMaster-umbrella.h"
-
-  export *
-  module * { export * }
+	umbrella header "XADMaster-umbrella.h"
+	
+	export *
+	module * { export * }
+	
+	//Have to exclude these because zlib and bzlib's headers aren't in modules right now
+	exclude header "CSZlibHandle.h"
+	exclude header "CSBzip2Handle.h"
+	
+	module CSHandle {
+		header "CSHandle.h"
+		module CSSubHandle {
+			header "CSSubHandle.h"
+		}
+		
+		module CSMultiHandle {
+			header "CSMultiHandle.h"
+		}
+		
+		module CSFileHandle {
+			header "CSFileHandle.h"
+		}
+		
+		module CSMemoryHandle {
+			header "CSMemoryHandle.h"
+		}
+		
+		module CSStreamHandle {
+			header "CSStreamHandle.h"
+		}
+		
+		module CSByteStreamHandle {
+			header "CSByteStreamHandle.h"
+		}
+		
+		module CSBlockStreamHandle {
+			header "CSBlockStreamHandle.h"
+		}
+		
+		/*
+		module CSZlibHandle {
+			header "CSZlibHandle.h"
+		}
+		
+		module CSBzip2Handle {
+			header "CSBzip2Handle.h"
+		}
+		 */
+		
+		module XADSkipHandle {
+			header "XADSkipHandle.h"
+		}
+	}
+	
+	explicit module XADArchive {
+		header "XADArchive.h"
+	}
+	
+	explicit module XADUtilities {
+		explicit module CRC {
+			header "CRC.h"
+		}
+		
+		explicit module LZW {
+			header "LZW.h"
+		}
+		
+		explicit module Regex {
+			header "XADRegex.h"
+		}
+	}
+	
+	explicit module XADMasterC {
+		header "xadmaster.h"
+	}
 }

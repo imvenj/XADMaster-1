@@ -1401,6 +1401,8 @@
 		1BF3BA9013EE08A300BE7400 /* XADPlatform.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BF3BA8F13EE08A300BE7400 /* XADPlatform.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1BF3BA9113EE08A300BE7400 /* XADPlatform.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BF3BA8F13EE08A300BE7400 /* XADPlatform.h */; };
 		1BF3BA9213EE08A300BE7400 /* XADPlatform.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BF3BA8F13EE08A300BE7400 /* XADPlatform.h */; };
+		55CD16B31C4AEA49002C2B17 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CD16B21C4AEA49002C2B17 /* main.swift */; };
+		55CD16B91C4AF4ED002C2B17 /* XADMaster-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 559B9CCF1A13F443006BDB74 /* XADMaster-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -1634,7 +1636,26 @@
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = UniversalDetector;
 		};
+		55CD16B71C4AEA93002C2B17 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = XADMaster;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		55CD16AE1C4AEA49002C2B17 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1B06CD11145CFF2A003907F9 /* XADCrunchParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADCrunchParser.h; sourceTree = "<group>"; };
@@ -2177,6 +2198,8 @@
 		32DBCF5E0370ADEE00C91783 /* XADMaster_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADMaster_Prefix.pch; sourceTree = "<group>"; };
 		559B9CCC1A13F30E006BDB74 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		559B9CCF1A13F443006BDB74 /* XADMaster-umbrella.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XADMaster-umbrella.h"; sourceTree = "<group>"; };
+		55CD16B01C4AEA49002C2B17 /* XADTestSwift2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = XADTestSwift2; sourceTree = BUILT_PRODUCTS_DIR; };
+		55CD16B21C4AEA49002C2B17 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		56FBC8DC0A57531D00BE98CF /* UniversalDetector.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UniversalDetector.xcodeproj; path = ../UniversalDetector/UniversalDetector.xcodeproj; sourceTree = SOURCE_ROOT; };
 		56FBC92B0A57541300BE98CF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
 		8DC2EF5B0486A6940098B216 /* XADMaster.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = XADMaster.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2312,6 +2335,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		55CD16AD1C4AEA49002C2B17 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8DC2EF560486A6940098B216 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -2344,6 +2374,7 @@
 				1B91D2EE11E694860081E40A /* lsar.exe */,
 				1B31CB9213C6423600ED119E /* XADTest6 */,
 				1B467B0115CD9A73001AB1DD /* libXADMaster.ios.a */,
+				55CD16B01C4AEA49002C2B17 /* XADTestSwift2 */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2364,6 +2395,7 @@
 				1B91CBA911D803920081E40A /* Windows Sources */,
 				32C88DFF0371C24200C91783 /* Other Sources */,
 				089C1665FE841158C02AAC07 /* Resources */,
+				55CD16B11C4AEA49002C2B17 /* XADTestSwift2 */,
 				0867D69AFE84028FC02AAC07 /* Frameworks */,
 				1BDDC79413DE3D2800A8C079 /* Man Pages */,
 				034768DFFF38A50411DB9C8B /* Products */,
@@ -3297,6 +3329,14 @@
 			name = "Other Sources";
 			sourceTree = "<group>";
 		};
+		55CD16B11C4AEA49002C2B17 /* XADTestSwift2 */ = {
+			isa = PBXGroup;
+			children = (
+				55CD16B21C4AEA49002C2B17 /* main.swift */,
+			);
+			path = XADTestSwift2;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -3727,6 +3767,7 @@
 				1BF0EEFF14031861007B8CF8 /* VariantI.h in Headers */,
 				1B4E97451426149800640F59 /* XADRARInputHandle.h in Headers */,
 				1B78A34C1431339100E4AB87 /* Realloc.h in Headers */,
+				55CD16B91C4AF4ED002C2B17 /* XADMaster-umbrella.h in Headers */,
 				1B06CD13145CFF2A003907F9 /* XADCrunchParser.h in Headers */,
 				1B06CD1C145CFF36003907F9 /* XADCrunchHandles.h in Headers */,
 				1B5F3F82146A0962007BC5A6 /* XADAppleDouble.h in Headers */,
@@ -3990,6 +4031,24 @@
 			productReference = 1BC8931A0ED6F283006B47FE /* XADTest3 */;
 			productType = "com.apple.product-type.tool";
 		};
+		55CD16AF1C4AEA49002C2B17 /* XADTestSwift2 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 55CD16B41C4AEA49002C2B17 /* Build configuration list for PBXNativeTarget "XADTestSwift2" */;
+			buildPhases = (
+				55CD16AC1C4AEA49002C2B17 /* Sources */,
+				55CD16AD1C4AEA49002C2B17 /* Frameworks */,
+				55CD16AE1C4AEA49002C2B17 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				55CD16B81C4AEA93002C2B17 /* PBXTargetDependency */,
+			);
+			name = XADTestSwift2;
+			productName = XADTestSwift1;
+			productReference = 55CD16B01C4AEA49002C2B17 /* XADTestSwift2 */;
+			productType = "com.apple.product-type.tool";
+		};
 		8DC2EF4F0486A6940098B216 /* XADMaster */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "XADMaster" */;
@@ -4016,7 +4075,13 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0700;
+				TargetAttributes = {
+					55CD16AF1C4AEA49002C2B17 = {
+						CreatedOnToolsVersion = 7.2;
+					};
+				};
 			};
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "XADMaster" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -4054,6 +4119,7 @@
 				1B91CD9611D981E20081E40A /* unar.exe */,
 				1B91D2D611E694860081E40A /* lsar.exe */,
 				1B433E2611E945D300DA1EFB /* Everything */,
+				55CD16AF1C4AEA49002C2B17 /* XADTestSwift2 */,
 			);
 		};
 /* End PBXProject section */
@@ -4879,6 +4945,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		55CD16AC1C4AEA49002C2B17 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				55CD16B31C4AEA49002C2B17 /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8DC2EF540486A6940098B216 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -5226,6 +5300,11 @@
 			name = UniversalDetector;
 			targetProxy = 3D664E3E10376F6A00A679EF /* PBXContainerItemProxy */;
 		};
+		55CD16B81C4AEA93002C2B17 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8DC2EF4F0486A6940098B216 /* XADMaster */;
+			targetProxy = 55CD16B71C4AEA93002C2B17 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -5458,7 +5537,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEAD_CODE_STRIPPING = YES;
-				DEFINES_MODULE = NO;
+				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
@@ -5471,6 +5550,7 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "@executable_path/../Frameworks";
+				MODULEMAP_FILE = module.modulemap;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-weak_framework",
@@ -5987,7 +6067,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				DEFINES_MODULE = NO;
+				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
@@ -6001,6 +6081,7 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "@executable_path/../Frameworks";
+				MODULEMAP_FILE = module.modulemap;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-weak_framework",
@@ -6040,6 +6121,62 @@
 				USE_HEADERMAP = NO;
 			};
 			name = Debug;
+		};
+		55CD16B51C4AEA49002C2B17 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		55CD16B61C4AEA49002C2B17 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
@@ -6187,6 +6324,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
+		};
+		55CD16B41C4AEA49002C2B17 /* Build configuration list for PBXNativeTarget "XADTestSwift2" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				55CD16B51C4AEA49002C2B17 /* Debug */,
+				55CD16B61C4AEA49002C2B17 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
