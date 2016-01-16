@@ -6,8 +6,8 @@
 	NSDictionary *resources;
 }
 
-+(instancetype)resourceForkWithHandle:(CSHandle *)handle;
-+(instancetype)resourceForkWithHandle:(CSHandle *)handle error:(XADError *)errorptr;
++(instancetype)resourceForkWithHandle:(CSHandle *)handle NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow; use resourceForkWithHandle:error: instead");
++(instancetype)resourceForkWithHandle:(CSHandle *)handle error:(NSError **)errorptr;
 
 -(instancetype)init NS_DESIGNATED_INITIALIZER;
 

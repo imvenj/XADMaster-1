@@ -21,7 +21,7 @@
 	return [self unarchiverForPath:path error:NULL];
 }
 
-+(XADUnarchiver *)unarchiverForPath:(NSString *)path error:(XADError *)errorptr
++(XADUnarchiver *)unarchiverForPath:(NSString *)path error:(NSError **)errorptr
 {
 	XADArchiveParser *archiveparser=[XADArchiveParser archiveParserForPath:path error:errorptr];
 	if(!archiveparser) return nil;
@@ -335,14 +335,14 @@ static NSComparisonResult SortDirectoriesByDepthAndResource(id entry1,id entry2,
 
 
 -(XADUnarchiver *)unarchiverForEntryWithDictionary:(NSDictionary *)dict
-wantChecksum:(BOOL)checksum error:(XADError *)errorptr
+wantChecksum:(BOOL)checksum error:(NSError **)errorptr
 {
 	return [self unarchiverForEntryWithDictionary:dict resourceForkDictionary:nil
 	wantChecksum:checksum error:errorptr];
 }
 
 -(XADUnarchiver *)unarchiverForEntryWithDictionary:(NSDictionary *)dict
-resourceForkDictionary:(NSDictionary *)forkdict wantChecksum:(BOOL)checksum error:(XADError *)errorptr
+resourceForkDictionary:(NSDictionary *)forkdict wantChecksum:(BOOL)checksum error:(NSError **)errorptr
 {
 	XADArchiveParser *subparser=[XADArchiveParser
 	archiveParserForEntryWithDictionary:dict
@@ -383,9 +383,9 @@ resourceForkDictionary:(NSDictionary *)forkdict wantChecksum:(BOOL)checksum erro
 
 -(XADError)_extractLinkEntryWithDictionary:(NSDictionary *)dict as:(NSString *)destpath
 {
-	XADError error;
+	NSError *error;
 	XADString *link=[parser linkDestinationForDictionary:dict error:&error];
-	if(!link) return error;
+	if(!link) return (XADError)error.code;
 
 	NSString *linkdest=nil;
 	if(delegate) linkdest=[delegate unarchiver:self destinationForLink:link from:destpath];
@@ -421,8 +421,10 @@ resourceForkDictionary:(NSDictionary *)forkdict wantChecksum:(BOOL)checksum erro
 -(XADError)_extractArchiveEntryWithDictionary:(NSDictionary *)dict to:(NSString *)destpath name:(NSString *)filename
 {
 	XADError error;
+	NSError *err;
 	XADUnarchiver *subunarchiver=[self unarchiverForEntryWithDictionary:dict
-	wantChecksum:YES error:&error];
+	wantChecksum:YES error:&err];
+	error = (XADError)err.code;
 	if(!subunarchiver)
 	{
 		if(error) return error;

@@ -15,10 +15,11 @@
 	return fork;
 }
 
-+(XADResourceFork *)resourceForkWithHandle:(CSHandle *)handle error:(XADError *)errorptr
++(XADResourceFork *)resourceForkWithHandle:(CSHandle *)handle error:(NSError **)errorptr
 {
+	if (errorptr) *errorptr = nil;
 	@try { return [self resourceForkWithHandle:handle]; }
-	@catch(id exception) { if(errorptr) *errorptr=[XADException parseException:exception]; }
+	@catch(id exception) { if(errorptr) *errorptr=[NSError errorWithDomain:XADErrorDomain code:[XADException parseException:exception] userInfo:nil]; }
 	return nil;
 }
 

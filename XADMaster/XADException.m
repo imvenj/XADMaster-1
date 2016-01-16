@@ -5,8 +5,21 @@
 #import "CSBzip2Handle.h"
 
 NSString *XADExceptionName=@"XADException";
+NSString *const XADErrorDomain = @"de.dstoecker.xadmaster.error";
 
 @implementation XADException
+
++ (void)load
+{
+	if ([[NSError class] respondsToSelector:@selector(setUserInfoValueProviderForDomain:provider:)]) {
+		[NSError setUserInfoValueProviderForDomain:XADErrorDomain provider:^id _Nullable(NSError * _Nonnull err, NSString * _Nonnull userInfoKey) {
+			if ([userInfoKey isEqualToString:NSLocalizedDescriptionKey]) {
+				return [XADException describeXADError:(XADError)err.code];
+			}
+			return nil;
+		}];
+	}
+}
 
 +(void)raiseUnknownException  { [self raiseExceptionWithXADError:XADUnknownError]; }
 +(void)raiseInputException  { [self raiseExceptionWithXADError:XADInputError]; }

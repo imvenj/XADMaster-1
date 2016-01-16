@@ -98,25 +98,25 @@ extern NSString *XADDiskLabelKey;
 
 +(Class)archiveParserClassForHandle:(CSHandle *)handle firstBytes:(NSData *)header
 resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props;
-+(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle name:(NSString *)name;
-+(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle name:(NSString *)name error:(XADError *)errorptr;
-+(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle resourceFork:(XADResourceFork *)fork name:(NSString *)name;
-+(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle resourceFork:(XADResourceFork *)fork name:(NSString *)name error:(XADError *)errorptr;
-+(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header name:(NSString *)name;
-+(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header name:(NSString *)name error:(XADError *)errorptr;
-+(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header resourceFork:(XADResourceFork *)fork name:(NSString *)name;
-+(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header resourceFork:(XADResourceFork *)fork name:(NSString *)name error:(XADError *)errorptr;
-+(XADArchiveParser *)archiveParserForPath:(NSString *)filename;
-+(XADArchiveParser *)archiveParserForPath:(NSString *)filename error:(XADError *)errorptr;
-+(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum;
-+(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum error:(XADError *)errorptr;
-+(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry resourceForkDictionary:(NSDictionary *)forkentry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum;
-+(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry resourceForkDictionary:(NSDictionary *)forkentry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum error:(XADError *)errorptr;
++(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle name:(NSString *)name NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow; use archiveParserForHandle:name:error: instead");
++(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle name:(NSString *)name error:(NSError **)errorptr;
++(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle resourceFork:(XADResourceFork *)fork name:(NSString *)name NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow; use archiveParserForHandle:resourceFork:name:error: instead");
++(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle resourceFork:(XADResourceFork *)fork name:(NSString *)name error:(NSError **)errorptr;
++(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header name:(NSString *)name NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow; use archiveParserForHandle:firstBytes:name:error: instead");
++(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header name:(NSString *)name error:(NSError **)errorptr;
++(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header resourceFork:(XADResourceFork *)fork name:(NSString *)name NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow; use archiveParserForHandle:firstBytes:resourceFork:name:error: instead");
++(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header resourceFork:(XADResourceFork *)fork name:(NSString *)name error:(NSError **)errorptr;
++(XADArchiveParser *)archiveParserForPath:(NSString *)filename NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow; use archiveParserForPath:error: instead");
++(XADArchiveParser *)archiveParserForPath:(NSString *)filename error:(NSError **)errorptr;
++(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow; use archiveParserForEntryWithDictionary:archiveParser:wantChecksum:error: instead");
++(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum error:(NSError **)errorptr;
++(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry resourceForkDictionary:(NSDictionary *)forkentry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow; use archiveParserForEntryWithDictionary:resourceForkDictionary:archiveParser:wantChecksum:error: instead");
++(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry resourceForkDictionary:(NSDictionary *)forkentry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum error:(NSError **)errorptr;
  
 -(instancetype)init NS_DESIGNATED_INITIALIZER;
 
 @property (NS_NONATOMIC_IOSONLY, copy) XADHandle *handle;
-@property (NS_NONATOMIC_IOSONLY, strong) XADResourceFork *resourceFork;
+@property (NS_NONATOMIC_IOSONLY, retain) XADResourceFork *resourceFork;
 @property (NS_NONATOMIC_IOSONLY, copy) NSString *name;
 @property (NS_NONATOMIC_IOSONLY, copy) NSString *filename;
 @property (NS_NONATOMIC_IOSONLY, copy) NSArray *allFilenames;
@@ -136,8 +136,8 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 @property (NS_NONATOMIC_IOSONLY, copy) NSString *passwordEncodingName;
 @property (NS_NONATOMIC_IOSONLY, readonly, strong) XADStringSource *stringSource;
 
--(XADString *)linkDestinationForDictionary:(NSDictionary *)dict;
--(XADString *)linkDestinationForDictionary:(NSDictionary *)dict error:(XADError *)errorptr;
+-(XADString *)linkDestinationForDictionary:(NSDictionary *)dict NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow; use linkDestinationForDictionary:error: instead");
+-(XADString *)linkDestinationForDictionary:(NSDictionary *)dict error:(NSError **)errorptr;
 -(NSDictionary *)extendedAttributesForDictionary:(NSDictionary *)dict;
 -(NSData *)finderInfoForDictionary:(NSDictionary *)dict;
 
@@ -221,7 +221,7 @@ name:(NSString *)name;
 // requested parsing to stop.
 
 @property (NS_NONATOMIC_IOSONLY, readonly) XADError parseWithoutExceptions;
--(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum error:(XADError *)errorptr;
+-(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum error:(NSError **)errorptr;
 
 @end
 

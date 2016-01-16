@@ -29,8 +29,8 @@ typedef NS_ENUM(int, XADForkStyle) {
 }
 
 +(instancetype)unarchiverForArchiveParser:(XADArchiveParser *)archiveparser;
-+(instancetype)unarchiverForPath:(NSString *)path;
-+(instancetype)unarchiverForPath:(NSString *)path error:(XADError *)errorptr;
++(instancetype)unarchiverForPath:(NSString *)path NS_SWIFT_UNAVAILABLE("Use unarchiverForPath:error: instead");
++(instancetype)unarchiverForPath:(NSString *)path error:(NSError **)errorptr;
 
 -(instancetype)initWithArchiveParser:(XADArchiveParser *)archiveparser NS_DESIGNATED_INITIALIZER;
 
@@ -58,9 +58,9 @@ typedef NS_ENUM(int, XADForkStyle) {
 @property (NS_NONATOMIC_IOSONLY, readonly) XADError _fixDeferredDirectories;
 
 -(XADUnarchiver *)unarchiverForEntryWithDictionary:(NSDictionary *)dict
-wantChecksum:(BOOL)checksum error:(XADError *)errorptr;
+wantChecksum:(BOOL)checksum error:(NSError **)errorptr;
 -(XADUnarchiver *)unarchiverForEntryWithDictionary:(NSDictionary *)dict
-resourceForkDictionary:(NSDictionary *)forkdict wantChecksum:(BOOL)checksum error:(XADError *)errorptr;
+resourceForkDictionary:(NSDictionary *)forkdict wantChecksum:(BOOL)checksum error:(NSError **)errorptr;
 
 -(XADError)_extractFileEntryWithDictionary:(NSDictionary *)dict as:(NSString *)destpath;
 -(XADError)_extractDirectoryEntryWithDictionary:(NSDictionary *)dict as:(NSString *)destpath;

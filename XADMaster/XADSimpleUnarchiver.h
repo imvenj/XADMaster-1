@@ -39,8 +39,8 @@
 	off_t totalsize,currsize,totalprogress;
 }
 
-+(instancetype)simpleUnarchiverForPath:(NSString *)path;
-+(instancetype)simpleUnarchiverForPath:(NSString *)path error:(XADError *)errorptr;
++(instancetype)simpleUnarchiverForPath:(NSString *)path NS_SWIFT_UNAVAILABLE("Use simpleUnarchiverForPath:error: instead");
++(instancetype)simpleUnarchiverForPath:(NSString *)path error:(NSError **)errorptr;
 
 -(instancetype)initWithArchiveParser:(XADArchiveParser *)archiveparser;
 -(instancetype)initWithArchiveParser:(XADArchiveParser *)archiveparser entries:(NSArray *)entryarray NS_DESIGNATED_INITIALIZER;
@@ -102,14 +102,16 @@
 
 
 
-@property (NS_NONATOMIC_IOSONLY, readonly) XADError parse;
+-(XADError)parse NS_SWIFT_UNAVAILABLE("Use parseWithError: instead");
+- (BOOL)parseWithError:(NSError**)err;
 -(XADError)_setupSubArchiveForEntryWithDataFork:(NSDictionary *)datadict resourceFork:(NSDictionary *)resourcedict;
 
-@property (NS_NONATOMIC_IOSONLY, readonly) XADError unarchive;
-@property (NS_NONATOMIC_IOSONLY, readonly) XADError _unarchiveRegularArchive;
-@property (NS_NONATOMIC_IOSONLY, readonly) XADError _unarchiveSubArchive;
+-(XADError)unarchive NS_SWIFT_UNAVAILABLE("Use unarchiveWithError: instead");
+- (BOOL)unarchiveWithError:(NSError**)err;
+-(XADError)_unarchiveRegularArchive;
+-(XADError)_unarchiveSubArchive;
 
-@property (NS_NONATOMIC_IOSONLY, readonly) XADError _finalizeExtraction;
+-(XADError)_finalizeExtraction;
 
 -(void)_testForSoloItems:(NSDictionary *)entry;
 

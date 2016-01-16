@@ -70,7 +70,7 @@ int main(int argc,char **argv)
 	if(argc>=3) destination=[NSString stringWithUTF8String:argv[2]];
 	else destination=@"";
 
-XADError error;
+NSError *error;
 	XADArchive *archive=archive = [[XADArchive alloc] initWithFile:filename error:&error];
 	//XADArchive *archive=[XADArchive recursiveArchiveForFile:filename];
 

@@ -15,7 +15,7 @@
 	return [self simpleUnarchiverForPath:path error:NULL];
 }
 
-+(XADSimpleUnarchiver *)simpleUnarchiverForPath:(NSString *)path error:(XADError *)errorptr;
++(XADSimpleUnarchiver *)simpleUnarchiverForPath:(NSString *)path error:(NSError **)errorptr;
 {
 	XADArchiveParser *archiveparser=[XADArchiveParser archiveParserForPath:path error:errorptr];
 	if(!archiveparser) return nil;
@@ -314,6 +314,19 @@
 
 
 
+- (BOOL)parseWithError:(NSError**)err
+{
+	XADError parseErr = [self parse];
+	if (parseErr != XADNoError) {
+		if (err) {
+			*err = [NSError errorWithDomain:XADErrorDomain code:parseErr userInfo:nil];
+		}
+		return NO;
+	} else {
+		return YES;
+	}
+}
+
 -(XADError)parse
 {
 	if([entries count]) [NSException raise:NSInternalInconsistencyException format:@"You can not call parseAndUnarchive twice"];
@@ -376,8 +389,10 @@
 {
 	// Create unarchiver.
 	XADError error;
+	NSError *err = nil;
 	subunarchiver=[[unarchiver unarchiverForEntryWithDictionary:datadict
-	resourceForkDictionary:resourcedict wantChecksum:YES error:&error] retain];
+	resourceForkDictionary:resourcedict wantChecksum:YES error:&err] retain];
+	error = (XADError)err.code;
 	if(!subunarchiver)
 	{
 		if(error) return error;
@@ -388,6 +403,20 @@
 
 
 
+
+- (BOOL)unarchiveWithError:(NSError**)err
+{
+	XADError unErr = [self unarchive];
+	if (unErr != XADNoError) {
+		if (err) {
+			*err = [NSError errorWithDomain:XADErrorDomain code:unErr userInfo:nil];
+		}
+		
+		return NO;
+	} else {
+		return YES;
+	}
+}
 
 -(XADError)unarchive
 {
