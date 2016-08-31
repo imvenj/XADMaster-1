@@ -204,17 +204,18 @@ preservePermissions:(BOOL)preservepermissions
 
 	NSAppleEventDescriptor *commentdesc=[NSAppleEventDescriptor descriptorWithString:comment];
 
-	FSRef ref;
-	bzero(&ref,sizeof(ref));
-	if(FSPathMakeRef((UInt8 *)[path fileSystemRepresentation],&ref,NULL)!=noErr) return;
+	NSURL *fileURL = [NSURL fileURLWithPath:path];
+	NSString *fileString = [[fileURL absoluteString] retain];
+	const char *fileCStr = fileString.UTF8String;
 
 	AEDesc filedesc;
 	AEInitializeDesc(&filedesc);
-	if(AECoercePtr(typeFSRef,&ref,sizeof(ref),typeAlias,&filedesc)!=noErr) return;
+	if(AECoercePtr(typeFileURL,fileCStr,strlen(fileCStr),typeAlias,&filedesc)!=noErr) {[fileString release]; return;}
 
 	AEDesc builtevent,replyevent;
 	AEInitializeDesc(&builtevent);
 	AEInitializeDesc(&replyevent);
+	[fileString release];
 
 	static OSType findersignature='MACS';
 

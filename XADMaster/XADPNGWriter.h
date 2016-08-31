@@ -14,8 +14,7 @@
 
 +(XADPNGWriter *)PNGWriter;
 
--(id)init;
--(void)dealloc;
+-(instancetype)init;
 
 -(NSData *)data;
 

@@ -16,7 +16,6 @@ typedef struct XADSkipRegion
 
 -(instancetype)initWithHandle:(CSHandle *)handle NS_DESIGNATED_INITIALIZER;
 -(instancetype)initAsCopyOf:(XADSkipHandle *)other NS_DESIGNATED_INITIALIZER;
--(void)dealloc;
 
 -(void)addSkipFrom:(off_t)start length:(off_t)length;
 -(void)addSkipFrom:(off_t)start to:(off_t)end;

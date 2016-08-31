@@ -225,7 +225,7 @@
 	[regexes addObject:regex];
 }
 
--(void)addIndexFilter:(int)index
+-(void)addIndexFilter:(NSInteger)index
 {
 	if(!indices) indices=[NSMutableIndexSet new];
 	[indices addIndex:index];

@@ -56,7 +56,7 @@
 	if((self=[super init]))
 	{
 		const uint8_t *keybytes=[key bytes];
-		int keylength=[key length];
+		NSInteger keylength=[key length];
 
 		for(i=0;i<256;i++) s[i]=i;
 

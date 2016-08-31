@@ -23,10 +23,11 @@
 	BOOL copydatetoenclosing,copydatetosolo,resetsolodate;
 	BOOL propagatemetadata;
 
-	NSMutableArray *regexes;
+	NSMutableArray<XADRegex*> *regexes;
 	NSMutableIndexSet *indices;
 
-	NSMutableArray *entries,*reasonsforinterest;
+	NSMutableArray<NSDictionary<NSString*,id>*> *entries;
+	NSMutableArray<NSString*> *reasonsforinterest;
 	NSMutableDictionary *renames;
 	NSMutableSet *resourceforks;
 	id metadata;
@@ -42,13 +43,14 @@
 +(instancetype)simpleUnarchiverForPath:(NSString *)path;
 +(instancetype)simpleUnarchiverForPath:(NSString *)path error:(XADError *)errorptr;
 
+-(instancetype)init UNAVAILABLE_ATTRIBUTE;
 -(instancetype)initWithArchiveParser:(XADArchiveParser *)archiveparser;
--(instancetype)initWithArchiveParser:(XADArchiveParser *)archiveparser entries:(NSArray *)entryarray NS_DESIGNATED_INITIALIZER;
+-(instancetype)initWithArchiveParser:(XADArchiveParser *)archiveparser entries:(NSArray<NSDictionary<NSString*,id> *> *)entryarray NS_DESIGNATED_INITIALIZER;
 
 @property (NS_NONATOMIC_IOSONLY, readonly, strong) XADArchiveParser *archiveParser;
 @property (NS_NONATOMIC_IOSONLY, readonly, strong) XADArchiveParser *outerArchiveParser;
 @property (NS_NONATOMIC_IOSONLY, readonly, strong) XADArchiveParser *innerArchiveParser;
-@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray *reasonsForInterest;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray<NSString*> *reasonsForInterest;
 
 @property (NS_NONATOMIC_IOSONLY, assign) id<XADSimpleUnarchiverDelegate> delegate;
 
@@ -87,7 +89,7 @@
 
 -(void)addGlobFilter:(NSString *)wildcard;
 -(void)addRegexFilter:(XADRegex *)regex;
--(void)addIndexFilter:(int)index;
+-(void)addIndexFilter:(NSInteger)index;
 -(void)setIndices:(NSIndexSet *)indices;
 
 @property (NS_NONATOMIC_IOSONLY, readonly) off_t predictedTotalSize;

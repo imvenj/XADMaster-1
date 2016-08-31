@@ -23,8 +23,8 @@
 
 +(NSString *)null;
 
+-(instancetype)init UNAVAILABLE_ATTRIBUTE;
 -(instancetype)initWithPattern:(NSString *)pattern options:(int)options NS_DESIGNATED_INITIALIZER;
--(void)dealloc;
 
 -(void)beginMatchingString:(NSString *)string;
 //-(void)beginMatchingString:(NSString *)string range:(NSRange)range;
@@ -33,7 +33,7 @@
 -(void)finishMatching;
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL matchNext;
 -(NSString *)stringForMatch:(int)n;
-@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray *allMatches;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray<NSString*> *allMatches;
 
 -(BOOL)matchesString:(NSString *)string;
 -(NSString *)matchedSubstringOfString:(NSString *)string;

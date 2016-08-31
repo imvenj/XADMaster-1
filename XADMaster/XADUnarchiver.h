@@ -32,6 +32,7 @@ typedef NS_ENUM(int, XADForkStyle) {
 +(instancetype)unarchiverForPath:(NSString *)path;
 +(instancetype)unarchiverForPath:(NSString *)path error:(XADError *)errorptr;
 
+-(instancetype)init UNAVAILABLE_ATTRIBUTE;
 -(instancetype)initWithArchiveParser:(XADArchiveParser *)archiveparser NS_DESIGNATED_INITIALIZER;
 
 @property (NS_NONATOMIC_IOSONLY, readonly, strong) XADArchiveParser *archiveParser;
@@ -46,16 +47,16 @@ typedef NS_ENUM(int, XADForkStyle) {
 
 @property (NS_NONATOMIC_IOSONLY) double updateInterval;
 
-@property (NS_NONATOMIC_IOSONLY, readonly) XADError parseAndUnarchive;
+-(XADError)parseAndUnarchive;
 
 -(XADError)extractEntryWithDictionary:(NSDictionary *)dict;
 -(XADError)extractEntryWithDictionary:(NSDictionary *)dict forceDirectories:(BOOL)force;
 -(XADError)extractEntryWithDictionary:(NSDictionary *)dict as:(NSString *)path;
 -(XADError)extractEntryWithDictionary:(NSDictionary *)dict as:(NSString *)path forceDirectories:(BOOL)force;
 
-@property (NS_NONATOMIC_IOSONLY, readonly) XADError finishExtractions;
-@property (NS_NONATOMIC_IOSONLY, readonly) XADError _fixDeferredLinks;
-@property (NS_NONATOMIC_IOSONLY, readonly) XADError _fixDeferredDirectories;
+-(XADError)finishExtractions;
+-(XADError)_fixDeferredLinks;
+-(XADError)_fixDeferredDirectories;
 
 -(XADUnarchiver *)unarchiverForEntryWithDictionary:(NSDictionary *)dict
 wantChecksum:(BOOL)checksum error:(XADError *)errorptr;

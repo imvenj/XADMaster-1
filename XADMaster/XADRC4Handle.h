@@ -11,8 +11,8 @@
 	XADRC4Engine *rc4;
 }
 
+-(instancetype)init UNAVAILABLE_ATTRIBUTE;
 -(instancetype)initWithHandle:(CSHandle *)handle key:(NSData *)keydata NS_DESIGNATED_INITIALIZER;
--(void)dealloc;
 
 -(void)resetStream;
 -(int)streamAtMost:(int)num toBuffer:(void *)buffer;
@@ -27,6 +27,7 @@
 
 +(XADRC4Engine *)engineWithKey:(NSData *)key;
 
+-(instancetype)init UNAVAILABLE_ATTRIBUTE;
 -(instancetype)initWithKey:(NSData *)key NS_DESIGNATED_INITIALIZER;
 
 -(NSData *)encryptedData:(NSData *)data;

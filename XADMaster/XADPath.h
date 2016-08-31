@@ -13,7 +13,10 @@
 	NSString *cachedencoding;
 }
 
-+(instancetype)emptyPath;
++(XADPath *)emptyPath;
+#if __has_feature(objc_class_property)
+@property (class, readonly, retain) XADPath *emptyPath;
+#endif
 +(instancetype)pathWithString:(NSString *)string;
 +(instancetype)pathWithStringComponents:(NSArray *)components;
 +(instancetype)separatedPathWithString:(NSString *)string;
@@ -111,10 +114,10 @@ separators:(const char *)pathseparators;
 	NSString *string;
 }
 
+-(instancetype)init UNAVAILABLE_ATTRIBUTE;
 -(instancetype)initWithComponentString:(NSString *)pathstring NS_DESIGNATED_INITIALIZER;
 -(instancetype)initWithComponentString:(NSString *)pathstring parent:(XADPath *)parentpath NS_DESIGNATED_INITIALIZER;
 -(instancetype)initWithPath:(XADStringPath *)path parent:(XADPath *)parentpath;
--(void)dealloc;
 
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL _isPartAbsolute;
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL _isPartEmpty;
@@ -137,12 +140,12 @@ separators:(const char *)pathseparators;
 	const char *separators;
 }
 
+-(instancetype)init UNAVAILABLE_ATTRIBUTE;
 -(instancetype)initWithData:(NSData *)bytedata source:(XADStringSource *)stringsource
 separators:(const char *)pathseparators NS_DESIGNATED_INITIALIZER;
 -(instancetype)initWithData:(NSData *)bytedata source:(XADStringSource *)stringsource
 separators:(const char *)pathseparators parent:(XADPath *)parentpath NS_DESIGNATED_INITIALIZER;
 -(instancetype)initWithPath:(XADRawPath *)path parent:(XADPath *)parentpath;
--(void)dealloc;
 
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL _isPartAbsolute;
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL _isPartEmpty;

@@ -10,6 +10,7 @@ NSString *XADMightBeMacBinaryKey=@"XADMightBeMacBinary";
 NSString *XADDisableMacForkExpansionKey=@"XADDisableMacForkExpansionKey";
 
 @implementation XADMacArchiveParser
+@synthesize previousFilename = previousname;
 
 +(int)macBinaryVersionForHeader:(NSData *)header
 {
@@ -259,13 +260,6 @@ name:(XADPath *)name retainPosition:(BOOL)retainpos
 	return YES;
 }
 
-
-
--(void)setPreviousFilename:(XADPath *)prevname
-{
-	[previousname autorelease];
-	previousname=[prevname retain];
-}
 
 -(XADPath *)topOfDittoDirectoryStack
 {
