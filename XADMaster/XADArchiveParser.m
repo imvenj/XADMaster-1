@@ -6,6 +6,16 @@
 #import "XADCRCHandle.h"
 #import "XADPlatform.h"
 
+#if XADMASTER_SIMPLE
+
+#import "XADZipParser.h"
+#import "XADRARParser.h"
+#import "XAD7ZipParser.h"
+#import "XADTarParser.h"
+#import "XADLZHParser.h"
+
+#else
+
 #import "XAD7ZipParser.h"
 #import "XADALZipParser.h"
 #import "XADAppleSingleParser.h"
@@ -56,6 +66,8 @@
 #import "XADZipParser.h"
 #import "XADZipSFXParsers.h"
 #import "XADZooParser.h"
+
+#endif
 
 #include <dirent.h>
 
@@ -134,14 +146,20 @@ static int maxheader=0;
 	hasinitialized=YES;
 
 	parserclasses=[[NSMutableArray arrayWithObjects:
+					// Common formats
+					[XADZipParser class],
+					[XADRARParser class],
+					[XAD7ZipParser class],
+					[XADTarParser class],
+					
+					// Less common formats
+					[XADLZHParser class],
+
+#if !defined(XADMASTER_SIMPLE) && !XADMASTER_SIMPLE
 		// Common formats
-		[XADZipParser class],
-		[XADRARParser class],
 		[XADRAR5Parser class],
-		[XAD7ZipParser class],
 		[XADGzipParser class],
 		[XADBzip2Parser class],
-		[XADTarParser class],
 
 		// Mac formats
 		[XADStuffItParser class],
@@ -168,7 +186,6 @@ static int maxheader=0;
 		[XADCABParser class],
 		[XADCFBFParser class],
 		[XADCABSFXParser class],
-		[XADLZHParser class],
 		[XADLZHAmigaSFXParser class],
 		[XADLZHCommodore64SFXParser class],
 		[XADLZHSFXParser class],
@@ -207,6 +224,7 @@ static int maxheader=0;
 
 		// LibXAD
 		[XADLibXADParser class],
+#endif
 	nil] retain];
 
 	NSEnumerator *enumerator=[parserclasses objectEnumerator];
