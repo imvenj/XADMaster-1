@@ -80,7 +80,7 @@ NSString *XADFinderFlags=@"XADFinderFlags";
 	{
 		delegate=del;
 
-		parser=[[XADArchiveParser archiveParserForPath:file] retain];
+		parser=[[XADArchiveParser archiveParserForPath:file error:error] retain];
 		if(parser)
 		{
 			if([self _parseWithErrorPointer:error]) return self;
@@ -219,7 +219,7 @@ NSString *XADFinderFlags=@"XADFinderFlags";
 	[parser setDelegate:self];
 	[unarchiver setDelegate:self];
 
-	namedict=[[NSMutableDictionary dictionary] retain];
+	namedict=[[NSMutableDictionary alloc] init];
 
 	XADError parseerror=[parser parseWithoutExceptions];
 	if(parseerror)

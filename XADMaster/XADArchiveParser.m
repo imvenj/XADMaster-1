@@ -365,7 +365,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 	}
 	@catch(id e) { } // Fall through to a single file instead.
 
-	XADArchiveParser *parser=[[parserclass new] autorelease];
+	XADArchiveParser *parser=[[[parserclass alloc] init] autorelease];
 	[parser setHandle:handle];
 	[parser setResourceFork:fork];
 	[parser setFilename:filename];

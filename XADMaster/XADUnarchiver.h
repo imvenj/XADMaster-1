@@ -7,14 +7,15 @@ typedef NS_ENUM(int, XADForkStyle) {
 	XADMacOSXForkStyle = 1,
 	XADHiddenAppleDoubleForkStyle = 2,
 	XADVisibleAppleDoubleForkStyle = 3,
-	XADHFVExplorerAppleDoubleForkStyle = 4
+	XADHFVExplorerAppleDoubleForkStyle = 4,
+	
+#ifdef __APPLE__
+	XADDefaultForkStyle = XADMacOSXForkStyle,
+#else
+	XADDefaultForkStyle = XADVisibleAppleDoubleForkStyle,
+#endif
 };
 
-#ifdef __APPLE__
-#define XADDefaultForkStyle XADMacOSXForkStyle
-#else
-#define XADDefaultForkStyle XADVisibleAppleDoubleForkStyle
-#endif
 
 @protocol XADUnarchiverDelegate;
 

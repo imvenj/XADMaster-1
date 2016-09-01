@@ -329,7 +329,7 @@ encodingName:(NSString *)encoding
 {
 	if((self=[super init]))
 	{
-		detector=[UniversalDetector new]; // can return nil if UniversalDetector is not found
+		detector=[[UniversalDetector alloc] init]; // can return nil if UniversalDetector is not found
 		fixedencodingname=nil;
 		mac=NO;
 		hasanalyzeddata=NO;
