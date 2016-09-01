@@ -453,7 +453,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 		passwordencodingname=nil;
 		caresaboutpasswordencoding=NO;
 
-		stringsource=[XADStringSource new];
+		stringsource=[[XADStringSource alloc] init];
 
 		properties=[NSMutableDictionary new];
 
@@ -527,7 +527,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 }
 
 
--(NSDictionary *)properties { return properties; }
+-(NSDictionary *)properties { return [NSDictionary dictionaryWithDictionary:properties]; }
 
 -(NSString *)currentFilename
 {
@@ -565,7 +565,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 -(void)setPassword:(NSString *)newpassword
 {
 	[password autorelease];
-	password=[newpassword retain];
+	password=[newpassword copy];
 
 	// Make sure to invalidate any remaining solid handles, as they will need to change
 	// for the new password.

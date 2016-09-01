@@ -323,11 +323,13 @@ static const uint8_t *FindSignature(const uint8_t *ptr,NSInteger length)
 						totalsolidsize=0;
 					}
 
-					[currfiles addObject:@{@"Parts": currparts,
-						@"OutputLength": @(header.size),
-						@"Version": @(header.version),
-						@"Encrypted": [NSNumber numberWithBool:(block.flags&LHD_PASSWORD)?YES:NO],
-						@"Salt": header.salt}];
+					[currfiles addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+										  currparts,@"Parts",
+										  @(header.size),@"OutputLength",
+										  @(header.version),@"Version",
+										  @((block.flags&LHD_PASSWORD)?YES:NO),@"Encrypted",
+										  header.salt,@"Salt", // Ends the list if nil.
+										  nil]];
 
 					// Emit this file.
 					[self addEntryWithBlock:&block header:&header
