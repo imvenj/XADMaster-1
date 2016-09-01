@@ -4383,7 +4383,7 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0800;
 			};
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "XADMaster" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -5824,7 +5824,7 @@
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../Dependencies/iOS/Includes\"";
 				INSTALL_PATH = /usr/local/lib;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = XADMaster.ios;
 				SDKROOT = iphoneos;
@@ -5843,7 +5843,7 @@
 				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../Dependencies/iOS/Includes\"";
 				INSTALL_PATH = /usr/local/lib;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = XADMaster.ios;
 				SDKROOT = iphoneos;
@@ -5873,13 +5873,16 @@
 		1B68D25C13282D2500A8121A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -6461,13 +6464,16 @@
 		1DEB91B208733DA50010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -6557,7 +6563,7 @@
 				1B68D26413282D2500A8121A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		1B31CB8E13C6423600ED119E /* Build configuration list for PBXNativeTarget "XADTest6" */ = {
 			isa = XCConfigurationList;
@@ -6566,7 +6572,7 @@
 				1B31CB9013C6423600ED119E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		1B34238D131D8B5B00CCDF77 /* Build configuration list for PBXNativeTarget "XADTest5" */ = {
 			isa = XCConfigurationList;
@@ -6575,7 +6581,7 @@
 				1B68D26213282D2500A8121A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		1B34A97A11C2FD2500396C26 /* Build configuration list for PBXNativeTarget "libXADMaster.a" */ = {
 			isa = XCConfigurationList;
@@ -6584,7 +6590,7 @@
 				1B68D26313282D2500A8121A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		1B3A689F101BA12C00AE25A8 /* Build configuration list for PBXNativeTarget "XADTest4" */ = {
 			isa = XCConfigurationList;
@@ -6593,7 +6599,7 @@
 				1B68D26113282D2500A8121A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		1B433E4211E9460100DA1EFB /* Build configuration list for PBXAggregateTarget "Everything" */ = {
 			isa = XCConfigurationList;
@@ -6602,7 +6608,7 @@
 				1B68D26913282D2500A8121A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		1B467AFE15CD9A73001AB1DD /* Build configuration list for PBXNativeTarget "libXADMaster.ios.a" */ = {
 			isa = XCConfigurationList;
@@ -6611,7 +6617,7 @@
 				1B467B0015CD9A73001AB1DD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		1B5A7BA60A24F9E300B189EB /* Build configuration list for PBXNativeTarget "XADTest" */ = {
 			isa = XCConfigurationList;
@@ -6620,7 +6626,7 @@
 				1B68D25E13282D2500A8121A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		1B91CD5B11D97E7C0081E40A /* Build configuration list for PBXNativeTarget "libXADMaster.win.a" */ = {
 			isa = XCConfigurationList;
@@ -6629,7 +6635,7 @@
 				1B68D26613282D2500A8121A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		1B91CDA911D981E20081E40A /* Build configuration list for PBXNativeTarget "unar.exe" */ = {
 			isa = XCConfigurationList;
@@ -6638,7 +6644,7 @@
 				1B68D26713282D2500A8121A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		1B91D18C11E1677B0081E40A /* Build configuration list for PBXNativeTarget "lsar" */ = {
 			isa = XCConfigurationList;
@@ -6647,7 +6653,7 @@
 				1B68D26513282D2500A8121A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		1B91D2EB11E694860081E40A /* Build configuration list for PBXNativeTarget "lsar.exe" */ = {
 			isa = XCConfigurationList;
@@ -6656,7 +6662,7 @@
 				1B68D26813282D2500A8121A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		1BBAB6880EC274A3007FE6A2 /* Build configuration list for PBXNativeTarget "XADTest2" */ = {
 			isa = XCConfigurationList;
@@ -6665,7 +6671,7 @@
 				1B68D25F13282D2500A8121A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		1BC893210ED6F2A7006B47FE /* Build configuration list for PBXNativeTarget "XADTest3" */ = {
 			isa = XCConfigurationList;
@@ -6674,7 +6680,7 @@
 				1B68D26013282D2500A8121A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "XADMaster" */ = {
 			isa = XCConfigurationList;
@@ -6683,7 +6689,7 @@
 				1B68D25D13282D2500A8121A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "XADMaster" */ = {
 			isa = XCConfigurationList;
@@ -6692,7 +6698,7 @@
 				1B68D25C13282D2500A8121A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		5500A60C1D776ADB00321300 /* Build configuration list for PBXNativeTarget "XADMaster-simple" */ = {
 			isa = XCConfigurationList;
@@ -6701,7 +6707,7 @@
 				5500A60E1D776ADB00321300 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
