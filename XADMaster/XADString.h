@@ -52,20 +52,20 @@ extern NSString *XADMacOSCroatianStringEncodingName;
 @protocol XADString <NSObject>
 
 -(BOOL)canDecodeWithEncodingName:(NSString *)encoding;
--(NSString *)string;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *string;
 -(NSString *)stringWithEncodingName:(NSString *)encoding;
--(NSData *)data;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSData *data;
 
--(BOOL)encodingIsKnown;
--(NSString *)encodingName;
--(float)confidence;
+@property (NS_NONATOMIC_IOSONLY, readonly) BOOL encodingIsKnown;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *encodingName;
+@property (NS_NONATOMIC_IOSONLY, readonly) float confidence;
 
--(XADStringSource *)source;
+@property (NS_NONATOMIC_IOSONLY, readonly, retain) XADStringSource *source;
 
 #ifdef __APPLE__
 -(BOOL)canDecodeWithEncoding:(NSStringEncoding)encoding;
 -(NSString *)stringWithEncoding:(NSStringEncoding)encoding;
--(NSStringEncoding)encoding;
+@property (NS_NONATOMIC_IOSONLY, readonly) NSStringEncoding encoding;
 #endif
 
 @end
@@ -101,7 +101,7 @@ extern NSString *XADMacOSCroatianStringEncodingName;
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *encodingName;
 @property (NS_NONATOMIC_IOSONLY, readonly) float confidence;
 
-@property (NS_NONATOMIC_IOSONLY, readonly, strong) XADStringSource *source;
+@property (NS_NONATOMIC_IOSONLY, readonly, retain) XADStringSource *source;
 
 -(BOOL)hasASCIIPrefix:(NSString *)asciiprefix;
 -(XADString *)XADStringByStrippingASCIIPrefixOfLength:(int)length;

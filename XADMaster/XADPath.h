@@ -18,7 +18,7 @@
 @property (class, readonly, retain) XADPath *emptyPath;
 #endif
 +(instancetype)pathWithString:(NSString *)string;
-+(instancetype)pathWithStringComponents:(NSArray *)components;
++(instancetype)pathWithStringComponents:(NSArray<NSString*> *)components;
 +(instancetype)separatedPathWithString:(NSString *)string;
 +(instancetype)decodedPathWithData:(NSData *)bytedata encodingName:(NSString *)encoding separators:(const char *)separators;
 +(instancetype)analyzedPathWithData:(NSData *)bytedata source:(XADStringSource *)stringsource
@@ -88,7 +88,6 @@ separators:(const char *)pathseparators;
 
 // Other interfaces.
 @property (NS_NONATOMIC_IOSONLY, readonly) NSUInteger hash;
--(id)copyWithZone:(NSZone *)zone;
 
 // Deprecated.
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) XADPath *safePath DEPRECATED_ATTRIBUTE; // Deprecated. Use sanitizedPathString: instead.

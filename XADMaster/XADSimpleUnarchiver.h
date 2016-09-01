@@ -40,7 +40,7 @@
 	off_t totalsize,currsize,totalprogress;
 }
 
-+(instancetype)simpleUnarchiverForPath:(NSString *)path;
++(instancetype)simpleUnarchiverForPath:(NSString *)path NS_SWIFT_UNAVAILABLE("Call may throw exceptions, use init(for:error:) instead");
 +(instancetype)simpleUnarchiverForPath:(NSString *)path error:(XADError *)errorptr;
 
 -(instancetype)init UNAVAILABLE_ATTRIBUTE;
