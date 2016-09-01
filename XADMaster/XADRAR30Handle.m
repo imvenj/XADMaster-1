@@ -520,7 +520,7 @@
 	if(!stack) stack=[NSMutableArray new];
 
 	CSInputBuffer *filterinput=CSInputBufferAllocWithBuffer(bytes,length,0);
-	int numcodes=[filtercode count];
+	NSInteger numcodes=[filtercode count];
 
 	int num;
 	BOOL isnew=NO;

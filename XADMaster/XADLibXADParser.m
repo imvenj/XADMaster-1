@@ -323,12 +323,12 @@ static xadUINT32 InFunc(struct Hook *hook,xadPTR object,struct xadHookParam *par
 			if([fh respondsToSelector:@selector(handles)])
 			{
 				NSArray *handles=[(id)fh handles];
-				int count=[handles count];
+				NSInteger count=[handles count];
 
 				archive->xai_MultiVolume=calloc(sizeof(xadSize),count+1);
 
 				off_t total=0;
-				for(int i=0;i<count;i++)
+				for(NSInteger i=0;i<count;i++)
 				{
 					archive->xai_MultiVolume[i]=total;
 					total+=[handles[i] fileSize];

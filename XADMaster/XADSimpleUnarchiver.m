@@ -225,7 +225,7 @@
 	[regexes addObject:regex];
 }
 
--(void)addIndexFilter:(int)index
+-(void)addIndexFilter:(NSInteger)index
 {
 	if(!indices) indices=[NSMutableIndexSet new];
 	[indices addIndex:index];
@@ -785,8 +785,8 @@
 	NSMutableDictionary *parent=renames;
 	NSString *path=unpackdestination;
 	NSArray *components=[safefilename pathComponents];
-	int numcomponents=[components count];
-	for(int i=0;i<numcomponents;i++)
+	NSInteger numcomponents=[components count];
+	for(NSInteger i=0;i<numcomponents;i++)
 	{
 		NSString *component=components[i];
 		NSMutableDictionary *pathdict=parent[component];

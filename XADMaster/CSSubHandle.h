@@ -13,8 +13,8 @@
 -(instancetype)initAsCopyOf:(CSSubHandle *)other;
 
 // Public methods
--(CSHandle *)parentHandle;
--(off_t)startOffsetInParent;
+@property (readonly, retain) CSHandle *parentHandle;
+@property (readonly) off_t startOffsetInParent;
 
 // Implemented by this class
 @property (NS_NONATOMIC_IOSONLY, readonly) off_t fileSize;

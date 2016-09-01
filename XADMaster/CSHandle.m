@@ -12,6 +12,7 @@ NSString *CSNotSupportedException=@"CSNotSupportedException";
 
 
 @implementation CSHandle
+@synthesize name;
 
 -(id)initWithName:(NSString *)descname
 {
@@ -458,9 +459,6 @@ CSWriteValueImpl(uint32_t,writeID,CSSetUInt32BE)
 	[NSException raise:CSNotSupportedException
 	format:@"Attempted to use unsupported method +[%@ %@] when reading from file \"%@\".",[self class],NSStringFromSelector(selector),name];
 }
-
-
--(NSString *)name { return name; }
 
 -(NSString *)description
 {

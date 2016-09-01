@@ -110,7 +110,7 @@ preservePermissions:(BOOL)preservepermissions
 		{
 			NSData *data=extattrs[key];
 
-			int namelen=[key lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
+			NSInteger namelen=[key lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
 			char namebytes[namelen+1];
 			[key getCString:namebytes maxLength:sizeof(namebytes) encoding:NSUTF8StringEncoding];
 
@@ -204,17 +204,18 @@ preservePermissions:(BOOL)preservepermissions
 
 	NSAppleEventDescriptor *commentdesc=[NSAppleEventDescriptor descriptorWithString:comment];
 
-	FSRef ref;
-	bzero(&ref,sizeof(ref));
-	if(FSPathMakeRef((UInt8 *)[path fileSystemRepresentation],&ref,NULL)!=noErr) return;
+	NSURL *fileURL = [NSURL fileURLWithPath:path];
+	NSString *fileString = [[fileURL absoluteString] retain];
+	const char *fileCStr = fileString.UTF8String;
 
 	AEDesc filedesc;
 	AEInitializeDesc(&filedesc);
-	if(AECoercePtr(typeFSRef,&ref,sizeof(ref),typeAlias,&filedesc)!=noErr) return;
+	if(AECoercePtr(typeFileURL,fileCStr,strlen(fileCStr),typeAlias,&filedesc)!=noErr) {[fileString release]; return;}
 
 	AEDesc builtevent,replyevent;
 	AEInitializeDesc(&builtevent);
 	AEInitializeDesc(&replyevent);
+	[fileString release];
 
 	static OSType findersignature='MACS';
 
@@ -313,8 +314,8 @@ preservePermissions:(BOOL)preservepermissions
 	if(stat(csrc,&st)!=0) return NO;
 
 	struct timeval times[2]={
-		{st.st_atimespec.tv_sec,st.st_atimespec.tv_nsec/1000},
-		{st.st_mtimespec.tv_sec,st.st_mtimespec.tv_nsec/1000},
+		{st.st_atimespec.tv_sec,(int)(st.st_atimespec.tv_nsec/1000)},
+		{st.st_mtimespec.tv_sec,(int)(st.st_mtimespec.tv_nsec/1000)},
 	};
 
 	const char *cdest=[dest fileSystemRepresentation];

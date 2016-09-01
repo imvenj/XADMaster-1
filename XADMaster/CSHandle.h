@@ -43,6 +43,7 @@ extern NSString *CSNotSupportedException;
 @property (NS_NONATOMIC_IOSONLY, readonly) off_t fileSize;
 @property (NS_NONATOMIC_IOSONLY, readonly) off_t offsetInFile;
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL atEndOfFile;
+
 -(void)seekToFileOffset:(off_t)offs;
 -(void)seekToEndOfFile;
 -(void)pushBackByte:(int)byte;
@@ -140,10 +141,8 @@ extern NSString *CSNotSupportedException;
 -(void)_raiseNotImplemented:(SEL)selector;
 -(void)_raiseNotSupported:(SEL)selector;
 
--(NSString *)name;
+@property (readonly, copy) NSString *name;
 -(NSString *)description;
-
--(id)copyWithZone:(NSZone *)zone;
 
 @end
 

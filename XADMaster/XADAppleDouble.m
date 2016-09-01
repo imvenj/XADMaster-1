@@ -164,7 +164,7 @@ extendedAttributes:(NSDictionary *)extattrs
 
  		NSData *data=extattrs[key];
 		NSData *keydata=[key dataUsingEncoding:NSUTF8StringEncoding];
-		int namelen=[keydata length]+1;
+		int namelen=(int)[keydata length]+1;
 		if(namelen>128) continue; // Skip entries with too long names.
 
 		numattributes++;
@@ -241,7 +241,7 @@ extendedAttributes:(NSDictionary *)extattrs
 			NSData *keydata=encodedkeys[key];
 			if(!keydata) continue;
 
-			int namelen=[keydata length]+1;
+			int namelen=(int)([keydata length]+1);
 
 			// Attribute entry header template.
 			uint8_t entryheader[11]=
@@ -253,7 +253,7 @@ extendedAttributes:(NSDictionary *)extattrs
 
 			// Set entry header fields.
 			CSSetUInt32BE(&entryheader[0],currdataoffset); // offset
-			CSSetUInt32BE(&entryheader[4],[data length]); // length
+			CSSetUInt32BE(&entryheader[4],(uint32_t)[data length]); // length
 
 			// Write entry header.
 			[fh writeBytes:sizeof(entryheader) fromBuffer:entryheader];

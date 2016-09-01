@@ -8,13 +8,12 @@
 	int logicalsize,physicalsize;
 }
 
--(id)initWithHandle:(CSHandle *)handle startOffset:(off_t)start
+-(instancetype)initWithHandle:(CSHandle *)handle startOffset:(off_t)start
 logicalBlockSize:(int)logical physicalBlockSize:(int)physical;
--(void)dealloc;
 
--(off_t)fileSize;
--(off_t)offsetInFile;
--(BOOL)atEndOfFile;
+@property (NS_NONATOMIC_IOSONLY, readonly) off_t fileSize;
+@property (NS_NONATOMIC_IOSONLY, readonly) off_t offsetInFile;
+@property (NS_NONATOMIC_IOSONLY, readonly) BOOL atEndOfFile;
 
 -(void)seekToFileOffset:(off_t)offs;
 -(void)seekToEndOfFile;

@@ -30,7 +30,7 @@ extern NSString *XADDisableMacForkExpansionKey;
 -(BOOL)parseAppleDoubleWithDictionary:(NSMutableDictionary *)dict
 name:(XADPath *)name retainPosition:(BOOL)retainpos;
 
--(void)setPreviousFilename:(XADPath *)prevname;
+@property (NS_NONATOMIC_IOSONLY, retain) XADPath *previousFilename;
 -(XADPath *)topOfDittoDirectoryStack;
 -(void)pushDittoDirectory:(XADPath *)directory;
 -(void)popDittoDirectoryStackUntilCanonicalPrefixFor:(XADPath *)path;

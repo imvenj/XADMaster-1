@@ -9,13 +9,12 @@
 	z_stream zs;
 	BOOL streaminited;
 
-	int idatstart;
+	NSInteger idatstart;
 }
 
 +(XADPNGWriter *)PNGWriter;
 
--(id)init;
--(void)dealloc;
+-(instancetype)init;
 
 -(NSData *)data;
 

@@ -320,12 +320,16 @@ encodingName:(NSString *)encoding
 
 
 @implementation XADStringSource
+@synthesize prefersMacEncodings = mac;
+@synthesize fixedEncodingName = fixedencodingname;
+@synthesize hasAnalyzedData = hasanalyzeddata;
+@synthesize detector;
 
 -(instancetype)init
 {
 	if((self=[super init]))
 	{
-		detector=[UniversalDetector new]; // can return nil if UniversalDetector is not found
+		detector=[[UniversalDetector alloc] init]; // can return nil if UniversalDetector is not found
 		fixedencodingname=nil;
 		mac=NO;
 		hasanalyzeddata=NO;
@@ -345,8 +349,6 @@ encodingName:(NSString *)encoding
 	hasanalyzeddata=YES;
 	[detector analyzeData:data];
 }
-
--(BOOL)hasAnalyzedData { return hasanalyzeddata; }
 
 -(NSString *)encodingName
 {
@@ -382,28 +384,10 @@ encodingName:(NSString *)encoding
 	return [detector confidence];
 }
 
--(UniversalDetector *)detector
-{
-	return detector;
-}
-
--(void)setFixedEncodingName:(NSString *)encoding
-{
-	[fixedencodingname autorelease];
-	fixedencodingname=[encoding retain];
-}
-
 -(BOOL)hasFixedEncoding
 {
 	return fixedencodingname!=nil;
 }
-
--(void)setPrefersMacEncodings:(BOOL)prefermac
-{
-	mac=prefermac;
-}
-
-
 
 #ifdef __APPLE__
 -(NSStringEncoding)encoding

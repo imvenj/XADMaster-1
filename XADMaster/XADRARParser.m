@@ -77,11 +77,11 @@ static BOOL IsAncientRARSignature(const uint8_t *ptr)
 	return ptr[0]==0x52 && ptr[1]==0x45 && ptr[2]==0x7e && ptr[3]==0x5e;
 }
 
-static const uint8_t *FindSignature(const uint8_t *ptr,int length)
+static const uint8_t *FindSignature(const uint8_t *ptr,NSInteger length)
 {
 	if(length<7) return NULL;
 
-	for(int i=0;i<=length-7;i++) if(IsRARSignature(&ptr[i])) return &ptr[i];
+	for(NSInteger i=0;i<=length-7;i++) if(IsRARSignature(&ptr[i])) return &ptr[i];
 
 	return NULL;
 }
@@ -98,7 +98,7 @@ static const uint8_t *FindSignature(const uint8_t *ptr,int length)
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
 	const uint8_t *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
 	if(length<7) return NO; // TODO: fix to use correct min size
 
@@ -323,11 +323,13 @@ static const uint8_t *FindSignature(const uint8_t *ptr,int length)
 						totalsolidsize=0;
 					}
 
-					[currfiles addObject:@{@"Parts": currparts,
-						@"OutputLength": @(header.size),
-						@"Version": @(header.version),
-						@"Encrypted": [NSNumber numberWithBool:(block.flags&LHD_PASSWORD)?YES:NO],
-						@"Salt": header.salt}];
+					[currfiles addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+										  currparts,@"Parts",
+										  @(header.size),@"OutputLength",
+										  @(header.version),@"Version",
+										  @((block.flags&LHD_PASSWORD)?YES:NO),@"Encrypted",
+										  header.salt,@"Salt", // Ends the list if nil.
+										  nil]];
 
 					// Emit this file.
 					[self addEntryWithBlock:&block header:&header
@@ -534,7 +536,7 @@ isCorrupted:(BOOL)iscorrupted
 		@(header->crc),@"RARCRC32",
 		@(header->os),@"RAROS",
 		@(header->attrs),@"RARAttributes",
-		[NSNumber numberWithInt:[files count]-1],@"RARSolidIndex",
+		@([files count]-1),@"RARSolidIndex",
 	nil];
 
 	if(iscorrupted) dict[XADIsCorruptedKey] = @YES;
@@ -579,18 +581,18 @@ isCorrupted:(BOOL)iscorrupted
 {
 	if(flags&LHD_UNICODE)
 	{
-		int length=[data length];
+		NSInteger length=[data length];
 		const uint8_t *bytes=[data bytes];
 
-		int n=0;
+		NSInteger n=0;
 		while(n<length&&bytes[n]) n++;
 
 		if(n==length) return [self XADPathWithData:data encodingName:XADUTF8StringEncodingName separators:XADWindowsPathSeparator];
 
-		int num=length-n-1;
+		NSInteger num=length-n-1;
 		if(num<=1) return [self XADPathWithCString:(const char *)bytes separators:XADWindowsPathSeparator];
 
-		CSMemoryHandle *fh=[CSMemoryHandle memoryHandleForReadingBuffer:bytes+n+1 length:num];
+		CSMemoryHandle *fh=[CSMemoryHandle memoryHandleForReadingBuffer:bytes+n+1 length:(int)num];
 		NSMutableString *str=[NSMutableString string];
 
 		@try
@@ -795,7 +797,7 @@ cryptoVersion:(int)version salt:(NSData *)salt
 name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 {
 	const uint8_t *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
 	const uint8_t *header=FindSignature(bytes,length);
 	if(header)
@@ -810,7 +812,7 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 +(NSArray *)volumesForHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
 	const uint8_t *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
 	const uint8_t *header=FindSignature(bytes,length);
 	if(!header) return nil; // Shouldn't happen

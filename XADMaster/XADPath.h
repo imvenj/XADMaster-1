@@ -13,9 +13,12 @@
 	NSString *cachedencoding;
 }
 
-+(instancetype)emptyPath;
++(XADPath *)emptyPath;
+#if __has_feature(objc_class_property)
+@property (class, readonly, retain) XADPath *emptyPath;
+#endif
 +(instancetype)pathWithString:(NSString *)string;
-+(instancetype)pathWithStringComponents:(NSArray *)components;
++(instancetype)pathWithStringComponents:(NSArray<NSString*> *)components;
 +(instancetype)separatedPathWithString:(NSString *)string;
 +(instancetype)decodedPathWithData:(NSData *)bytedata encodingName:(NSString *)encoding separators:(const char *)separators;
 +(instancetype)analyzedPathWithData:(NSData *)bytedata source:(XADStringSource *)stringsource
@@ -33,8 +36,8 @@ separators:(const char *)pathseparators;
 -(BOOL)hasCanonicalPrefix:(XADPath *)other;
 -(BOOL)hasCanonicalPrefix:(XADPath *)other encodingName:(NSString *)encoding;
 
-@property (NS_NONATOMIC_IOSONLY, readonly) int depth; // Note: Does not take . or .. paths into account.
--(int)depthWithEncodingName:(NSString *)encoding;
+@property (NS_NONATOMIC_IOSONLY, readonly) NSInteger depth; // Note: Does not take . or .. paths into account.
+-(NSInteger)depthWithEncodingName:(NSString *)encoding;
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray *pathComponents;
 -(NSArray *)pathComponentsWithEncodingName:(NSString *)encoding;
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray *canonicalPathComponents;
@@ -85,7 +88,6 @@ separators:(const char *)pathseparators;
 
 // Other interfaces.
 @property (NS_NONATOMIC_IOSONLY, readonly) NSUInteger hash;
--(id)copyWithZone:(NSZone *)zone;
 
 // Deprecated.
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) XADPath *safePath DEPRECATED_ATTRIBUTE; // Deprecated. Use sanitizedPathString: instead.
@@ -93,7 +95,7 @@ separators:(const char *)pathseparators;
 // Subclass methods.
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL _isPartAbsolute;
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL _isPartEmpty;
--(int)_depthOfPartWithEncodingName:(NSString *)encoding;
+-(NSInteger)_depthOfPartWithEncodingName:(NSString *)encoding;
 -(void)_addPathComponentsOfPartToArray:(NSMutableArray *)array encodingName:(NSString *)encoding;
 -(NSString *)_lastPathComponentOfPartWithEncodingName:(NSString *)encoding;
 -(NSString *)_firstPathComponentOfPartWithEncodingName:(NSString *)encoding;
@@ -111,14 +113,14 @@ separators:(const char *)pathseparators;
 	NSString *string;
 }
 
+-(instancetype)init UNAVAILABLE_ATTRIBUTE;
 -(instancetype)initWithComponentString:(NSString *)pathstring NS_DESIGNATED_INITIALIZER;
 -(instancetype)initWithComponentString:(NSString *)pathstring parent:(XADPath *)parentpath NS_DESIGNATED_INITIALIZER;
 -(instancetype)initWithPath:(XADStringPath *)path parent:(XADPath *)parentpath;
--(void)dealloc;
 
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL _isPartAbsolute;
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL _isPartEmpty;
--(int)_depthOfPartWithEncodingName:(NSString *)encoding;
+-(NSInteger)_depthOfPartWithEncodingName:(NSString *)encoding;
 -(void)_addPathComponentsOfPartToArray:(NSMutableArray *)array encodingName:(NSString *)encoding;
 -(NSString *)_lastPathComponentOfPartWithEncodingName:(NSString *)encoding;
 -(NSString *)_firstPathComponentOfPartWithEncodingName:(NSString *)encoding;
@@ -137,16 +139,16 @@ separators:(const char *)pathseparators;
 	const char *separators;
 }
 
+-(instancetype)init UNAVAILABLE_ATTRIBUTE;
 -(instancetype)initWithData:(NSData *)bytedata source:(XADStringSource *)stringsource
 separators:(const char *)pathseparators NS_DESIGNATED_INITIALIZER;
 -(instancetype)initWithData:(NSData *)bytedata source:(XADStringSource *)stringsource
 separators:(const char *)pathseparators parent:(XADPath *)parentpath NS_DESIGNATED_INITIALIZER;
 -(instancetype)initWithPath:(XADRawPath *)path parent:(XADPath *)parentpath;
--(void)dealloc;
 
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL _isPartAbsolute;
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL _isPartEmpty;
--(int)_depthOfPartWithEncodingName:(NSString *)encoding;
+-(NSInteger)_depthOfPartWithEncodingName:(NSString *)encoding;
 -(void)_addPathComponentsOfPartToArray:(NSMutableArray *)array encodingName:(NSString *)encoding;
 -(NSString *)_lastPathComponentOfPartWithEncodingName:(NSString *)encoding;
 -(NSString *)_firstPathComponentOfPartWithEncodingName:(NSString *)encoding;

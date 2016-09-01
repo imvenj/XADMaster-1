@@ -2,9 +2,9 @@
 #import "XADPlatform.h"
 
 static BOOL IsSeparator(char c,const char *separators);
-static BOOL NextComponent(const char *bytes,int length,int *start,int *end,NSString *encoding,const char *separators);
-static NSString *StringForComponent(const char *bytes,int start,int end,NSString *encoding,const char *separators);
-static BOOL IsComponentLeadingSlash(const char *bytes,int start,int end,const char *separators);
+static BOOL NextComponent(const char *bytes,NSInteger length,NSInteger *start,NSInteger *end,NSString *encoding,const char *separators);
+static NSString *StringForComponent(const char *bytes,NSInteger start,NSInteger end,NSString *encoding,const char *separators);
+static BOOL IsComponentLeadingSlash(const char *bytes,NSInteger start,NSInteger end,const char *separators);
 static BOOL IsDataASCIIOrSeparator(NSData *data,const char *separators);
 
 @implementation XADPath
@@ -24,10 +24,10 @@ static BOOL IsDataASCIIOrSeparator(NSData *data,const char *separators);
 
 +(XADPath *)pathWithStringComponents:(NSArray *)components
 {
-	int count=[components count];
+	NSInteger count=[components count];
 
 	XADPath *lastpath=nil;
-	for(int i=0;i<count;i++)
+	for(NSInteger i=0;i<count;i++)
 	{
 		NSString *component=components[i];
 
@@ -44,7 +44,7 @@ static BOOL IsDataASCIIOrSeparator(NSData *data,const char *separators);
 +(XADPath *)separatedPathWithString:(NSString *)string
 {
 	NSArray *components=[string pathComponents];
-	int count=[components count];
+	NSInteger count=[components count];
 	if(count>1&&[[components lastObject] isEqual:@"/"]) count--; // ignore ending slashes, just like NSString does
 
 	XADPath *lastpath=nil;
@@ -65,10 +65,10 @@ static BOOL IsDataASCIIOrSeparator(NSData *data,const char *separators);
 +(XADPath *)decodedPathWithData:(NSData *)bytedata encodingName:(NSString *)encoding separators:(const char *)separators
 {
 	const char *bytes=[bytedata bytes];
-	int length=[bytedata length];
+	NSInteger length=[bytedata length];
 
 	XADPath *lastpath=nil;
-	int start=0,end=0;
+	NSInteger start=0,end=0;
 	while(NextComponent(bytes,length,&start,&end,encoding,separators))
 	{
 		NSString *component=StringForComponent(bytes,start,end,encoding,separators);
@@ -210,8 +210,8 @@ separators:(const char *)pathseparators
 {
 	NSArray *components1=[self canonicalPathComponentsWithEncodingName:encoding];
 	NSArray *components2=[other canonicalPathComponentsWithEncodingName:encoding];
-	int count1=[components1 count];
-	int count2=[components2 count];
+	NSInteger count1=[components1 count];
+	NSInteger count2=[components2 count];
 
 	if(count2>count1) return NO;
 
@@ -226,14 +226,14 @@ separators:(const char *)pathseparators
 
 
 
--(int)depth
+-(NSInteger)depth
 {
 	return [self depthWithEncodingName:[self encodingName]];
 }
 
--(int)depthWithEncodingName:(NSString *)encoding
+-(NSInteger)depthWithEncodingName:(NSString *)encoding
 {
-	int depth=[self _depthOfPartWithEncodingName:encoding];
+	NSInteger depth=[self _depthOfPartWithEncodingName:encoding];
 	if(parent) depth+=[parent depthWithEncodingName:encoding];
 	return depth;
 }
@@ -419,8 +419,8 @@ separators:(const char *)pathseparators
 -(NSString *)sanitizedPathStringWithEncodingName:(NSString *)encoding
 {
 	NSArray *components=[self canonicalPathComponentsWithEncodingName:encoding];
-	int count=[components count];
-	int first=0;
+	NSInteger count=[components count];
+	NSInteger first=0;
 
 	// Drop "/" at the start of the path.
 	if(count && [components[0] isEqual:@"/"]) first++;
@@ -428,7 +428,7 @@ separators:(const char *)pathseparators
 	if(first==count) return @".";
 
 	NSMutableString *string=[NSMutableString string];
-	for(int i=first;i<count;i++)
+	for(NSInteger i=first;i<count;i++)
 	{
 		if(i!=first) [string appendString:@"/"];
 
@@ -469,14 +469,14 @@ separators:(const char *)pathseparators
 -(NSString *)stringWithEncodingName:(NSString *)encoding
 {
 	NSArray *components=[self pathComponentsWithEncodingName:encoding];
-	int count=[components count];
+	NSInteger count=[components count];
 
 	if(count==0) return @".";
 	else if(count==1) return components[0];
 
 	NSMutableString *string=[NSMutableString string];
 
-	for(int i=0;i<count;i++)
+	for(NSInteger i=0;i<count;i++)
 	{
 		NSString *component=components[i];
 
@@ -604,7 +604,7 @@ separators:(const char *)pathseparators
 	NSLog(@"Warning: -[XADPath safePath] is deprecated. Use -[XADPath sanitizedPathStringWithEncodingName:] instead.");
 
 	NSArray *components=[self canonicalPathComponentsWithEncodingName:[self encodingName]];
-	int count=[components count];
+	NSInteger count=[components count];
 	int first=0;
 
 	// Drop "/" and ".." components at the start of the path.
@@ -635,7 +635,7 @@ separators:(const char *)pathseparators
 
 -(BOOL)_isPartAbsolute { return NO; }
 -(BOOL)_isPartEmpty { return YES; }
--(int)_depthOfPartWithEncodingName:(NSString *)encoding { return 0; }
+-(NSInteger)_depthOfPartWithEncodingName:(NSString *)encoding { return 0; }
 -(void)_addPathComponentsOfPartToArray:(NSMutableArray *)array encodingName:(NSString *)encoding {}
 -(NSString *)_lastPathComponentOfPartWithEncodingName:(NSString *)encoding { return @""; }
 -(NSString *)_firstPathComponentOfPartWithEncodingName:(NSString *)encoding { return @""; }
@@ -690,7 +690,7 @@ separators:(const char *)pathseparators
 	return [string length]==0;
 }
 
--(int)_depthOfPartWithEncodingName:(NSString *)encoding
+-(NSInteger)_depthOfPartWithEncodingName:(NSString *)encoding
 {
 	return 1;
 }
@@ -808,12 +808,12 @@ separators:(const char *)pathseparators parent:(XADPath *)parentpath
 	return NO;
 }
 
--(int)_depthOfPartWithEncodingName:(NSString *)encoding
+-(NSInteger)_depthOfPartWithEncodingName:(NSString *)encoding
 {
 	const char *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
-	int depth=0,start=0,end=0;
+	NSInteger depth=0,start=0,end=0;
 	while(NextComponent(bytes,length,&start,&end,encoding,separators)) depth++;
 
 	return depth;
@@ -822,9 +822,9 @@ separators:(const char *)pathseparators parent:(XADPath *)parentpath
 -(void)_addPathComponentsOfPartToArray:(NSMutableArray *)array encodingName:(NSString *)encoding
 {
 	const char *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
-	int start=0,end=0;
+	NSInteger start=0,end=0;
 	while(NextComponent(bytes,length,&start,&end,encoding,separators))
 	{
 		[array addObject:StringForComponent(bytes,start,end,encoding,separators)];
@@ -834,9 +834,9 @@ separators:(const char *)pathseparators parent:(XADPath *)parentpath
 -(NSString *)_lastPathComponentOfPartWithEncodingName:(NSString *)encoding
 {
 	const char *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
-	int start=0,end=0,laststart=0,lastend=0;
+	NSInteger start=0,end=0,laststart=0,lastend=0;
 	while(NextComponent(bytes,length,&start,&end,encoding,separators))
 	{
 		laststart=start;
@@ -850,9 +850,9 @@ separators:(const char *)pathseparators parent:(XADPath *)parentpath
 -(NSString *)_firstPathComponentOfPartWithEncodingName:(NSString *)encoding
 {
 	const char *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
-	int start=0,end=0;
+	NSInteger start=0,end=0;
 	if(!NextComponent(bytes,length,&start,&end,encoding,separators)) return @"";
 	else return StringForComponent(bytes,start,end,encoding,separators);
 }
@@ -860,9 +860,9 @@ separators:(const char *)pathseparators parent:(XADPath *)parentpath
 -(XADPath *)_pathByDeletingLastPathComponentOfPartWithEncodingName:(NSString *)encoding
 {
 	const char *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
-	int start=0,end=0,laststart=0,lastend=0;
+	NSInteger start=0,end=0,laststart=0,lastend=0;
 	while(NextComponent(bytes,length,&start,&end,encoding,separators))
 	{
 		laststart=start;
@@ -871,7 +871,7 @@ separators:(const char *)pathseparators parent:(XADPath *)parentpath
 
 	if(!laststart&&!lastend) return nil;
 
-	int earliest=0;
+	NSInteger earliest=0;
 	if(length>0 && IsSeparator(bytes[0],separators)) earliest=1; // Deal with leading slashes.
 
 	while(start>earliest && IsSeparator(bytes[start-1],separators)) start--;
@@ -884,9 +884,9 @@ separators:(const char *)pathseparators parent:(XADPath *)parentpath
 -(XADPath *)_pathByDeletingFirstPathComponentOfPartWithEncodingName:(NSString *)encoding
 {
 	const char *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
-	int start=0,end=0;
+	NSInteger start=0,end=0;
 	if(!NextComponent(bytes,length,&start,&end,encoding,separators)) return nil;
 
 	while(end<length && IsSeparator(bytes[end],separators)) end++;
@@ -940,10 +940,10 @@ static BOOL IsSeparator(char c,const char *separators)
 	return NO;
 }
 
-static BOOL NextComponent(const char *bytes,int length,int *start,int *end,
+static BOOL NextComponent(const char *bytes,NSInteger length,NSInteger *start,NSInteger *end,
 NSString *encoding,const char *separators)
 {
-	int offs=*end;
+	NSInteger offs=*end;
 
 	// Check for a slash at the start of the path.
 	if(offs==0 && length>0 && IsSeparator(bytes[0],separators))
@@ -977,7 +977,7 @@ NSString *encoding,const char *separators)
 	return YES;
 }
 
-static NSString *StringForComponent(const char *bytes,int start,int end,
+static NSString *StringForComponent(const char *bytes,NSInteger start,NSInteger end,
 NSString *encoding,const char *separators)
 {
 	if(IsComponentLeadingSlash(bytes,start,end,separators)) return @"/";
@@ -985,7 +985,7 @@ NSString *encoding,const char *separators)
 	length:end-start encodingName:encoding];
 }
 
-static BOOL IsComponentLeadingSlash(const char *bytes,int start,int end,const char *separators)
+static BOOL IsComponentLeadingSlash(const char *bytes,NSInteger start,NSInteger end,const char *separators)
 {
 	return start==0 && end==1 && IsSeparator(bytes[0],separators);
 }
@@ -993,7 +993,7 @@ static BOOL IsComponentLeadingSlash(const char *bytes,int start,int end,const ch
 static BOOL IsDataASCIIOrSeparator(NSData *data,const char *separators)
 {
 	const char *bytes=[data bytes];
-	int length=[data length];
-	for(int i=0;i<length;i++) if(bytes[i]&0x80 && !IsSeparator(bytes[i],separators)) return NO;
+	NSInteger length=[data length];
+	for(NSInteger i=0;i<length;i++) if(bytes[i]&0x80 && !IsSeparator(bytes[i],separators)) return NO;
 	return YES;
 }

@@ -9,7 +9,7 @@
 	// be quickly unpacked later. This should be safe, as the object
 	// will not actually be touched by any other function than the
 	// ones in XADStringCFString.
-	return (NSString *)[NSNumber numberWithLong:encoding];
+	return (NSString *)@(encoding);
 }
 
 +(NSStringEncoding)encodingForEncodingName:(NSString *)encoding

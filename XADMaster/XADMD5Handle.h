@@ -12,16 +12,15 @@
 	MD5_CTX context;
 }
 
--(id)initWithHandle:(CSHandle *)handle length:(off_t)length correctDigest:(NSData *)correctdigest;
--(void)dealloc;
+-(instancetype)initWithHandle:(CSHandle *)handle length:(off_t)length correctDigest:(NSData *)correctdigest;
 
 -(void)resetStream;
 -(int)streamAtMost:(int)num toBuffer:(void *)buffer;
 
--(BOOL)hasChecksum;
--(BOOL)isChecksumCorrect;
+@property (NS_NONATOMIC_IOSONLY, readonly) BOOL hasChecksum;
+@property (NS_NONATOMIC_IOSONLY, readonly, getter=isChecksumCorrect) BOOL checksumCorrect;
 
--(double)estimatedProgress;
+@property (readonly) double estimatedProgress;
 
 @end
 

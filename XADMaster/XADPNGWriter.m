@@ -164,8 +164,8 @@ colourType:(int)colourtype
 	uint8_t *bytes=[data mutableBytes];
 
 	// Calculate chunk length and write it to the header.
-	int length=[data length]-idatstart-8;
-	CSSetUInt32BE(&bytes[idatstart],length);
+	NSInteger length=[data length]-idatstart-8;
+	CSSetUInt32BE(&bytes[idatstart],(int)length);
 
 	// Calculate and write chunk checksum.
 	uint8_t buf[4];

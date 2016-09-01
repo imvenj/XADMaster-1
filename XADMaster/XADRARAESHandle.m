@@ -9,18 +9,18 @@
 {
 	uint8_t keybuf[2*16];
 
-	int length=[password length];
+	NSInteger length=[password length];
 	if(length>126) length=126;
 
 	uint8_t passbuf[length*2+8];
-	for(int i=0;i<length;i++)
+	for(NSInteger i=0;i<length;i++)
 	{
 		int c=[password characterAtIndex:i];
 		passbuf[2*i]=c;
 		passbuf[2*i+1]=c>>8;
 	}
 
-	int buflength=length*2;
+	NSInteger buflength=length*2;
 
 	if(salt)
 	{

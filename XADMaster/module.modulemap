@@ -1,74 +1,161 @@
-framework module XADMaster {
-	umbrella header "XADMaster-umbrella.h"
+framework module XADMaster [extern_c] {
+	umbrella header "xadmaster.h"
 	
 	export *
 	module * { export * }
 	
-	//Have to exclude these because zlib and bzlib's headers aren't in modules right now
-	exclude header "CSZlibHandle.h"
-	exclude header "CSBzip2Handle.h"
-	
-	module CSHandle {
-		header "CSHandle.h"
-		module CSSubHandle {
-			header "CSSubHandle.h"
-		}
-		
-		module CSMultiHandle {
-			header "CSMultiHandle.h"
-		}
-		
-		module CSFileHandle {
-			header "CSFileHandle.h"
-		}
-		
-		module CSMemoryHandle {
-			header "CSMemoryHandle.h"
-		}
-		
-		module CSStreamHandle {
-			header "CSStreamHandle.h"
-		}
-		
-		module CSByteStreamHandle {
-			header "CSByteStreamHandle.h"
-		}
-		
-		module CSBlockStreamHandle {
-			header "CSBlockStreamHandle.h"
-		}
-		
-		/*
-		module CSZlibHandle {
-			header "CSZlibHandle.h"
-		}
-		
-		module CSBzip2Handle {
-			header "CSBzip2Handle.h"
-		}
-		 */
-		
-		module XADSkipHandle {
-			header "XADSkipHandle.h"
-		}
-	}
-	
-	//XADArchive is deprecated
 	explicit module XADArchive {
+		requires objc
 		header "XADArchive.h"
+		export *
 	}
 	
-	module XADUtilities {
-		module CRC {
-			header "CRC.h"
+	explicit module CRC {
+		requires objc
+		header "CRC.h"
+		export *
+	}
+	
+	explicit module LZW {
+		requires objc
+		header "LZW.h"
+		export *
+	}
+	
+	explicit module Checksums {
+		requires objc
+		header "Checksums.h"
+		export *
+	}
+	
+	explicit module Regex {
+		requires objc
+		header "XADRegex.h"
+		export *
+	}
+	
+	explicit module Handle {
+		requires objc
+		header "CSHandle.h"
+		export *
+		
+		
+		explicit module Stream {
+			header "CSStreamHandle.h"
+			export *
+			
+			explicit module Block {
+				header "CSBlockStreamHandle.h"
+				export *
+			}
+			
+			explicit module Byte {
+				header "CSByteStreamHandle.h"
+				export *
+			}
+			
+			explicit module RC4 {
+				header "XADRC4Handle.h"
+				export *
+			}
+			
+			// Because Apple is dumb and doesn't include bzip2 or zlib's headers as modules.
+			/*
+			 explicit module Bzip2 {
+				header "CSBzip2Handle.h"
+				export *
+			 }
+			 
+			 explicit module zlib {
+				header "CSZlibHandle.h"
+				export *
+			 }
+			 */
 		}
 		
-		module LZW {
-			header "LZW.h"
+		explicit module File {
+			header "CSFileHandle.h"
+			export *
+		}
+		
+		explicit module Memory {
+			header "CSMemoryHandle.h"
+			export *
+		}
+		
+		explicit module Multi {
+			header "CSMultiHandle.h"
+			export *
+		}
+		
+		explicit module Skip {
+			header "XADSkipHandle.h"
+			export *
+		}
+		
+		explicit module Sub {
+			header "CSSubHandle.h"
+			export *
 		}
 	}
 	
-	explicit module XADMasterC {
-		header "xadmaster.h"
+	explicit module Exception {
+		requires objc
+		header "XADException.h"
+		export *
 	}
+	
+	explicit module Path {
+		requires objc
+		header "XADPath.h"
+		export *
+	}
+	
+	explicit module Platform {
+		requires objc
+		header "XADPlatform.h"
+		export *
+	}
+	
+	explicit module PrefixCode {
+		requires objc
+		header "XADPrefixCode.h"
+		export *
+	}
+	
+	explicit module ArchiveParser {
+		requires objc
+		header "XADArchiveParser.h"
+		export *
+		module Descriptions {
+			header "XADArchiveParserDescriptions.h"
+			export *
+		}
+	}
+	
+	explicit module Unarchiver {
+		requires objc
+		header "XADUnarchiver.h"
+		export *
+		explicit module Simple {
+			header "XADSimpleUnarchiver.h"
+			export *
+		}
+	}
+	
+	explicit module ResourceFork {
+		requires objc
+		header "XADResourceFork.h"
+		export *
+	}
+	
+	explicit module InputBuffer {
+		requires objc
+		header "CSInputBuffer.h"
+		export *
+	}
+	
+	// Because Apple is dumb and doesn't include bzip2 or zlib's headers as modules.
+	exclude header "CSBzip2Handle.h"
+	exclude header "CSZlibHandle.h"
 }

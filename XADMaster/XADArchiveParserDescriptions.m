@@ -434,12 +434,12 @@ NSString *XADHumanReadableDictionary(NSDictionary *dict)
 
 NSString *XADHumanReadableList(NSArray *labels,NSArray *values)
 {
-	int maxlen=0;
+	NSInteger maxlen=0;
 	NSInteger count=[labels count];
-	for(int i=0;i<count;i++)
+	for(NSInteger i=0;i<count;i++)
 	{
 		NSString *label=labels[i];
-		int len=[label length];
+		NSInteger len=[label length];
 
 		if(len>maxlen) maxlen=len;
 	}
@@ -449,12 +449,12 @@ NSString *XADHumanReadableList(NSArray *labels,NSArray *values)
 	{
 		NSString *label=labels[i];
 		NSString *value=values[i];
-		int len=[label length];
+		NSInteger len=[label length];
 
 		[string appendString:label];
 		[string appendString:@": "];
 
-		for(int i=len;i<maxlen;i++) [string appendString:@" "];
+		for(NSInteger i=len;i<maxlen;i++) [string appendString:@" "];
 
 		[string appendString:XADIndentTextWithSpaces(value,maxlen+2)];
 
@@ -464,19 +464,19 @@ NSString *XADHumanReadableList(NSArray *labels,NSArray *values)
 	return string;
 }
 
-NSString *XADIndentTextWithSpaces(NSString *text,int spaces)
+NSString *XADIndentTextWithSpaces(NSString *text,NSInteger spaces)
 {
 	if([text rangeOfString:@"\n"].location==NSNotFound) return text;
 
 	NSMutableString *res=[NSMutableString string];
-	int length=[text length];
-	for(int i=0;i<length;i++)
+	NSInteger length=[text length];
+	for(NSInteger i=0;i<length;i++)
 	{
 		unichar c=[text characterAtIndex:i];
 		[res appendFormat:@"%C",c];
 		if(c=='\n')
 		{
-			for(int j=0;j<spaces;j++) [res appendString:@" "];
+			for(NSInteger j=0;j<spaces;j++) [res appendString:@" "];
 		}
 	}
 

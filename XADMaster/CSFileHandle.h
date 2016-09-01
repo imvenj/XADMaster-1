@@ -22,9 +22,8 @@ extern NSString *CSFileErrorException;
 +(CSFileHandle *)fileHandleForPath:(NSString *)path modes:(NSString *)modes;
 
 // Initializers
--(id)initWithFilePointer:(FILE *)file closeOnDealloc:(BOOL)closeondealloc name:(NSString *)descname;
--(id)initAsCopyOf:(CSFileHandle *)other;
--(void)dealloc;
+-(instancetype)initWithFilePointer:(FILE *)file closeOnDealloc:(BOOL)closeondealloc name:(NSString *)descname;
+-(instancetype)initAsCopyOf:(CSFileHandle *)other;
 -(void)close;
 
 // Public methods

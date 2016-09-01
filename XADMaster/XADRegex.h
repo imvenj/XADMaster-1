@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 +(NSString *)null;
 
+-(nonnull instancetype)init UNAVAILABLE_ATTRIBUTE;
 -(nullable instancetype)initWithPattern:(NSString *)pattern options:(int)options NS_DESIGNATED_INITIALIZER;
 
 -(void)beginMatchingString:(NSString *)string;

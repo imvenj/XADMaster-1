@@ -42,9 +42,9 @@ static uint8_t DecryptByte(XADZipCryptHandle *self)
 	key1=591751049;
 	key2=878082192;
 
-	int passlength=[password length];
+	NSInteger passlength=[password length];
 	const uint8_t *passbytes=[password bytes];
-	for(int i=0;i<passlength;i++) UpdateKeys(self,passbytes[i]);
+	for(NSInteger i=0;i<passlength;i++) UpdateKeys(self,passbytes[i]);
 
 	for(int i=0;i<12;i++)
 	{
