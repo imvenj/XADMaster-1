@@ -4,6 +4,12 @@
 #import "XADUnarchiver.h"
 #import "XADException.h"
 
+#ifdef __has_feature
+#  if __has_feature(modules)
+#    define XAD_NO_DEPRECATED
+#  endif
+#endif
+
 typedef NS_ENUM(int, XADAction) {
 	XADAbortAction = 0,
 	XADRetryAction = 1,
