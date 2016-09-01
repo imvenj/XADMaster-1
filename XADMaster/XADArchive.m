@@ -17,6 +17,7 @@ NSString *XADFinderFlags=@"XADFinderFlags";
 
 @implementation XADArchive
 @synthesize delegate;
+@synthesize immediateExtractionFailed = immediatefailed;
 
 +(XADArchive *)archiveForFile:(NSString *)filename
 {
@@ -390,8 +391,6 @@ NSString *XADFinderFlags=@"XADFinderFlags";
 }
 
 -(NSInteger)numberOfEntries { return [dataentries count]; }
-
--(BOOL)immediateExtractionFailed { return immediatefailed; }
 
 -(NSString *)commonTopDirectory
 {

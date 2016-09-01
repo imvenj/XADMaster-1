@@ -74,8 +74,8 @@ extern NSString *XADFinderFlags;
 	XADArchive *parentarchive;
 }
 
-+(XADArchive *)archiveForFile:(NSString *)filename;
-+(XADArchive *)recursiveArchiveForFile:(NSString *)filename;
++(instancetype)archiveForFile:(NSString *)filename;
++(instancetype)recursiveArchiveForFile:(NSString *)filename;
 
 
 

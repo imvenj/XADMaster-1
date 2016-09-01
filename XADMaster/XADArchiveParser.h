@@ -98,30 +98,30 @@ extern NSString *XADDiskLabelKey;
 	BOOL shouldstop;
 }
 
-+(Class)archiveParserClassForHandle:(CSHandle *)handle firstBytes:(NSData *)header
++(nullable Class)archiveParserClassForHandle:(CSHandle *)handle firstBytes:(NSData *)header
 resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props;
-+(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle name:(NSString *)name;
-+(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle name:(NSString *)name error:(nullable XADError *)errorptr;
-+(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name;
-+(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name error:(nullable XADError *)errorptr;
-+(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header name:(NSString *)name;
-+(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header name:(NSString *)name error:(nullable XADError *)errorptr;
-+(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name;
-+(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name error:(nullable XADError *)errorptr;
-+(XADArchiveParser *)archiveParserForPath:(NSString *)filename;
-+(XADArchiveParser *)archiveParserForPath:(NSString *)filename error:(nullable XADError *)errorptr;
-+(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum;
-+(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum error:(nullable XADError *)errorptr;
-+(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry resourceForkDictionary:(nullable NSDictionary *)forkentry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum;
-+(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry resourceForkDictionary:(nullable NSDictionary *)forkentry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum error:(nullable XADError *)errorptr;
++(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle name:(NSString *)name NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
++(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle name:(NSString *)name error:(nullable XADError *)errorptr;
++(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
++(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name error:(nullable XADError *)errorptr;
++(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header name:(NSString *)name NS_SWIFT_UNAVAILABLE("Uncaught exception!");
++(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header name:(NSString *)name error:(nullable XADError *)errorptr;
++(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
++(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name error:(nullable XADError *)errorptr;
++(nullable XADArchiveParser *)archiveParserForPath:(NSString *)filename NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
++(nullable XADArchiveParser *)archiveParserForPath:(NSString *)filename error:(nullable XADError *)errorptr;
++(nullable XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
++(nullable XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum error:(nullable XADError *)errorptr;
++(nullable XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry resourceForkDictionary:(nullable NSDictionary *)forkentry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
++(nullable XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry resourceForkDictionary:(nullable NSDictionary *)forkentry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum error:(nullable XADError *)errorptr;
  
 -(instancetype)init NS_DESIGNATED_INITIALIZER;
 
-@property (NS_NONATOMIC_IOSONLY, copy) XADHandle *handle;
-@property (NS_NONATOMIC_IOSONLY, strong) XADResourceFork *resourceFork;
+@property (nonatomic, retain) XADHandle *handle;
+@property (NS_NONATOMIC_IOSONLY, retain) XADResourceFork *resourceFork;
 @property (NS_NONATOMIC_IOSONLY, copy) NSString *name;
 @property (NS_NONATOMIC_IOSONLY, copy) NSString *filename;
-@property (NS_NONATOMIC_IOSONLY, copy) NSArray *allFilenames;
+@property (NS_NONATOMIC_IOSONLY, copy) NSArray<NSString*> *allFilenames;
 
 @property (NS_NONATOMIC_IOSONLY, assign) id<XADArchiveParserDelegate> delegate;
 
@@ -129,7 +129,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *currentFilename;
 
 @property (NS_NONATOMIC_IOSONLY, getter=isEncrypted, readonly) BOOL encrypted;
-@property (NS_NONATOMIC_IOSONLY, copy) NSString *password;
+@property (NS_NONATOMIC_IOSONLY, copy, nullable) NSString *password;
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL hasPassword;
 
 @property (NS_NONATOMIC_IOSONLY, copy) NSString *encodingName;
@@ -146,8 +146,8 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL wasStopped;
 
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL hasChecksum;
-@property (NS_NONATOMIC_IOSONLY, readonly) BOOL testChecksum;
-@property (NS_NONATOMIC_IOSONLY, readonly) XADError testChecksumWithoutExceptions;
+-(BOOL)testChecksum;
+-(XADError)testChecksumWithoutExceptions;
 
 
 
@@ -165,7 +165,7 @@ regex:(XADRegex *)regex firstFileExtension:(nullable NSString *)firstext;
 -(CSHandle *)subHandleFromSolidStreamForEntryWithDictionary:(NSDictionary *)dict;
 
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray *volumes;
--(CSHandle *)currentHandle;
+@property (NS_NONATOMIC_IOSONLY, readonly, retain) CSHandle *currentHandle;
 -(off_t)offsetForVolume:(int)disk offset:(off_t)offset;
 
 -(void)setObject:(id)object forPropertyKey:(NSString *)key;
@@ -178,8 +178,8 @@ regex:(XADRegex *)regex firstFileExtension:(nullable NSString *)firstext;
 -(XADString *)XADStringWithString:(NSString *)string;
 -(XADString *)XADStringWithData:(NSData *)data;
 -(XADString *)XADStringWithData:(NSData *)data encodingName:(NSString *)encoding;
--(XADString *)XADStringWithBytes:(const void *)bytes length:(int)length;
--(XADString *)XADStringWithBytes:(const void *)bytes length:(int)length encodingName:(NSString *)encoding;
+-(XADString *)XADStringWithBytes:(const void *)bytes length:(NSInteger)length;
+-(XADString *)XADStringWithBytes:(const void *)bytes length:(NSInteger)length encodingName:(NSString *)encoding;
 -(XADString *)XADStringWithCString:(const char *)cstring;
 -(XADString *)XADStringWithCString:(const char *)cstring encodingName:(NSString *)encoding;
 
@@ -188,15 +188,15 @@ regex:(XADRegex *)regex firstFileExtension:(nullable NSString *)firstext;
 -(XADPath *)XADPathWithUnseparatedString:(NSString *)string;
 -(XADPath *)XADPathWithData:(NSData *)data separators:(const char *)separators;
 -(XADPath *)XADPathWithData:(NSData *)data encodingName:(NSString *)encoding separators:(const char *)separators;
--(XADPath *)XADPathWithBytes:(const void *)bytes length:(int)length separators:(const char *)separators;
--(XADPath *)XADPathWithBytes:(const void *)bytes length:(int)length encodingName:(NSString *)encoding separators:(const char *)separators;
+-(XADPath *)XADPathWithBytes:(const void *)bytes length:(NSInteger)length separators:(const char *)separators;
+-(XADPath *)XADPathWithBytes:(const void *)bytes length:(NSInteger)length encodingName:(NSString *)encoding separators:(const char *)separators;
 -(XADPath *)XADPathWithCString:(const char *)cstring separators:(const char *)separators;
 -(XADPath *)XADPathWithCString:(const char *)cstring encodingName:(NSString *)encoding separators:(const char *)separators;
 
-@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSData *encodedPassword;
-@property (NS_NONATOMIC_IOSONLY, readonly) const char *encodedCStringPassword;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy, nullable) NSData *encodedPassword;
+@property (NS_NONATOMIC_IOSONLY, readonly, nullable) const char *encodedCStringPassword;
 
--(void)reportInterestingFileWithReason:(NSString *)reason,...;
+-(void)reportInterestingFileWithReason:(NSString *)reason,... NS_FORMAT_FUNCTION(1,0);
 
 
 
@@ -209,21 +209,21 @@ name:(NSString *)name;
 name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props;
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data
 resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props;
-+(NSArray *)volumesForHandle:(CSHandle *)handle firstBytes:(NSData *)data
++(nullable NSArray *)volumesForHandle:(CSHandle *)handle firstBytes:(NSData *)data
 name:(NSString *)name;
 
 -(void)parse;
--(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum;
+-(nullable CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum;
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *formatName;
 
--(CSHandle *)handleForSolidStreamWithObject:(id)obj wantChecksum:(BOOL)checksum;
+-(nullable CSHandle *)handleForSolidStreamWithObject:(id)obj wantChecksum:(BOOL)checksum;
 
 // Exception-free wrappers for subclass methods:
 // parseWithoutExceptions will in addition return XADBreakError if the delegate
 // requested parsing to stop.
 
-@property (NS_NONATOMIC_IOSONLY, readonly) XADError parseWithoutExceptions;
--(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum error:(XADError *)errorptr;
+-(XADError)parseWithoutExceptions;
+-(nullable CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum error:(nullable XADError *)errorptr;
 
 @end
 

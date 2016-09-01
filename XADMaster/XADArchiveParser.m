@@ -6,17 +6,13 @@
 #import "XADCRCHandle.h"
 #import "XADPlatform.h"
 
-#if XADMASTER_SIMPLE
-
 #import "XADZipParser.h"
 #import "XADRARParser.h"
 #import "XAD7ZipParser.h"
 #import "XADTarParser.h"
 #import "XADLZHParser.h"
 
-#else
-
-#import "XAD7ZipParser.h"
+#if !defined(XADMASTER_SIMPLE) && !XADMASTER_SIMPLE
 #import "XADALZipParser.h"
 #import "XADAppleSingleParser.h"
 #import "XADARCParser.h"
@@ -35,7 +31,6 @@
 #import "XADISO9660Parser.h"
 #import "XADLBRParser.h"
 #import "XADLibXADParser.h"
-#import "XADLZHParser.h"
 #import "XADLZHSFXParsers.h"
 #import "XADLZMAAloneParser.h"
 #import "XADLZXParser.h"
@@ -48,7 +43,6 @@
 #import "XADPDFParser.h"
 #import "XADPowerPackerParser.h"
 #import "XADPPMdParser.h"
-#import "XADRARParser.h"
 #import "XADRAR5Parser.h"
 #import "XADRPMParser.h"
 #import "XADSARParser.h"
@@ -59,14 +53,11 @@
 #import "XADStuffItSplitParser.h"
 #import "XADStuffItXParser.h"
 #import "XADSWFParser.h"
-#import "XADTarParser.h"
 #import "XADWARCParser.h"
 #import "XADXARParser.h"
 #import "XADXZParser.h"
-#import "XADZipParser.h"
 #import "XADZipSFXParsers.h"
 #import "XADZooParser.h"
-
 #endif
 
 #include <dirent.h>
@@ -135,8 +126,12 @@ NSString *XADDiskLabelKey=@"XADDiskLabel";
 
 @implementation XADArchiveParser
 @synthesize delegate;
+@synthesize wasStopped = shouldstop;
+@synthesize resourceFork = resourcefork;
+@synthesize stringSource = stringsource;
+@synthesize handle = sourcehandle;
 
-static NSMutableArray *parserclasses=nil;
+static NSMutableArray<Class> *parserclasses=nil;
 static int maxheader=0;
 
 +(void)initialize
@@ -227,9 +222,7 @@ static int maxheader=0;
 #endif
 	nil] retain];
 
-	NSEnumerator *enumerator=[parserclasses objectEnumerator];
-	Class class;
-	while((class=[enumerator nextObject]))
+	for(Class class in parserclasses)
 	{
 		int header=[class requiredHeaderSize];
 		if(header>maxheader) maxheader=header;
@@ -239,9 +232,7 @@ static int maxheader=0;
 +(Class)archiveParserClassForHandle:(CSHandle *)handle firstBytes:(NSData *)header
 resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 {
-	NSEnumerator *enumerator=[parserclasses objectEnumerator];
-	Class parserclass;
-	while((parserclass=[enumerator nextObject]))
+	for(Class parserclass in parserclasses)
 	{
 		[handle seekToFileOffset:0];
 		[props removeAllObjects];
@@ -497,10 +488,6 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 }
 
 
-
-
--(CSHandle *)handle { return sourcehandle; }
-
 -(void)setHandle:(CSHandle *)newhandle
 {
 	[sourcehandle autorelease];
@@ -514,14 +501,6 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 
 	if([testhandle isKindOfClass:[CSStreamHandle class]]) forcesolid=YES;
 	else forcesolid=NO;
-}
-
--(XADResourceFork *)resourceFork { return resourcefork; }
-
--(void)setResourceFork:(XADResourceFork *)newfork
-{
-	[resourcefork autorelease];
-	resourcefork=[newfork retain];
 }
 
 -(NSString *)name { return properties[XADArchiveNameKey]; }
@@ -631,8 +610,6 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 	}
 }
 
--(XADStringSource *)stringSource { return stringsource; }
-
 
 
 
@@ -738,8 +715,6 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 		return [NSData dataWithBytes:finderinfo length:32];
 	}
 }
-
--(BOOL)wasStopped { return shouldstop; }
 
 -(BOOL)hasChecksum { return [sourcehandle hasChecksum]; }
 
@@ -1045,17 +1020,14 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext
 
 
 
-	NSAutoreleasePool *delegatepool=[NSAutoreleasePool new];
-
-	if(retainpos)
-	{
-		off_t pos=[sourcehandle offsetInFile];
-		[delegate archiveParser:self foundEntryWithDictionary:dict];
-		[sourcehandle seekToFileOffset:pos];
+	@autoreleasepool {
+		if (retainpos) {
+			off_t pos=[sourcehandle offsetInFile];
+			[delegate archiveParser:self foundEntryWithDictionary:dict];
+			[sourcehandle seekToFileOffset:pos];
+		} else
+			[delegate archiveParser:self foundEntryWithDictionary:dict];
 	}
-	else [delegate archiveParser:self foundEntryWithDictionary:dict];
-
-	[delegatepool release];
 }
 
 
@@ -1075,13 +1047,13 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext
 	return [XADString decodedXADStringWithData:data encodingName:encoding];
 }
 
--(XADString *)XADStringWithBytes:(const void *)bytes length:(int)length
+-(XADString *)XADStringWithBytes:(const void *)bytes length:(NSInteger)length
 {
 	NSData *data=[NSData dataWithBytes:bytes length:length];
 	return [XADString analyzedXADStringWithData:data source:stringsource];
 }
 
--(XADString *)XADStringWithBytes:(const void *)bytes length:(int)length encodingName:(NSString *)encoding
+-(XADString *)XADStringWithBytes:(const void *)bytes length:(NSInteger)length encodingName:(NSString *)encoding
 {
 	NSData *data=[NSData dataWithBytes:bytes length:length];
 	return [XADString decodedXADStringWithData:data encodingName:encoding];
@@ -1126,13 +1098,13 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext
 	return [XADPath decodedPathWithData:data encodingName:encoding separators:separators];
 }
 
--(XADPath *)XADPathWithBytes:(const void *)bytes length:(int)length separators:(const char *)separators
+-(XADPath *)XADPathWithBytes:(const void *)bytes length:(NSInteger)length separators:(const char *)separators
 {
 	NSData *data=[NSData dataWithBytes:bytes length:length];
 	return [XADPath analyzedPathWithData:data source:stringsource separators:separators];
 }
 
--(XADPath *)XADPathWithBytes:(const void *)bytes length:(int)length encodingName:(NSString *)encoding separators:(const char *)separators
+-(XADPath *)XADPathWithBytes:(const void *)bytes length:(NSInteger)length encodingName:(NSString *)encoding separators:(const char *)separators
 {
 	NSData *data=[NSData dataWithBytes:bytes length:length];
 	return [XADPath decodedPathWithData:data encodingName:encoding separators:separators];
