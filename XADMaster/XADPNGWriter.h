@@ -9,7 +9,7 @@
 	z_stream zs;
 	BOOL streaminited;
 
-	int idatstart;
+	NSInteger idatstart;
 }
 
 +(XADPNGWriter *)PNGWriter;

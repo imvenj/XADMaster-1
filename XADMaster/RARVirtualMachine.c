@@ -343,7 +343,7 @@ RAROpcode *opcodes,int numopcodes,void ***instructionlabels)
 
 	CallLabel:
 		self->registers[7]-=4;
-		RARVirtualMachineWrite32(self,self->registers[7],opcode-opcodes+1);
+		RARVirtualMachineWrite32(self,self->registers[7],(uint32_t)(opcode-opcodes+1));
 		Jump(GetOperand1());
 
 	RetLabel:

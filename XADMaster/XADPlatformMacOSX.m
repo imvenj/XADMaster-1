@@ -110,7 +110,7 @@ preservePermissions:(BOOL)preservepermissions
 		{
 			NSData *data=extattrs[key];
 
-			int namelen=[key lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
+			NSInteger namelen=[key lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
 			char namebytes[namelen+1];
 			[key getCString:namebytes maxLength:sizeof(namebytes) encoding:NSUTF8StringEncoding];
 
@@ -314,8 +314,8 @@ preservePermissions:(BOOL)preservepermissions
 	if(stat(csrc,&st)!=0) return NO;
 
 	struct timeval times[2]={
-		{st.st_atimespec.tv_sec,st.st_atimespec.tv_nsec/1000},
-		{st.st_mtimespec.tv_sec,st.st_mtimespec.tv_nsec/1000},
+		{st.st_atimespec.tv_sec,(int)(st.st_atimespec.tv_nsec/1000)},
+		{st.st_mtimespec.tv_sec,(int)(st.st_mtimespec.tv_nsec/1000)},
 	};
 
 	const char *cdest=[dest fileSystemRepresentation];

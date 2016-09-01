@@ -1204,7 +1204,7 @@ fileFraction:(double)fileprogress estimatedTotalFraction:(double)totalprogress
 
 // Deprecated
 -(NSStringEncoding)archive:(XADArchive *)archive encodingForName:(const char *)bytes guess:(NSStringEncoding)guess confidence:(float)confidence DEPRECATED_ATTRIBUTE;
--(XADAction)archive:(XADArchive *)archive nameDecodingDidFailForEntry:(int)n bytes:(const char *)bytes DEPRECATED_ATTRIBUTE;
+-(XADAction)archive:(XADArchive *)archive nameDecodingDidFailForEntry:(NSInteger)n bytes:(const char *)bytes DEPRECATED_ATTRIBUTE;
 
 @end
 
@@ -1249,7 +1249,7 @@ fileFraction:(double)fileprogress estimatedTotalFraction:(double)totalprogress
 
 // Deprecated
 -(NSStringEncoding)archive:(XADArchive *)archive encodingForName:(const char *)bytes guess:(NSStringEncoding)guess confidence:(float)confidence { return guess; }
--(XADAction)archive:(XADArchive *)archive nameDecodingDidFailForEntry:(int)n bytes:(const char *)bytes { return XADAbortAction; }
+-(XADAction)archive:(XADArchive *)archive nameDecodingDidFailForEntry:(NSInteger)n bytes:(const char *)bytes { return XADAbortAction; }
 
 @end
 

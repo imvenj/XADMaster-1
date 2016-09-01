@@ -20,10 +20,10 @@ uint32_t CSInputNextRARVMNumber(CSInputBuffer *input);
 
 -(void)setRegisters:(uint32_t *)newregisters;
 
--(void)readMemoryAtAddress:(uint32_t)address length:(int)length toBuffer:(uint8_t *)buffer;
--(void)readMemoryAtAddress:(uint32_t)address length:(int)length toMutableData:(NSMutableData *)data;
--(void)writeMemoryAtAddress:(uint32_t)address length:(int)length fromBuffer:(const uint8_t *)buffer;
--(void)writeMemoryAtAddress:(uint32_t)address length:(int)length fromData:(NSData *)data;
+-(void)readMemoryAtAddress:(uint32_t)address length:(NSInteger)length toBuffer:(uint8_t *)buffer;
+-(void)readMemoryAtAddress:(uint32_t)address length:(NSInteger)length toMutableData:(NSMutableData *)data;
+-(void)writeMemoryAtAddress:(uint32_t)address length:(NSInteger)length fromBuffer:(const uint8_t *)buffer;
+-(void)writeMemoryAtAddress:(uint32_t)address length:(NSInteger)length fromData:(NSData *)data;
 
 -(uint32_t)readWordAtAddress:(uint32_t)address;
 -(void)writeWordAtAddress:(uint32_t)address value:(uint32_t)value;
@@ -63,17 +63,17 @@ static inline void XADRARVirtualMachineWrite8(XADRARVirtualMachine *self,uint32_
 	uint64_t fingerprint;
 }
 
--(instancetype)initWithByteCode:(const uint8_t *)bytes length:(int)length;
+-(instancetype)initWithByteCode:(const uint8_t *)bytes length:(NSInteger)length;
 
--(BOOL)parseByteCode:(const uint8_t *)bytes length:(int)length;
+-(BOOL)parseByteCode:(const uint8_t *)bytes length:(NSInteger)length;
 -(void)parseOperandFromBuffer:(CSInputBuffer *)input addressingMode:(unsigned int *)modeptr
 value:(uint32_t *)valueptr byteMode:(BOOL)bytemode isRelativeJump:(BOOL)isjump
-currentInstructionOffset:(int)instructionoffset;
+currentInstructionOffset:(NSInteger)instructionoffset;
 
--(RAROpcode *)opcodes;
+@property (readonly, assign) RAROpcode *opcodes NS_RETURNS_INNER_POINTER;
 @property (readonly) NSInteger numberOfOpcodes;
--(NSData *)staticData;
--(NSMutableData *)globalBackup;
+@property (readonly, copy) NSData *staticData;
+@property (readonly, retain) NSMutableData *globalBackup;
 @property (readonly) uint64_t fingerprint;
 
 -(NSString *)disassemble;
@@ -92,12 +92,12 @@ currentInstructionOffset:(int)instructionoffset;
 
 -(instancetype)initWithProgramCode:(XADRARProgramCode *)code globalData:(NSData *)data registers:(uint32_t *)registers;
 
--(XADRARProgramCode *)programCode;
--(NSData *)globalData;
+@property (readonly, retain) XADRARProgramCode *programCode;
+@property (readonly, copy) NSData *globalData;
 
--(uint32_t)initialRegisterState:(int)n;
--(void)setInitialRegisterState:(int)n toValue:(uint32_t)val;
--(void)setGlobalValueAtOffset:(int)offs toValue:(uint32_t)val;
+-(uint32_t)initialRegisterState:(NSInteger)n;
+-(void)setInitialRegisterState:(NSInteger)n toValue:(uint32_t)val;
+-(void)setGlobalValueAtOffset:(NSInteger)offs toValue:(uint32_t)val;
 
 -(void)backupGlobalData;
 -(void)restoreGlobalDataIfAvailable;

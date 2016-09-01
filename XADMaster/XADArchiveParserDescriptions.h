@@ -4,7 +4,7 @@
 
 -(NSString *)descriptionOfValueInDictionary:(NSDictionary *)dict key:(NSString *)key;
 -(NSString *)descriptionOfKey:(NSString *)key;
--(NSArray *)descriptiveOrderingOfKeysInDictionary:(NSDictionary *)dict;
+-(NSArray<NSString*> *)descriptiveOrderingOfKeysInDictionary:(NSDictionary *)dict;
 
 @end
 
@@ -24,4 +24,4 @@ NSString *XADHumanReadableData(NSData *data);
 NSString *XADHumanReadableArray(NSArray *array);
 NSString *XADHumanReadableDictionary(NSDictionary *dict);
 NSString *XADHumanReadableList(NSArray *labels,NSArray *values);
-NSString *XADIndentTextWithSpaces(NSString *text,int spaces);
+NSString *XADIndentTextWithSpaces(NSString *text,NSInteger spaces);

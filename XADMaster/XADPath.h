@@ -36,8 +36,8 @@ separators:(const char *)pathseparators;
 -(BOOL)hasCanonicalPrefix:(XADPath *)other;
 -(BOOL)hasCanonicalPrefix:(XADPath *)other encodingName:(NSString *)encoding;
 
-@property (NS_NONATOMIC_IOSONLY, readonly) int depth; // Note: Does not take . or .. paths into account.
--(int)depthWithEncodingName:(NSString *)encoding;
+@property (NS_NONATOMIC_IOSONLY, readonly) NSInteger depth; // Note: Does not take . or .. paths into account.
+-(NSInteger)depthWithEncodingName:(NSString *)encoding;
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray *pathComponents;
 -(NSArray *)pathComponentsWithEncodingName:(NSString *)encoding;
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray *canonicalPathComponents;
@@ -96,7 +96,7 @@ separators:(const char *)pathseparators;
 // Subclass methods.
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL _isPartAbsolute;
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL _isPartEmpty;
--(int)_depthOfPartWithEncodingName:(NSString *)encoding;
+-(NSInteger)_depthOfPartWithEncodingName:(NSString *)encoding;
 -(void)_addPathComponentsOfPartToArray:(NSMutableArray *)array encodingName:(NSString *)encoding;
 -(NSString *)_lastPathComponentOfPartWithEncodingName:(NSString *)encoding;
 -(NSString *)_firstPathComponentOfPartWithEncodingName:(NSString *)encoding;
@@ -121,7 +121,7 @@ separators:(const char *)pathseparators;
 
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL _isPartAbsolute;
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL _isPartEmpty;
--(int)_depthOfPartWithEncodingName:(NSString *)encoding;
+-(NSInteger)_depthOfPartWithEncodingName:(NSString *)encoding;
 -(void)_addPathComponentsOfPartToArray:(NSMutableArray *)array encodingName:(NSString *)encoding;
 -(NSString *)_lastPathComponentOfPartWithEncodingName:(NSString *)encoding;
 -(NSString *)_firstPathComponentOfPartWithEncodingName:(NSString *)encoding;
@@ -149,7 +149,7 @@ separators:(const char *)pathseparators parent:(XADPath *)parentpath NS_DESIGNAT
 
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL _isPartAbsolute;
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL _isPartEmpty;
--(int)_depthOfPartWithEncodingName:(NSString *)encoding;
+-(NSInteger)_depthOfPartWithEncodingName:(NSString *)encoding;
 -(void)_addPathComponentsOfPartToArray:(NSMutableArray *)array encodingName:(NSString *)encoding;
 -(NSString *)_lastPathComponentOfPartWithEncodingName:(NSString *)encoding;
 -(NSString *)_firstPathComponentOfPartWithEncodingName:(NSString *)encoding;

@@ -260,8 +260,8 @@ static NSComparisonResult SortDirectoriesByDepthAndResource(id entry1,id entry2,
 
 	XADPath *path1=dict1[XADFileNameKey];
 	XADPath *path2=dict2[XADFileNameKey];
-	int depth1=[path1 depth];
-	int depth2=[path2 depth];
+	NSInteger depth1=[path1 depth];
+	NSInteger depth2=[path2 depth];
 	if(depth1>depth2) return NSOrderedAscending;
 	else if(depth1<depth2) return NSOrderedDescending;
 

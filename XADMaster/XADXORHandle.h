@@ -5,7 +5,7 @@
 	CSHandle *parent;
 	NSData *password;
 	const uint8_t *passwordbytes;
-	int passwordlength;
+	NSInteger passwordlength;
 }
 
 -(instancetype)initWithHandle:(CSHandle *)handle password:(NSData *)passdata;

@@ -42,7 +42,7 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
 	const uint8_t *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
 	if(length<8) return NO; // TODO: fix to use correct min size
 
