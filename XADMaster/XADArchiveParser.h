@@ -100,19 +100,19 @@ extern NSString *XADDiskLabelKey;
 
 +(nullable Class)archiveParserClassForHandle:(CSHandle *)handle firstBytes:(NSData *)header
 resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props;
-+(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle name:(NSString *)name NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
++(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle name:(NSString *)name DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
 +(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle name:(NSString *)name error:(NSError *__nullable*__nullable)errorptr;
-+(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
++(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
 +(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name error:(NSError *__nullable*__nullable)errorptr;
-+(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header name:(NSString *)name NS_SWIFT_UNAVAILABLE("Uncaught exception!");
++(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header name:(NSString *)name DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Uncaught exception!");
 +(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header name:(NSString *)name error:(NSError *__nullable*__nullable)errorptr;
-+(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
++(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
 +(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name error:(NSError *__nullable*__nullable)errorptr;
-+(nullable XADArchiveParser *)archiveParserForPath:(NSString *)filename NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
++(nullable XADArchiveParser *)archiveParserForPath:(NSString *)filename DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
 +(nullable XADArchiveParser *)archiveParserForPath:(NSString *)filename error:(NSError *__nullable*__nullable)errorptr;
-+(nullable XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
++(nullable XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
 +(nullable XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum error:(NSError *__nullable*__nullable)errorptr;
-+(nullable XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry resourceForkDictionary:(nullable NSDictionary *)forkentry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
++(nullable XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry resourceForkDictionary:(nullable NSDictionary *)forkentry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
 +(nullable XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry resourceForkDictionary:(nullable NSDictionary *)forkentry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum error:(NSError *__nullable*__nullable)errorptr;
  
 -(instancetype)init NS_DESIGNATED_INITIALIZER;

@@ -392,10 +392,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 
 +(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum error:(NSError **)errorptr
 {
-	if(errorptr) *errorptr=nil;
-	@try { return [self archiveParserForEntryWithDictionary:entry resourceForkDictionary:nil archiveParser:parser wantChecksum:checksum]; }
-	@catch(id exception) { if(errorptr) *errorptr=[NSError errorWithDomain:XADErrorDomain code:[XADException parseException:exception] userInfo:nil]; }
-	return nil;
+	return [self archiveParserForEntryWithDictionary:entry resourceForkDictionary:nil archiveParser:parser wantChecksum:checksum error:errorptr];
 }
 
 +(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry resourceForkDictionary:(NSDictionary *)forkentry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum
@@ -431,10 +428,39 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 
 +(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry resourceForkDictionary:(NSDictionary *)forkentry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum error:(NSError **)errorptr
 {
-	if(errorptr) *errorptr=nil;
-	@try { return [self archiveParserForEntryWithDictionary:entry resourceForkDictionary:forkentry archiveParser:parser wantChecksum:checksum]; }
-	@catch(id exception) { if(errorptr) *errorptr=[NSError errorWithDomain:XADErrorDomain code:[XADException parseException:exception] userInfo:nil]; }
-	return nil;
+	XADResourceFork *fork=nil;
+	if(forkentry)
+	{
+		CSHandle *forkhandle=[parser handleForEntryWithDictionary:forkentry wantChecksum:checksum];
+		if(forkhandle)
+		{
+			fork=[XADResourceFork resourceForkWithHandle:forkhandle];
+			if(checksum && [forkhandle hasChecksum])
+			{
+				[forkhandle seekToEndOfFile];
+				if(![forkhandle isChecksumCorrect]) {
+					if (errorptr) {
+						*errorptr = [NSError errorWithDomain:XADErrorDomain code:XADChecksumError userInfo:/*@{NSLocalizedFailureReasonErrorKey:@""}*/ nil];
+					}
+					return nil;
+				};
+			}
+		}
+	}
+	
+	CSHandle *handle=[parser handleForEntryWithDictionary:entry wantChecksum:checksum];
+	if(!handle) [XADException raiseNotSupportedException];
+	
+	NSString *filename=[entry[XADFileNameKey] string];
+	XADArchiveParser *subparser=[XADArchiveParser archiveParserForHandle:handle resourceFork:fork name:filename error:errorptr];
+	if(!subparser)
+		return nil;
+	
+	if([parser hasPassword]) [subparser setPassword:[parser password]];
+	if([[parser stringSource] hasFixedEncoding]) [subparser setEncodingName:[parser encodingName]];
+	if(parser->passwordencodingname) [subparser setPasswordEncodingName:parser->passwordencodingname];
+	
+	return subparser;
 }
 
 

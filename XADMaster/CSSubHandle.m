@@ -19,6 +19,31 @@
 	return nil;
 }
 
+-(id)initWithHandle:(CSHandle *)handle from:(off_t)from length:(off_t)length error:(NSError**)error
+{
+	if((self=[super initWithName:[NSString stringWithFormat:@"%@ (Subrange from %qd, length %qd)",[handle name],from,length]]))
+	{
+		parent=[handle retain];
+		start=from;
+		end=from+length;
+		
+		if (!parent) {
+			if (error) {
+				*error = [NSError errorWithDomain:NSOSStatusErrorDomain code:paramErr userInfo:nil];
+			}
+			[self release];
+			return nil;
+		}
+
+		if (![parent seekToFileOffset:start error:error]) {
+			[self release];
+			return nil;
+		}
+	}
+	return self;
+}
+
+
 -(id)initAsCopyOf:(CSSubHandle *)other
 {
 	if((self=[super initAsCopyOf:other]))
@@ -36,9 +61,8 @@
 	[super dealloc];
 }
 
--(CSHandle *)parentHandle { return parent; }
-
--(off_t)startOffsetInParent { return start; }
+@synthesize parentHandle = parent;
+@synthesize startOffsetInParent = start;
 
 -(off_t)fileSize
 {

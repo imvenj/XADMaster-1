@@ -11,12 +11,20 @@ NSString *CSFileErrorException=@"CSFileErrorException";
 
 
 @implementation CSFileHandle
+@synthesize filePointer = fh;
 
 +(CSFileHandle *)fileHandleForReadingAtPath:(NSString *)path
 { return [self fileHandleForPath:path modes:@"rb"]; }
 
 +(CSFileHandle *)fileHandleForWritingAtPath:(NSString *)path
 { return [self fileHandleForPath:path modes:@"wb"]; }
+
++(CSFileHandle *)fileHandleForReadingAtPath:(NSString *)path error:(NSError**)error
+{ return [self fileHandleForPath:path modes:@"rb" error:error]; }
+
++(CSFileHandle *)fileHandleForWritingAtPath:(NSString *)path error:(NSError**)error
+{ return [self fileHandleForPath:path modes:@"wb" error:error]; }
+
 
 +(CSFileHandle *)fileHandleForPath:(NSString *)path modes:(NSString *)modes
 {
@@ -42,6 +50,36 @@ NSString *CSFileErrorException=@"CSFileErrorException";
 	return nil;
 }
 
++(CSFileHandle *)fileHandleForPath:(NSString *)path modes:(NSString *)modes error:(NSError**)error
+{
+	if(!path) return nil;
+	
+#if defined(__COCOTRON__) // Cocotron
+	FILE *fileh=_wfopen([path fileSystemRepresentationW],
+						(const wchar_t *)[modes cStringUsingEncoding:NSUnicodeStringEncoding]);
+#elif defined(__MINGW32__) // GNUstep under mingw32 - sort of untested
+	FILE *fileh=_wfopen((const wchar_t *)[path fileSystemRepresentation],
+						(const wchar_t *)[modes cStringUsingEncoding:NSUnicodeStringEncoding]);
+#else // Cocoa or GNUstep under Linux
+	FILE *fileh=fopen([path fileSystemRepresentation],[modes UTF8String]);
+#endif
+	
+	if(!fileh) {
+		if (error) {
+			*error = [NSError errorWithDomain:NSPOSIXErrorDomain code:errno userInfo:nil];
+		}
+		//Reset error number
+		errno = 0;
+	
+		return nil;
+	}
+	
+	CSFileHandle *handle=[[[CSFileHandle alloc] initWithFilePointer:fileh closeOnDealloc:YES name:path] autorelease];
+	if(handle) return handle;
+	
+	fclose(fileh);
+	return nil;
+}
 
 
 -(id)initWithFilePointer:(FILE *)file closeOnDealloc:(BOOL)closeondealloc name:(NSString *)descname
@@ -87,14 +125,6 @@ NSString *CSFileErrorException=@"CSFileErrorException";
 	if(fh&&close) fclose(fh);
 	fh=NULL;
 }
-
-
-
-
--(FILE *)filePointer { return fh; }
-
-
-
 
 -(off_t)fileSize
 {
@@ -163,6 +193,117 @@ NSString *CSFileErrorException=@"CSFileErrorException";
 }
 
 
+-(BOOL)seekToFileOffset:(off_t)offs error:(NSError**)error
+{
+	BOOL success = YES;
+	if (multilock) {
+		[multilock lock];
+	}
+	//if(offs>[self fileSize]) [self _raiseEOF];
+	if (fseeko(fh, offs, SEEK_SET)) {
+		if (error) {
+			*error = [NSError errorWithDomain:NSPOSIXErrorDomain code:ferror(fh) userInfo:nil];
+		}
+		success = NO;
+
+	}
+	if (multilock) {
+		pos=ftello(fh);
+		[multilock unlock];
+	}
+	return success;
+}
+
+-(BOOL)seekToEndOfFileWithError:(NSError**)error
+{
+	BOOL success = YES;
+	if (multilock) {
+		[multilock lock];
+	}
+	if (fseeko(fh, 0, SEEK_END)) {
+		if (error) {
+			*error = [NSError errorWithDomain:NSPOSIXErrorDomain code:ferror(fh) userInfo:nil];
+		}
+		success = NO;
+	}
+	if (multilock) {
+		pos = ftello(fh);
+		[multilock unlock];
+	}
+	return success;
+}
+
+-(BOOL)pushBackByte:(uint8_t)byte error:(NSError**)error
+{
+	if (multilock) {
+		if (error) {
+			*error = [NSError
+					  errorWithDomain:NSOSStatusErrorDomain code:unimpErr
+					  userInfo:@{NSLocalizedFailureReasonErrorKey: [NSString stringWithFormat:@"Called '%@' with MultiMode enabled", NSStringFromSelector(_cmd)]}];
+		}
+
+		return NO;
+	}
+	if (ungetc(byte, fh) == EOF) {
+		if (error) {
+			*error = [NSError errorWithDomain:NSPOSIXErrorDomain code:ferror(fh) userInfo:nil];
+		}
+		return NO;
+	}
+	
+	return YES;
+}
+
+-(BOOL)readAtMost:(size_t)num toBuffer:(void *)buffer totalWritten:(ssize_t*)tw error:(NSError**)error;
+{
+	if (tw) {
+		*tw = 0;
+	}
+	if (num == 0) {
+		return YES;
+	}
+	BOOL success = YES;
+	if (multilock) {
+		[multilock lock];
+		fseeko(fh,pos,SEEK_SET);
+	}
+	size_t n = fread(buffer, 1, num, fh);
+	if (n <= 0 && !feof(fh)) {
+		success = NO;
+		if (error) {
+			*error = [NSError errorWithDomain:NSPOSIXErrorDomain code:ferror(fh) userInfo:nil];
+		}
+	}
+	if (multilock) {
+		pos=ftello(fh);
+		[multilock unlock];
+	}
+	if (tw && success) {
+		*tw = n;
+	}
+	return success;
+}
+
+-(BOOL)writeBytes:(size_t)num fromBuffer:(const void *)buffer error:(NSError**)error
+{
+	BOOL success = YES;
+	if (multilock) {
+		[multilock lock];
+		fseeko(fh,pos,SEEK_SET);
+	}
+	if (fwrite(buffer, 1, num, fh) != num) {
+		success = NO;
+		if (error) {
+			*error = [NSError errorWithDomain:NSPOSIXErrorDomain code:ferror(fh) userInfo:nil];
+		}
+	}
+	if (multilock) {
+		pos=ftello(fh);
+		[multilock unlock];
+	}
+	return success;
+}
+
 
 
 -(void)_raiseError
@@ -170,7 +311,7 @@ NSString *CSFileErrorException=@"CSFileErrorException";
 	if(feof(fh)) [self _raiseEOF];
 	else [[[[NSException alloc] initWithName:CSFileErrorException
 	reason:[NSString stringWithFormat:@"Error while attempting to read file \"%@\": %s.",name,strerror(errno)]
-	userInfo:@{@"ErrNo": @errno}] autorelease] raise];
+	userInfo:@{@"ErrNo": @(errno)}] autorelease] raise];
 }
 
 -(void)_setMultiMode
