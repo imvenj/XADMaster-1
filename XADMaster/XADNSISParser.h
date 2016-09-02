@@ -18,7 +18,7 @@ typedef struct NSISVariableExpansion
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data
 name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props;
 
--(void)parse;
+-(void)parse DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
 
 -(void)parseOlderFormat;
 -(void)parseOldFormat;

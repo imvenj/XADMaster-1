@@ -19,7 +19,8 @@
 +(int)requiredHeaderSize;
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name;
 
--(void)parse;
+-(void)parse DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
+-(BOOL)parseWithError:(NSError **)error;
 
 -(void)finishFile:(NSMutableDictionary *)file parentPath:(XADPath *)parentpath;
 -(XADString *)compressionNameForEncodingStyle:(NSString *)encodingstyle isXIP:(BOOL)isxip;
@@ -41,6 +42,13 @@ destinationDictionary:(NSMutableDictionary *)dest;
 -(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum;
 -(CSHandle *)handleForEncodingStyle:(NSString *)encodingstyle offset:(NSNumber *)offset
 length:(NSNumber *)length size:(NSNumber *)size checksum:(NSData *)checksum checksumStyle:(NSString *)checksumstyle;
+
+-(BOOL)parseDefinition:(NSArray *)definition string:(NSString *)string
+ destinationDictionary:(NSMutableDictionary *)dest error:(NSError**)error;
+-(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum error:(NSError**)error;
+-(CSHandle *)handleForEncodingStyle:(NSString *)encodingstyle offset:(NSNumber *)offset
+							 length:(NSNumber *)length size:(NSNumber *)size checksum:(NSData *)checksum checksumStyle:(NSString *)checksumstyle
+							  error:(NSError**)error;
 
 -(NSString *)formatName;
 

@@ -53,7 +53,7 @@ extern NSString *PDFParserException;
 -(void)proceedAssumingCharacter:(uint8_t)c errorMessage:(NSString *)error;
 -(void)proceedWithoutCommentHandlingAssumingCharacter:(uint8_t)c errorMessage:(NSString *)error;
 
--(void)parse;
+-(void)parse DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
 
 -(NSDictionary *)parsePDFXref;
 -(NSDictionary *)parsePDFXrefTable;

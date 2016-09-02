@@ -11,7 +11,7 @@
 
 -(instancetype)init;
 
--(void)parse;
+-(void)parse DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
 -(NSString *)compressionNameForStream:(PDFStream *)stream excludingLast:(BOOL)excludelast;
 
 -(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum;

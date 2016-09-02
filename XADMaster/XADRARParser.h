@@ -34,7 +34,7 @@ typedef struct RARFileHeader
 
 -(void)setPassword:(NSString *)newpassword;
 
--(void)parse;
+-(void)parse DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
 
 -(RARFileHeader)readFileHeaderWithBlock:(RARBlock *)block;
 -(NSData *)readComment;
@@ -71,7 +71,7 @@ cryptoVersion:(int)version salt:(NSData *)salt;
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data
 name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props;
 
--(void)parse;
+-(void)parse DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
 -(NSString *)formatName;
 
 @end

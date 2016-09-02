@@ -22,8 +22,11 @@ extern NSString *XADDisableMacForkExpansionKey;
 
 -(instancetype)init;
 
--(void)parse;
--(void)parseWithSeparateMacForks;
+-(void)parse DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
+-(void)parseWithSeparateMacForks DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
+
+-(BOOL)parseWithError:(NSError**)error;
+-(BOOL)parseWithSeparateMacForksWithError:(NSError**)error;
 
 -(void)addEntryWithDictionary:(NSMutableDictionary *)dict retainPosition:(BOOL)retainpos;
 

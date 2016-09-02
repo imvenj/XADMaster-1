@@ -16,23 +16,41 @@
 
 -(instancetype)init;
 
--(void)parseWithSeparateMacForks;
+-(void)parseWithSeparateMacForks DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
 
--(NSArray *)parseFilesForHandle:(CSHandle *)handle;
+-(NSArray *)parseFilesForHandle:(CSHandle *)handle DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
 
--(void)parseBitVectorForHandle:(CSHandle *)handle array:(NSArray *)array key:(NSString *)key;
--(NSIndexSet *)parseDefintionVectorForHandle:(CSHandle *)handle numberOfElements:(NSInteger)num;
--(void)parseDatesForHandle:(CSHandle *)handle array:(NSMutableArray *)array key:(NSString *)key;
--(void)parseCRCsForHandle:(CSHandle *)handle array:(NSMutableArray *)array;
--(void)parseNamesForHandle:(CSHandle *)handle array:(NSMutableArray *)array;
--(void)parseAttributesForHandle:(CSHandle *)handle array:(NSMutableArray *)array;
+-(void)parseBitVectorForHandle:(CSHandle *)handle array:(NSArray *)array key:(NSString *)key DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
+-(NSIndexSet *)parseDefintionVectorForHandle:(CSHandle *)handle numberOfElements:(NSInteger)num DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
+-(void)parseDatesForHandle:(CSHandle *)handle array:(NSMutableArray *)array key:(NSString *)key DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
+-(void)parseCRCsForHandle:(CSHandle *)handle array:(NSMutableArray *)array DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
+-(void)parseNamesForHandle:(CSHandle *)handle array:(NSMutableArray *)array DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
+-(void)parseAttributesForHandle:(CSHandle *)handle array:(NSMutableArray *)array DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
 
--(NSDictionary *)parseStreamsForHandle:(CSHandle *)handle;
--(NSArray<NSMutableDictionary<NSString*,id>*> *)parsePackedStreamsForHandle:(CSHandle *)handle;
--(NSArray<NSMutableDictionary<NSString*,id>*> *)parseFoldersForHandle:(CSHandle *)handle packedStreams:(NSArray *)packedstreams;
+-(NSDictionary *)parseStreamsForHandle:(CSHandle *)handle DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
+-(NSArray<NSMutableDictionary<NSString*,id>*> *)parsePackedStreamsForHandle:(CSHandle *)handle DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
+-(NSArray<NSMutableDictionary<NSString*,id>*> *)parseFoldersForHandle:(CSHandle *)handle packedStreams:(NSArray *)packedstreams DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
 -(void)parseFolderForHandle:(CSHandle *)handle dictionary:(NSMutableDictionary *)dictionary
-packedStreams:(NSArray *)packedstreams packedStreamIndex:(NSInteger *)packedstreamindex;
--(void)parseSubStreamsInfoForHandle:(CSHandle *)handle folders:(NSArray *)folders;
+packedStreams:(NSArray *)packedstreams packedStreamIndex:(NSInteger *)packedstreamindex DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
+-(void)parseSubStreamsInfoForHandle:(CSHandle *)handle folders:(NSArray *)folders DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
+
+-(BOOL)parseWithSeparateMacForksWithError:(NSError **)error;
+
+-(NSArray *)parseFilesForHandle:(CSHandle *)handle error:(NSError**)error;
+
+-(BOOL)parseBitVectorForHandle:(CSHandle *)handle array:(NSArray *)array key:(NSString *)key error:(NSError**)error;
+-(NSIndexSet *)parseDefintionVectorForHandle:(CSHandle *)handle numberOfElements:(NSInteger)num error:(NSError**)error;
+-(BOOL)parseDatesForHandle:(CSHandle *)handle array:(NSMutableArray *)array key:(NSString *)key error:(NSError**)error;
+-(BOOL)parseCRCsForHandle:(CSHandle *)handle array:(NSMutableArray *)array error:(NSError**)error;
+-(BOOL)parseNamesForHandle:(CSHandle *)handle array:(NSMutableArray *)array error:(NSError**)error;
+-(BOOL)parseAttributesForHandle:(CSHandle *)handle array:(NSMutableArray *)array error:(NSError**)error;
+
+-(NSDictionary *)parseStreamsForHandle:(CSHandle *)handle error:(NSError**)error;
+-(NSArray<NSMutableDictionary<NSString*,id>*> *)parsePackedStreamsForHandle:(CSHandle *)handle error:(NSError**)error;
+-(NSArray<NSMutableDictionary<NSString*,id>*> *)parseFoldersForHandle:(CSHandle *)handle packedStreams:(NSArray *)packedstreams error:(NSError**)error;
+-(BOOL)parseFolderForHandle:(CSHandle *)handle dictionary:(NSMutableDictionary *)dictionary
+			  packedStreams:(NSArray *)packedstreams packedStreamIndex:(NSInteger *)packedstreamindex error:(NSError**)error;
+-(BOOL)parseSubStreamsInfoForHandle:(CSHandle *)handle folders:(NSArray *)folders error:(NSError**)error;
 -(void)setupDefaultSubStreamsForFolders:(NSArray *)folders;
 -(NSArray *)collectAllSubStreamsFromFolders:(NSArray *)folders;
 
@@ -64,7 +82,7 @@ packedStreams:(NSArray *)packedstreams packedStreamIndex:(NSInteger *)packedstre
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data
 name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props;
 
--(void)parse;
+-(void)parse DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
 -(NSString *)formatName;
 
 @end

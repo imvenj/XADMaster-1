@@ -13,9 +13,11 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props;
 
 -(instancetype)init;
 
--(void)parse;
--(void)parseVolumeDescriptorAtBlock:(uint32_t)block;
--(void)parseDirectoryWithPath:(XADPath *)path atBlock:(uint32_t)block length:(uint32_t)length;
+-(void)parse DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
+-(void)parseVolumeDescriptorAtBlock:(uint32_t)block DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
+-(void)parseDirectoryWithPath:(XADPath *)path atBlock:(uint32_t)block length:(uint32_t)length DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
+-(BOOL)parseVolumeDescriptorAtBlock:(uint32_t)block error:(NSError**)error;
+-(BOOL)parseDirectoryWithPath:(XADPath *)path atBlock:(uint32_t)block length:(uint32_t)length error:(NSError**)error;
 
 -(XADString *)readStringOfLength:(int)length;
 -(NSDate *)readLongDateAndTime;

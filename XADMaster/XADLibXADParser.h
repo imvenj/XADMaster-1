@@ -27,7 +27,8 @@
 
 -(instancetype)init;
 
--(void)parse;
+-(void)parse DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
+-(BOOL)parseWithError:(NSError **)error;
 -(BOOL)newEntryCallback:(struct xadProgressInfo *)proginfo;
 -(NSMutableDictionary *)dictionaryForFileInfo:(struct xadFileInfo *)info;
 -(NSMutableDictionary *)dictionaryForDiskInfo:(struct xadDiskInfo *)info;

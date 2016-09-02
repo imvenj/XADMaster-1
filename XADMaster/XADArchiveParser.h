@@ -212,7 +212,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 +(nullable NSArray *)volumesForHandle:(CSHandle *)handle firstBytes:(NSData *)data
 name:(NSString *)name;
 
--(void)parse;
+-(void)parse DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
 -(nullable CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow; use handleForEntryWithDictionary:wantChecksum:error: instead");
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *formatName;
 
@@ -222,7 +222,7 @@ name:(NSString *)name;
 // parseWithoutExceptions will in addition return XADBreakError if the delegate
 // requested parsing to stop.
 
--(XADError)parseWithoutExceptions;
+-(XADError)parseWithoutExceptions DEPRECATED_MSG_ATTRIBUTE("Use -parseWithError: instead");
 -(BOOL)parseWithError:(NSError**)error;
 -(nullable CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum error:(NSError**)errorptr;
 

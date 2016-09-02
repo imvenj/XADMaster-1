@@ -21,7 +21,7 @@ typedef struct RAR5Block
 
 -(void)setPassword:(NSString *)newpassword;
 
--(void)parse;
+-(void)parse DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
 
 -(NSMutableDictionary *)readFileBlockHeader:(RAR5Block)block;
 -(RAR5Block)readBlockHeader;

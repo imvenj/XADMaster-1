@@ -64,6 +64,88 @@ struct xadMasterBaseP *xadOpenLibrary(xadINT32 version);
 	[super dealloc];
 }
 
+- (BOOL)parseWithError:(NSError * _Nullable *)error
+{
+	namedata=[[[self name] dataUsingEncoding:NSUTF8StringEncoding] mutableCopy];
+	[namedata increaseLengthBy:1];
+	
+	if(!(archive=xadAllocObjectA(xmb,XADOBJ_ARCHIVEINFO,NULL)))
+	{
+		if (error) {
+			*error = [NSError errorWithDomain:NSPOSIXErrorDomain code:ENOMEM userInfo:nil];
+		}
+		return NO;
+	}
+	
+	indata.fh=[self handle];
+	indata.name=[namedata bytes];
+	inhook.h_Entry=InFunc;
+	inhook.h_Data=(void *)&indata;
+	
+	progresshook.h_Entry=ProgressFunc;
+	progresshook.h_Data=(void *)self;
+	
+	addonbuild=YES;
+	numfilesadded=0;
+	numdisksadded=0;
+	
+	struct TagItem tags[]={
+		XAD_INHOOK,(uintptr_t)&inhook,
+		XAD_PROGRESSHOOK,(uintptr_t)&progresshook,
+		TAG_DONE};
+	
+	int err=xadGetInfoA(xmb,archive,tags);
+	/*	if(!err&&archive->xaip_ArchiveInfo.xai_DiskInfo)
+	 {
+		xadFreeInfo(xmb,archive);
+		[[self handle] seekToFileOffset:0];
+		err=xadGetDiskInfo(xmb,archive,XAD_INDISKARCHIVE,tags,TAG_DONE);
+	 }
+	 else if(err==XADERR_FILETYPE)
+	 */
+	if(err==XADERR_FILETYPE)
+	{
+		err=xadGetDiskInfoA(xmb,archive,tags);
+	}
+	
+	if(err) {
+		if (error) {
+			*error = [NSError errorWithDomain:XADErrorDomain code:err userInfo:nil];
+		}
+		return NO;
+	}
+	
+	/*	if(![fileinfos count])
+	 {
+		if(error) *error=XADERR_DATAFORMAT;
+		return NO;
+	 }*/
+	
+	if(!addonbuild) // encountered entries which could not be immediately added
+	{
+		struct xadFileInfo *fileinfo=archive->xaip_ArchiveInfo.xai_FileInfo;
+		
+		for(int i=0;i<numfilesadded&&fileinfo;i++) fileinfo=fileinfo->xfi_Next;
+		
+		while(fileinfo&&[self shouldKeepParsing])
+		{
+			[self addEntryWithDictionary:[self dictionaryForFileInfo:fileinfo]];
+			fileinfo=fileinfo->xfi_Next;
+		}
+		
+		struct xadDiskInfo *diskinfo=archive->xaip_ArchiveInfo.xai_DiskInfo;
+		
+		for(int i=0;i<numdisksadded&&diskinfo;i++) diskinfo=diskinfo->xdi_Next;
+		
+		while(diskinfo&&[self shouldKeepParsing])
+		{
+			[self addEntryWithDictionary:[self dictionaryForDiskInfo:diskinfo]];
+			diskinfo=diskinfo->xdi_Next;
+		}
+	}
+	return YES;
+}
+
 -(void)parse
 {
 	namedata=[[[self name] dataUsingEncoding:NSUTF8StringEncoding] mutableCopy];

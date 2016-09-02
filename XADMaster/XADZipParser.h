@@ -12,10 +12,15 @@
 
 -(instancetype)init;
 
--(void)parseWithSeparateMacForks;
--(void)parseWithCentralDirectoryAtOffset:(off_t)centraloffs zip64Offset:(off_t)zip64offs;
+-(void)parseWithSeparateMacForks DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
+-(void)parseWithCentralDirectoryAtOffset:(off_t)centraloffs zip64Offset:(off_t)zip64offs DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
 
--(void)parseWithoutCentralDirectory;
+-(void)parseWithoutCentralDirectory DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
+
+-(BOOL)parseWithSeparateMacForksWithError:(NSError**)error;
+-(BOOL)parseWithCentralDirectoryAtOffset:(off_t)centraloffs zip64Offset:(off_t)zip64offs error:(NSError**)error;
+
+-(BOOL)parseWithoutCentralDirectoryWithError:(NSError**)error;
 -(void)findEndOfStreamMarkerWithZip64Flag:(BOOL)zip64 uncompressedSizePointer:(off_t *)uncompsizeptr
 compressedSizePointer:(off_t *)compsizeptr CRCPointer:(uint32_t *)crcptr;
 -(void)findNextEntry;
@@ -23,8 +28,11 @@ compressedSizePointer:(off_t *)compsizeptr CRCPointer:(uint32_t *)crcptr;
 //-(void)findNextZipMarkerStartingAt:(off_t)startpos;
 //-(void)findNoSeekMarkerForDictionary:(NSMutableDictionary *)dict;
 -(NSDictionary *)parseZipExtraWithLength:(int)length nameData:(NSData *)namedata
-uncompressedSizePointer:(off_t *)uncompsizeptr compressedSizePointer:(off_t *)compsizeptr;
+uncompressedSizePointer:(off_t *)uncompsizeptr compressedSizePointer:(off_t *)compsizeptr
+DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
 
+-(NSDictionary *)parseZipExtraWithLength:(int)length nameData:(NSData *)namedata
+				 uncompressedSizePointer:(off_t *)uncompsizeptr compressedSizePointer:(off_t *)compsizeptr error:(NSError**)error;
 -(void)addZipEntryWithSystem:(int)system
 extractVersion:(int)extractversion
 flags:(int)flags

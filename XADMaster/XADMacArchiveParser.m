@@ -72,6 +72,15 @@ NSString *XADDisableMacForkExpansionKey=@"XADDisableMacForkExpansionKey";
 	[super dealloc];
 }
 
+- (BOOL)parseWithError:(NSError **)error
+{
+	BOOL success = [self parseWithSeparateMacForksWithError:error];
+	
+	// If we have a queued ditto fork left over, get rid of it as it isn't a directory.
+	if(queueddittoentry) [self addQueuedDittoDictionaryAndRetainPosition:NO];
+	return success;
+}
+
 -(void)parse
 {
 	[self parseWithSeparateMacForks];
@@ -81,6 +90,13 @@ NSString *XADDisableMacForkExpansionKey=@"XADDisableMacForkExpansionKey";
 }
 
 -(void)parseWithSeparateMacForks {}
+-(BOOL)parseWithSeparateMacForksWithError:(NSError **)error
+{
+	if (error) {
+		*error = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:nil];
+	}
+	return NO;
+}
 
 -(void)addEntryWithDictionary:(NSMutableDictionary *)dict retainPosition:(BOOL)retainpos
 {
