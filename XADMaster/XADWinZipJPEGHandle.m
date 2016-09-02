@@ -23,7 +23,7 @@
 static size_t ReadFunction(void *context,uint8_t *buffer,size_t length)
 {
 	CSInputBuffer *input=(CSInputBuffer *)context;
-	for(int i=0;i<length;i++)
+	for(size_t i=0;i<length;i++)
 	{
 		if(CSInputAtEOF(input)) return i;
 		buffer[i]=CSInputNextByte(input);
