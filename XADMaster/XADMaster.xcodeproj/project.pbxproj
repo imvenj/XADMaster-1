@@ -2400,7 +2400,6 @@
 		32DBCF5E0370ADEE00C91783 /* XADMaster_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADMaster_Prefix.pch; sourceTree = "<group>"; };
 		5500A60F1D776ADB00321300 /* XADMaster.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = XADMaster.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		559B9CCC1A13F30E006BDB74 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
-		559B9CCF1A13F443006BDB74 /* XADMaster-umbrella.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XADMaster-umbrella.h"; sourceTree = "<group>"; };
 		55CD16B01C4AEA49002C2B17 /* XADTestSwift2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = XADTestSwift2; sourceTree = BUILT_PRODUCTS_DIR; };
 		55CD16B21C4AEA49002C2B17 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		55DAB5271D78FCB30041DA58 /* simple.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = simple.modulemap; sourceTree = "<group>"; };
@@ -3529,7 +3528,6 @@
 			children = (
 				5500A6131D776B2500321300 /* XADSimple */,
 				32DBCF5E0370ADEE00C91783 /* XADMaster_Prefix.pch */,
-				559B9CCF1A13F443006BDB74 /* XADMaster-umbrella.h */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
