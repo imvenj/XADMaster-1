@@ -223,7 +223,8 @@ name:(NSString *)name;
 // requested parsing to stop.
 
 -(XADError)parseWithoutExceptions;
--(nullable CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum error:(nullable XADError *)errorptr;
+-(BOOL)parseWithError:(NSError**)error;
+-(nullable CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum error:(NSError**)errorptr;
 
 @end
 

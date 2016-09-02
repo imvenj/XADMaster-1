@@ -2403,6 +2403,7 @@
 		559B9CCF1A13F443006BDB74 /* XADMaster-umbrella.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XADMaster-umbrella.h"; sourceTree = "<group>"; };
 		55CD16B01C4AEA49002C2B17 /* XADTestSwift2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = XADTestSwift2; sourceTree = BUILT_PRODUCTS_DIR; };
 		55CD16B21C4AEA49002C2B17 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		55DAB5271D78FCB30041DA58 /* simple.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = simple.modulemap; sourceTree = "<group>"; };
 		56FBC92B0A57541300BE98CF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
 		8DC2EF5B0486A6940098B216 /* XADMaster.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = XADMaster.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -2636,6 +2637,7 @@
 			isa = PBXGroup;
 			children = (
 				559B9CCC1A13F30E006BDB74 /* module.modulemap */,
+				55DAB5271D78FCB30041DA58 /* simple.modulemap */,
 				56FBC92B0A57541300BE98CF /* Info.plist */,
 			);
 			name = Resources;
@@ -6591,7 +6593,7 @@
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				MODULEMAP_FILE = module.modulemap;
+				MODULEMAP_FILE = simple.modulemap;
 				PRODUCT_BUNDLE_IDENTIFIER = de.dstoecker.xadmaster;
 				PRODUCT_NAME = XADMaster;
 				SDKROOT = macosx;
@@ -6621,7 +6623,7 @@
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				MODULEMAP_FILE = module.modulemap;
+				MODULEMAP_FILE = simple.modulemap;
 				PRODUCT_BUNDLE_IDENTIFIER = de.dstoecker.xadmaster;
 				PRODUCT_NAME = XADMaster;
 				SDKROOT = macosx;

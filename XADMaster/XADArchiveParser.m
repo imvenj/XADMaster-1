@@ -1194,6 +1194,19 @@ name:(NSString *)name { return nil; }
 	return XADNoError;
 }
 
+-(BOOL)parseWithError:(NSError**)error
+{
+	XADError err = [self parseWithoutExceptions];
+	if (err == XADNoError) {
+		return YES;
+	} else {
+		if (error) {
+			*error = [NSError errorWithDomain:XADErrorDomain code:err userInfo:NULL];
+		}
+		return NO;
+	}
+}
+
 -(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum error:(NSError **)errorptr
 {
 	if(errorptr) *errorptr=XADNoError;

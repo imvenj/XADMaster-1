@@ -155,20 +155,6 @@ framework module XADMaster [extern_c] {
 		export *
 	}
 	
-	explicit module SWF {
-		requires objc
-		export *
-		module Geometry {
-			header "XADSWFGeometry.h"
-			export *
-		}
-		
-		module TagParser {
-			header "XADSWFTagParser.h"
-			export *
-		}
-	}
-	
 	// Because Apple is dumb and doesn't include bzip2 or zlib's headers as modules.
 	exclude header "CSBzip2Handle.h"
 	exclude header "CSZlibHandle.h"

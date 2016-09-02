@@ -7,8 +7,8 @@
 //
 
 import Foundation
-import XADMaster.XADArchiveParser
-import XADMaster.XADUtilities.CRC
+import XADMaster.ArchiveParser
+import XADMaster.CRC
 
 
 var XADCRCTable_edb88320_Swift: [UInt32] = {
@@ -23,8 +23,9 @@ var XADCRCTable_edb88320_Swift: [UInt32] = {
 class TestDelegate: NSObject, XADArchiveParserDelegate {
 	var count: Int32 = 0
 	
-	func archiveParser(parser: XADArchiveParser!, foundEntryWithDictionary dict: [NSObject : AnyObject]!) {
-		print("Entry \(count++): \(dict)")
+	func archiveParser(parser: XADArchiveParser, foundEntryWithDictionary dict: [NSObject : AnyObject]) {
+		print("Entry \(count): \(dict)")
+		count += 1
 		
 		do {
 			let fh = try parser.handleForEntryWithDictionary(dict, wantChecksum: true)
@@ -63,7 +64,7 @@ class TestDelegate: NSObject, XADArchiveParserDelegate {
 		}
 	}
 	
-	func archiveParsingShouldStop(parser: XADArchiveParser!) -> Bool {
+	func archiveParsingShouldStop(parser: XADArchiveParser) -> Bool {
 		return false
 	}
 }
