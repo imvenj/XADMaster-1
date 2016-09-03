@@ -880,8 +880,8 @@ isLastEntry:(BOOL)islastentry
 	{
 		if(system==0) // MS-DOS
 		{
-			if(extfileattrib&0x10 && compsize==0 && uncompsize==0) [dict setObject:[NSNumber numberWithBool:YES] forKey:XADIsDirectoryKey];
-			[dict setObject:[NSNumber numberWithUnsignedInt:extfileattrib] forKey:XADDOSFileAttributesKey];
+			if(extfileattrib&0x10 && compsize==0 && uncompsize==0) dict[XADIsDirectoryKey] = @YES;
+			dict[XADDOSFileAttributesKey] = @(extfileattrib);
 		}
 		else if(system==1) // Amiga
 		{
