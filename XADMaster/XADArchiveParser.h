@@ -153,8 +153,8 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 
 // Internal functions
 
-+(NSArray *)scanForVolumesWithFilename:(NSString *)filename regex:(XADRegex *)regex;
-+(NSArray *)scanForVolumesWithFilename:(NSString *)filename
++(NSArray<NSString*> *)scanForVolumesWithFilename:(NSString *)filename regex:(XADRegex *)regex;
++(NSArray<NSString*> *)scanForVolumesWithFilename:(NSString *)filename
 regex:(XADRegex *)regex firstFileExtension:(nullable NSString *)firstext;
 
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL shouldKeepParsing;
@@ -203,13 +203,14 @@ regex:(XADRegex *)regex firstFileExtension:(nullable NSString *)firstext;
 // Subclasses implement these:
 
 +(int)requiredHeaderSize;
+@property (class, readonly) int requiredHeaderSize;
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data
 name:(NSString *)name;
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data
 name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props;
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data
 resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props;
-+(nullable NSArray *)volumesForHandle:(CSHandle *)handle firstBytes:(NSData *)data
++(nullable NSArray<NSString*> *)volumesForHandle:(CSHandle *)handle firstBytes:(NSData *)data
 name:(NSString *)name;
 
 -(void)parse;

@@ -38,10 +38,10 @@ separators:(const char *)pathseparators;
 
 @property (NS_NONATOMIC_IOSONLY, readonly) NSInteger depth; // Note: Does not take . or .. paths into account.
 -(NSInteger)depthWithEncodingName:(NSString *)encoding;
-@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray *pathComponents;
--(NSArray *)pathComponentsWithEncodingName:(NSString *)encoding;
-@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray *canonicalPathComponents;
--(NSArray *)canonicalPathComponentsWithEncodingName:(NSString *)encoding;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray<NSString*> *pathComponents;
+-(NSArray<NSString*> *)pathComponentsWithEncodingName:(NSString *)encoding;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray<NSString*> *canonicalPathComponents;
+-(NSArray<NSString*> *)canonicalPathComponentsWithEncodingName:(NSString *)encoding;
 -(void)_addPathComponentsToArray:(NSMutableArray *)components encodingName:(NSString *)encoding;
 
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *lastPathComponent;

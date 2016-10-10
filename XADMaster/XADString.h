@@ -121,7 +121,7 @@ extern NSString *XADMacOSCroatianStringEncodingName;
 +(NSString *)stringForData:(NSData *)data encodingName:(NSString *)encoding;
 +(NSString *)stringForBytes:(const void *)bytes length:(size_t)length encodingName:(NSString *)encoding;
 +(NSData *)dataForString:(NSString *)string encodingName:(NSString *)encoding;
-+(NSArray *)availableEncodingNames;
++(NSArray<NSString*> *)availableEncodingNames;
 
 #ifdef __APPLE__
 +(NSString *)encodingNameForEncoding:(NSStringEncoding)encoding;
