@@ -146,7 +146,7 @@ static const char PDFPasswordPadding[32]=
 	PDFMD5Engine *md5=[PDFMD5Engine engine];
 
 	NSData *passdata=[password dataUsingEncoding:NSISOLatin1StringEncoding];
-	int passlength=[passdata length];
+	NSInteger passlength=[passdata length];
 	const unsigned char *passbytes=[passdata bytes];
 	if(passlength<32)
 	{

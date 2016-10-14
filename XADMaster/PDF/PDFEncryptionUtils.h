@@ -1,7 +1,22 @@
 #import <Foundation/Foundation.h>
 #import "../CSHandle.h"
 #import "../CSBlockStreamHandle.h"
+
+#if defined(USE_COMMON_CRYPTO) && USE_COMMON_CRYPTO
+#include <CommonCrypto/CommonCrypto.h>
+typedef CC_MD5_CTX XADMD5;
+#define XADMD5_Init CC_MD5_Init
+#define XADMD5_Update CC_MD5_Update
+#define XADMD5_Final CC_MD5_Final
+#else
 #import "../Crypto/md5.h"
+#import "../Crypto/aes.h"
+typedef MD5_CTX XADMD5;
+#define XADMD5_Init MD5_Init
+#define XADMD5_Update MD5_Update
+#define XADMD5_Final MD5_Final
+#endif
+
 #import "../Crypto/aes.h"
 
 extern NSString *PDFMD5FinishedException;
@@ -10,7 +25,7 @@ extern NSString *PDFMD5FinishedException;
 
 @interface PDFMD5Engine:NSObject
 {
-	MD5_CTX md5;
+	XADMD5 md5;
 	unsigned char digest_bytes[16];
 	BOOL done;
 }

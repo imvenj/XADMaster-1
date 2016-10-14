@@ -23,7 +23,7 @@ NSString *PDFMD5FinishedException=@"PDFMD5FinishedException";
 {
 	if(self=[super init])
 	{
-		MD5_Init(&md5);
+		XADMD5_Init(&md5);
 		done=NO;
 	}
 	return self;
@@ -34,18 +34,18 @@ NSString *PDFMD5FinishedException=@"PDFMD5FinishedException";
 -(void)updateWithBytes:(const void *)bytes length:(unsigned long)length
 {
 	if(done) [NSException raise:PDFMD5FinishedException format:@"Attempted to update a finished %@ object",[self class]];
-	MD5_Update(&md5,bytes,length);
+	XADMD5_Update(&md5,bytes,(unsigned int)length);
 }
 
 -(NSData *)digest
 {
-	if(!done) { MD5_Final(digest_bytes,&md5); done=YES; }
+	if(!done) { XADMD5_Final(digest_bytes,&md5); done=YES; }
 	return [NSData dataWithBytes:digest_bytes length:16];
 }
 
 -(NSString *)hexDigest
 {
-	if(!done) { MD5_Final(digest_bytes,&md5); done=YES; }
+	if(!done) { XADMD5_Final(digest_bytes,&md5); done=YES; }
 	return [NSString stringWithFormat:@"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
 	digest_bytes[0],digest_bytes[1],digest_bytes[2],digest_bytes[3],
 	digest_bytes[4],digest_bytes[5],digest_bytes[6],digest_bytes[7],

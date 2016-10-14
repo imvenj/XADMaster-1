@@ -42,6 +42,8 @@ void GarbleBlock(unsigned char *block,uint32_t a,uint32_t b,uint32_t c,uint32_t 
 	for(int i=0;i<64;i++) block[i]=W[i/4]>>(i%4)*8;
 }
 
+//TODO: port to use CommonCrypto
+
 void SHA1_Update_WithRARBug(SHA_CTX *ctx,void *bytes,unsigned long length,int bug)
 {
 	int firstbytes=64-(ctx->s1.bitcount/8)%64;

@@ -21,14 +21,14 @@
 
 -(void)resetStream
 {
-	MD5_Init(&context);
+	XADMD5_Init(&context);
 	[parent seekToFileOffset:0];
 }
 
 -(int)streamAtMost:(int)num toBuffer:(void *)buffer
 {
 	int actual=[parent readAtMost:num toBuffer:buffer];
-	MD5_Update(&context,buffer,actual);
+	XADMD5_Update(&context,buffer,actual);
 	return actual;
 }
 
@@ -38,11 +38,11 @@
 {
 	if([digest length]!=16) return NO;
 
-	MD5_CTX copy;
+	XADMD5 copy;
 	copy=context;
 
 	uint8_t buf[16];
-	MD5_Final(buf,&copy);
+	XADMD5_Final(buf,&copy);
 
 	return memcmp([digest bytes],buf,16)==0;
 }

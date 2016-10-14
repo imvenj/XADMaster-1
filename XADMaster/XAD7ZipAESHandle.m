@@ -1,6 +1,18 @@
 #import "XAD7ZipAESHandle.h"
 
-#import "Crypto/sha.h"
+#if defined(USE_COMMON_CRYPTO) && USE_COMMON_CRYPTO
+#include <CommonCrypto/CommonCrypto.h>
+typedef CC_SHA256_CTX XADSHA256;
+#define XADSHA256_Init CC_SHA256_Init
+#define XADSHA256_Final CC_SHA256_Final
+#define XADSHA256_Update CC_SHA256_Update
+#else
+#include "Crypto/sha.h"
+typedef SHA_CTX XADSHA256;
+#define XADSHA256_Init SHA256_Init
+#define XADSHA256_Final SHA256_Final
+#define XADSHA256_Update SHA256_Update
+#endif
 
 @implementation XAD7ZipAESHandle
 
@@ -92,22 +104,22 @@
 	}
 	else
 	{
-		SHA_CTX sha;
-		SHA256_Init(&sha);
+		XADSHA256 sha;
+		XADSHA256_Init(&sha);
 
 		uint64_t numrounds=1LL<<logrounds;
 
 		for(uint64_t i=0;i<numrounds;i++)
 		{
-			SHA256_Update(&sha,saltbytes,saltlength);
-			SHA256_Update(&sha,passbytes,passlength);
-			SHA256_Update(&sha,(uint8_t[8]) {
+			XADSHA256_Update(&sha,saltbytes,(CC_LONG)saltlength);
+			XADSHA256_Update(&sha,passbytes,(CC_LONG)passlength);
+			XADSHA256_Update(&sha,(uint8_t[8]) {
 				i&0xff,(i>>8)&0xff,(i>>16)&0xff,(i>>24)&0xff,
 				(i>>32)&0xff,(i>>40)&0xff,(i>>48)&0xff,(i>>56)&0xff,
 			},8);
 		}
 
-		SHA256_Final(key,&sha);
+		XADSHA256_Final(key,&sha);
 	}
 
 	return [NSData dataWithBytes:key length:sizeof(key)];

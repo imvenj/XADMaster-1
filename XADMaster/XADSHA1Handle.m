@@ -21,14 +21,14 @@
 
 -(void)resetStream
 {
-	SHA1_Init(&context);
+	XADSHA1_Init(&context);
 	[parent seekToFileOffset:0];
 }
 
 -(int)streamAtMost:(int)num toBuffer:(void *)buffer
 {
 	int actual=[parent readAtMost:num toBuffer:buffer];
-	SHA1_Update(&context,buffer,actual);
+	XADSHA1_Update(&context,buffer,actual);
 	return actual;
 }
 
@@ -38,11 +38,11 @@
 {
 	if([digest length]!=20) return NO;
 
-	SHA_CTX copy;
+	XADSHA1 copy;
 	copy=context;
 
 	uint8_t buf[20];
-	SHA1_Final(buf,&copy);
+	XADSHA1_Final(buf,&copy);
 
 	return memcmp([digest bytes],buf,20)==0;
 }
