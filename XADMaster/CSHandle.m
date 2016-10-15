@@ -18,7 +18,7 @@ NSString *CSNotSupportedException=@"CSNotSupportedException";
 {
 	if((self=[super init]))
 	{
-		name=[descname retain];
+		name=[descname copy];
 
 		bitoffs=-1;
 
@@ -240,7 +240,7 @@ CSReadValueImpl(uint32_t,readID,CSUInt32BE)
 {
 	uint8_t buffer[16384];
 	NSMutableData *data=[NSMutableData data];
-	int actual;
+	NSInteger actual;
 
 	do
 	{

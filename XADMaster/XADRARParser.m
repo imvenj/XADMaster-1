@@ -427,8 +427,8 @@ static const uint8_t *FindSignature(const uint8_t *ptr,NSInteger length)
 
 	// TODO: should this be [self handle] or block.fh?
 	NSArray *parts=@[@{@"Parts": @[@{@"Offset": @([[self handle] offsetInFile]),
-			@"InputLength": [NSNumber numberWithLongLong:block.headersize-13]}],
-		@"OutputLength": [NSNumber numberWithLongLong:commentsize],
+			@"InputLength": @(block.headersize-13)}],
+		@"OutputLength": @(commentsize),
 		@"Version": @(version),
 		@"Encrypted": @NO}];
 

@@ -29,8 +29,8 @@ typedef SHA_CTX XADSHA1;
 	uint8_t passbuf[length*2+8];
 	for(NSInteger i=0;i<length;i++)
 	{
-		int c=[password characterAtIndex:i];
-		passbuf[2*i]=c;
+		unichar c=[password characterAtIndex:i];
+		passbuf[2*i]=c & 0xFF;
 		passbuf[2*i+1]=c>>8;
 	}
 

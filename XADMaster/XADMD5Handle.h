@@ -16,7 +16,6 @@ typedef MD5_CTX XADMD5;
 #define XADMD5_Final MD5_Final
 #endif
 
-
 @interface XADMD5Handle:CSStreamHandle
 {
 	CSHandle *parent;

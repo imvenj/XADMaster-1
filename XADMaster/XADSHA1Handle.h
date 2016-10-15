@@ -24,7 +24,7 @@ typedef SHA_CTX XADSHA1;
 	XADSHA1 context;
 }
 
--(id)initWithHandle:(CSHandle *)handle length:(off_t)length correctDigest:(NSData *)correctdigest;
+-(instancetype)initWithHandle:(CSHandle *)handle length:(off_t)length correctDigest:(NSData *)correctdigest;
 
 -(void)resetStream;
 -(int)streamAtMost:(int)num toBuffer:(void *)buffer;

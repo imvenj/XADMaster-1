@@ -152,7 +152,7 @@ static uint64_t ParseInteger(CSHandle *fh);
 
 		case BlockDataState:
 		{
-			int actual=[currhandle readAtMost:num-bytesread toBuffer:&bytebuf[bytesread]];
+			NSInteger actual=[currhandle readAtMost:num-bytesread toBuffer:&bytebuf[bytesread]];
 
 			switch(checksumflags)
 			{

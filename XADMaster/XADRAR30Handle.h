@@ -8,7 +8,7 @@
 
 @interface XADRAR30Handle:CSBlockStreamHandle 
 {
-	XADRARParser *parser;
+	__unsafe_unretained XADRARParser *parser;
 
 	NSArray *files;
 	int file;
