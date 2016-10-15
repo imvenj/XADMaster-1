@@ -42,8 +42,6 @@ void GarbleBlock(unsigned char *block,uint32_t a,uint32_t b,uint32_t c,uint32_t 
 	for(int i=0;i<64;i++) block[i]=W[i/4]>>(i%4)*8;
 }
 
-//TODO: port to use CommonCrypto
-
 void SHA1_Update_WithRARBug(SHA_CTX *ctx,void *bytes,unsigned long length,int bug)
 {
 	int firstbytes=64-(ctx->s1.bitcount/8)%64;
@@ -69,3 +67,34 @@ void SHA1_Update_WithRARBug(SHA_CTX *ctx,void *bytes,unsigned long length,int bu
 
 	SHA1_Update(ctx,(void *)((unsigned char *)bytes+firstbytes+numblocks*64),lastbytes);
 }
+
+#if defined(USE_COMMON_CRYPTO) && USE_COMMON_CRYPTO
+void CC_SHA1_Update_WithRARBug(CC_SHA1_CTX *ctx,void *bytes,unsigned long length,bool bug)
+{
+	//TODO: validate this against real data!
+	int firstbytes=64-(ctx->Nh/8)%64;
+	if(!bug||length<=firstbytes) {
+		CC_SHA1_Update(ctx, bytes, (CC_LONG)length);
+		return;
+	}
+	
+	CC_SHA1_Update(ctx, bytes, firstbytes);
+	
+	long numblocks=(length-firstbytes)/64;
+	int lastbytes=(length-firstbytes)%64;
+	
+	for(long i=0;i<numblocks;i++) {
+		unsigned char *block=(unsigned char *)bytes+firstbytes+i*64;
+		uint32_t a=ctx->h0;
+		uint32_t b=ctx->h1;
+		uint32_t c=ctx->h2;
+		uint32_t d=ctx->h3;
+		uint32_t e=ctx->h4;
+		
+		CC_SHA1_Update(ctx,(void *)block,64);
+		GarbleBlock(block,a,b,c,d,e);
+	}
+	
+	CC_SHA1_Update(ctx,(void *)((unsigned char *)bytes+firstbytes+numblocks*64),lastbytes);
+}
+#endif
