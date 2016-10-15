@@ -147,7 +147,7 @@ encodingName:(NSString *)encoding
 {
 	if((self=[super init]))
 	{
-		data=[bytedata retain];
+		data=[bytedata copy];
 		string=nil;
 		source=[stringsource retain];
 	}
@@ -158,7 +158,7 @@ encodingName:(NSString *)encoding
 {
 	if((self=[super init]))
 	{
-		string=[knownstring retain];
+		string=[knownstring copy];
 		data=nil;
 		source=nil;
 	}
@@ -241,7 +241,7 @@ encodingName:(NSString *)encoding
 	}
 }
 
--(XADString *)XADStringByStrippingASCIIPrefixOfLength:(int)length
+-(XADString *)XADStringByStrippingASCIIPrefixOfLength:(NSInteger)length
 {
 	if(string)
 	{
@@ -403,6 +403,16 @@ encodingName:(NSString *)encoding
 	if(!encoding) [self setFixedEncodingName:nil];
 	else [self setFixedEncodingName:[XADString encodingNameForEncoding:encoding]];
 }
+
+- (NSStringEncoding)fixedEncoding
+{
+	if (fixedencodingname == nil) {
+		return 0;
+	} else {
+		return [XADString encodingForEncodingName:fixedencodingname];
+	}
+}
+
 #endif
 
 @end

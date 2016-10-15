@@ -26,7 +26,6 @@ maximumLength:(int)maxlength shortestCodeIsZeros:(BOOL)zeros;
 -(instancetype)initWithStaticTable:(int (*)[2])statictable NS_DESIGNATED_INITIALIZER;
 -(instancetype)initWithLengths:(const int *)lengths numberOfSymbols:(int)numsymbols
 maximumLength:(int)maxlength shortestCodeIsZeros:(BOOL)zeros;
--(void)dealloc;
 
 -(void)addValue:(int)value forCodeWithHighBitFirst:(uint32_t)code length:(int)length;
 -(void)addValue:(int)value forCodeWithHighBitFirst:(uint32_t)code length:(int)length repeatAt:(int)repeatpos;

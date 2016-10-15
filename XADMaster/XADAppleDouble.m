@@ -7,7 +7,7 @@
 @implementation XADAppleDouble
 
 +(BOOL)parseAppleDoubleWithHandle:(CSHandle *)fh resourceForkOffset:(off_t *)resourceoffsetptr
-resourceForkLength:(off_t *)resourcelengthptr extendedAttributes:(NSDictionary **)extattrsptr
+resourceForkLength:(off_t *)resourcelengthptr extendedAttributes:(NSDictionary<NSString*,NSData*> **)extattrsptr
 {
 	if([fh readUInt32BE]!=0x00051607) return NO;
 	if([fh readUInt32BE]!=0x00020000) return NO;

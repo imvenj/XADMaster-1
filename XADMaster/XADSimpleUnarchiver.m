@@ -160,32 +160,16 @@
 	}
 }
 
--(BOOL)removesEnclosingDirectoryForSoloItems { return removesolo; }
--(void)setRemovesEnclosingDirectoryForSoloItems:(BOOL)removeflag { removesolo=removeflag; }
+@synthesize removesEnclosingDirectoryForSoloItems = removesolo;
+@synthesize alwaysOverwritesFiles = overwrite;
+@synthesize alwaysRenamesFiles = rename;
+@synthesize alwaysSkipsFiles = skip;
+@synthesize extractsSubArchives = extractsubarchives;
+@synthesize copiesArchiveModificationTimeToEnclosingDirectory = copydatetoenclosing;
+@synthesize copiesArchiveModificationTimeToSoloItems = copydatetosolo;
+@synthesize resetsDateForSoloItems = resetsolodate;
+@synthesize propagatesRelevantMetadata=propagatemetadata;
 
--(BOOL)alwaysOverwritesFiles { return overwrite; }
--(void)setAlwaysOverwritesFiles:(BOOL)overwriteflag { overwrite=overwriteflag; }
-
--(BOOL)alwaysRenamesFiles { return rename; }
--(void)setAlwaysRenamesFiles:(BOOL)renameflag { rename=renameflag; }
-
--(BOOL)alwaysSkipsFiles { return skip; }
--(void)setAlwaysSkipsFiles:(BOOL)skipflag { skip=skipflag; }
-
--(BOOL)extractsSubArchives { return extractsubarchives; }
--(void)setExtractsSubArchives:(BOOL)extractflag { extractsubarchives=extractflag; }
-
--(BOOL)copiesArchiveModificationTimeToEnclosingDirectory { return copydatetoenclosing; }
--(void)setCopiesArchiveModificationTimeToEnclosingDirectory:(BOOL)copyflag { copydatetoenclosing=copyflag; }
-
--(BOOL)copiesArchiveModificationTimeToSoloItems { return copydatetosolo; }
--(void)setCopiesArchiveModificationTimeToSoloItems:(BOOL)copyflag { copydatetosolo=copyflag; }
-
--(BOOL)resetsDateForSoloItems { return resetsolodate; }
--(void)setResetsDateForSoloItems:(BOOL)resetflag { resetsolodate=resetflag; }
-
--(BOOL)propagatesRelevantMetadata { return propagatemetadata; }
--(void)setPropagatesRelevantMetadata:(BOOL)propagateflag { propagatemetadata=propagateflag; }
 
 -(int)macResourceForkStyle { return [unarchiver macResourceForkStyle]; }
 -(void)setMacResourceForkStyle:(int)style
@@ -264,14 +248,9 @@
 	return total;
 }
 
-
-
-
--(int)numberOfItemsExtracted { return numextracted; }
-
--(BOOL)wasSoloItem { return lookslikesolo; }
-
--(NSString *)actualDestination { return finaldestination; }
+@synthesize numberOfItemsExtracted = numextracted;
+@synthesize wasSoloItem = lookslikesolo;
+@synthesize actualDestination = finaldestination;
 
 -(NSString *)soloItem
 {

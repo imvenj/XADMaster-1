@@ -17,7 +17,6 @@ framework module XADMaster [extern_c] {
 	}
 	
 	explicit module LZW {
-		requires objc
 		header "LZW.h"
 		export *
 	}

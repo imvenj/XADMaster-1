@@ -59,17 +59,17 @@
 -(NSString *)substringMatchedByPattern:(NSString *)pattern;
 -(NSString *)substringMatchedByPattern:(NSString *)pattern options:(int)options;
 
--(NSArray *)substringsCapturedByPattern:(NSString *)pattern;
--(NSArray *)substringsCapturedByPattern:(NSString *)pattern options:(int)options;
+-(NSArray<NSString*> *)substringsCapturedByPattern:(NSString *)pattern;
+-(NSArray<NSString*> *)substringsCapturedByPattern:(NSString *)pattern options:(int)options;
 
--(NSArray *)allSubstringsMatchedByPattern:(NSString *)pattern;
--(NSArray *)allSubstringsMatchedByPattern:(NSString *)pattern options:(int)options;
+-(NSArray<NSString*> *)allSubstringsMatchedByPattern:(NSString *)pattern;
+-(NSArray<NSString*> *)allSubstringsMatchedByPattern:(NSString *)pattern options:(int)options;
 
--(NSArray *)allSubstringsCapturedByPattern:(NSString *)pattern;
--(NSArray *)allSubstringsCapturedByPattern:(NSString *)pattern options:(int)options;
+-(NSArray<NSString*> *)allSubstringsCapturedByPattern:(NSString *)pattern;
+-(NSArray<NSString*> *)allSubstringsCapturedByPattern:(NSString *)pattern options:(int)options;
 
--(NSArray *)componentsSeparatedByPattern:(NSString *)pattern;
--(NSArray *)componentsSeparatedByPattern:(NSString *)pattern options:(int)options;
+-(NSArray<NSString*> *)componentsSeparatedByPattern:(NSString *)pattern;
+-(NSArray<NSString*> *)componentsSeparatedByPattern:(NSString *)pattern options:(int)options;
 
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *escapedPattern;
 

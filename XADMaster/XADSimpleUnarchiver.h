@@ -26,7 +26,7 @@
 	NSMutableArray<XADRegex*> *regexes;
 	NSMutableIndexSet *indices;
 
-	NSMutableArray<NSDictionary<NSString*,id>*> *entries;
+	NSMutableArray<NSDictionary<XADArchiveKeys,id>*> *entries;
 	NSMutableArray<NSString*> *reasonsforinterest;
 	NSMutableDictionary *renames;
 	NSMutableSet *resourceforks;
@@ -45,7 +45,7 @@
 
 -(instancetype)init UNAVAILABLE_ATTRIBUTE;
 -(instancetype)initWithArchiveParser:(XADArchiveParser *)archiveparser;
--(instancetype)initWithArchiveParser:(XADArchiveParser *)archiveparser entries:(NSArray<NSDictionary<NSString*,id> *> *)entryarray NS_DESIGNATED_INITIALIZER;
+-(instancetype)initWithArchiveParser:(XADArchiveParser *)archiveparser entries:(NSArray<NSDictionary<XADArchiveKeys,id> *> *)entryarray NS_DESIGNATED_INITIALIZER;
 
 @property (NS_NONATOMIC_IOSONLY, readonly, strong) XADArchiveParser *archiveParser;
 @property (NS_NONATOMIC_IOSONLY, readonly, strong) XADArchiveParser *outerArchiveParser;
@@ -105,7 +105,7 @@
 
 
 @property (NS_NONATOMIC_IOSONLY, readonly) XADError parse;
--(XADError)_setupSubArchiveForEntryWithDataFork:(NSDictionary *)datadict resourceFork:(NSDictionary *)resourcedict;
+-(XADError)_setupSubArchiveForEntryWithDataFork:(NSDictionary<XADArchiveKeys,id> *)datadict resourceFork:(NSDictionary<XADArchiveKeys,id> *)resourcedict;
 
 @property (NS_NONATOMIC_IOSONLY, readonly) XADError unarchive;
 @property (NS_NONATOMIC_IOSONLY, readonly) XADError _unarchiveRegularArchive;
@@ -113,15 +113,15 @@
 
 @property (NS_NONATOMIC_IOSONLY, readonly) XADError _finalizeExtraction;
 
--(void)_testForSoloItems:(NSDictionary *)entry;
+-(void)_testForSoloItems:(NSDictionary<XADArchiveKeys,id> *)entry;
 
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL _shouldStop;
 
--(NSString *)_checkPath:(NSString *)path forEntryWithDictionary:(NSDictionary *)dict deferred:(BOOL)deferred;
+-(NSString *)_checkPath:(NSString *)path forEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict deferred:(BOOL)deferred;
 -(BOOL)_recursivelyMoveItemAtPath:(NSString *)src toPath:(NSString *)dest overwrite:(BOOL)overwritethislevel;
 
 +(NSString *)_findUniquePathForOriginalPath:(NSString *)path;
-+(NSString *)_findUniquePathForOriginalPath:(NSString *)path reservedPaths:(NSSet *)reserved;
++(NSString *)_findUniquePathForOriginalPath:(NSString *)path reservedPaths:(NSSet<NSString*> *)reserved;
 
 @end
 
@@ -133,11 +133,11 @@
 
 -(NSString *)simpleUnarchiver:(XADSimpleUnarchiver *)unarchiver encodingNameForXADString:(id <XADString>)string;
 
--(BOOL)simpleUnarchiver:(XADSimpleUnarchiver *)unarchiver shouldExtractEntryWithDictionary:(NSDictionary *)dict to:(NSString *)path;
--(void)simpleUnarchiver:(XADSimpleUnarchiver *)unarchiver willExtractEntryWithDictionary:(NSDictionary *)dict to:(NSString *)path;
--(void)simpleUnarchiver:(XADSimpleUnarchiver *)unarchiver didExtractEntryWithDictionary:(NSDictionary *)dict to:(NSString *)path error:(XADError)error;
+-(BOOL)simpleUnarchiver:(XADSimpleUnarchiver *)unarchiver shouldExtractEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict to:(NSString *)path;
+-(void)simpleUnarchiver:(XADSimpleUnarchiver *)unarchiver willExtractEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict to:(NSString *)path;
+-(void)simpleUnarchiver:(XADSimpleUnarchiver *)unarchiver didExtractEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict to:(NSString *)path error:(XADError)error;
 
--(NSString *)simpleUnarchiver:(XADSimpleUnarchiver *)unarchiver replacementPathForEntryWithDictionary:(NSDictionary *)dict
+-(NSString *)simpleUnarchiver:(XADSimpleUnarchiver *)unarchiver replacementPathForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict
 originalPath:(NSString *)path suggestedPath:(NSString *)unique;
 -(NSString *)simpleUnarchiver:(XADSimpleUnarchiver *)unarchiver deferredReplacementPathForOriginalPath:(NSString *)path
 suggestedPath:(NSString *)unique;
@@ -145,11 +145,11 @@ suggestedPath:(NSString *)unique;
 -(BOOL)extractionShouldStopForSimpleUnarchiver:(XADSimpleUnarchiver *)unarchiver;
 
 -(void)simpleUnarchiver:(XADSimpleUnarchiver *)unarchiver
-extractionProgressForEntryWithDictionary:(NSDictionary *)dict
+extractionProgressForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict
 fileProgress:(off_t)fileprogress of:(off_t)filesize
 totalProgress:(off_t)totalprogress of:(off_t)totalsize;
 -(void)simpleUnarchiver:(XADSimpleUnarchiver *)unarchiver
-estimatedExtractionProgressForEntryWithDictionary:(NSDictionary *)dict
+estimatedExtractionProgressForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict
 fileProgress:(double)fileprogress totalProgress:(double)totalprogress;
 
 @end

@@ -4,10 +4,10 @@
 @interface XADPlatform:NSObject {}
 
 // Archive entry extraction.
-+(XADError)extractResourceForkEntryWithDictionary:(NSDictionary *)dict
++(XADError)extractResourceForkEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict
 unarchiver:(XADUnarchiver *)unarchiver toPath:(NSString *)destpath;
 +(XADError)updateFileAttributesAtPath:(NSString *)path
-forEntryWithDictionary:(NSDictionary *)dict parser:(XADArchiveParser *)parser
+forEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict parser:(XADArchiveParser *)parser
 preservePermissions:(BOOL)preservepermissions;
 +(XADError)createLinkAtPath:(NSString *)path withDestinationPath:(NSString *)link;
 
@@ -22,7 +22,7 @@ preservePermissions:(BOOL)preservepermissions;
 +(BOOL)fileExistsAtPath:(NSString *)path isDirectory:(BOOL *)isdirptr;
 +(NSString *)uniqueDirectoryPathWithParentDirectory:(NSString *)parent;
 +(NSString *)sanitizedPathComponent:(NSString *)component;
-+(NSArray *)contentsOfDirectoryAtPath:(NSString *)path;
++(NSArray<NSString*> *)contentsOfDirectoryAtPath:(NSString *)path;
 +(BOOL)moveItemAtPath:(NSString *)src toPath:(NSString *)dest;
 +(BOOL)removeItemAtPath:(NSString *)path;
 
