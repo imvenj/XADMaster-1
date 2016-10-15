@@ -22,7 +22,7 @@ typedef NS_ENUM(int, XADAction) {
 
 
 extern NSString *XADResourceDataKey;
-extern NSString *XADResourceForkData;
+extern NSString *XADResourceForkData UNAVAILABLE_ATTRIBUTE;
 extern NSString *XADFinderFlags;
 
 

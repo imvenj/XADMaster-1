@@ -2379,6 +2379,7 @@
 		1BF3BA8F13EE08A300BE7400 /* XADPlatform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADPlatform.h; sourceTree = "<group>"; };
 		32DBCF5E0370ADEE00C91783 /* XADMaster_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADMaster_Prefix.pch; sourceTree = "<group>"; };
 		5500A60F1D776ADB00321300 /* XADMaster.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = XADMaster.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		557EA8751DB1C37C00A5AE04 /* XAD-simple.exp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.exports; path = "XAD-simple.exp"; sourceTree = "<group>"; };
 		559B9CCC1A13F30E006BDB74 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		559B9CCF1A13F443006BDB74 /* XADMaster-umbrella.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XADMaster-umbrella.h"; sourceTree = "<group>"; };
 		56FBC92B0A57541300BE98CF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
@@ -2606,6 +2607,7 @@
 			children = (
 				559B9CCC1A13F30E006BDB74 /* module.modulemap */,
 				56FBC92B0A57541300BE98CF /* Info.plist */,
+				557EA8751DB1C37C00A5AE04 /* XAD-simple.exp */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -6510,6 +6512,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				EXPORTED_SYMBOLS_FILE = "XAD-simple.exp";
 				FRAMEWORK_VERSION = A;
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -6543,6 +6546,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				EXPORTED_SYMBOLS_FILE = "XAD-simple.exp";
 				FRAMEWORK_VERSION = A;
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;

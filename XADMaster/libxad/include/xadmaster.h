@@ -23,12 +23,13 @@
 */
 
 #include <CoreFoundation/CoreFoundation.h>
+#include <stdint.h>
+#include <stdio.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include <stdint.h>
 typedef uint32_t           xadUINT32;
 typedef int32_t            xadINT32;
 typedef uint16_t           xadUINT16;
@@ -63,7 +64,6 @@ struct TagItem {
   xadSize ti_Data;
 };
 
-#include <stdio.h>
 typedef int xadFileHandle;
 typedef const struct TagItem * xadTAGPTR;
 
