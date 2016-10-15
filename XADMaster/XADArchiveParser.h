@@ -134,10 +134,10 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 @property (NS_NONATOMIC_IOSONLY, copy, nullable) NSString *password;
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL hasPassword;
 
-@property (NS_NONATOMIC_IOSONLY, copy) NSString *encodingName;
+@property (NS_NONATOMIC_IOSONLY, copy) XADStringEncodingName encodingName;
 @property (NS_NONATOMIC_IOSONLY, readonly) float encodingConfidence;
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL caresAboutPasswordEncoding;
-@property (NS_NONATOMIC_IOSONLY, copy, nullable) NSString *passwordEncodingName;
+@property (NS_NONATOMIC_IOSONLY, copy, nullable) XADStringEncodingName passwordEncodingName;
 @property (NS_NONATOMIC_IOSONLY, readonly, strong) XADStringSource *stringSource;
 
 -(XADString *)linkDestinationForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict;
