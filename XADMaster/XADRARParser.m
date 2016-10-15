@@ -212,11 +212,13 @@ static const uint8_t *FindSignature(const uint8_t *ptr,NSInteger length)
 				// Add current file to solid file list, creating it if necessary.
 				if(!currfiles) currfiles=[NSMutableArray array];
 
-				[currfiles addObject:@{@"Parts": currparts,
-					@"OutputLength": @(previousheader.size),
-					@"Version": @(previousheader.version),
-					@"Encrypted": [NSNumber numberWithBool:(block.flags&LHD_PASSWORD)?YES:NO],
-					@"Salt": previousheader.salt}];
+				[currfiles addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+									  currparts,@"Parts",
+									  @(previousheader.size),@"OutputLength",
+									  @(previousheader.version),@"Version",
+									  @((block.flags&LHD_PASSWORD)?YES:NO),@"Encrypted",
+									  previousheader.salt,@"Salt", // Ends the list if nil.
+									  nil]];
 
 				[self addEntryWithBlock:&previousblock header:&previousheader
 				compressedSize:totalfilesize files:currfiles solidOffset:totalsolidsize

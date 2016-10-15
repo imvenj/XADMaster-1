@@ -69,7 +69,7 @@ extern "C" {
 #define HMAC_SHA1_DIGEST_LENGTH	20
 #define HMAC_SHA1_BLOCK_LENGTH	64
 
-/* The HMAC_SHA1 structure: */
+/** The HMAC_SHA1 structure: */
 typedef struct _HMAC_SHA1_CTX {
 	unsigned char	ipad[HMAC_SHA1_BLOCK_LENGTH];
 	unsigned char	opad[HMAC_SHA1_BLOCK_LENGTH];

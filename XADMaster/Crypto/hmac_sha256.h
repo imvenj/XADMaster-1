@@ -52,7 +52,7 @@ extern "C" {
 #define HMAC_SHA256_DIGEST_LENGTH	32
 #define HMAC_SHA256_BLOCK_LENGTH	64
 
-/* The HMAC_SHA256 structure: */
+/** The HMAC_SHA256 structure: */
 typedef struct _HMAC_SHA256_CTX {
 	unsigned char	ipad[HMAC_SHA256_BLOCK_LENGTH];
 	unsigned char	opad[HMAC_SHA256_BLOCK_LENGTH];
