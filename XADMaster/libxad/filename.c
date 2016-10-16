@@ -832,7 +832,7 @@ FUNCxadGetDefaultName /* xadTAGPTR tags */
     xadUINT32 namesize, extsize;
     const xadSTRING *ext;
 
-    namesize = strlen((const char *)ai->xai_InName);
+    namesize = (xadUINT32)strlen((const char *)ai->xai_InName);
     ti2 = tags;
     while((ti = NextTagItem(&ti2)))
     {
