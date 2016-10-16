@@ -19,7 +19,7 @@ typedef MD5_CTX XADMD5;
 
 #import "../Crypto/aes.h"
 
-extern NSString *PDFMD5FinishedException;
+extern NSString *const PDFMD5FinishedException;
 
 
 

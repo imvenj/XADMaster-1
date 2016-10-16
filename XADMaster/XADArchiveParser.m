@@ -62,66 +62,66 @@
 
 #include <dirent.h>
 
-NSString *XADFileNameKey=@"XADFileName";
-NSString *XADCommentKey=@"XADComment";
-NSString *XADFileSizeKey=@"XADFileSize";
-NSString *XADCompressedSizeKey=@"XADCompressedSize";
-NSString *XADCompressionNameKey=@"XADCompressionName";
+NSString *const XADFileNameKey=@"XADFileName";
+NSString *const XADCommentKey=@"XADComment";
+NSString *const XADFileSizeKey=@"XADFileSize";
+NSString *const XADCompressedSizeKey=@"XADCompressedSize";
+NSString *const XADCompressionNameKey=@"XADCompressionName";
 
-NSString *XADIsDirectoryKey=@"XADIsDirectory";
-NSString *XADIsResourceForkKey=@"XADIsResourceFork";
-NSString *XADIsArchiveKey=@"XADIsArchive";
-NSString *XADIsHiddenKey=@"XADIsHidden";
-NSString *XADIsLinkKey=@"XADIsLink";
-NSString *XADIsHardLinkKey=@"XADIsHardLink";
-NSString *XADLinkDestinationKey=@"XADLinkDestination";
-NSString *XADIsCharacterDeviceKey=@"XADIsCharacterDevice";
-NSString *XADIsBlockDeviceKey=@"XADIsBlockDevice";
-NSString *XADDeviceMajorKey=@"XADDeviceMajor";
-NSString *XADDeviceMinorKey=@"XADDeviceMinor";
-NSString *XADIsFIFOKey=@"XADIsFIFO";
-NSString *XADIsEncryptedKey=@"XADIsEncrypted";
-NSString *XADIsCorruptedKey=@"XADIsCorrupted";
+NSString *const XADIsDirectoryKey=@"XADIsDirectory";
+NSString *const XADIsResourceForkKey=@"XADIsResourceFork";
+NSString *const XADIsArchiveKey=@"XADIsArchive";
+NSString *const XADIsHiddenKey=@"XADIsHidden";
+NSString *const XADIsLinkKey=@"XADIsLink";
+NSString *const XADIsHardLinkKey=@"XADIsHardLink";
+NSString *const XADLinkDestinationKey=@"XADLinkDestination";
+NSString *const XADIsCharacterDeviceKey=@"XADIsCharacterDevice";
+NSString *const XADIsBlockDeviceKey=@"XADIsBlockDevice";
+NSString *const XADDeviceMajorKey=@"XADDeviceMajor";
+NSString *const XADDeviceMinorKey=@"XADDeviceMinor";
+NSString *const XADIsFIFOKey=@"XADIsFIFO";
+NSString *const XADIsEncryptedKey=@"XADIsEncrypted";
+NSString *const XADIsCorruptedKey=@"XADIsCorrupted";
 
-NSString *XADLastModificationDateKey=@"XADLastModificationDate";
-NSString *XADLastAccessDateKey=@"XADLastAccessDate";
-NSString *XADLastAttributeChangeDateKey=@"XADLastAttributeChangeDate";
-NSString *XADLastBackupDateKey=@"XADLastBackupDate";
-NSString *XADCreationDateKey=@"XADCreationDate";
+NSString *const XADLastModificationDateKey=@"XADLastModificationDate";
+NSString *const XADLastAccessDateKey=@"XADLastAccessDate";
+NSString *const XADLastAttributeChangeDateKey=@"XADLastAttributeChangeDate";
+NSString *const XADLastBackupDateKey=@"XADLastBackupDate";
+NSString *const XADCreationDateKey=@"XADCreationDate";
 
-NSString *XADExtendedAttributesKey=@"XADExtendedAttributes";
-NSString *XADFileTypeKey=@"XADFileType";
-NSString *XADFileCreatorKey=@"XADFileCreator";
-NSString *XADFinderFlagsKey=@"XADFinderFlags";
-NSString *XADFinderInfoKey=@"XADFinderInfo";
-NSString *XADPosixPermissionsKey=@"XADPosixPermissions";
-NSString *XADPosixUserKey=@"XADPosixUser";
-NSString *XADPosixGroupKey=@"XADPosixGroup";
-NSString *XADPosixUserNameKey=@"XADPosixUserName";
-NSString *XADPosixGroupNameKey=@"XADPosixGroupName";
-NSString *XADDOSFileAttributesKey=@"XADDOSFileAttributes";
-NSString *XADWindowsFileAttributesKey=@"XADWindowsFileAttributes";
-NSString *XADAmigaProtectionBitsKey=@"XADAmigaProtectionBits";
+NSString *const XADExtendedAttributesKey=@"XADExtendedAttributes";
+NSString *const XADFileTypeKey=@"XADFileType";
+NSString *const XADFileCreatorKey=@"XADFileCreator";
+NSString *const XADFinderFlagsKey=@"XADFinderFlags";
+NSString *const XADFinderInfoKey=@"XADFinderInfo";
+NSString *const XADPosixPermissionsKey=@"XADPosixPermissions";
+NSString *const XADPosixUserKey=@"XADPosixUser";
+NSString *const XADPosixGroupKey=@"XADPosixGroup";
+NSString *const XADPosixUserNameKey=@"XADPosixUserName";
+NSString *const XADPosixGroupNameKey=@"XADPosixGroupName";
+NSString *const XADDOSFileAttributesKey=@"XADDOSFileAttributes";
+NSString *const XADWindowsFileAttributesKey=@"XADWindowsFileAttributes";
+NSString *const XADAmigaProtectionBitsKey=@"XADAmigaProtectionBits";
 
-NSString *XADIndexKey=@"XADIndex";
-NSString *XADDataOffsetKey=@"XADDataOffset";
-NSString *XADDataLengthKey=@"XADDataLength";
-NSString *XADSkipOffsetKey=@"XADSkipOffset";
-NSString *XADSkipLengthKey=@"XADSkipLength";
+NSString *const XADIndexKey=@"XADIndex";
+NSString *const XADDataOffsetKey=@"XADDataOffset";
+NSString *const XADDataLengthKey=@"XADDataLength";
+NSString *const XADSkipOffsetKey=@"XADSkipOffset";
+NSString *const XADSkipLengthKey=@"XADSkipLength";
 
-NSString *XADIsSolidKey=@"XADIsSolid";
-NSString *XADFirstSolidIndexKey=@"XADFirstSolidIndex";
-NSString *XADFirstSolidEntryKey=@"XADFirstSolidEntry";
-NSString *XADNextSolidIndexKey=@"XADNextSolidIndex";
-NSString *XADNextSolidEntryKey=@"XADNextSolidEntry";
-NSString *XADSolidObjectKey=@"XADSolidObject";
-NSString *XADSolidOffsetKey=@"XADSolidOffset";
-NSString *XADSolidLengthKey=@"XADSolidLength";
+NSString *const XADIsSolidKey=@"XADIsSolid";
+NSString *const XADFirstSolidIndexKey=@"XADFirstSolidIndex";
+NSString *const XADFirstSolidEntryKey=@"XADFirstSolidEntry";
+NSString *const XADNextSolidIndexKey=@"XADNextSolidIndex";
+NSString *const XADNextSolidEntryKey=@"XADNextSolidEntry";
+NSString *const XADSolidObjectKey=@"XADSolidObject";
+NSString *const XADSolidOffsetKey=@"XADSolidOffset";
+NSString *const XADSolidLengthKey=@"XADSolidLength";
 
-NSString *XADArchiveNameKey=@"XADArchiveName";
-NSString *XADVolumesKey=@"XADVolumes";
-NSString *XADVolumeScanningFailedKey=@"XADVolumeScanningFailed";
-NSString *XADDiskLabelKey=@"XADDiskLabel";
+NSString *const XADArchiveNameKey=@"XADArchiveName";
+NSString *const XADVolumesKey=@"XADVolumes";
+NSString *const XADVolumeScanningFailedKey=@"XADVolumeScanningFailed";
+NSString *const XADDiskLabelKey=@"XADDiskLabel";
 
 
 @implementation XADArchiveParser

@@ -25,7 +25,6 @@ _XADExceptionName
 .objc_class_name_XADStreamHandle
 .objc_class_name_XADSubHandle
 .objc_class_name_XADZlibHandle
-.objc_class_name_XADPath
 .objc_class_name_XADPlatform
 .objc_class_name_XADPrefixCode
 .objc_class_name_XADRC4Handle
@@ -36,6 +35,11 @@ _XADExceptionName
 .objc_class_name_XADSkipHandle
 .objc_class_name_XADUnarchiver
 .objc_class_name_XADChecksumWrapperHandle
+
+.objc_class_name_XADPath
+.objc_class_name_XADRawPath
+.objc_class_name_XADStringPath
+
 
 _xadOpenLibrary
 _xadCloseLibrary

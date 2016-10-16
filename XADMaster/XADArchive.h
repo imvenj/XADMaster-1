@@ -21,9 +21,9 @@ typedef NS_ENUM(int, XADAction) {
 //typedef off_t xadSize; // deprecated
 
 
-extern NSString *XADResourceDataKey;
-extern NSString *XADResourceForkData UNAVAILABLE_ATTRIBUTE;
-extern NSString *XADFinderFlags;
+extern NSString *const XADResourceDataKey;
+extern NSString *const XADResourceForkData UNAVAILABLE_ATTRIBUTE;
+extern NSString *const XADFinderFlags;
 
 
 @class UniversalDetector;

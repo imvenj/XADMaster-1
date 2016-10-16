@@ -30,8 +30,8 @@
 #define SWFDefineFont3Tag 75
 #define SWFDefineBitsJPEG4Tag 90
 
-extern NSString *SWFWrongMagicException;
-extern NSString *SWFNoMoreTagsException;
+extern NSString *const SWFWrongMagicException;
+extern NSString *const SWFNoMoreTagsException;
 
 @interface XADSWFTagParser:NSObject
 {

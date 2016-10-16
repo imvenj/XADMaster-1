@@ -2,7 +2,7 @@
 
 #define CSMultiHandle XADMultiHandle
 
-extern NSString *CSSizeOfSegmentUnknownException;
+extern NSString *const CSSizeOfSegmentUnknownException;
 
 @interface CSMultiHandle:CSHandle
 {

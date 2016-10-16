@@ -1,7 +1,7 @@
 #import "XADPrefixCode.h"
 #import "Realloc.h"
 
-NSString *XADInvalidPrefixCodeException=@"XADInvalidPrefixCodeException";
+NSString *const XADInvalidPrefixCodeException=@"XADInvalidPrefixCodeException";
 
 
 struct XADCodeTreeNode

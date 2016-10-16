@@ -12,67 +12,67 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef NSString *XADArchiveKeys NS_EXTENSIBLE_STRING_ENUM;
 
-extern XADArchiveKeys XADFileNameKey;
-extern XADArchiveKeys XADCommentKey;
-extern XADArchiveKeys XADFileSizeKey;
-extern XADArchiveKeys XADCompressedSizeKey;
-extern XADArchiveKeys XADCompressionNameKey;
+extern XADArchiveKeys const XADFileNameKey;
+extern XADArchiveKeys const XADCommentKey;
+extern XADArchiveKeys const XADFileSizeKey;
+extern XADArchiveKeys const XADCompressedSizeKey;
+extern XADArchiveKeys const XADCompressionNameKey;
 
-extern XADArchiveKeys XADLastModificationDateKey;
-extern XADArchiveKeys XADLastAccessDateKey;
-extern XADArchiveKeys XADLastAttributeChangeDateKey;
-extern XADArchiveKeys XADLastBackupDateKey;
-extern XADArchiveKeys XADCreationDateKey;
+extern XADArchiveKeys const XADLastModificationDateKey;
+extern XADArchiveKeys const XADLastAccessDateKey;
+extern XADArchiveKeys const XADLastAttributeChangeDateKey;
+extern XADArchiveKeys const XADLastBackupDateKey;
+extern XADArchiveKeys const XADCreationDateKey;
 
-extern XADArchiveKeys XADIsDirectoryKey;
-extern XADArchiveKeys XADIsResourceForkKey;
-extern XADArchiveKeys XADIsArchiveKey;
-extern XADArchiveKeys XADIsHiddenKey;
-extern XADArchiveKeys XADIsLinkKey;
-extern XADArchiveKeys XADIsHardLinkKey;
-extern XADArchiveKeys XADLinkDestinationKey;
-extern XADArchiveKeys XADIsCharacterDeviceKey;
-extern XADArchiveKeys XADIsBlockDeviceKey;
-extern XADArchiveKeys XADDeviceMajorKey;
-extern XADArchiveKeys XADDeviceMinorKey;
-extern XADArchiveKeys XADIsFIFOKey;
-extern XADArchiveKeys XADIsEncryptedKey;
-extern XADArchiveKeys XADIsCorruptedKey;
+extern XADArchiveKeys const XADIsDirectoryKey;
+extern XADArchiveKeys const XADIsResourceForkKey;
+extern XADArchiveKeys const XADIsArchiveKey;
+extern XADArchiveKeys const XADIsHiddenKey;
+extern XADArchiveKeys const XADIsLinkKey;
+extern XADArchiveKeys const XADIsHardLinkKey;
+extern XADArchiveKeys const XADLinkDestinationKey;
+extern XADArchiveKeys const XADIsCharacterDeviceKey;
+extern XADArchiveKeys const XADIsBlockDeviceKey;
+extern XADArchiveKeys const XADDeviceMajorKey;
+extern XADArchiveKeys const XADDeviceMinorKey;
+extern XADArchiveKeys const XADIsFIFOKey;
+extern XADArchiveKeys const XADIsEncryptedKey;
+extern XADArchiveKeys const XADIsCorruptedKey;
 
-extern XADArchiveKeys XADExtendedAttributesKey;
-extern XADArchiveKeys XADFileTypeKey;
-extern XADArchiveKeys XADFileCreatorKey;
-extern XADArchiveKeys XADFinderFlagsKey;
-extern XADArchiveKeys XADFinderInfoKey;
-extern XADArchiveKeys XADPosixPermissionsKey;
-extern XADArchiveKeys XADPosixUserKey;
-extern XADArchiveKeys XADPosixGroupKey;
-extern XADArchiveKeys XADPosixUserNameKey;
-extern XADArchiveKeys XADPosixGroupNameKey;
-extern XADArchiveKeys XADDOSFileAttributesKey;
-extern XADArchiveKeys XADWindowsFileAttributesKey;
-extern XADArchiveKeys XADAmigaProtectionBitsKey;
+extern XADArchiveKeys const XADExtendedAttributesKey;
+extern XADArchiveKeys const XADFileTypeKey;
+extern XADArchiveKeys const XADFileCreatorKey;
+extern XADArchiveKeys const XADFinderFlagsKey;
+extern XADArchiveKeys const XADFinderInfoKey;
+extern XADArchiveKeys const XADPosixPermissionsKey;
+extern XADArchiveKeys const XADPosixUserKey;
+extern XADArchiveKeys const XADPosixGroupKey;
+extern XADArchiveKeys const XADPosixUserNameKey;
+extern XADArchiveKeys const XADPosixGroupNameKey;
+extern XADArchiveKeys const XADDOSFileAttributesKey;
+extern XADArchiveKeys const XADWindowsFileAttributesKey;
+extern XADArchiveKeys const XADAmigaProtectionBitsKey;
 
-extern XADArchiveKeys XADIndexKey;
-extern XADArchiveKeys XADDataOffsetKey;
-extern XADArchiveKeys XADDataLengthKey;
-extern XADArchiveKeys XADSkipOffsetKey;
-extern XADArchiveKeys XADSkipLengthKey;
+extern XADArchiveKeys const XADIndexKey;
+extern XADArchiveKeys const XADDataOffsetKey;
+extern XADArchiveKeys const XADDataLengthKey;
+extern XADArchiveKeys const XADSkipOffsetKey;
+extern XADArchiveKeys const XADSkipLengthKey;
 
-extern XADArchiveKeys XADIsSolidKey;
-extern XADArchiveKeys XADFirstSolidIndexKey;
-extern XADArchiveKeys XADFirstSolidEntryKey;
-extern XADArchiveKeys XADNextSolidIndexKey;
-extern XADArchiveKeys XADNextSolidEntryKey;
-extern XADArchiveKeys XADSolidObjectKey;
-extern XADArchiveKeys XADSolidOffsetKey;
-extern XADArchiveKeys XADSolidLengthKey;
+extern XADArchiveKeys const XADIsSolidKey;
+extern XADArchiveKeys const XADFirstSolidIndexKey;
+extern XADArchiveKeys const XADFirstSolidEntryKey;
+extern XADArchiveKeys const XADNextSolidIndexKey;
+extern XADArchiveKeys const XADNextSolidEntryKey;
+extern XADArchiveKeys const XADSolidObjectKey;
+extern XADArchiveKeys const XADSolidOffsetKey;
+extern XADArchiveKeys const XADSolidLengthKey;
 
 // Archive properties only
-extern XADArchiveKeys XADArchiveNameKey;
-extern XADArchiveKeys XADVolumesKey;
-extern XADArchiveKeys XADVolumeScanningFailedKey;
-extern XADArchiveKeys XADDiskLabelKey;
+extern XADArchiveKeys const XADArchiveNameKey;
+extern XADArchiveKeys const XADVolumesKey;
+extern XADArchiveKeys const XADVolumeScanningFailedKey;
+extern XADArchiveKeys const XADDiskLabelKey;
 
 @protocol XADArchiveParserDelegate;
 

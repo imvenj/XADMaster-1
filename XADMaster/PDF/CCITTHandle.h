@@ -1,7 +1,7 @@
 #import "../CSByteStreamHandle.h"
 #import "../XADPrefixCode.h"
 
-extern NSString *CCITTCodeException;
+extern NSString *const CCITTCodeException;
 
 @interface CCITTFaxHandle:CSByteStreamHandle
 {

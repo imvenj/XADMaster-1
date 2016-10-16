@@ -544,11 +544,11 @@ static int MatchZipEntry(const uint8_t *bytes,int available,off_t offset,void *s
 
 
 
--(NSDictionary *)parseZipExtraWithLength:(int)length nameData:(NSData *)namedata
+-(NSDictionary<XADArchiveKeys,id> *)parseZipExtraWithLength:(int)length nameData:(NSData *)namedata
 uncompressedSizePointer:(off_t *)uncompsizeptr compressedSizePointer:(off_t *)compsizeptr
 {
 	CSHandle *fh=[self handle];
-	NSMutableDictionary *dict=[NSMutableDictionary dictionary];
+	NSMutableDictionary<XADArchiveKeys,id> *dict=[NSMutableDictionary dictionary];
 
 	off_t end=[fh offsetInFile]+length;
 
@@ -714,7 +714,7 @@ uncompressedSizePointer:(off_t *)uncompsizeptr compressedSizePointer:(off_t *)co
 			dict[@"WinZipAESVersion"] = @(version=[fh readUInt16LE]);
 			dict[@"WinZipAESVendor"] = @([fh readUInt16LE]);
 			dict[@"WinZipAESKeySize"] = @([fh readUInt8]);
-			dict[@"WinZipAESCompressionMethod"] = [NSNumber numberWithInt:[fh readUInt16LE]];
+			dict[@"WinZipAESCompressionMethod"] = @([fh readUInt16LE]);
 		}
 		else
 		{

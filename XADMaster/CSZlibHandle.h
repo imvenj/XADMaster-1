@@ -10,7 +10,7 @@
 
 #define CSZlibHandle XADZlibHandle
 
-extern NSString *CSZlibException;
+extern NSString *const CSZlibException;
 
 @interface CSZlibHandle:CSStreamHandle
 {

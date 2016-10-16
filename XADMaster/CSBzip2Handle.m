@@ -1,6 +1,6 @@
 #import "CSBzip2Handle.h"
 
-NSString *CSBzip2Exception=@"CSBzip2Exception";
+NSString *const CSBzip2Exception=@"CSBzip2Exception";
 
 @implementation CSBzip2Handle
 

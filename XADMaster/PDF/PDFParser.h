@@ -3,9 +3,9 @@
 #import "PDFStream.h"
 #import "PDFEncryptionHandler.h"
 
-extern NSString *PDFWrongMagicException;
-extern NSString *PDFInvalidFormatException;
-extern NSString *PDFParserException;
+extern NSString *const PDFWrongMagicException;
+extern NSString *const PDFInvalidFormatException;
+extern NSString *const PDFParserException;
 
 @interface PDFParser:NSObject
 {

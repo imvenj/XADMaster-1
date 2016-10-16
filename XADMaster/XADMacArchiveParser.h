@@ -1,9 +1,9 @@
 #import "XADArchiveParser.h"
 #import "CSStreamHandle.h"
 
-extern NSString *XADIsMacBinaryKey;
-extern NSString *XADMightBeMacBinaryKey;
-extern NSString *XADDisableMacForkExpansionKey;
+extern XADArchiveKeys const XADIsMacBinaryKey;
+extern XADArchiveKeys const XADMightBeMacBinaryKey;
+extern XADArchiveKeys const XADDisableMacForkExpansionKey;
 
 @interface XADMacArchiveParser:XADArchiveParser
 {
@@ -25,9 +25,9 @@ extern NSString *XADDisableMacForkExpansionKey;
 -(void)parse;
 -(void)parseWithSeparateMacForks;
 
--(void)addEntryWithDictionary:(NSMutableDictionary *)dict retainPosition:(BOOL)retainpos;
+-(void)addEntryWithDictionary:(NSMutableDictionary<XADArchiveKeys,id> *)dict retainPosition:(BOOL)retainpos;
 
--(BOOL)parseAppleDoubleWithDictionary:(NSMutableDictionary *)dict
+-(BOOL)parseAppleDoubleWithDictionary:(NSMutableDictionary<XADArchiveKeys,id> *)dict
 name:(XADPath *)name retainPosition:(BOOL)retainpos;
 
 @property (NS_NONATOMIC_IOSONLY, retain) XADPath *previousFilename;
@@ -35,25 +35,25 @@ name:(XADPath *)name retainPosition:(BOOL)retainpos;
 -(void)pushDittoDirectory:(XADPath *)directory;
 -(void)popDittoDirectoryStackUntilCanonicalPrefixFor:(XADPath *)path;
 
--(void)queueDittoDictionary:(NSMutableDictionary *)dict data:(NSData *)data;
+-(void)queueDittoDictionary:(NSMutableDictionary<XADArchiveKeys,id> *)dict data:(NSData *)data;
 -(void)addQueuedDittoDictionaryAndRetainPosition:(BOOL)retainpos;
 -(void)addQueuedDittoDictionaryWithName:(XADPath *)newname
 isDirectory:(BOOL)isdir retainPosition:(BOOL)retainpos;
 
--(BOOL)parseMacBinaryWithDictionary:(NSMutableDictionary *)dict
+-(BOOL)parseMacBinaryWithDictionary:(NSMutableDictionary<XADArchiveKeys,id> *)dict
 name:(XADPath *)name retainPosition:(BOOL)retainpos;
 
--(void)addEntryWithDictionary:(NSMutableDictionary *)dict
+-(void)addEntryWithDictionary:(NSMutableDictionary<XADArchiveKeys,id> *)dict
 retainPosition:(BOOL)retainpos data:(NSData *)data;
--(void)addEntryWithDictionary:(NSMutableDictionary *)dict
+-(void)addEntryWithDictionary:(NSMutableDictionary<XADArchiveKeys,id> *)dict
 retainPosition:(BOOL)retainpos handle:(CSHandle *)handle;
 
--(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum;
+-(CSHandle *)handleForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict wantChecksum:(BOOL)checksum;
 
--(NSString *)descriptionOfValueInDictionary:(NSDictionary *)dict key:(NSString *)key;
+-(NSString *)descriptionOfValueInDictionary:(NSDictionary<XADArchiveKeys,id> *)dict key:(NSString *)key;
 -(NSString *)descriptionOfKey:(NSString *)key;
 
--(CSHandle *)rawHandleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum;
--(void)inspectEntryDictionary:(NSMutableDictionary *)dict;
+-(CSHandle *)rawHandleForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict wantChecksum:(BOOL)checksum;
+-(void)inspectEntryDictionary:(NSMutableDictionary<XADArchiveKeys,id> *)dict;
 
 @end

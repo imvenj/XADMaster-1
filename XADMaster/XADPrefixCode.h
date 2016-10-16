@@ -1,6 +1,6 @@
 #import "CSInputBuffer.h"
 
-extern NSString *XADInvalidPrefixCodeException;
+extern NSString *const XADInvalidPrefixCodeException;
 
 typedef struct XADCodeTreeNode XADCodeTreeNode;
 typedef struct XADCodeTableEntry XADCodeTableEntry;

@@ -1,6 +1,6 @@
 #import "PDFEncryptionUtils.h"
 
-NSString *PDFMD5FinishedException=@"PDFMD5FinishedException";
+NSString *const PDFMD5FinishedException=@"PDFMD5FinishedException";
 
 
 
@@ -8,7 +8,7 @@ NSString *PDFMD5FinishedException=@"PDFMD5FinishedException";
 
 +(PDFMD5Engine *)engine { return [[[self class] new] autorelease]; }
 
-+(NSData *)digestForData:(NSData *)data { return [self digestForBytes:[data bytes] length:[data length]]; }
++(NSData *)digestForData:(NSData *)data { return [self digestForBytes:[data bytes] length:(int)[data length]]; }
 
 +(NSData *)digestForBytes:(const void *)bytes length:(int)length
 {

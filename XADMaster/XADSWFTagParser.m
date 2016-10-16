@@ -3,8 +3,8 @@
 #import "CSZlibHandle.h"
 
 
-NSString *SWFWrongMagicException=@"SWFWrongMagicException";
-NSString *SWFNoMoreTagsException=@"SWFNoMoreTagsException";
+NSString *const SWFWrongMagicException=@"SWFWrongMagicException";
+NSString *const SWFNoMoreTagsException=@"SWFNoMoreTagsException";
 
 
 @implementation XADSWFTagParser

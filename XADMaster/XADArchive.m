@@ -10,8 +10,8 @@
 #import <sys/time.h>
 
 
-NSString *XADResourceDataKey=@"XADResourceData";
-NSString *XADFinderFlags=@"XADFinderFlags";
+NSString *const XADResourceDataKey=@"XADResourceData";
+NSString *const XADFinderFlags=@"XADFinderFlags";
 
 
 

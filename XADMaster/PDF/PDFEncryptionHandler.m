@@ -5,7 +5,7 @@
 #import "../CSMemoryHandle.h"
 #import "../XADRC4Handle.h"
 
-NSString *PDFUnsupportedEncryptionException=@"PDFUnsupportedEncryptionException";
+NSString *const PDFUnsupportedEncryptionException=@"PDFUnsupportedEncryptionException";
 
 static const char PDFPasswordPadding[32]=
 {

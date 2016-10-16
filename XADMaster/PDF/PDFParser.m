@@ -5,9 +5,9 @@
 
 
 
-NSString *PDFWrongMagicException=@"PDFWrongMagicException";
-NSString *PDFInvalidFormatException=@"PDFInvalidFormatException";
-NSString *PDFParserException=@"PDFParserException";
+NSString *const PDFWrongMagicException=@"PDFWrongMagicException";
+NSString *const PDFInvalidFormatException=@"PDFInvalidFormatException";
+NSString *const PDFParserException=@"PDFParserException";
 
 
 

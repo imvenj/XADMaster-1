@@ -44,7 +44,7 @@ typedef NS_ENUM(int, XADError) {
 	#endif
 #endif
 
-extern NSString *XADExceptionName;
+extern NSString *const XADExceptionName;
 
 @interface XADException:NSObject
 {

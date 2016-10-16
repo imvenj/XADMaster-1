@@ -2,7 +2,7 @@
 
 
 
-NSString *CSZlibException=@"CSZlibException";
+NSString *const CSZlibException=@"CSZlibException";
 
 
 
