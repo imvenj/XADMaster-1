@@ -69,10 +69,17 @@ void SHA1_Update_WithRARBug(SHA_CTX *ctx,void *bytes,unsigned long length,int bu
 }
 
 #if defined(USE_COMMON_CRYPTO) && USE_COMMON_CRYPTO
-void CC_SHA1_Update_WithRARBug(CC_SHA1_CTX *ctx,void *bytes,unsigned long length,bool bug)
+
+static inline uint64_t bitCountFromCommonCrypto(CC_SHA1_CTX *ctx)
+{
+	uint64_t bigNum = (((uint64_t)ctx->Nl) | ((uint64_t)ctx->Nh)<<32);
+	return bigNum;
+}
+
+void CC_SHA1_Update_WithRARBug(CC_SHA1_CTX *ctx, const void *bytes, size_t length, bool bug)
 {
 	//TODO: validate this against real data!
-	int firstbytes=64-(ctx->Nh/8)%64;
+	int firstbytes=64-(bitCountFromCommonCrypto(ctx)/8)%64;
 	if(!bug||length<=firstbytes) {
 		CC_SHA1_Update(ctx, bytes, (CC_LONG)length);
 		return;
