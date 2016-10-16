@@ -3,7 +3,7 @@
 NSString *EscapeString(NSString *str)
 {
 	NSMutableString *res=[NSMutableString string];
-	int length=[str length];
+	NSInteger length=[str length];
 	for(int i=0;i<length;i++)
 	{
 		unichar c=[str characterAtIndex:i];
@@ -13,7 +13,7 @@ NSString *EscapeString(NSString *str)
 	return res;
 }
 
-@interface ArchiveTester:NSObject
+@interface ArchiveTester:NSObject <XADArchiveParserDelegate>
 {
 	int indent;
 }

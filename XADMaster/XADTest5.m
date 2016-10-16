@@ -6,7 +6,7 @@
 
 CSHandle *HandleForLocators(NSArray *locators,NSString **nameptr);
 
-@interface EntryFinder:NSObject
+@interface EntryFinder:NSObject <XADArchiveParserDelegate>
 {
 	int count,entrynum;
 	XADRegex *regex;
