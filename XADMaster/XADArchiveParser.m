@@ -950,8 +950,8 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext
 	XADString *actualcomment=dict[XADCommentKey];
 	if(extcomment && !actualcomment)
 	{
-		id plist=[NSPropertyListSerialization propertyListFromData:extcomment
-		mutabilityOption:0 format:NULL errorDescription:NULL];
+		id plist=[NSPropertyListSerialization propertyListWithData:extcomment
+		options:0 format:NULL error:NULL];
 
 		if(plist&&[plist isKindOfClass:[NSString class]])
 		dict[XADCommentKey] = [self XADStringWithString:plist];
