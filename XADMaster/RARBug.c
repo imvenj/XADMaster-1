@@ -13,7 +13,7 @@
 #define R3(v,w,x,y,z,i) {z+=(((w|x)&y)|(w&x))+blk(i)+0x8F1BBCDC+rol(v,5);w=rol(w,30);}
 #define R4(v,w,x,y,z,i) {z+=(w^x^y)+blk(i)+0xCA62C1D6+rol(v,5);w=rol(w,30);}
 
-void GarbleBlock(unsigned char *block,uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e)
+static void GarbleBlock(unsigned char *block,uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e)
 {
 	uint32_t W[16];
 	for(int i=0;i<16;i++) W[i]=(block[4*i+0]<<24)|(block[4*i+1]<<16)|(block[4*i+2]<<8)|block[4*i+3];
@@ -49,7 +49,7 @@ void SHA1_Update_WithRARBug(SHA_CTX *ctx,void *bytes,unsigned long length,int bu
 
 	SHA1_Update(ctx,bytes,firstbytes);
 
-	int numblocks=(length-firstbytes)/64;
+	long numblocks=(length-firstbytes)/64;
 	int lastbytes=(length-firstbytes)%64;
 
 	for(int i=0;i<numblocks;i++)

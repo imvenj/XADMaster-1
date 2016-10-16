@@ -47,7 +47,7 @@
 */
 
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *pattern;
-@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *description;
+@property (readonly, copy) NSString *description;
 
 @end
 

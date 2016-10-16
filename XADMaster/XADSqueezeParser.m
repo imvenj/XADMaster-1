@@ -74,14 +74,14 @@
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
 	const uint8_t *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
 	if(length<5) return NO;
 
 	if(bytes[0]!=0x76||bytes[1]!=0xff) return NO;
 
 	if(bytes[4]==0) return NO;
-	for(int i=4;i<length;i++)
+	for(NSInteger i=4;i<length;i++)
 	{
 		if(bytes[i]==0)
 		{
@@ -103,7 +103,7 @@
 	XADPath *filename=dict[XADFileNameKey];
 	NSData *namedata=[filename data];
 	const char *bytes=[namedata bytes];
-	int length=[namedata length];
+	NSInteger length=[namedata length];
 
 	if(length>4)
 	if(bytes[length-4]=='.')

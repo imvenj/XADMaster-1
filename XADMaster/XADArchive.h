@@ -86,13 +86,13 @@ extern NSString *const XADFinderFlags;
 
 
 -(instancetype)init NS_DESIGNATED_INITIALIZER;
--(instancetype)initWithFile:(NSString *)file;
+-(instancetype)initWithFile:(NSString *)file NS_SWIFT_UNAVAILABLE("Call throws on failure");
 -(instancetype)initWithFile:(NSString *)file error:(XADError *)error;
 -(instancetype)initWithFile:(NSString *)file delegate:(id<XADArchiveDelegate>)del error:(XADError *)error;
--(instancetype)initWithData:(NSData *)data;
+-(instancetype)initWithData:(NSData *)data NS_SWIFT_UNAVAILABLE("Call throws on failure");
 -(instancetype)initWithData:(NSData *)data error:(XADError *)error;
 -(instancetype)initWithData:(NSData *)data delegate:(id<XADArchiveDelegate>)del error:(XADError *)error;
--(instancetype)initWithArchive:(XADArchive *)archive entry:(NSInteger)n;
+-(instancetype)initWithArchive:(XADArchive *)archive entry:(NSInteger)n NS_SWIFT_UNAVAILABLE("Call throws on failure");
 -(instancetype)initWithArchive:(XADArchive *)archive entry:(NSInteger)n error:(XADError *)error;
 -(instancetype)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n delegate:(id<XADArchiveDelegate>)del error:(XADError *)error;
 -(instancetype)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n

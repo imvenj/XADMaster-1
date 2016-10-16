@@ -99,7 +99,7 @@ extern NSString *const PDFParserException;
 -(NSString *)string;
 
 -(BOOL)isEqual:(id)other;
--(unsigned)hash;
+-(NSUInteger)hash;
 
 -(id)copyWithZone:(NSZone *)zone;
 

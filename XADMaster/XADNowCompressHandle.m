@@ -266,9 +266,9 @@ uint8_t *destinationstart,uint8_t *destinationend,int numvalues)
 
 		WordAlign(sourcestart,&source);
 
-		buf=CSInputBufferAllocWithBuffer(source,sourceend-source,0);
+		buf=CSInputBufferAllocWithBuffer(source,(int)(sourceend-source),0);
 
-		int numbits=(sourceend-source)*8;
+		int numbits=(int)((sourceend-source)*8);
 		if(endbits) numbits-=16-endbits;
 
 		while(CSInputBufferBitOffset(buf)<numbits)
@@ -289,7 +289,7 @@ uint8_t *destinationstart,uint8_t *destinationend,int numvalues)
 	[code release];
 	CSInputBufferFree(buf);
 
-	return destination-destinationstart;
+	return (int)(destination-destinationstart);
 }
 
 static int UnpackLZSS(uint8_t *sourcestart,uint8_t *sourceend,
@@ -344,7 +344,7 @@ uint8_t *destinationstart,uint8_t *destinationend)
 		numbits--;
 	}
 
-	return destination-destinationstart;
+	return (int)(destination-destinationstart);
 }
 
 static int UnpackNewLZSS(uint8_t *sourcestart,uint8_t *sourceend,
@@ -415,9 +415,9 @@ uint8_t *destinationbase,uint8_t *destinationstart,uint8_t *destinationend)
 		offsetcode=[[XADPrefixCode alloc] initWithLengths:lengths numberOfSymbols:0x38
 		maximumLength:20 shortestCodeIsZeros:YES];
 
-		buf=CSInputBufferAllocWithBuffer(source,sourceend-source,0);
+		buf=CSInputBufferAllocWithBuffer(source,(int)(sourceend-source),0);
 
-		int numbits=(sourceend-source)*8;
+		int numbits=(int)(sourceend-source)*8;
 		if(endbits) numbits-=16-endbits;
 
 		while(CSInputBufferBitOffset(buf)<numbits)
@@ -462,7 +462,7 @@ uint8_t *destinationbase,uint8_t *destinationstart,uint8_t *destinationend)
 	[maincode release];
 	[offsetcode release];
 
-	return destination-destinationstart;
+	return (int)(destination-destinationstart);
 }
 
 static XADPrefixCode *AllocAndReadCode(uint8_t *sourcestart,uint8_t *sourceend,int numentries,uint8_t **newsource)

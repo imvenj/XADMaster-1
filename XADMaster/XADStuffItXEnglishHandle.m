@@ -86,7 +86,7 @@ extern uint8_t StuffItXEnglishDictionary[];
 
 		const uint8_t **pointers=[XADStuffItXEnglishHandle dictionaryPointers];
 
-		wordlen=pointers[index+1]-pointers[index]-1;
+		wordlen=(int)(pointers[index+1]-pointers[index]-1);
 		memcpy(wordbuf,pointers[index],wordlen);
 		wordoffs=0;
 

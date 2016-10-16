@@ -79,9 +79,9 @@ static BOOL LooksLikeZlib(uint8_t *sig)
 name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 {
 	const uint8_t *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
-	for(int offs=0;offs<length+4+16;offs+=512)
+	for(NSInteger offs=0;offs<length+4+16;offs+=512)
 	{
 		if(IsOlderSignature(bytes+offs)) 
 		{
@@ -431,7 +431,7 @@ stringStartOffset:(int)stringoffs stringEndOffset:(int)stringendoffs unicode:(BO
 newDateTimeOrder:(BOOL)neworder
 {
 	const uint8_t *bytes=[header bytes];
-	int length=[header length];
+	NSInteger length=[header length];
 	XADPath *dir=[self XADPath];
 	NSMutableArray *files=[NSMutableArray array];
 	NSMutableArray *dirs=[NSMutableArray array];
@@ -630,7 +630,7 @@ newDateTimeOrder:(BOOL)neworder
 -(int)findStringTableOffsetInData:(NSData *)data maxOffsets:(int)maxnumoffsets
 {
 	const uint8_t *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
 	// Find last location with two zero bytes in a row. The string table shouldn't be anywhere
 	// before this. This should be within 4*6 bytes of the string table, as the last opcode
@@ -690,7 +690,7 @@ foundStride:(int *)strideptr foundPhase:(int *)phaseptr
 	// Find candidates for extract opcodes, and measure the distances between them and
 	// which opcodes they have.
 	const uint8_t *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
 	int maxpossiblestride=possiblestrides[IndexOfLargestEntry(possiblestrides,numpossiblestrides)];
 	int strideopcodecounts[numpossiblestrides][numpossibleopcodes];
@@ -754,11 +754,11 @@ foundStride:(int *)strideptr foundPhase:(int *)phaseptr
 	// new-style sectioned headers.
 
 	const uint8_t *bytes=[header bytes];
-	int length=[header length];
+	NSInteger length=[header length];
 
 	if(length<32) return NO;
 
-	for(int i=length-32;i+2<=length;i++)
+	for(NSInteger i=length-32;i+2<=length;i++)
 	{
 		if(bytes[i]==0&&bytes[i+1]==0) return YES;
 	}
@@ -768,7 +768,7 @@ foundStride:(int *)strideptr foundPhase:(int *)phaseptr
 -(BOOL)isUnicodeHeader:(NSData *)header stringStartOffset:(int)stringoffs stringEndOffset:(int)stringendoffs
 {
 	const uint8_t *bytes=[header bytes];
-	int length=[header length];
+	NSInteger length=[header length];
 
 	for(int i=stringoffs;i+2<=stringendoffs && i+2<=length;i+=2)
 	{
@@ -791,7 +791,7 @@ stringStartOffset:(int)stringoffs stringEndOffset:(int)stringendoffs currentPath
 stringStartOffset:(int)stringoffs stringEndOffset:(int)stringendoffs currentPath:(XADPath *)path
 {
 	const uint8_t *headerbytes=[header bytes];
-	int headerlength=[header length];
+	NSInteger headerlength=[header length];
 
 	const uint8_t *bytes=&headerbytes[stringoffs+offset];
 	int length=0;
@@ -996,7 +996,7 @@ bytes:(const uint8_t *)bytes length:(int)length currentPath:(XADPath *)dir
 		BOOL found=NO;
 		for(int j=0;j<count && !found;j++)
 		{
-			int varlen=strlen(expansions[j].variable);
+			int varlen=(int)strlen(expansions[j].variable);
 			if(i+varlen<=length && strncmp((const char *)&bytes[i],expansions[j].variable,varlen)==0)
 			{
 				if(!data) data=[NSMutableData dataWithBytes:bytes length:i];
@@ -1012,7 +1012,7 @@ bytes:(const uint8_t *)bytes length:(int)length currentPath:(XADPath *)dir
 					exp="";
 				}
 
-				int explen=strlen(exp);
+				int explen=(int)strlen(exp);
 				if(!explen)
 				{
 					if(i==0&&bytes[varlen]=='\\') i++; // Skip leading slashes for empty expansions
@@ -1063,7 +1063,7 @@ stringStartOffset:(int)stringoffs stringEndOffset:(int)stringendoffs currentPath
 	};
 
 	const uint8_t *headerbytes=[header bytes];
-	int headerlength=[header length];
+	NSInteger headerlength=[header length];
 
 	const uint8_t *bytes=&headerbytes[stringoffs+offset*2];
 	int length=0;

@@ -937,8 +937,8 @@ static BOOL IsDelimiter(uint8_t c);
 		else if([obj isKindOfClass:[NSArray class]])
 		{
 			NSMutableArray *array=obj;
-			int count=[array count];
-			for(int i=0;i<count;i++)
+			NSInteger count=[array count];
+			for(NSInteger i=0;i<count;i++)
 			{
 				id value=array[i];
 				if([value isKindOfClass:[PDFObjectReference class]])
@@ -967,16 +967,16 @@ static BOOL IsDelimiter(uint8_t c);
 		start=[fh readDataOfLength:100];
 	}
 
-	int length=[start length];
+	NSInteger length=[start length];
 	const uint8_t *bytes=[start bytes];
-	int skip=0;
-	for(int i=0;i<length;i++) if(bytes[i]=='\n'||bytes[i]=='\r') skip=i+1;
+	NSInteger skip=0;
+	for(NSInteger i=0;i<length;i++) if(bytes[i]=='\n'||bytes[i]=='\r') skip=i+1;
 	NSString *startstr=[[[NSString alloc] initWithBytes:bytes+skip length:length-skip encoding:NSISOLatin1StringEncoding] autorelease];
 
 	NSData *end=[fh readDataOfLengthAtMost:100];
 	length=[end length];
 	bytes=[end bytes];
-	for(int i=0;i<length;i++) if(bytes[i]=='\n'||bytes[i]=='\r') { length=i; break; }
+	for(NSInteger i=0;i<length;i++) if(bytes[i]=='\n'||bytes[i]=='\r') { length=i; break; }
 	NSString *endstr=[[[NSString alloc] initWithBytes:bytes length:length encoding:NSISOLatin1StringEncoding] autorelease];
 
 	[NSException raise:PDFParserException format:@"%@: \"%@%C%@\"",error,startstr,(unichar)0x25bc,endstr];
@@ -1020,7 +1020,7 @@ static BOOL IsDelimiter(uint8_t c);
 -(NSString *)string
 {
 	NSData *characters=[self data];
-	int length=[characters length];
+	NSInteger length=[characters length];
 	const unsigned char *bytes=[characters bytes];
 
 	if(length>=2&&bytes[0]==0xfe&&bytes[1]==0xff)
@@ -1045,7 +1045,7 @@ static BOOL IsDelimiter(uint8_t c);
 	return [other isKindOfClass:[PDFString class]]&&[data isEqual:((PDFString *)other)->data];
 }
 
--(unsigned)hash { return [data hash]; }
+-(NSUInteger)hash { return [data hash]; }
 
 -(id)copyWithZone:(NSZone *)zone
 {

@@ -78,7 +78,7 @@ NSString *const PDFMD5FinishedException=@"PDFMD5FinishedException";
 
 		[self setBlockPointer:streambuffer];
 
-		aes_decrypt_key([key bytes],[key length]*8,&aes);
+		aes_decrypt_key([key bytes],(int)[key length]*8,&aes);
 	}
 	return self;
 }

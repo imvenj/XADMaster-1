@@ -13,7 +13,7 @@ static NSData *StuffItMD5(NSData *data);
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name;
 {
 	const char *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
 	if(length<100) return NO;
 
@@ -414,7 +414,7 @@ static NSData *StuffItMD5(NSData *data);
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
 	const uint8_t *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
 	if(length<4104) return NO;
 

@@ -43,7 +43,7 @@ static CSHandle *FindHandleForName(NSData *namedata,NSString *dirname,NSArray *d
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
 	const uint8_t *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
 	return length>=4&&bytes[0]=='M'&&bytes[1]=='S'&&bytes[2]=='C'&&bytes[3]=='F';
 }
@@ -340,13 +340,13 @@ static int MatchCABSignature(const uint8_t *bytes,int available,off_t offset,voi
 name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 {
 	const uint8_t *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
 	if(length<20000||bytes[0]!='M'||bytes[1]!='Z') return NO;
 
-	for(int i=8;i<length;i++)
+	for(NSInteger i=8;i<length;i++)
 	{
-		if(MatchCABSignature(&bytes[i],length-i,i,NULL))
+		if(MatchCABSignature(&bytes[i],(int)(length-i),i,NULL))
 		{
 			props[@"CABSFXOffset"] = @(i);
 			return YES;

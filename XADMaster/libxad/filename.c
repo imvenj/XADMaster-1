@@ -769,8 +769,8 @@ FUNCxadGetFilename /* xadUINT32 buffersize, xadSTRPTR buffer,
         break;
     }
   }
-  psize = strlen((const char *)path);
-  nsize = strlen((const char *)name);
+  psize = (xadINT32)strlen((const char *)path);
+  nsize = (xadINT32)strlen((const char *)name);
   if(nsize || notrailingpath)
     while(psize && path[psize-1] == PATHSIGN) --psize;
   if(notrailingpath)

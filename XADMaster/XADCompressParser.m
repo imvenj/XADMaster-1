@@ -8,7 +8,7 @@
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	int length=[data length];
+	NSInteger length=[data length];
 	const uint8_t *bytes=[data bytes];
 
 	return length>=3&&bytes[0]==0x1f&&bytes[1]==0x9d;

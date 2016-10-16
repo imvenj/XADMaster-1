@@ -12,7 +12,7 @@
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	int length=[data length];
+	NSInteger length=[data length];
 	const uint8_t *bytes=[data bytes];
 
 	if(length<4) return NO;
@@ -251,7 +251,7 @@
 	if((self=[super initWithHandle:handle length:length]))
 	{
 		const uint8_t *passbytes=[passdata bytes];
-		int passlen=[passdata length];
+		NSInteger passlen=[passdata length];
 
 		uint8_t passbuf[8];
 
@@ -306,7 +306,7 @@
 	if((self=[super initWithHandle:handle length:length]))
 	{
 		const uint8_t *passbytes=[passdata bytes];
-		int passlen=[passdata length];
+		NSInteger passlen=[passdata length];
 
 		uint8_t key[8];
 		memset(key,0,8);

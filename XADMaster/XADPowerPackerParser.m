@@ -10,7 +10,7 @@ static NSData *PowerPackerUnpack(NSData *packeddata,int unpackedlength);
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	int length=[data length];
+	NSInteger length=[data length];
 	const uint8_t *bytes=[data bytes];
 
 	return length>=8&&bytes[0]=='P'&&bytes[1]=='P'&&bytes[2]=='2'&&bytes[3]=='0';
@@ -76,12 +76,12 @@ static uint32_t GetBits(int n,const uint8_t *buffer,int *bitpos)
 static NSData *PowerPackerUnpack(NSData *packeddata,int unpackedlength)
 {
 	const uint8_t *packed=[packeddata bytes];
-	int packedlength=[packeddata length];
+	NSInteger packedlength=[packeddata length];
 
 	NSMutableData *unpackeddata=[NSMutableData dataWithLength:unpackedlength];
 	uint8_t *unpacked=[unpackeddata mutableBytes];
 
-	int bitpos=packedlength*8-32;
+	int bitpos=(int)(packedlength*8-32);
 	uint8_t *dest=unpacked+unpackedlength;
 
 	// Skip extra bits

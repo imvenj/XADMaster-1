@@ -152,7 +152,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 	NSData *data;
 	if([palette isKindOfClass:[PDFStream class]])
 	{
-		data=[[palette handle] readDataOfLength:numcomponents*numcolours];
+		data=[[palette handle] readDataOfLength:(int)(numcomponents*numcolours)];
 		if(!data) return nil;
 	}
 	else if([palette isKindOfClass:[PDFString class]])

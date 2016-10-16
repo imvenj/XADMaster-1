@@ -237,7 +237,7 @@ static BOOL IsRegexSpecialCharacter(unichar c)
 	return [NSArray arrayWithArray:array];
 }
 
--(NSString *)pattern { return patternstring; }
+@synthesize pattern = patternstring;
 
 -(NSString *)description { return patternstring; }
 

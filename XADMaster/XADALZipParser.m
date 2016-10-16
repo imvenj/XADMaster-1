@@ -42,7 +42,7 @@ static void CalculateSillyTable(int *table,int param)
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
 	const uint8_t *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
 	return length>=8&&bytes[0]=='A'&&bytes[1]=='L'&&bytes[2]=='Z'&&bytes[3]==1&&bytes[7]==0;
 }
@@ -69,9 +69,9 @@ static void CalculateSillyTable(int *table,int param)
 	NSArray *volumes=[self volumes];
 	if(volumes)
 	{
-		int count=[volumes count];
+		NSInteger count=[volumes count];
 		off_t offs=0;
-		for(int i=0;i<count-1;i++)
+		for(NSInteger i=0;i<count-1;i++)
 		{
 			offs+=[(CSHandle *)volumes[i] fileSize];
 			[fh addSkipFrom:offs-16 to:offs+8];
