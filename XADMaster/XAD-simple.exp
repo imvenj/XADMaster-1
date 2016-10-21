@@ -191,6 +191,7 @@ _XADHumanReadableArray
 _XADHumanReadableDictionary
 _XADHumanReadableList
 _XADIndentTextWithSpaces
+_XADDescribeError
 _CSInputNextSymbolUsingCode
 _CSInputNextSymbolUsingCodeLE
 

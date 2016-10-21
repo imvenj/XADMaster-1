@@ -88,3 +88,7 @@ NSString *const XADExceptionName=@"XADException";
 
 @end
 
+extern NSString *XADDescribeError(XADError errnum)
+{
+	return [XADException describeXADError:errnum];
+}

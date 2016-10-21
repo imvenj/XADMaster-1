@@ -18,11 +18,11 @@ static NSData *ReadNullTerminatedString(CSHandle *fh);
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
 	const uint8_t *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
 	if(length<40) return NO;
 
-	for(int i=0;i<=length-4;i++)
+	for(NSInteger i=0;i<=length-4;i++)
 	{
 		if(bytes[i]==0x60&&bytes[i+1]==0xea)
 		{
