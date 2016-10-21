@@ -51,7 +51,7 @@
 	else if([key isEqual:XADFileTypeKey]||[key isEqual:XADFileCreatorKey])
 	{
 		if(![object isKindOfClass:[NSNumber class]]) return [object description];
-		return XADHumanReadableOSType([object longLongValue]);
+		return XADHumanReadableOSType([object unsignedIntValue]);
 	}
 	else if([key isEqual:XADFinderFlagsKey])
 	{
@@ -311,7 +311,7 @@ NSString *XADHumanReadableWindowsFileAttributes(uint64_t attributes)
 	return [NSString stringWithFormat:@"%s (0x%04llx)",str,attributes];
 }
 
-NSString *XADHumanReadableOSType(uint64_t ostype)
+NSString *XADHumanReadableOSType(uint32_t ostype)
 {
 	char str[5]={0};
 	for(int i=0;i<4;i++)
@@ -320,7 +320,7 @@ NSString *XADHumanReadableOSType(uint64_t ostype)
 		if(c>=32&&c<=127) str[i]=c;
 		else str[i]='?';
 	}
-	return [NSString stringWithFormat:@"%s (0x%08llx)",str,ostype];
+	return [NSString stringWithFormat:@"%s (0x%08x)",str,ostype];
 
 }
 

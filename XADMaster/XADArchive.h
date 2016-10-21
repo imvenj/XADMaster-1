@@ -103,7 +103,7 @@ extern NSString *const XADFinderFlags;
 -(BOOL)_parseWithErrorPointer:(XADError *)error;
 
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *filename;
-@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray *allFilenames;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray<NSString*> *allFilenames;
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *formatName;
 @property (NS_NONATOMIC_IOSONLY, getter=isEncrypted, readonly) BOOL encrypted;
 @property (NS_NONATOMIC_IOSONLY, getter=isSolid, readonly) BOOL solid;
@@ -124,7 +124,7 @@ extern NSString *const XADFinderFlags;
 -(NSString *)describeLastError;
 -(NSString *)describeError:(XADError)error;
 
-@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *description;
+@property (readonly, copy) NSString *description;
 
 
 
