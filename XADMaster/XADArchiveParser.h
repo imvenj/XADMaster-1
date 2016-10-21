@@ -148,7 +148,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL wasStopped;
 
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL hasChecksum;
--(BOOL)testChecksum;
+-(BOOL)testChecksum NS_SWIFT_UNAVAILABLE("throws exception");
 -(XADError)testChecksumWithoutExceptions;
 
 
