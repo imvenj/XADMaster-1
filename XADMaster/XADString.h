@@ -68,7 +68,7 @@ extern XADStringEncodingName const XADMacOSCroatianStringEncodingName NS_SWIFT_N
 
 #ifdef __APPLE__
 -(BOOL)canDecodeWithEncoding:(NSStringEncoding)encoding;
--(NSString *)stringWithEncoding:(NSStringEncoding)encoding;
+-(nullable NSString *)stringWithEncoding:(NSStringEncoding)encoding;
 @property (NS_NONATOMIC_IOSONLY, readonly) NSStringEncoding encoding;
 #endif
 
@@ -112,7 +112,7 @@ extern XADStringEncodingName const XADMacOSCroatianStringEncodingName NS_SWIFT_N
 
 #ifdef __APPLE__
 -(BOOL)canDecodeWithEncoding:(NSStringEncoding)encoding;
--(NSString *)stringWithEncoding:(NSStringEncoding)encoding;
+-(nullable NSString *)stringWithEncoding:(NSStringEncoding)encoding;
 @property (NS_NONATOMIC_IOSONLY, readonly) NSStringEncoding encoding;
 #endif
 

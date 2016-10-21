@@ -130,6 +130,7 @@ NSString *const XADDiskLabelKey=@"XADDiskLabel";
 @synthesize resourceFork = resourcefork;
 @synthesize stringSource = stringsource;
 @synthesize handle = sourcehandle;
+@synthesize passwordEncodingName = passwordencodingname;
 
 static NSMutableArray<Class> *parserclasses=nil;
 static int maxheader=0;
@@ -599,15 +600,6 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 {
 	if(!passwordencodingname) return [self encodingName];
 	else return passwordencodingname;
-}
-
--(void)setPasswordEncodingName:(NSString *)encodingname
-{
-	if(encodingname!=passwordencodingname)
-	{
-		[passwordencodingname release];
-		passwordencodingname=[encodingname retain];
-	}
 }
 
 

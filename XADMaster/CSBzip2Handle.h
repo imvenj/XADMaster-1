@@ -31,6 +31,6 @@ extern NSString *const CSBzip2Exception;
 @property (NS_NONATOMIC_IOSONLY, readonly, getter=isChecksumCorrect) BOOL checksumCorrect;
 
 // Internal methods.
--(void)_raiseBzip2:(int)error;
+-(void)_raiseBzip2:(int)error NS_SWIFT_UNAVAILABLE("Call throws");
 
 @end

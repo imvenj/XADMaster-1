@@ -40,6 +40,6 @@ extern NSString *const CSZlibException;
 -(int)streamAtMost:(int)num toBuffer:(void *)buffer;
 
 // Internal methods
--(void)_raiseZlib;
+-(void)_raiseZlib NS_SWIFT_UNAVAILABLE("Call throws");
 
 @end
