@@ -170,7 +170,7 @@ regex:(XADRegex *)regex firstFileExtension:(nullable NSString *)firstext;
 @property (NS_NONATOMIC_IOSONLY, readonly, retain) CSHandle *currentHandle;
 -(off_t)offsetForVolume:(int)disk offset:(off_t)offset;
 
--(void)setObject:(id)object forPropertyKey:(NSString *)key;
+-(void)setObject:(id)object forPropertyKey:(XADArchiveKeys)key;
 -(void)addPropertiesFromDictionary:(NSDictionary<XADArchiveKeys,id> *)dict;
 -(void)setIsMacArchive:(BOOL)ismac;
 
@@ -178,27 +178,27 @@ regex:(XADRegex *)regex firstFileExtension:(nullable NSString *)firstext;
 -(void)addEntryWithDictionary:(NSMutableDictionary<XADArchiveKeys,id> *)dict retainPosition:(BOOL)retainpos;
 
 -(XADString *)XADStringWithString:(NSString *)string;
--(XADString *)XADStringWithData:(NSData *)data;
--(XADString *)XADStringWithData:(NSData *)data encodingName:(NSString *)encoding;
--(XADString *)XADStringWithBytes:(const void *)bytes length:(NSInteger)length;
--(XADString *)XADStringWithBytes:(const void *)bytes length:(NSInteger)length encodingName:(NSString *)encoding;
--(XADString *)XADStringWithCString:(const char *)cstring;
--(XADString *)XADStringWithCString:(const char *)cstring encodingName:(NSString *)encoding;
+-(nullable XADString *)XADStringWithData:(NSData *)data;
+-(nullable XADString *)XADStringWithData:(NSData *)data encodingName:(XADStringEncodingName)encoding;
+-(nullable XADString *)XADStringWithBytes:(const void *)bytes length:(NSInteger)length;
+-(nullable XADString *)XADStringWithBytes:(const void *)bytes length:(NSInteger)length encodingName:(XADStringEncodingName)encoding;
+-(nullable XADString *)XADStringWithCString:(const char *)cstring;
+-(nullable XADString *)XADStringWithCString:(const char *)cstring encodingName:(XADStringEncodingName)encoding;
 
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) XADPath *XADPath;
 -(XADPath *)XADPathWithString:(NSString *)string;
 -(XADPath *)XADPathWithUnseparatedString:(NSString *)string;
 -(XADPath *)XADPathWithData:(NSData *)data separators:(const char *)separators;
--(XADPath *)XADPathWithData:(NSData *)data encodingName:(NSString *)encoding separators:(const char *)separators;
+-(XADPath *)XADPathWithData:(NSData *)data encodingName:(XADStringEncodingName)encoding separators:(const char *)separators;
 -(XADPath *)XADPathWithBytes:(const void *)bytes length:(NSInteger)length separators:(const char *)separators;
--(XADPath *)XADPathWithBytes:(const void *)bytes length:(NSInteger)length encodingName:(NSString *)encoding separators:(const char *)separators;
+-(XADPath *)XADPathWithBytes:(const void *)bytes length:(NSInteger)length encodingName:(XADStringEncodingName)encoding separators:(const char *)separators;
 -(XADPath *)XADPathWithCString:(const char *)cstring separators:(const char *)separators;
--(XADPath *)XADPathWithCString:(const char *)cstring encodingName:(NSString *)encoding separators:(const char *)separators;
+-(XADPath *)XADPathWithCString:(const char *)cstring encodingName:(XADStringEncodingName)encoding separators:(const char *)separators;
 
 @property (NS_NONATOMIC_IOSONLY, readonly, copy, nullable) NSData *encodedPassword;
 @property (NS_NONATOMIC_IOSONLY, readonly, nullable) const char *encodedCStringPassword;
 
--(void)reportInterestingFileWithReason:(NSString *)reason,... NS_FORMAT_FUNCTION(1,0);
+-(void)reportInterestingFileWithReason:(NSString *)reason,... NS_FORMAT_FUNCTION(1,2);
 
 
 
@@ -215,8 +215,8 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 +(nullable NSArray<NSString*> *)volumesForHandle:(CSHandle *)handle firstBytes:(NSData *)data
 name:(NSString *)name;
 
--(void)parse;
--(nullable CSHandle *)handleForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict wantChecksum:(BOOL)checksum;
+-(void)parse NS_SWIFT_UNAVAILABLE("Call throws on failure");
+-(nullable CSHandle *)handleForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict wantChecksum:(BOOL)checksum NS_SWIFT_UNAVAILABLE("Call throws on failure");;
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *formatName;
 
 -(nullable CSHandle *)handleForSolidStreamWithObject:(id)obj wantChecksum:(BOOL)checksum;
