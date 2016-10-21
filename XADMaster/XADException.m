@@ -5,6 +5,7 @@
 #import "CSBzip2Handle.h"
 
 NSString *const XADExceptionName=@"XADException";
+NSString *const XADErrorDomain=@"de.dstoecker.xadmaster.error";
 
 @implementation XADException
 

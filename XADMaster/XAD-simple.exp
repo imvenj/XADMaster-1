@@ -8,6 +8,7 @@ _XADFileNameKey
 _XADResourceDataKey
 _XADFinderFlags
 _XADExceptionName
+_XADErrorDomain
 
 .objc_class_name_XADArchive
 .objc_class_name_XADArchiveParser
