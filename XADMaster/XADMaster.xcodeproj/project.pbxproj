@@ -79,7 +79,7 @@
 		1B31CB7413C288D700ED119E /* XADSWFTagParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B31CB6A13C288D700ED119E /* XADSWFTagParser.m */; };
 		1B31CB7513C288D700ED119E /* XADSWFTagParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B31CB6A13C288D700ED119E /* XADSWFTagParser.m */; };
 		1B31CB7613C288D700ED119E /* XADSWFTagParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B31CB6A13C288D700ED119E /* XADSWFTagParser.m */; };
-		1B31CB7913C2890700ED119E /* XADSWFParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B31CB7713C2890600ED119E /* XADSWFParser.h */; };
+		1B31CB7913C2890700ED119E /* XADSWFParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B31CB7713C2890600ED119E /* XADSWFParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1B31CB7A13C2890700ED119E /* XADSWFParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B31CB7713C2890600ED119E /* XADSWFParser.h */; };
 		1B31CB7B13C2890700ED119E /* XADSWFParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B31CB7713C2890600ED119E /* XADSWFParser.h */; };
 		1B31CB7C13C2890700ED119E /* XADSWFParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B31CB7813C2890600ED119E /* XADSWFParser.m */; };
@@ -2382,6 +2382,7 @@
 		557EA8751DB1C37C00A5AE04 /* XAD-simple.exp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.exports; path = "XAD-simple.exp"; sourceTree = "<group>"; };
 		559B9CCC1A13F30E006BDB74 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		559B9CCF1A13F443006BDB74 /* XADMaster-umbrella.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XADMaster-umbrella.h"; sourceTree = "<group>"; };
+		55D93FE91DB9E6AC00F01BBC /* module-whole.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = "module-whole.modulemap"; sourceTree = "<group>"; };
 		56FBC92B0A57541300BE98CF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
 		8DC2EF5B0486A6940098B216 /* XADMaster.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = XADMaster.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -2606,6 +2607,7 @@
 			isa = PBXGroup;
 			children = (
 				559B9CCC1A13F30E006BDB74 /* module.modulemap */,
+				55D93FE91DB9E6AC00F01BBC /* module-whole.modulemap */,
 				56FBC92B0A57541300BE98CF /* Info.plist */,
 				557EA8751DB1C37C00A5AE04 /* XAD-simple.exp */,
 			);
@@ -5927,7 +5929,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "USE_COMMON_CRYPTO=1";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "@executable_path/../Frameworks";
-				MODULEMAP_FILE = module.modulemap;
+				MODULEMAP_FILE = "module-whole.modulemap";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-weak_framework",
@@ -6457,7 +6459,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "USE_COMMON_CRYPTO=1";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "@executable_path/../Frameworks";
-				MODULEMAP_FILE = module.modulemap;
+				MODULEMAP_FILE = "module-whole.modulemap";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-weak_framework",
