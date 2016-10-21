@@ -3,17 +3,25 @@
 #import "XADArchiveParser.h"
 
 typedef NS_ENUM(int, XADForkStyle) {
-	XADIgnoredForkStyle = 0,
-	XADMacOSXForkStyle = 1,
-	XADHiddenAppleDoubleForkStyle = 2,
-	XADVisibleAppleDoubleForkStyle = 3,
-	XADHFVExplorerAppleDoubleForkStyle = 4,
+	XADForkStyleIgnored = 0,
+	XADForkStyleMacOSX = 1,
+	XADForkStyleHiddenAppleDouble = 2,
+	XADForkStyleVisibleAppleDouble = 3,
+	XADForkStyleHFVExplorerAppleDouble = 4,
 	
 #ifdef __APPLE__
-	XADDefaultForkStyle = XADMacOSXForkStyle,
+	XADForkStyleDefault = XADForkStyleMacOSX,
 #else
-	XADDefaultForkStyle = XADVisibleAppleDoubleForkStyle,
+	XADForkStyleDefault = XADVisibleAppleDoubleForkStyle,
 #endif
+
+	XADIgnoredForkStyle NS_SWIFT_UNAVAILABLE("Use '.ignored'") = XADForkStyleIgnored,
+	XADMacOSXForkStyle NS_SWIFT_UNAVAILABLE("Use '.macOSX'") = XADForkStyleMacOSX,
+	XADHiddenAppleDoubleForkStyle NS_SWIFT_UNAVAILABLE("Use '.hiddenAppleDouble'") = XADForkStyleHiddenAppleDouble,
+	XADVisibleAppleDoubleForkStyle NS_SWIFT_UNAVAILABLE("Use '.visibleAppleDouble'") = XADForkStyleVisibleAppleDouble,
+	XADHFVExplorerAppleDoubleForkStyle NS_SWIFT_UNAVAILABLE("Use '.HFVExplorerAppleDouble'") = XADForkStyleHFVExplorerAppleDouble,
+	
+	XADDefaultForkStyle NS_SWIFT_UNAVAILABLE("Use '.default'") = XADForkStyleDefault,
 };
 
 NS_ASSUME_NONNULL_BEGIN

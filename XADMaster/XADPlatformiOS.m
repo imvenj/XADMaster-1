@@ -44,7 +44,7 @@ preservePermissions:(BOOL)preservepermissions
 		{
 			NSData *data=[extattrs objectForKey:key];
 
-			int namelen=[key lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
+			NSInteger namelen=[key lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
 			char namebytes[namelen+1];
 			[key getCString:namebytes maxLength:sizeof(namebytes) encoding:NSUTF8StringEncoding];
 
