@@ -1674,6 +1674,8 @@
 		5500A61E1D776FC400321300 /* XADPMArc1Handle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B738C9E17DBC83400481D43 /* XADPMArc1Handle.m */; };
 		5500A61F1D776FC400321300 /* XADLZHOldHandles.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3A64C710150DB600AE25A8 /* XADLZHOldHandles.m */; };
 		5500A6201D776FF700321300 /* XADCompressHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC88D470ED31A46006B47FE /* XADCompressHandle.m */; };
+		55B3B2541DBCC51400ECC61D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55B3B2531DBCC51400ECC61D /* Security.framework */; };
+		55B3B2551DBCC51C00ECC61D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55B3B2531DBCC51400ECC61D /* Security.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -2382,6 +2384,7 @@
 		557EA8751DB1C37C00A5AE04 /* XAD-simple.exp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.exports; path = "XAD-simple.exp"; sourceTree = "<group>"; };
 		559B9CCC1A13F30E006BDB74 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		559B9CCF1A13F443006BDB74 /* XADMaster-umbrella.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XADMaster-umbrella.h"; sourceTree = "<group>"; };
+		55B3B2531DBCC51400ECC61D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		55D93FE91DB9E6AC00F01BBC /* module-whole.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = "module-whole.modulemap"; sourceTree = "<group>"; };
 		55D93FEA1DBA527100F01BBC /* XAD.exp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.exports; path = XAD.exp; sourceTree = "<group>"; };
 		56FBC92B0A57541300BE98CF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
@@ -2526,6 +2529,7 @@
 				5500A6081D776ADB00321300 /* Foundation.framework in Frameworks */,
 				5500A6091D776ADB00321300 /* libbz2.tbd in Frameworks */,
 				5500A60A1D776ADB00321300 /* Carbon.framework in Frameworks */,
+				55B3B2551DBCC51C00ECC61D /* Security.framework in Frameworks */,
 				5500A60B1D776ADB00321300 /* UniversalDetector.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2534,6 +2538,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55B3B2541DBCC51400ECC61D /* Security.framework in Frameworks */,
 				1B3FABA80EC52532006D2F06 /* libz.tbd in Frameworks */,
 				1B3FAC5D0EC5255A006D2F06 /* Foundation.framework in Frameworks */,
 				1BBCC54D0EE73B7F006C3AE2 /* libbz2.tbd in Frameworks */,
@@ -2593,6 +2598,7 @@
 		0867D69AFE84028FC02AAC07 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				55B3B2531DBCC51400ECC61D /* Security.framework */,
 				1B3FABA70EC52532006D2F06 /* libz.tbd */,
 				1BBCC54C0EE73B7F006C3AE2 /* libbz2.tbd */,
 				1B3FAC5C0EC5255A006D2F06 /* Foundation.framework */,

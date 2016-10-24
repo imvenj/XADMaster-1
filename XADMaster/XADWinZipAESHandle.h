@@ -2,6 +2,10 @@
 #import "Crypto/aes.h"
 #import "Crypto/hmac_sha1.h"
 
+#if defined(USE_COMMON_CRYPTO) && USE_COMMON_CRYPTO
+#include <Security/Security.h>
+#endif
+
 @interface XADWinZipAESHandle:CSStreamHandle
 {
 	CSHandle *parent;
