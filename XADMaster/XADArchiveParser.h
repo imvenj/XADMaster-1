@@ -140,8 +140,8 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 @property (nonatomic, copy, nullable) XADStringEncodingName passwordEncodingName;
 @property (NS_NONATOMIC_IOSONLY, readonly, strong) XADStringSource *stringSource;
 
--(XADString *)linkDestinationForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict NS_SWIFT_UNAVAILABLE("Call throws on failure");
--(XADString *)linkDestinationForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict error:(XADError *)errorptr;
+-(nullable XADString *)linkDestinationForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict NS_SWIFT_UNAVAILABLE("Call throws on failure");
+-(nullable XADString *)linkDestinationForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict error:(XADError *)errorptr;
 -(NSDictionary *)extendedAttributesForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict;
 -(NSData *)finderInfoForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict;
 
@@ -164,9 +164,9 @@ regex:(XADRegex *)regex firstFileExtension:(nullable NSString *)firstext;
 -(CSHandle *)handleAtDataOffsetForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict;
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) XADSkipHandle *skipHandle;
 -(CSHandle *)zeroLengthHandleWithChecksum:(BOOL)checksum;
--(CSHandle *)subHandleFromSolidStreamForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict;
+-(nullable CSHandle *)subHandleFromSolidStreamForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict;
 
-@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray *volumes;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy, nullable) NSArray *volumes;
 @property (NS_NONATOMIC_IOSONLY, readonly, retain) CSHandle *currentHandle;
 -(off_t)offsetForVolume:(int)disk offset:(off_t)offset;
 

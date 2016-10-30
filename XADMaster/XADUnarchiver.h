@@ -68,9 +68,9 @@ NS_ASSUME_NONNULL_BEGIN
 -(XADError)_fixDeferredLinks;
 -(XADError)_fixDeferredDirectories;
 
--(XADUnarchiver *)unarchiverForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict
+-(nullable XADUnarchiver *)unarchiverForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict
 wantChecksum:(BOOL)checksum error:(nullable XADError *)errorptr;
--(XADUnarchiver *)unarchiverForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict
+-(nullable XADUnarchiver *)unarchiverForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict
 resourceForkDictionary:(nullable NSDictionary<XADArchiveKeys,id> *)forkdict wantChecksum:(BOOL)checksum error:(nullable XADError *)errorptr;
 
 -(XADError)_extractFileEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict as:(NSString *)destpath;
@@ -114,7 +114,7 @@ outputTarget:(id)target selector:(SEL)sel argument:(id)arg;
 -(void)unarchiver:(XADUnarchiver *)unarchiver didExtractArchiveEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict withUnarchiver:(XADUnarchiver *)subunarchiver to:(NSString *)path error:(XADError)error;
 
 @required
--(NSString *)unarchiver:(XADUnarchiver *)unarchiver destinationForLink:(XADString *)link from:(NSString *)path;
+-(nullable NSString *)unarchiver:(XADUnarchiver *)unarchiver destinationForLink:(XADString *)link from:(NSString *)path;
 
 -(BOOL)extractionShouldStopForUnarchiver:(XADUnarchiver *)unarchiver;
 -(void)unarchiver:(XADUnarchiver *)unarchiver extractionProgressForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict

@@ -167,7 +167,7 @@ uint32_t CSInputNextRARVMNumber(CSInputBuffer *input)
 		if(numargs>=1)
 		{
 			unsigned int addressingmode;
-			uint32_t value;
+			uint32_t value = 0;
 			[self parseOperandFromBuffer:input addressingMode:&addressingmode value:&value
 			byteMode:bytemode isRelativeJump:RARInstructionIsRelativeJump(instruction)
 			currentInstructionOffset:currinstruction];
@@ -176,7 +176,7 @@ uint32_t CSInputNextRARVMNumber(CSInputBuffer *input)
 		if(numargs==2)
 		{
 			unsigned int addressingmode;
-			uint32_t value;
+			uint32_t value = 0;
 			[self parseOperandFromBuffer:input addressingMode:&addressingmode value:&value
 			 byteMode:bytemode isRelativeJump:NO currentInstructionOffset:0];
 			SetRAROpcodeOperand2(opcode,addressingmode,value);

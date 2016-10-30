@@ -485,6 +485,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 	[currsolidhandle release];
 	[firstsoliddict release];
 	[prevsoliddict release];
+	[resourcefork release];
 	[super dealloc];
 }
 
