@@ -239,6 +239,12 @@ _LZWOutputToBuffer
 _LZWReverseOutputToBuffer
 _LZWOutputToInternalBuffer
 
+_SWFParseRect
+
+.objc_class_name_PDFParser
+.objc_class_name_PDFStream
+.objc_class_name_XADSWFParser
+
 # iVars needed by Xee
 _OBJC_IVAR_$_XADByteStreamHandle.eofenv
 _OBJC_IVAR_$_XADFileHandle.fh
