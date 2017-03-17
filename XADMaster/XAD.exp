@@ -245,6 +245,9 @@ _SWFParseRect
 .objc_class_name_PDFStream
 .objc_class_name_XADSWFParser
 
+_SWFNoMoreTagsException
+_SWFWrongMagicException
+
 # iVars needed by Xee
 _OBJC_IVAR_$_XADByteStreamHandle.eofenv
 _OBJC_IVAR_$_XADFileHandle.fh
