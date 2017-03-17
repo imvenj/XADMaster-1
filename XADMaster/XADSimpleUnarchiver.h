@@ -38,6 +38,9 @@
 	BOOL lookslikesolo;
 
 	off_t totalsize,currsize,totalprogress;
+#if !__OBJC2__
+	__unsafe_unretained id<XADSimpleUnarchiverDelegate> delegate;
+#endif
 }
 
 +(instancetype)simpleUnarchiverForPath:(NSString *)path NS_SWIFT_UNAVAILABLE("Call may throw exceptions, use init(for:error:) instead");

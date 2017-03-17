@@ -242,11 +242,6 @@ _FreeLZW
 _LZWReverseOutputToBuffer
 _NextLZWSymbol
 
-_OBJC_IVAR_$_XADByteStreamHandle.eofenv
-_OBJC_IVAR_$_XADFileHandle.fh
-_OBJC_IVAR_$_XADHandle.name
-_OBJC_IVAR_$_XADStreamHandle.input
-
 #SWF handling
 
 .objc_class_name_XADSWFParser

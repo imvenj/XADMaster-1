@@ -98,6 +98,9 @@ extern XADArchiveKeys const XADDiskLabelKey;
 	BOOL forcesolid;
 
 	BOOL shouldstop;
+#if !__OBJC2__
+	__unsafe_unretained id<XADArchiveParserDelegate> delegate;
+#endif
 }
 
 +(nullable Class)archiveParserClassForHandle:(CSHandle *)handle firstBytes:(NSData *)header

@@ -78,6 +78,9 @@ extern NSString *const XADFinderFlags;
 	BOOL immediatesubarchives,immediatefailed;
 	off_t immediatesize;
 	XADArchive *parentarchive;
+#if !__OBJC2__
+	__unsafe_unretained id<XADArchiveDelegate> delegate;
+#endif
 }
 
 +(instancetype)archiveForFile:(NSString *)filename;

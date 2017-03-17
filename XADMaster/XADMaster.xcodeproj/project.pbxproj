@@ -2381,6 +2381,7 @@
 		1BF3BA8F13EE08A300BE7400 /* XADPlatform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADPlatform.h; sourceTree = "<group>"; };
 		32DBCF5E0370ADEE00C91783 /* XADMaster_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADMaster_Prefix.pch; sourceTree = "<group>"; };
 		5500A60F1D776ADB00321300 /* XADMaster.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = XADMaster.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		55218A511E7BCFC400A9DA06 /* XAD32.exp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.exports; path = XAD32.exp; sourceTree = "<group>"; };
 		557EA8751DB1C37C00A5AE04 /* XAD-simple.exp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.exports; path = "XAD-simple.exp"; sourceTree = "<group>"; };
 		559B9CCC1A13F30E006BDB74 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		559B9CCF1A13F443006BDB74 /* XADMaster-umbrella.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XADMaster-umbrella.h"; sourceTree = "<group>"; };
@@ -2618,6 +2619,7 @@
 				56FBC92B0A57541300BE98CF /* Info.plist */,
 				557EA8751DB1C37C00A5AE04 /* XAD-simple.exp */,
 				55D93FEA1DBA527100F01BBC /* XAD.exp */,
+				55218A511E7BCFC400A9DA06 /* XAD32.exp */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -5919,6 +5921,7 @@
 		1B68D25D13282D2500A8121A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
@@ -5927,6 +5930,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				EXPORTED_SYMBOLS_FILE = XAD.exp;
+				"EXPORTED_SYMBOLS_FILE[sdk=macosx*][arch=i386]" = XAD32.exp;
 				FRAMEWORK_VERSION = A;
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -6450,6 +6454,7 @@
 		1DEB91AE08733DA50010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
@@ -6457,6 +6462,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				EXPORTED_SYMBOLS_FILE = XAD.exp;
+				"EXPORTED_SYMBOLS_FILE[sdk=macosx*][arch=i386]" = XAD32.exp;
 				FRAMEWORK_VERSION = A;
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -6496,6 +6502,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;

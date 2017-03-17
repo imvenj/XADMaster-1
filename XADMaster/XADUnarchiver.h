@@ -36,6 +36,12 @@ NS_ASSUME_NONNULL_BEGIN
 	BOOL shouldstop;
 
 	NSMutableArray *deferreddirectories,*deferredlinks;
+#if !__OBJC2__
+	__unsafe_unretained id<XADUnarchiverDelegate> delegate;
+	NSString *destination;
+	XADForkStyle forkstyle;
+	double updateinterval;
+#endif
 }
 
 +(nullable instancetype)unarchiverForArchiveParser:(XADArchiveParser *)archiveparser;
