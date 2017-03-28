@@ -45,7 +45,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 
 @property (NS_NONATOMIC_IOSONLY, readonly) PDFImageType imageType;
 @property (NS_NONATOMIC_IOSONLY, readonly) NSInteger numberOfImageComponents;
--(NSString *)imageColourSpaceName;
+@property (NS_NONATOMIC_IOSONLY, readonly) NSString *imageColourSpaceName;
 
 @property (NS_NONATOMIC_IOSONLY, readonly) PDFImageType imagePaletteType;
 @property (NS_NONATOMIC_IOSONLY, readonly) NSInteger numberOfImagePaletteComponents;
