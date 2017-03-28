@@ -140,8 +140,8 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 @property (NS_NONATOMIC_IOSONLY, copy, nullable) XADStringEncodingName passwordEncodingName;
 @property (NS_NONATOMIC_IOSONLY, readonly, strong) XADStringSource *stringSource;
 
--(XADString *)linkDestinationForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict;
--(XADString *)linkDestinationForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict error:(XADError *)errorptr;
+-(nullable XADString *)linkDestinationForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
+-(nullable XADString *)linkDestinationForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict error:(XADError *)errorptr;
 -(NSDictionary *)extendedAttributesForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict;
 -(NSData *)finderInfoForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict;
 
@@ -221,10 +221,9 @@ name:(NSString *)name;
 
 -(nullable CSHandle *)handleForSolidStreamWithObject:(id)obj wantChecksum:(BOOL)checksum;
 
-// Exception-free wrappers for subclass methods:
-// parseWithoutExceptions will in addition return XADBreakError if the delegate
-// requested parsing to stop.
-
+//! Exception-free wrappers for subclass methods:
+//! \c parseWithoutExceptions will in addition return \c XADBreakError if the delegate
+//! requested parsing to stop.
 -(XADError)parseWithoutExceptions;
 -(nullable CSHandle *)handleForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict wantChecksum:(BOOL)checksum error:(nullable XADError *)errorptr;
 
