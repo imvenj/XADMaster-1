@@ -1674,8 +1674,12 @@
 		5500A61E1D776FC400321300 /* XADPMArc1Handle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B738C9E17DBC83400481D43 /* XADPMArc1Handle.m */; };
 		5500A61F1D776FC400321300 /* XADLZHOldHandles.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3A64C710150DB600AE25A8 /* XADLZHOldHandles.m */; };
 		5500A6201D776FF700321300 /* XADCompressHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC88D470ED31A46006B47FE /* XADCompressHandle.m */; };
+		555EF0741EA7DB1F000CAE58 /* XADSimpleMasterSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = 555EF0721EA7DB1F000CAE58 /* XADSimpleMasterSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		555EF07A1EA7DB3B000CAE58 /* XADMaster.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5500A60F1D776ADB00321300 /* XADMaster.framework */; };
+		555EF07C1EA7DB57000CAE58 /* XADArchiveParserSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555EF07B1EA7DB57000CAE58 /* XADArchiveParserSwift.swift */; };
 		55B3B2541DBCC51400ECC61D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55B3B2531DBCC51400ECC61D /* Security.framework */; };
 		55B3B2551DBCC51C00ECC61D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55B3B2531DBCC51400ECC61D /* Security.framework */; };
+		55D508E11EA7E63D008A3F63 /* XADResourceForkSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D508E01EA7E63D008A3F63 /* XADResourceForkSwift.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -1838,6 +1842,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = XADMaster;
+		};
+		555EF0781EA7DB34000CAE58 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5500A44A1D776ADB00321300;
+			remoteInfo = "XADMaster-simple";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -2381,11 +2392,16 @@
 		1BF3BA8F13EE08A300BE7400 /* XADPlatform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADPlatform.h; sourceTree = "<group>"; };
 		32DBCF5E0370ADEE00C91783 /* XADMaster_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADMaster_Prefix.pch; sourceTree = "<group>"; };
 		5500A60F1D776ADB00321300 /* XADMaster.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = XADMaster.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		555EF0701EA7DB1F000CAE58 /* XADSimpleMasterSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = XADSimpleMasterSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		555EF0721EA7DB1F000CAE58 /* XADSimpleMasterSwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XADSimpleMasterSwift.h; sourceTree = "<group>"; };
+		555EF0731EA7DB1F000CAE58 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		555EF07B1EA7DB57000CAE58 /* XADArchiveParserSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XADArchiveParserSwift.swift; sourceTree = "<group>"; };
 		557EA8751DB1C37C00A5AE04 /* XAD-simple.exp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.exports; path = "XAD-simple.exp"; sourceTree = "<group>"; };
 		558A1EDB1E70E00C00C41ADA /* XAD.exp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.exports; path = XAD.exp; sourceTree = "<group>"; };
 		559B9CCC1A13F30E006BDB74 /* XAD.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = XAD.modulemap; sourceTree = "<group>"; };
 		559B9CCF1A13F443006BDB74 /* XADMaster-umbrella.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XADMaster-umbrella.h"; sourceTree = "<group>"; };
 		55B3B2531DBCC51400ECC61D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		55D508E01EA7E63D008A3F63 /* XADResourceForkSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XADResourceForkSwift.swift; sourceTree = "<group>"; };
 		55D93FE91DB9E6AC00F01BBC /* XAD-whole.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = "XAD-whole.modulemap"; sourceTree = "<group>"; };
 		56FBC92B0A57541300BE98CF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
 		8DC2EF5B0486A6940098B216 /* XADMaster.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = XADMaster.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2534,6 +2550,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		555EF06C1EA7DB1F000CAE58 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				555EF07A1EA7DB3B000CAE58 /* XADMaster.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8DC2EF560486A6940098B216 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -2568,6 +2592,7 @@
 				1B31CB9213C6423600ED119E /* XADTest6 */,
 				1B467B0115CD9A73001AB1DD /* libXADMaster.ios.a */,
 				5500A60F1D776ADB00321300 /* XADMaster.framework */,
+				555EF0701EA7DB1F000CAE58 /* XADSimpleMasterSwift.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2588,6 +2613,7 @@
 				1B91CBA911D803920081E40A /* Windows Sources */,
 				32C88DFF0371C24200C91783 /* Other Sources */,
 				089C1665FE841158C02AAC07 /* Resources */,
+				555EF0711EA7DB1F000CAE58 /* XADSimpleMasterSwift */,
 				0867D69AFE84028FC02AAC07 /* Frameworks */,
 				1BDDC79413DE3D2800A8C079 /* Man Pages */,
 				034768DFFF38A50411DB9C8B /* Products */,
@@ -3520,6 +3546,17 @@
 			path = XADSimple;
 			sourceTree = "<group>";
 		};
+		555EF0711EA7DB1F000CAE58 /* XADSimpleMasterSwift */ = {
+			isa = PBXGroup;
+			children = (
+				555EF0721EA7DB1F000CAE58 /* XADSimpleMasterSwift.h */,
+				555EF0731EA7DB1F000CAE58 /* Info.plist */,
+				555EF07B1EA7DB57000CAE58 /* XADArchiveParserSwift.swift */,
+				55D508E01EA7E63D008A3F63 /* XADResourceForkSwift.swift */,
+			);
+			path = XADSimpleMasterSwift;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -3893,6 +3930,14 @@
 				5500A5251D776ADB00321300 /* XADMD5Handle.h in Headers */,
 				5500A5261D776ADB00321300 /* XADSHA1Handle.h in Headers */,
 				5500A5271D776ADB00321300 /* XADResourceFork.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		555EF06D1EA7DB1F000CAE58 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				555EF0741EA7DB1F000CAE58 /* XADSimpleMasterSwift.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4370,6 +4415,25 @@
 			productReference = 5500A60F1D776ADB00321300 /* XADMaster.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		555EF06F1EA7DB1F000CAE58 /* XADSimpleMasterSwift */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 555EF0771EA7DB1F000CAE58 /* Build configuration list for PBXNativeTarget "XADSimpleMasterSwift" */;
+			buildPhases = (
+				555EF06D1EA7DB1F000CAE58 /* Headers */,
+				555EF06B1EA7DB1F000CAE58 /* Sources */,
+				555EF06C1EA7DB1F000CAE58 /* Frameworks */,
+				555EF06E1EA7DB1F000CAE58 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				555EF0791EA7DB34000CAE58 /* PBXTargetDependency */,
+			);
+			name = XADSimpleMasterSwift;
+			productName = XADSimpleMasterSwift;
+			productReference = 555EF0701EA7DB1F000CAE58 /* XADSimpleMasterSwift.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		8DC2EF4F0486A6940098B216 /* XADMaster */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "XADMaster" */;
@@ -4396,6 +4460,13 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0800;
+				TargetAttributes = {
+					555EF06F1EA7DB1F000CAE58 = {
+						CreatedOnToolsVersion = 8.3.1;
+						LastSwiftMigration = 0830;
+						ProvisioningStyle = Automatic;
+					};
+				};
 			};
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "XADMaster" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -4428,12 +4499,20 @@
 				1B91CD9611D981E20081E40A /* unar.exe */,
 				1B91D2D611E694860081E40A /* lsar.exe */,
 				1B433E2611E945D300DA1EFB /* Everything */,
+				555EF06F1EA7DB1F000CAE58 /* XADSimpleMasterSwift */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		5500A52B1D776ADB00321300 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		555EF06E1EA7DB1F000CAE58 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -5362,6 +5441,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		555EF06B1EA7DB1F000CAE58 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				555EF07C1EA7DB57000CAE58 /* XADArchiveParserSwift.swift in Sources */,
+				55D508E11EA7E63D008A3F63 /* XADResourceForkSwift.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8DC2EF540486A6940098B216 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -5683,6 +5771,11 @@
 			isa = PBXTargetDependency;
 			target = 8DC2EF4F0486A6940098B216 /* XADMaster */;
 			targetProxy = 1BC893810ED6F462006B47FE /* PBXContainerItemProxy */;
+		};
+		555EF0791EA7DB34000CAE58 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5500A44A1D776ADB00321300 /* XADMaster-simple */;
+			targetProxy = 555EF0781EA7DB34000CAE58 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -6581,6 +6674,92 @@
 			};
 			name = Release;
 		};
+		555EF0751EA7DB1F000CAE58 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = XADSimpleMasterSwift/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.maddthesane.XADSimpleMasterSwift;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		555EF0761EA7DB1F000CAE58 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				FRAMEWORK_VERSION = A;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = XADSimpleMasterSwift/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.maddthesane.XADSimpleMasterSwift;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -6733,6 +6912,15 @@
 			buildConfigurations = (
 				5500A60D1D776ADB00321300 /* Debug */,
 				5500A60E1D776ADB00321300 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		555EF0771EA7DB1F000CAE58 /* Build configuration list for PBXNativeTarget "XADSimpleMasterSwift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				555EF0751EA7DB1F000CAE58 /* Debug */,
+				555EF0761EA7DB1F000CAE58 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
