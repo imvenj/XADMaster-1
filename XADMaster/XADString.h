@@ -125,8 +125,11 @@ extern XADStringEncodingName const XADMacOSCroatianStringEncodingName NS_SWIFT_N
 +(nullable NSString *)stringForData:(NSData *)data encodingName:(XADStringEncodingName)encoding;
 +(nullable NSString *)stringForBytes:(const void *)bytes length:(size_t)length encodingName:(XADStringEncodingName)encoding;
 +(nullable NSData *)dataForString:(NSString *)string encodingName:(XADStringEncodingName)encoding;
-+(NSArray<NSArray<NSString*>*> *)availableEncodingNames;
+#if __has_feature(objc_class_property)
 @property (class, NS_NONATOMIC_IOSONLY, readonly, copy) NSArray<NSArray<NSString*>*> *availableEncodingNames;
+#else
++(NSArray<NSArray<NSString*>*> *)availableEncodingNames;
+#endif
 
 #ifdef __APPLE__
 +(XADStringEncodingName)encodingNameForEncoding:(NSStringEncoding)encoding;

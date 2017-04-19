@@ -13,9 +13,10 @@
 	NSString *cachedencoding;
 }
 
-+(XADPath *)emptyPath;
 #if __has_feature(objc_class_property)
 @property (class, readonly, copy) XADPath *emptyPath;
+#else
++(XADPath *)emptyPath;
 #endif
 +(instancetype)pathWithString:(NSString *)string;
 +(instancetype)pathWithStringComponents:(NSArray<NSString*> *)components;
