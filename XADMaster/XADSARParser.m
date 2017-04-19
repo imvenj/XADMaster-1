@@ -36,10 +36,10 @@
 
 		NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 			[self XADPathWithData:namedata separators:XADWindowsPathSeparator],XADFileNameKey,
-			[NSNumber numberWithUnsignedLong:datalen],XADFileSizeKey,
-			[NSNumber numberWithUnsignedLong:datalen],XADCompressedSizeKey,
-			[NSNumber numberWithUnsignedLong:datalen],XADDataLengthKey,
-			[NSNumber numberWithUnsignedLong:dataoffs+offset],XADDataOffsetKey,
+			@(datalen),XADFileSizeKey,
+			@(datalen),XADCompressedSizeKey,
+			@(datalen),XADDataLengthKey,
+			@(dataoffs+offset),XADDataOffsetKey,
 			[self XADStringWithString:@"None"],XADCompressionNameKey,
 		nil];
 

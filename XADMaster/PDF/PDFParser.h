@@ -98,13 +98,6 @@ extern NSString *const PDFParserException;
 -(NSData *)rawData;
 -(NSString *)string;
 
--(BOOL)isEqual:(id)other;
--(NSUInteger)hash;
-
--(id)copyWithZone:(NSZone *)zone;
-
--(NSString *)description;
-
 @end
 
 
@@ -121,12 +114,6 @@ extern NSString *const PDFParserException;
 
 @property (NS_NONATOMIC_IOSONLY, readonly) int number;
 @property (NS_NONATOMIC_IOSONLY, readonly) int generation;
-
--(BOOL)isEqual:(id)other;
-
--(id)copyWithZone:(NSZone *)zone;
-
--(NSString *)description;
 
 @end
 

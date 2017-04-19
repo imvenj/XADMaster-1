@@ -221,10 +221,9 @@ name:(NSString *)name;
 
 -(nullable CSHandle *)handleForSolidStreamWithObject:(id)obj wantChecksum:(BOOL)checksum;
 
-// Exception-free wrappers for subclass methods:
-// parseWithoutExceptions will in addition return XADBreakError if the delegate
-// requested parsing to stop.
-
+//! Exception-free wrappers for subclass methods:
+//! \c parseWithoutExceptions will in addition return \c XADBreakError if the delegate
+//! requested parsing to stop.
 -(XADError)parseWithoutExceptions;
 -(nullable CSHandle *)handleForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict wantChecksum:(BOOL)checksum error:(nullable XADError *)errorptr;
 
