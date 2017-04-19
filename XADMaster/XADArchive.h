@@ -117,7 +117,7 @@ extern NSString *const XADFinderFlags;
 
 @property (NS_NONATOMIC_IOSONLY, copy) NSString *password;
 
-@property (NS_NONATOMIC_IOSONLY) NSStringEncoding nameEncoding;
+@property (NS_NONATOMIC_IOSONLY) NSStringEncoding nameEncoding NS_REFINED_FOR_SWIFT;
 
 @property (NS_NONATOMIC_IOSONLY, readonly) XADError lastError;
 -(void)clearLastError;
@@ -128,9 +128,9 @@ extern NSString *const XADFinderFlags;
 
 
 
--(NSDictionary *)dataForkParserDictionaryForEntry:(NSInteger)n;
--(NSDictionary *)resourceForkParserDictionaryForEntry:(NSInteger)n;
--(NSDictionary *)combinedParserDictionaryForEntry:(NSInteger)n;
+-(NSDictionary<XADArchiveKeys,id> *)dataForkParserDictionaryForEntry:(NSInteger)n;
+-(NSDictionary<XADArchiveKeys,id> *)resourceForkParserDictionaryForEntry:(NSInteger)n;
+-(NSDictionary<XADArchiveKeys,id> *)combinedParserDictionaryForEntry:(NSInteger)n;
 
 -(NSString *)nameOfEntry:(NSInteger)n;
 -(BOOL)entryHasSize:(NSInteger)n;
@@ -143,12 +143,12 @@ extern NSString *const XADFinderFlags;
 -(BOOL)entryIsArchive:(NSInteger)n;
 -(BOOL)entryHasResourceFork:(NSInteger)n;
 -(NSString *)commentForEntry:(NSInteger)n;
--(NSDictionary *)attributesOfEntry:(NSInteger)n;
--(NSDictionary *)attributesOfEntry:(NSInteger)n withResourceFork:(BOOL)resfork;
--(CSHandle *)handleForEntry:(NSInteger)n;
--(CSHandle *)handleForEntry:(NSInteger)n error:(XADError *)error;
--(CSHandle *)resourceHandleForEntry:(NSInteger)n;
--(CSHandle *)resourceHandleForEntry:(NSInteger)n error:(XADError *)error;
+-(NSDictionary<NSFileAttributeKey,id> *)attributesOfEntry:(NSInteger)n;
+-(NSDictionary<NSFileAttributeKey,id> *)attributesOfEntry:(NSInteger)n withResourceFork:(BOOL)resfork;
+-(CSHandle *)handleForEntry:(NSInteger)n NS_SWIFT_UNAVAILABLE("Use error-throwing type instead");
+-(CSHandle *)handleForEntry:(NSInteger)n error:(XADError *)error NS_REFINED_FOR_SWIFT;
+-(CSHandle *)resourceHandleForEntry:(NSInteger)n NS_SWIFT_UNAVAILABLE("Use error-throwing type instead");
+-(CSHandle *)resourceHandleForEntry:(NSInteger)n error:(XADError *)error NS_REFINED_FOR_SWIFT;
 -(NSData *)contentsOfEntry:(NSInteger)n;
 //-(NSData *)resourceContentsOfEntry:(int)n;
 

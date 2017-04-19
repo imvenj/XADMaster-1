@@ -1674,6 +1674,10 @@
 		5500A61E1D776FC400321300 /* XADPMArc1Handle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B738C9E17DBC83400481D43 /* XADPMArc1Handle.m */; };
 		5500A61F1D776FC400321300 /* XADLZHOldHandles.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3A64C710150DB600AE25A8 /* XADLZHOldHandles.m */; };
 		5500A6201D776FF700321300 /* XADCompressHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC88D470ED31A46006B47FE /* XADCompressHandle.m */; };
+		55541F6C1EA7EBC5001A6927 /* XADUnarchiverSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55541F6B1EA7EBC5001A6927 /* XADUnarchiverSwift.swift */; };
+		55541F6E1EA7EF90001A6927 /* XADPlatformSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55541F6D1EA7EF90001A6927 /* XADPlatformSwift.swift */; };
+		55541F701EA7F339001A6927 /* XADStringSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55541F6F1EA7F339001A6927 /* XADStringSwift.swift */; };
+		55541F721EA7FBC3001A6927 /* XADArchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55541F711EA7FBC3001A6927 /* XADArchive.swift */; };
 		555EF0741EA7DB1F000CAE58 /* XADSimpleMasterSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = 555EF0721EA7DB1F000CAE58 /* XADSimpleMasterSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		555EF07A1EA7DB3B000CAE58 /* XADMaster.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5500A60F1D776ADB00321300 /* XADMaster.framework */; };
 		555EF07C1EA7DB57000CAE58 /* XADArchiveParserSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555EF07B1EA7DB57000CAE58 /* XADArchiveParserSwift.swift */; };
@@ -2392,6 +2396,10 @@
 		1BF3BA8F13EE08A300BE7400 /* XADPlatform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADPlatform.h; sourceTree = "<group>"; };
 		32DBCF5E0370ADEE00C91783 /* XADMaster_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADMaster_Prefix.pch; sourceTree = "<group>"; };
 		5500A60F1D776ADB00321300 /* XADMaster.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = XADMaster.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		55541F6B1EA7EBC5001A6927 /* XADUnarchiverSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XADUnarchiverSwift.swift; sourceTree = "<group>"; };
+		55541F6D1EA7EF90001A6927 /* XADPlatformSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XADPlatformSwift.swift; sourceTree = "<group>"; };
+		55541F6F1EA7F339001A6927 /* XADStringSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XADStringSwift.swift; sourceTree = "<group>"; };
+		55541F711EA7FBC3001A6927 /* XADArchive.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XADArchive.swift; sourceTree = "<group>"; };
 		555EF0701EA7DB1F000CAE58 /* XADSimpleMasterSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = XADSimpleMasterSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		555EF0721EA7DB1F000CAE58 /* XADSimpleMasterSwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XADSimpleMasterSwift.h; sourceTree = "<group>"; };
 		555EF0731EA7DB1F000CAE58 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -3553,6 +3561,10 @@
 				555EF0731EA7DB1F000CAE58 /* Info.plist */,
 				555EF07B1EA7DB57000CAE58 /* XADArchiveParserSwift.swift */,
 				55D508E01EA7E63D008A3F63 /* XADResourceForkSwift.swift */,
+				55541F6B1EA7EBC5001A6927 /* XADUnarchiverSwift.swift */,
+				55541F6D1EA7EF90001A6927 /* XADPlatformSwift.swift */,
+				55541F6F1EA7F339001A6927 /* XADStringSwift.swift */,
+				55541F711EA7FBC3001A6927 /* XADArchive.swift */,
 			);
 			path = XADSimpleMasterSwift;
 			sourceTree = "<group>";
@@ -4459,7 +4471,7 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0830;
 				TargetAttributes = {
 					555EF06F1EA7DB1F000CAE58 = {
 						CreatedOnToolsVersion = 8.3.1;
@@ -5445,8 +5457,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55541F6E1EA7EF90001A6927 /* XADPlatformSwift.swift in Sources */,
 				555EF07C1EA7DB57000CAE58 /* XADArchiveParserSwift.swift in Sources */,
 				55D508E11EA7E63D008A3F63 /* XADResourceForkSwift.swift in Sources */,
+				55541F6C1EA7EBC5001A6927 /* XADUnarchiverSwift.swift in Sources */,
+				55541F721EA7FBC3001A6927 /* XADArchive.swift in Sources */,
+				55541F701EA7F339001A6927 /* XADStringSwift.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6005,6 +6021,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				USE_HEADERMAP = NO;
 			};
 			name = Release;

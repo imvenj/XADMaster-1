@@ -792,7 +792,7 @@
 	// If we are writing OS X or HFV resource forks, keep a list of which resource
 	// forks have been extracted, for the collision tests in checkPath.
 	int style=[unarch macResourceForkStyle];
-	if(style==XADMacOSXForkStyle || style==XADHFVExplorerAppleDoubleForkStyle)
+	if(style==XADForkStyleMacOSX || style==XADForkStyleHFVExplorerAppleDouble)
 	{
 		NSNumber *resnum=dict[XADIsResourceForkKey];
 		if(resnum && [resnum boolValue]) [resourceforks addObject:path];
@@ -891,7 +891,7 @@ fileFraction:(double)fileratio estimatedTotalFraction:(double)totalratio
 		// When writing OS X data forks, some collisions will happen. Try
 		// to handle these.
 		#ifdef __APPLE__
-		if(dict && [self macResourceForkStyle]==XADMacOSXForkStyle)
+		if(dict && [self macResourceForkStyle]==XADForkStyleMacOSX)
 		{
 			NSNumber *resnum=dict[XADIsResourceForkKey];
 			if(resnum && [resnum boolValue])
@@ -914,7 +914,7 @@ fileFraction:(double)fileratio estimatedTotalFraction:(double)totalratio
 
 		// HFV Explorer style forks always create dummy data forks, which can cause collisions.
 		// Just kludge this by ignoring collisions for data forks if a resource was written earlier.
-		if(dict && [self macResourceForkStyle]==XADHFVExplorerAppleDoubleForkStyle)
+		if(dict && [self macResourceForkStyle]==XADForkStyleHFVExplorerAppleDouble)
 		{
 			NSNumber *resnum=dict[XADIsResourceForkKey];
 			if(!resnum || ![resnum boolValue])

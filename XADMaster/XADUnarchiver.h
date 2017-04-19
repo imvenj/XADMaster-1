@@ -14,14 +14,6 @@ typedef NS_ENUM(int, XADForkStyle) {
 #else
 	XADForkStyleDefault = XADVisibleAppleDoubleForkStyle,
 #endif
-
-	XADIgnoredForkStyle NS_SWIFT_UNAVAILABLE("Use '.ignored'") = XADForkStyleIgnored,
-	XADMacOSXForkStyle NS_SWIFT_UNAVAILABLE("Use '.macOSX'") = XADForkStyleMacOSX,
-	XADHiddenAppleDoubleForkStyle NS_SWIFT_UNAVAILABLE("Use '.hiddenAppleDouble'") = XADForkStyleHiddenAppleDouble,
-	XADVisibleAppleDoubleForkStyle NS_SWIFT_UNAVAILABLE("Use '.visibleAppleDouble'") = XADForkStyleVisibleAppleDouble,
-	XADHFVExplorerAppleDoubleForkStyle NS_SWIFT_UNAVAILABLE("Use '.HFVExplorerAppleDouble'") = XADForkStyleHFVExplorerAppleDouble,
-	
-	XADDefaultForkStyle NS_SWIFT_UNAVAILABLE("Use '.default'") = XADForkStyleDefault,
 };
 
 NS_ASSUME_NONNULL_BEGIN
@@ -57,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (NS_NONATOMIC_IOSONLY) double updateInterval;
 
--(XADError)parseAndUnarchive;
+-(XADError)parseAndUnarchive NS_REFINED_FOR_SWIFT;
 
 -(XADError)extractEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict;
 -(XADError)extractEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict forceDirectories:(BOOL)force;
@@ -69,9 +61,9 @@ NS_ASSUME_NONNULL_BEGIN
 -(XADError)_fixDeferredDirectories;
 
 -(nullable XADUnarchiver *)unarchiverForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict
-wantChecksum:(BOOL)checksum error:(nullable XADError *)errorptr;
+wantChecksum:(BOOL)checksum error:(nullable XADError *)errorptr NS_REFINED_FOR_SWIFT;
 -(nullable XADUnarchiver *)unarchiverForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict
-resourceForkDictionary:(nullable NSDictionary<XADArchiveKeys,id> *)forkdict wantChecksum:(BOOL)checksum error:(nullable XADError *)errorptr;
+resourceForkDictionary:(nullable NSDictionary<XADArchiveKeys,id> *)forkdict wantChecksum:(BOOL)checksum error:(nullable XADError *)errorptr NS_REFINED_FOR_SWIFT;
 
 -(XADError)_extractFileEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict as:(NSString *)destpath;
 -(XADError)_extractDirectoryEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict as:(NSString *)destpath;
@@ -129,6 +121,14 @@ fileFraction:(double)fileprogress estimatedTotalFraction:(double)totalprogress;
 -(BOOL)unarchiver:(XADUnarchiver *)unarchiver shouldExtractEntryWithDictionary:(null_unspecified NSDictionary *)dict to:(null_unspecified NSString *)path DEPRECATED_ATTRIBUTE;
 -(null_unspecified NSString *)unarchiver:(XADUnarchiver *)unarchiver linkDestinationForEntryWithDictionary:(null_unspecified NSDictionary *)dict from:(null_unspecified NSString *)path DEPRECATED_ATTRIBUTE;
 @end
+
+
+static const XADForkStyle XADIgnoredForkStyle API_DEPRECATED_WITH_REPLACEMENT("XADForkStyleIgnored", macosx(10.0, 10.9)) = XADForkStyleIgnored;
+static const XADForkStyle XADMacOSXForkStyle API_DEPRECATED_WITH_REPLACEMENT("XADForkStyleMacOSX", macosx(10.0, 10.9)) = XADForkStyleMacOSX;
+static const XADForkStyle XADHiddenAppleDoubleForkStyle API_DEPRECATED_WITH_REPLACEMENT("XADForkStyleHiddenAppleDouble", macosx(10.0, 10.9)) = XADForkStyleHiddenAppleDouble;
+static const XADForkStyle XADVisibleAppleDoubleForkStyle API_DEPRECATED_WITH_REPLACEMENT("XADForkStyleVisibleAppleDouble", macosx(10.0, 10.9)) = XADForkStyleVisibleAppleDouble;
+static const XADForkStyle XADHFVExplorerAppleDoubleForkStyle API_DEPRECATED_WITH_REPLACEMENT("XADForkStyleHFVExplorerAppleDouble", macosx(10.0, 10.9)) = XADForkStyleHFVExplorerAppleDouble;
+static const XADForkStyle XADDefaultForkStyle API_DEPRECATED_WITH_REPLACEMENT("XADForkStyleDefault", macosx(10.0, 10.9)) = XADForkStyleDefault;
 
 NS_ASSUME_NONNULL_END
 

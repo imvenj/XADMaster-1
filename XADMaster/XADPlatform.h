@@ -5,11 +5,11 @@
 
 // Archive entry extraction.
 +(XADError)extractResourceForkEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict
-unarchiver:(XADUnarchiver *)unarchiver toPath:(NSString *)destpath;
+unarchiver:(XADUnarchiver *)unarchiver toPath:(NSString *)destpath NS_REFINED_FOR_SWIFT;
 +(XADError)updateFileAttributesAtPath:(NSString *)path
 forEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict parser:(XADArchiveParser *)parser
-preservePermissions:(BOOL)preservepermissions;
-+(XADError)createLinkAtPath:(NSString *)path withDestinationPath:(NSString *)link;
+preservePermissions:(BOOL)preservepermissions NS_REFINED_FOR_SWIFT;
++(XADError)createLinkAtPath:(NSString *)path withDestinationPath:(NSString *)link NS_REFINED_FOR_SWIFT;
 
 // Archive post-processing.
 +(id)readCloneableMetadataFromPath:(NSString *)path;

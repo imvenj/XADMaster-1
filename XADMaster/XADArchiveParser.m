@@ -230,6 +230,18 @@ static int maxheader=0;
 	}
 }
 
++(void)load
+{
+	if ([NSError respondsToSelector:@selector(setUserInfoValueProviderForDomain:provider:)]) {
+		[NSError setUserInfoValueProviderForDomain:XADErrorDomain provider:^id _Nullable(NSError * _Nonnull err, NSString * _Nonnull userInfoKey) {
+			if ([userInfoKey isEqualToString:NSLocalizedDescriptionKey]) {
+				return [XADException describeXADError:(XADError)err.code];
+			}
+			return nil;
+		}];
+	}
+}
+
 +(Class)archiveParserClassForHandle:(CSHandle *)handle firstBytes:(NSData *)header
 resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 {

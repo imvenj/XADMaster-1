@@ -67,9 +67,9 @@ extern XADStringEncodingName const XADMacOSCroatianStringEncodingName NS_SWIFT_N
 @property (NS_NONATOMIC_IOSONLY, readonly, retain, nullable) XADStringSource *source;
 
 #ifdef __APPLE__
--(BOOL)canDecodeWithEncoding:(NSStringEncoding)encoding;
--(nullable NSString *)stringWithEncoding:(NSStringEncoding)encoding;
-@property (NS_NONATOMIC_IOSONLY, readonly) NSStringEncoding encoding;
+-(BOOL)canDecodeWithEncoding:(NSStringEncoding)encoding NS_REFINED_FOR_SWIFT;
+-(nullable NSString *)stringWithEncoding:(NSStringEncoding)encoding NS_REFINED_FOR_SWIFT;
+@property (NS_NONATOMIC_IOSONLY, readonly) NSStringEncoding encoding NS_REFINED_FOR_SWIFT;
 #endif
 
 @end
@@ -111,9 +111,9 @@ extern XADStringEncodingName const XADMacOSCroatianStringEncodingName NS_SWIFT_N
 -(XADString *)XADStringByStrippingASCIIPrefixOfLength:(NSInteger)length;
 
 #ifdef __APPLE__
--(BOOL)canDecodeWithEncoding:(NSStringEncoding)encoding;
--(nullable NSString *)stringWithEncoding:(NSStringEncoding)encoding;
-@property (NS_NONATOMIC_IOSONLY, readonly) NSStringEncoding encoding;
+-(BOOL)canDecodeWithEncoding:(NSStringEncoding)encoding NS_REFINED_FOR_SWIFT;
+-(nullable NSString *)stringWithEncoding:(NSStringEncoding)encoding NS_REFINED_FOR_SWIFT;
+@property (NS_NONATOMIC_IOSONLY, readonly) NSStringEncoding encoding NS_REFINED_FOR_SWIFT;
 #endif
 
 @end
@@ -132,8 +132,8 @@ extern XADStringEncodingName const XADMacOSCroatianStringEncodingName NS_SWIFT_N
 #endif
 
 #ifdef __APPLE__
-+(XADStringEncodingName)encodingNameForEncoding:(NSStringEncoding)encoding;
-+(NSStringEncoding)encodingForEncodingName:(XADStringEncodingName)encoding;
++(XADStringEncodingName)encodingNameForEncoding:(NSStringEncoding)encoding NS_REFINED_FOR_SWIFT;
++(NSStringEncoding)encodingForEncodingName:(XADStringEncodingName)encoding NS_REFINED_FOR_SWIFT;
 #endif
 
 @end
@@ -166,8 +166,8 @@ extern XADStringEncodingName const XADMacOSCroatianStringEncodingName NS_SWIFT_N
 @property (NS_NONATOMIC_IOSONLY, readwrite) BOOL prefersMacEncodings;
 
 #ifdef __APPLE__
-@property (NS_NONATOMIC_IOSONLY, readonly) NSStringEncoding encoding;
-@property (NS_NONATOMIC_IOSONLY) NSStringEncoding fixedEncoding;
+@property (NS_NONATOMIC_IOSONLY, readonly) NSStringEncoding encoding NS_REFINED_FOR_SWIFT;
+@property (NS_NONATOMIC_IOSONLY) NSStringEncoding fixedEncoding NS_REFINED_FOR_SWIFT;
 #endif
 
 @end
