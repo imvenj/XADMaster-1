@@ -10,14 +10,14 @@ import Foundation
 import XADMaster.Platform
 
 extension XADPlatform {
-	@nonobjc public class func extractResourceForkEntry(with dict: [XADArchiveKeys : Any]!, unarchiver: XADUnarchiver, toPath destpath: String) throws {
+	@nonobjc public class func extractResourceForkEntry(with dict: [XADArchiveKeys : Any], unarchiver: XADUnarchiver, toPath destpath: String) throws {
 		let err = __extractResourceForkEntry(with: dict, unarchiver: unarchiver, toPath: destpath)
 		if err != .noError {
 			throw err
 		}
 	}
 	
-	@nonobjc public class func updateFileAttributes(atPath path: String, forEntryWith dict: [XADArchiveKeys : Any]!, parser: XADArchiveParser, preservePermissions preservepermissions: Bool) throws {
+	@nonobjc public class func updateFileAttributes(atPath path: String, forEntryWith dict: [XADArchiveKeys : Any], parser: XADArchiveParser, preservePermissions preservepermissions: Bool) throws {
 		let err = __updateFileAttributes(atPath: path, forEntryWith: dict, parser: parser, preservePermissions: preservepermissions)
 		if err != .noError {
 			throw err

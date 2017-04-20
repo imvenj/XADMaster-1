@@ -141,7 +141,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 @property (NS_NONATOMIC_IOSONLY, readonly, strong) XADStringSource *stringSource;
 
 -(nullable XADString *)linkDestinationForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict NS_SWIFT_UNAVAILABLE("Call throws on failure");
--(nullable XADString *)linkDestinationForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict error:(XADError *)errorptr;
+-(nullable XADString *)linkDestinationForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict error:(XADError *)errorptr NS_REFINED_FOR_SWIFT;
 -(NSDictionary *)extendedAttributesForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict;
 -(NSData *)finderInfoForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict;
 
@@ -149,7 +149,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL hasChecksum;
 -(BOOL)testChecksum NS_SWIFT_UNAVAILABLE("throws exception");
--(XADError)testChecksumWithoutExceptions;
+-(XADError)testChecksumWithoutExceptions NS_REFINED_FOR_SWIFT;
 
 
 
@@ -204,8 +204,11 @@ regex:(XADRegex *)regex firstFileExtension:(nullable NSString *)firstext;
 
 // Subclasses implement these:
 
-+(int)requiredHeaderSize;
+#if __has_feature(objc_class_property)
 @property (class, readonly) int requiredHeaderSize;
+#else
++(int)requiredHeaderSize;
+#endif
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data
 name:(NSString *)name;
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data
@@ -224,8 +227,8 @@ name:(NSString *)name;
 //! Exception-free wrappers for subclass methods:
 //! \c parseWithoutExceptions will in addition return \c XADBreakError if the delegate
 //! requested parsing to stop.
--(XADError)parseWithoutExceptions;
--(nullable CSHandle *)handleForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict wantChecksum:(BOOL)checksum error:(nullable XADError *)errorptr;
+-(XADError)parseWithoutExceptions NS_REFINED_FOR_SWIFT;
+-(nullable CSHandle *)handleForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict wantChecksum:(BOOL)checksum error:(nullable XADError *)errorptr NS_REFINED_FOR_SWIFT;
 
 @end
 

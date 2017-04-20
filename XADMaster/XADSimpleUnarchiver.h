@@ -104,14 +104,14 @@
 
 
 
-@property (NS_NONATOMIC_IOSONLY, readonly) XADError parse;
+-(XADError)parse NS_REFINED_FOR_SWIFT;
 -(XADError)_setupSubArchiveForEntryWithDataFork:(NSDictionary<XADArchiveKeys,id> *)datadict resourceFork:(NSDictionary<XADArchiveKeys,id> *)resourcedict;
 
-@property (NS_NONATOMIC_IOSONLY, readonly) XADError unarchive;
-@property (NS_NONATOMIC_IOSONLY, readonly) XADError _unarchiveRegularArchive;
-@property (NS_NONATOMIC_IOSONLY, readonly) XADError _unarchiveSubArchive;
+-(XADError)unarchive NS_REFINED_FOR_SWIFT;
+-(XADError)_unarchiveRegularArchive;
+-(XADError)_unarchiveSubArchive;
 
-@property (NS_NONATOMIC_IOSONLY, readonly) XADError _finalizeExtraction;
+-(XADError)_finalizeExtraction;
 
 -(void)_testForSoloItems:(NSDictionary<XADArchiveKeys,id> *)entry;
 

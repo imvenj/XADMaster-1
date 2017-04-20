@@ -451,14 +451,14 @@ destinationDictionary:(NSMutableDictionary *)dest
 	else if(format==HexFormat)
 	{
 		NSMutableData *data=[NSMutableData data];
-		uint8_t byte;
+		uint8_t byte = '\0';
 		NSInteger n=0,length=[string length];
 		for(int i=0;i<length;i++)
 		{
 			unichar c=[string characterAtIndex:i];
 			if(isxdigit(c))
 			{
-				int val;
+				int val = 0;
 				if(c>='0'&&c<='9') val=c-'0';
 				if(c>='A'&&c<='F') val=c-'A'+10;
 				if(c>='a'&&c<='f') val=c-'a'+10;

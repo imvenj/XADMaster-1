@@ -298,7 +298,7 @@ uint8_t *destinationstart,uint8_t *destinationend)
 	uint8_t *source=sourcestart+2;
 	uint8_t *destination=destinationstart;
 
-	int bits,numbits=0;
+	int bits = 0,numbits=0;
 	while(source<sourceend)
 	{
 		if(!numbits)

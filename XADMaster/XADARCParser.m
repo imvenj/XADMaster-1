@@ -131,7 +131,7 @@ name:(NSString *)name
 		if(method==1) uncompsize=compsize;
 		else uncompsize=[fh readUInt32LE];
 
-		uint32_t loadaddress,execaddress,fileattrs;
+		uint32_t loadaddress = 0,execaddress = 0,fileattrs = 0;
 		if(method&0x80)
 		{
 			loadaddress=[fh readUInt32LE];

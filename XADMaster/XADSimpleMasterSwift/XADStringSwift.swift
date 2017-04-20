@@ -18,7 +18,7 @@ extension XADStringProtocol {
 		return __string(withEncoding: encoding.rawValue)
 	}
 	
-	@nonobjc public var encoding: String.Encoding {
+	public var encoding: String.Encoding {
 		return String.Encoding(rawValue: __encoding)
 	}
 }
@@ -45,19 +45,21 @@ extension XADString {
 	}
 }
 
+// We can't have this conform to ExpressibleByStringLiteral because 
+// 1. It can't be placed in the defining block because the defining block is Objective-C
+// 2. The class can't be marked as final because it is an Objective-C class.
 extension XADString /*: ExpressibleByStringLiteral*/ {
 	@nonobjc public convenience init(stringLiteral value: String) {
 		self.init(string: value)
 	}
 	
 	@nonobjc public convenience init(extendedGraphemeClusterLiteral value: String) {
-		self.init(string: String(extendedGraphemeClusterLiteral: value))
+		self.init(stringLiteral: String(extendedGraphemeClusterLiteral: value))
 	}
 	
 	@nonobjc public convenience init(unicodeScalarLiteral value: String) {
-		self.init(string: String(unicodeScalarLiteral: value))
+		self.init(stringLiteral: String(unicodeScalarLiteral: value))
 	}
-
 }
 
 extension XADStringSource {
@@ -73,5 +75,4 @@ extension XADStringSource {
 			__fixedEncoding = newValue.rawValue
 		}
 	}
-
 }

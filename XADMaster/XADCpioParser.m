@@ -31,7 +31,7 @@
 		uint8_t magic[2];
 		[fh readBytes:2 toBuffer:magic];
 
-		int devmajor,devminor,ino,mode,uid,gid,nlink,rdevmajor,rdevminor,namesize,checksum;
+		int devmajor,devminor,ino,mode,uid,gid,nlink,rdevmajor,rdevminor,namesize,checksum = 0;
 		uint64_t mtime,filesize;
 		NSData *namedata;
 		int pad=0;

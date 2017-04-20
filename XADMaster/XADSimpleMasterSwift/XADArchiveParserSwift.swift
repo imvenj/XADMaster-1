@@ -77,3 +77,47 @@ extension XADArchiveParser {
 	}
 }
 
+extension XADArchiveParser {
+	@nonobjc open func linkDestination(for dict: [XADArchiveKeys : Any]) throws -> XADString {
+		var err = XADError.noError
+		guard let linkDest = __linkDestination(for: dict, error: &err) else {
+			throw err
+		}
+		return linkDest
+	}
+	
+	
+	@nonobjc open func testChecksum() throws {
+		let err = __testChecksumWithoutExceptions()
+		if err != .noError {
+			throw err
+		}
+	}
+	
+	/// Will throw `XADBreakError` if the delegate
+	/// requested parsing to stop.
+	@nonobjc open func parse() throws {
+		let err = __parseWithoutExceptions()
+		if err != .noError {
+			throw err
+		}
+	}
+	
+	@nonobjc open func handleForEntry(with dict: [XADArchiveKeys : Any], wantChecksum checksum: Bool) throws -> XADHandle {
+		var err = XADError.noError
+		guard let newHandle = __handleForEntry(with: dict, wantChecksum: checksum, error: &err) else {
+			throw err
+		}
+		return newHandle
+	}
+	
+	@available(*, deprecated, renamed: "testChecksum()")
+	@nonobjc open func testChecksumWithoutExceptions() throws {
+		try testChecksum()
+	}
+	
+	@available(*, deprecated, renamed: "parse()")
+	@nonobjc open func parseWithoutExceptions() throws {
+		try parse()
+	}
+}

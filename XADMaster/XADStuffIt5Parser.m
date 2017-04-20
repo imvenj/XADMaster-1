@@ -221,7 +221,7 @@ static NSData *StuffItMD5(NSData *data);
 		int datacrc=[fh readUInt16BE];
 		[fh skipBytes:2];
 
-		int datamethod,numfiles;
+		int datamethod = 0,numfiles = 0;
 		NSData *datakey=nil,*rsrckey=nil;
 		if(flags&SIT5FLAGS_DIRECTORY)
 		{
@@ -264,7 +264,7 @@ static NSData *StuffItMD5(NSData *data);
 		else [fh skipBytes:18];
 
 		uint32_t resourcelength=0,resourcecomplen=0;
-		int resourcecrc,resourcemethod;
+		int resourcecrc = 0,resourcemethod = 0;
 		BOOL hasresource=something&0x01;
 		if(hasresource)
 		{

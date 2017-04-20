@@ -1,6 +1,8 @@
 #import "XADUnarchiver.h"
 #import "CSHandle.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface XADPlatform:NSObject {}
 
 // Archive entry extraction.
@@ -12,14 +14,14 @@ preservePermissions:(BOOL)preservepermissions NS_REFINED_FOR_SWIFT;
 +(XADError)createLinkAtPath:(NSString *)path withDestinationPath:(NSString *)link NS_REFINED_FOR_SWIFT;
 
 // Archive post-processing.
-+(id)readCloneableMetadataFromPath:(NSString *)path;
++(nullable id)readCloneableMetadataFromPath:(NSString *)path;
 +(void)writeCloneableMetadata:(id)metadata toPath:(NSString *)path;
 +(BOOL)copyDateFromPath:(NSString *)src toPath:(NSString *)dest;
 +(BOOL)resetDateAtPath:(NSString *)path;
 
 // Path functions.
 +(BOOL)fileExistsAtPath:(NSString *)path;
-+(BOOL)fileExistsAtPath:(NSString *)path isDirectory:(BOOL *)isdirptr;
++(BOOL)fileExistsAtPath:(NSString *)path isDirectory:(nullable BOOL *)isdirptr;
 +(NSString *)uniqueDirectoryPathWithParentDirectory:(NSString *)parent;
 +(NSString *)sanitizedPathComponent:(NSString *)component;
 +(NSArray<NSString*> *)contentsOfDirectoryAtPath:(NSString *)path;
@@ -27,9 +29,11 @@ preservePermissions:(BOOL)preservepermissions NS_REFINED_FOR_SWIFT;
 +(BOOL)removeItemAtPath:(NSString *)path;
 
 // Resource forks
-+(CSHandle *)handleForReadingResourceForkAtPath:(NSString *)path;
++(nullable CSHandle *)handleForReadingResourceForkAtPath:(NSString *)path;
 
 // Time functions.
 +(double)currentTimeInSeconds;
 
 @end
+
+NS_ASSUME_NONNULL_END

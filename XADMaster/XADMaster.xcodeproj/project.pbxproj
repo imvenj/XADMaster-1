@@ -1662,8 +1662,9 @@
 		55541F6E1EA7EF90001A6927 /* XADPlatformSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55541F6D1EA7EF90001A6927 /* XADPlatformSwift.swift */; };
 		55541F701EA7F339001A6927 /* XADStringSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55541F6F1EA7F339001A6927 /* XADStringSwift.swift */; };
 		55541F721EA7FBC3001A6927 /* XADArchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55541F711EA7FBC3001A6927 /* XADArchive.swift */; };
+		55541F751EA91801001A6927 /* XADMaster.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* XADMaster.framework */; };
+		55541F771EA91BE1001A6927 /* XADSimpleUnarchiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55541F761EA91BE0001A6927 /* XADSimpleUnarchiver.swift */; };
 		555EF0741EA7DB1F000CAE58 /* XADSimpleMasterSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = 555EF0721EA7DB1F000CAE58 /* XADSimpleMasterSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		555EF07A1EA7DB3B000CAE58 /* XADMaster.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5500A60F1D776ADB00321300 /* XADMaster.framework */; };
 		555EF07C1EA7DB57000CAE58 /* XADArchiveParserSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555EF07B1EA7DB57000CAE58 /* XADArchiveParserSwift.swift */; };
 		55B3B2541DBCC51400ECC61D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55B3B2531DBCC51400ECC61D /* Security.framework */; };
 		55B3B2551DBCC51C00ECC61D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55B3B2531DBCC51400ECC61D /* Security.framework */; };
@@ -1831,12 +1832,12 @@
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = XADMaster;
 		};
-		555EF0781EA7DB34000CAE58 /* PBXContainerItemProxy */ = {
+		55541F731EA917FA001A6927 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 5500A44A1D776ADB00321300;
-			remoteInfo = "XADMaster-simple";
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = XADMaster;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -2384,6 +2385,7 @@
 		55541F6D1EA7EF90001A6927 /* XADPlatformSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XADPlatformSwift.swift; sourceTree = "<group>"; };
 		55541F6F1EA7F339001A6927 /* XADStringSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XADStringSwift.swift; sourceTree = "<group>"; };
 		55541F711EA7FBC3001A6927 /* XADArchive.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XADArchive.swift; sourceTree = "<group>"; };
+		55541F761EA91BE0001A6927 /* XADSimpleUnarchiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XADSimpleUnarchiver.swift; sourceTree = "<group>"; };
 		555EF0701EA7DB1F000CAE58 /* XADMasterSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = XADMasterSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		555EF0721EA7DB1F000CAE58 /* XADSimpleMasterSwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XADSimpleMasterSwift.h; sourceTree = "<group>"; };
 		555EF0731EA7DB1F000CAE58 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -2546,7 +2548,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				555EF07A1EA7DB3B000CAE58 /* XADMaster.framework in Frameworks */,
+				55541F751EA91801001A6927 /* XADMaster.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3549,6 +3551,7 @@
 				55541F6D1EA7EF90001A6927 /* XADPlatformSwift.swift */,
 				55541F6F1EA7F339001A6927 /* XADStringSwift.swift */,
 				55541F711EA7FBC3001A6927 /* XADArchive.swift */,
+				55541F761EA91BE0001A6927 /* XADSimpleUnarchiver.swift */,
 			);
 			path = XADSimpleMasterSwift;
 			sourceTree = "<group>";
@@ -4415,7 +4418,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				555EF0791EA7DB34000CAE58 /* PBXTargetDependency */,
+				55541F741EA917FA001A6927 /* PBXTargetDependency */,
 			);
 			name = XADMasterSwift;
 			productName = XADSimpleMasterSwift;
@@ -4472,6 +4475,7 @@
 			projectRoot = "";
 			targets = (
 				8DC2EF4F0486A6940098B216 /* XADMaster */,
+				555EF06F1EA7DB1F000CAE58 /* XADMasterSwift */,
 				5500A44A1D776ADB00321300 /* XADMaster-simple */,
 				1B34A97411C2FD0500396C26 /* libXADMaster.a */,
 				1B91CCBE11D97E7C0081E40A /* libXADMaster.win.a */,
@@ -4487,7 +4491,6 @@
 				1B91CD9611D981E20081E40A /* unar.exe */,
 				1B91D2D611E694860081E40A /* lsar.exe */,
 				1B433E2611E945D300DA1EFB /* Everything */,
-				555EF06F1EA7DB1F000CAE58 /* XADMasterSwift */,
 			);
 		};
 /* End PBXProject section */
@@ -5430,6 +5433,7 @@
 				55541F6E1EA7EF90001A6927 /* XADPlatformSwift.swift in Sources */,
 				555EF07C1EA7DB57000CAE58 /* XADArchiveParserSwift.swift in Sources */,
 				55D508E11EA7E63D008A3F63 /* XADResourceForkSwift.swift in Sources */,
+				55541F771EA91BE1001A6927 /* XADSimpleUnarchiver.swift in Sources */,
 				55541F6C1EA7EBC5001A6927 /* XADUnarchiverSwift.swift in Sources */,
 				55541F721EA7FBC3001A6927 /* XADArchive.swift in Sources */,
 				55541F701EA7F339001A6927 /* XADStringSwift.swift in Sources */,
@@ -5756,10 +5760,10 @@
 			target = 8DC2EF4F0486A6940098B216 /* XADMaster */;
 			targetProxy = 1BC893810ED6F462006B47FE /* PBXContainerItemProxy */;
 		};
-		555EF0791EA7DB34000CAE58 /* PBXTargetDependency */ = {
+		55541F741EA917FA001A6927 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 5500A44A1D776ADB00321300 /* XADMaster-simple */;
-			targetProxy = 555EF0781EA7DB34000CAE58 /* PBXContainerItemProxy */;
+			target = 8DC2EF4F0486A6940098B216 /* XADMaster */;
+			targetProxy = 55541F731EA917FA001A6927 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -6701,7 +6705,6 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
