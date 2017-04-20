@@ -57,7 +57,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 		parser=nil;
 		unarchiver=nil;
 		delegate=nil;
-		lasterror=XADNoError;
+		lasterror=XADErrorNone;
 		immediatedestination=nil;
 		immediatefailed=NO;
 		immediatesize=0;
@@ -85,7 +85,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 		{
 			if([self _parseWithErrorPointer:error]) return self;
 		}
-		else if(error) *error=XADDataFormatError;
+		else if(error) *error=XADErrorDataFormat;
 
 		[self release];
 	}
@@ -110,7 +110,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 		{
 			if([self _parseWithErrorPointer:error]) return self;
 		}
-		else if(error) *error=XADDataFormatError;
+		else if(error) *error=XADErrorDataFormat;
 
 		[self release];
 	}
@@ -138,7 +138,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 			{
 				if([self _parseWithErrorPointer:error]) return self;
 			}
-			else if(error) *error=XADDataFormatError;
+			else if(error) *error=XADErrorDataFormat;
 		}
 
 		[self release];
@@ -189,7 +189,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 				return self;
 			}
 		}
-		else if(error) *error=XADSubArchiveError;
+		else if(error) *error=XADErrorSubArchive;
 
 		[self release];
 	}
@@ -233,7 +233,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	[namedict release];
 	namedict=nil;
 
-	return lasterror==XADNoError||[dataentries count]!=0;
+	return lasterror==XADErrorNone||[dataentries count]!=0;
 }
 
 -(void)archiveParser:(XADArchiveParser *)parser foundEntryWithDictionary:(NSDictionary *)dict
@@ -280,7 +280,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 						@try { res=[self extractArchiveEntry:n to:immediatedestination]; }
 						@catch(id e) { res=NO; }
 
-						if(!res&&lasterror==XADDataFormatError)
+						if(!res&&lasterror==XADErrorDataFormat)
 						{
 							if(![self extractEntry:n to:immediatedestination
 							deferDirectories:YES dataFork:YES resourceFork:NO])
@@ -328,7 +328,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 
 			if(!res)
 			{
-				if(lasterror==XADDataFormatError)
+				if(lasterror==XADErrorDataFormat)
 				{
 					if(![self extractEntry:n to:immediatedestination
 					deferDirectories:YES dataFork:YES resourceFork:YES])
@@ -433,7 +433,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 
 -(XADError)lastError { return lasterror; }
 
--(void)clearLastError { lasterror=XADNoError; }
+-(void)clearLastError { lasterror=XADErrorNone; }
 
 -(NSString *)describeLastError { return [XADException describeXADError:lasterror]; }
 
@@ -647,8 +647,8 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 				{
 					lasterror=[XADException parseException:e];
 					XADAction action=[delegate archive:self extractionOfResourceForkForEntryDidFail:n error:lasterror];
-					if(action==XADSkipAction) break;
-					else if(action!=XADRetryAction) return nil;
+					if(action==XADActionSkip) break;
+					else if(action!=XADActionRetry) return nil;
 				}
 			}
 		}
@@ -761,7 +761,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 			@try { res=[self extractArchiveEntry:i to:destination]; }
 			@catch(id e) { res=NO; }
 
-			if(!res&&lasterror==XADDataFormatError) // Retry as regular file if the archive format was not known
+			if(!res&&lasterror==XADErrorDataFormat) // Retry as regular file if the archive format was not known
 			{
 				res=[self extractEntry:i to:destination deferDirectories:YES];
 			}
@@ -809,16 +809,16 @@ dataFork:(BOOL)datafork resourceFork:(BOOL)resfork
 		{
 			XADAction action=[delegate archive:self nameDecodingDidFailForEntry:n
 			data:[[self dataForkParserDictionaryForEntry:n][XADFileNameKey] data]];
-			if(action==XADSkipAction) return YES;
-			else if(action!=XADRetryAction)
+			if(action==XADActionSkip) return YES;
+			else if(action!=XADActionRetry)
 			{
-				lasterror=XADBreakError;
+				lasterror=XADErrorBreak;
 				return NO;
 			}
 		}
 		else
 		{
-			lasterror=XADEncodingError;
+			lasterror=XADErrorEncoding;
 			return NO;
 		}
 	}
@@ -828,13 +828,13 @@ dataFork:(BOOL)datafork resourceFork:(BOOL)resfork
 	NSString *destfile=[destination stringByAppendingPathComponent:name];
 	while(![self _extractEntry:n as:destfile deferDirectories:defer dataFork:datafork resourceFork:resfork])
 	{
-		if(lasterror==XADBreakError) return NO;
+		if(lasterror==XADErrorBreak) return NO;
 		else if(delegate&&datafork)
 		{
 			XADAction action=[delegate archive:self extractionOfEntryDidFail:n error:lasterror];
 
-			if(action==XADSkipAction) return YES;
-			else if(action!=XADRetryAction) return NO;
+			if(action==XADActionSkip) return YES;
+			else if(action!=XADActionRetry) return NO;
 		}
 		else return NO;
 	}
@@ -850,13 +850,13 @@ dataFork:(BOOL)datafork resourceFork:(BOOL)resfork
 	
 	while(![self _extractEntry:n as:destination deferDirectories:NO dataFork:YES resourceFork:YES])
 	{
-		if(lasterror==XADBreakError) return NO;
+		if(lasterror==XADErrorBreak) return NO;
 		else if(delegate)
 		{
 			XADAction action=[delegate archive:self extractionOfEntryDidFail:n error:lasterror];
 			
-			if(action==XADSkipAction) return YES;
-			else if(action!=XADRetryAction) return NO;
+			if(action==XADActionSkip) return YES;
+			else if(action!=XADActionRetry) return NO;
 		}
 		else return NO;
 	}
@@ -892,13 +892,13 @@ dataFork:(BOOL)datafork resourceFork:(BOOL)resfork
 		[subarchive release];
 
 		if(res) return YES;
-		else if(err==XADBreakError||err==XADDataFormatError) return NO;
+		else if(err==XADErrorBreak||err==XADErrorDataFormat) return NO;
 		else if(delegate)
 		{
 			XADAction action=[delegate archive:self extractionOfEntryDidFail:n error:err];
 
-			if(action==XADSkipAction) return YES;
-			else if(action!=XADRetryAction) return NO;
+			if(action==XADActionSkip) return YES;
+			else if(action!=XADActionRetry) return NO;
 		}
 		else return NO;
 	}
@@ -913,17 +913,17 @@ dataFork:(BOOL)datafork resourceFork:(BOOL)resfork
 	{
 		XADError error=[unarchiver _ensureDirectoryExists:[destfile stringByDeletingLastPathComponent]];
 
-		if(error==XADNoError)
+		if(error==XADErrorNone)
 		{
 			break;
 		}
 		else if(delegate)
 		{
 			XADAction action=[delegate archive:self creatingDirectoryDidFailForEntry:n];
-			if(action==XADSkipAction) return YES;
-			else if(action!=XADRetryAction)
+			if(action==XADActionSkip) return YES;
+			else if(action!=XADActionRetry)
 			{
-				lasterror=XADBreakError;
+				lasterror=XADErrorBreak;
 				return NO;
 			}
 		}
@@ -951,12 +951,12 @@ dataFork:(BOOL)datafork resourceFork:(BOOL)resfork
 		}
 		else action=[delegate archive:self entry:n collidesWithFile:destfile newFilename:&newname];
 
-		if(action==XADOverwriteAction&&!dir) break;
-		else if(action==XADSkipAction) return YES;
-		else if(action==XADRenameAction) destfile=[[destfile stringByDeletingLastPathComponent] stringByAppendingPathComponent:newname];
-		else if(action!=XADRetryAction)
+		if(action==XADActionOverwrite&&!dir) break;
+		else if(action==XADActionSkip) return YES;
+		else if(action==XADActionRename) destfile=[[destfile stringByDeletingLastPathComponent] stringByAppendingPathComponent:newname];
+		else if(action!=XADActionRetry)
 		{
-			lasterror=XADBreakError;
+			lasterror=XADErrorBreak;
 			return NO;
 		}
 	}
@@ -1231,24 +1231,24 @@ fileFraction:(double)fileprogress estimatedTotalFraction:(double)totalprogress
 
 -(BOOL)archiveExtractionShouldStop:(XADArchive *)archive { return NO; }
 -(BOOL)archive:(XADArchive *)archive shouldCreateDirectory:(NSString *)directory { return YES; }
--(XADAction)archive:(XADArchive *)archive entry:(NSInteger)n collidesWithFile:(NSString *)file newFilename:(NSString **)newname { return XADOverwriteAction; }
--(XADAction)archive:(XADArchive *)archive entry:(NSInteger)n collidesWithDirectory:(NSString *)file newFilename:(NSString **)newname { return XADSkipAction; }
--(XADAction)archive:(XADArchive *)archive creatingDirectoryDidFailForEntry:(NSInteger)n { return XADAbortAction; }
+-(XADAction)archive:(XADArchive *)archive entry:(NSInteger)n collidesWithFile:(NSString *)file newFilename:(NSString **)newname { return XADActionOverwrite; }
+-(XADAction)archive:(XADArchive *)archive entry:(NSInteger)n collidesWithDirectory:(NSString *)file newFilename:(NSString **)newname { return XADActionSkip; }
+-(XADAction)archive:(XADArchive *)archive creatingDirectoryDidFailForEntry:(NSInteger)n { return XADActionAbort; }
 
 -(void)archiveNeedsPassword:(XADArchive *)archive {}
 
 -(void)archive:(XADArchive *)archive extractionOfEntryWillStart:(NSInteger)n {}
 -(void)archive:(XADArchive *)archive extractionProgressForEntry:(NSInteger)n bytes:(off_t)bytes of:(off_t)total {}
 -(void)archive:(XADArchive *)archive extractionOfEntryDidSucceed:(NSInteger)n {}
--(XADAction)archive:(XADArchive *)archive extractionOfEntryDidFail:(NSInteger)n error:(XADError)error { return XADAbortAction; }
--(XADAction)archive:(XADArchive *)archive extractionOfResourceForkForEntryDidFail:(NSInteger)n error:(XADError)error { return XADAbortAction; }
+-(XADAction)archive:(XADArchive *)archive extractionOfEntryDidFail:(NSInteger)n error:(XADError)error { return XADActionAbort; }
+-(XADAction)archive:(XADArchive *)archive extractionOfResourceForkForEntryDidFail:(NSInteger)n error:(XADError)error { return XADActionAbort; }
 
 -(void)archive:(XADArchive *)archive extractionProgressBytes:(off_t)bytes of:(off_t)total {}
 -(void)archive:(XADArchive *)archive extractionProgressFiles:(NSInteger)files of:(NSInteger)total {}
 
 // Deprecated
 -(NSStringEncoding)archive:(XADArchive *)archive encodingForName:(const char *)bytes guess:(NSStringEncoding)guess confidence:(float)confidence { return guess; }
--(XADAction)archive:(XADArchive *)archive nameDecodingDidFailForEntry:(NSInteger)n bytes:(const char *)bytes { return XADAbortAction; }
+-(XADAction)archive:(XADArchive *)archive nameDecodingDidFailForEntry:(NSInteger)n bytes:(const char *)bytes { return XADActionAbort; }
 
 @end
 

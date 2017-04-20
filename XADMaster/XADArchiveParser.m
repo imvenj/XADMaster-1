@@ -269,7 +269,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 
 +(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle name:(NSString *)name error:(XADError *)errorptr
 {
-	if(errorptr) *errorptr=XADNoError;
+	if(errorptr) *errorptr=XADErrorNone;
 	@try { return [self archiveParserForHandle:handle resourceFork:nil name:name]; }
 	@catch(id exception) { if(errorptr) *errorptr=[XADException parseException:exception]; }
 	return nil;
@@ -283,7 +283,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 
 +(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle resourceFork:(XADResourceFork *)fork name:(NSString *)name error:(XADError *)errorptr
 {
-	if(errorptr) *errorptr=XADNoError;
+	if(errorptr) *errorptr=XADErrorNone;
 	@try { return [self archiveParserForHandle:handle resourceFork:fork name:name]; }
 	@catch(id exception) { if(errorptr) *errorptr=[XADException parseException:exception]; }
 	return nil;
@@ -296,7 +296,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 
 +(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header name:(NSString *)name error:(XADError *)errorptr
 {
-	if(errorptr) *errorptr=XADNoError;
+	if(errorptr) *errorptr=XADErrorNone;
 	@try { return [self archiveParserForHandle:handle firstBytes:header resourceFork:nil name:name]; }
 	@catch(id exception) { if(errorptr) *errorptr=[XADException parseException:exception]; }
 	return nil;
@@ -321,7 +321,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 
 +(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header resourceFork:(XADResourceFork *)fork name:(NSString *)name error:(XADError *)errorptr
 {
-	if(errorptr) *errorptr=XADNoError;
+	if(errorptr) *errorptr=XADErrorNone;
 	@try { return [self archiveParserForHandle:handle firstBytes:header resourceFork:fork name:name]; }
 	@catch(id exception) { if(errorptr) *errorptr=[XADException parseException:exception]; }
 	return nil;
@@ -392,7 +392,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 
 +(XADArchiveParser *)archiveParserForPath:(NSString *)filename error:(XADError *)errorptr
 {
-	if(errorptr) *errorptr=XADNoError;
+	if(errorptr) *errorptr=XADErrorNone;
 	@try { return [self archiveParserForPath:filename]; }
 	@catch(id exception) { if(errorptr) *errorptr=[XADException parseException:exception]; }
 	return nil;
@@ -405,7 +405,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 
 +(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum error:(XADError *)errorptr
 {
-	if(errorptr) *errorptr=XADNoError;
+	if(errorptr) *errorptr=XADErrorNone;
 	@try { return [self archiveParserForEntryWithDictionary:entry resourceForkDictionary:nil archiveParser:parser wantChecksum:checksum]; }
 	@catch(id exception) { if(errorptr) *errorptr=[XADException parseException:exception]; }
 	return nil;
@@ -444,7 +444,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 
 +(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry resourceForkDictionary:(NSDictionary *)forkentry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum error:(XADError *)errorptr
 {
-	if(errorptr) *errorptr=XADNoError;
+	if(errorptr) *errorptr=XADErrorNone;
 	@try { return [self archiveParserForEntryWithDictionary:entry resourceForkDictionary:forkentry archiveParser:parser wantChecksum:checksum]; }
 	@catch(id exception) { if(errorptr) *errorptr=[XADException parseException:exception]; }
 	return nil;
@@ -640,7 +640,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 
 -(XADString *)linkDestinationForDictionary:(NSDictionary *)dict error:(XADError *)errorptr
 {
-	if(errorptr) *errorptr=XADNoError;
+	if(errorptr) *errorptr=XADErrorNone;
 	@try { return [self linkDestinationForDictionary:dict]; }
 	@catch(id exception) { if(errorptr) *errorptr=[XADException parseException:exception]; }
 	return nil;
@@ -732,9 +732,9 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 
 -(XADError)testChecksumWithoutExceptions
 {
-	@try { if(![self testChecksum]) return XADChecksumError; }
+	@try { if(![self testChecksum]) return XADErrorChecksum; }
 	@catch(id exception) { return [XADException parseException:exception]; }
-	return XADNoError;
+	return XADErrorNone;
 }
 
 
@@ -1195,17 +1195,17 @@ name:(NSString *)name { return nil; }
 {
 	@try { [self parse]; }
 	@catch(id exception) { return [XADException parseException:exception]; }
-	if(shouldstop) return XADBreakError;
-	return XADNoError;
+	if(shouldstop) return XADErrorBreak;
+	return XADErrorNone;
 }
 
 -(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum error:(XADError *)errorptr
 {
-	if(errorptr) *errorptr=XADNoError;
+	if(errorptr) *errorptr=XADErrorNone;
 	@try
 	{
 		CSHandle *handle=[self handleForEntryWithDictionary:dict wantChecksum:checksum];
-		if(!handle&&errorptr) *errorptr=XADNotSupportedError;
+		if(!handle&&errorptr) *errorptr=XADErrorNotSupported;
 		return handle;
 	}
 	@catch(id exception)

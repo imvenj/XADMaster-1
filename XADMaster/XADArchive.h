@@ -11,11 +11,11 @@
 #endif
 
 typedef NS_ENUM(int, XADAction) {
-	XADAbortAction = 0,
-	XADRetryAction = 1,
-	XADSkipAction = 2,
-	XADOverwriteAction = 3,
-	XADRenameAction = 4
+	XADActionAbort = 0,
+	XADActionRetry = 1,
+	XADActionSkip = 2,
+	XADActionOverwrite = 3,
+	XADActionRename = 4
 };
 
 //typedef off_t xadSize; // deprecated
@@ -232,3 +232,9 @@ typedef off_t xadSize;
 #define XADRename XADRenameAction
 
 #endif
+
+static const XADAction XADAbortAction API_DEPRECATED_WITH_REPLACEMENT("XADActionAbort", macosx(10.0, 10.8)) = XADActionAbort;
+static const XADAction XADRetryAction API_DEPRECATED_WITH_REPLACEMENT("XADActionRetry", macosx(10.0, 10.8)) = XADActionRetry;
+static const XADAction XADSkipAction API_DEPRECATED_WITH_REPLACEMENT("XADActionSkip", macosx(10.0, 10.8)) = XADActionSkip;
+static const XADAction XADOverwriteAction API_DEPRECATED_WITH_REPLACEMENT("XADActionOverwrite", macosx(10.0, 10.8)) = XADActionOverwrite;
+static const XADAction XADRenameAction API_DEPRECATED_WITH_REPLACEMENT("XADActionRename", macosx(10.0, 10.8)) = XADActionRename;

@@ -12,14 +12,14 @@ import XADMaster.Unarchiver.Simple
 extension XADSimpleUnarchiver {
 	@nonobjc public func parse() throws {
 		let err = __parse()
-		if err != .noError {
+		if err != .none {
 			throw err
 		}
 	}
 	
 	@nonobjc public func unarchive() throws {
 		let err = __unarchive()
-		if err != .noError {
+		if err != .none {
 			throw err
 		}
 	}

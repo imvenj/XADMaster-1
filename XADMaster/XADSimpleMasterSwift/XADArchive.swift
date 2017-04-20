@@ -12,7 +12,7 @@ import XADMaster.XADArchive
 extension XADArchive {
 	
 	@nonobjc open func handle(forEntry n: Int) throws -> XADHandle {
-		var err = XADError.noError
+		var err = XADError.none
 		guard let hand = __handle(forEntry: n, error: &err) else {
 			throw err
 		}
@@ -20,7 +20,7 @@ extension XADArchive {
 	}
 	
 	@nonobjc open func resourceHandle(forEntry n: Int) throws -> XADHandle {
-		var err = XADError.noError
+		var err = XADError.none
 		guard let hand = __resourceHandle(forEntry: n, error: &err) else {
 			throw err
 		}

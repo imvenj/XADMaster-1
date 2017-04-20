@@ -12,13 +12,13 @@ import XADMaster.Unarchiver
 extension XADUnarchiver {
 	@nonobjc public func parseAndUnarchive() throws {
 		let error = __parseAndUnarchive()
-		if error != .noError {
+		if error != .none {
 			throw error
 		}
 	}
 	
 	@nonobjc public func forEntryWith(_ dict: [XADArchiveKeys : Any], wantChecksum checksum: Bool) throws -> XADUnarchiver {
-		var err = XADError.noError
+		var err = XADError.none
 		guard let unarch = __forEntryWith(dict, wantChecksum: checksum, error: &err) else {
 			throw err
 		}
@@ -26,7 +26,7 @@ extension XADUnarchiver {
 	}
 	
 	@nonobjc public func forEntryWith(_ dict: [XADArchiveKeys : Any], resourceForkDictionary forkdict: [XADArchiveKeys : Any]?, wantChecksum checksum: Bool) throws -> XADUnarchiver {
-		var err = XADError.noError
+		var err = XADError.none
 		guard let unarch = __forEntryWith(dict, resourceForkDictionary: forkdict, wantChecksum: checksum, error: &err) else {
 			throw err
 		}

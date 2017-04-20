@@ -9,16 +9,16 @@ NSString *const XADErrorDomain=@"de.dstoecker.xadmaster.error";
 
 @implementation XADException
 
-+(void)raiseUnknownException  { [self raiseExceptionWithXADError:XADUnknownError]; }
-+(void)raiseInputException  { [self raiseExceptionWithXADError:XADInputError]; }
-+(void)raiseOutputException  { [self raiseExceptionWithXADError:XADOutputError]; }
-+(void)raiseIllegalDataException  { [self raiseExceptionWithXADError:XADIllegalDataError]; }
-+(void)raiseNotSupportedException  { [self raiseExceptionWithXADError:XADNotSupportedError]; }
-+(void)raisePasswordException { [self raiseExceptionWithXADError:XADPasswordError]; }
-+(void)raiseDecrunchException { [self raiseExceptionWithXADError:XADDecrunchError]; }
-+(void)raiseChecksumException { [self raiseExceptionWithXADError:XADChecksumError]; }
-+(void)raiseDataFormatException { [self raiseExceptionWithXADError:XADDataFormatError]; }
-+(void)raiseOutOfMemoryException { [self raiseExceptionWithXADError:XADOutOfMemoryError]; }
++(void)raiseUnknownException  { [self raiseExceptionWithXADError:XADErrorUnknown]; }
++(void)raiseInputException  { [self raiseExceptionWithXADError:XADErrorInput]; }
++(void)raiseOutputException  { [self raiseExceptionWithXADError:XADErrorOutput]; }
++(void)raiseIllegalDataException  { [self raiseExceptionWithXADError:XADErrorIllegalData]; }
++(void)raiseNotSupportedException  { [self raiseExceptionWithXADError:XADErrorNotSupported]; }
++(void)raisePasswordException { [self raiseExceptionWithXADError:XADErrorPassword]; }
++(void)raiseDecrunchException { [self raiseExceptionWithXADError:XADErrorDecrunch]; }
++(void)raiseChecksumException { [self raiseExceptionWithXADError:XADErrorChecksum]; }
++(void)raiseDataFormatException { [self raiseExceptionWithXADError:XADErrorDataFormat]; }
++(void)raiseOutOfMemoryException { [self raiseExceptionWithXADError:XADErrorOutOfMemory]; }
 
 +(void)raiseExceptionWithXADError:(XADError)errnum
 {
@@ -39,50 +39,50 @@ NSString *const XADErrorDomain=@"de.dstoecker.xadmaster.error";
 		{
 			return [[e userInfo][@"XADError"] intValue];
 		}
-		else if([name isEqual:CSCannotOpenFileException]) return XADOpenFileError;
-		else if([name isEqual:CSFileErrorException]) return XADUnknownError; // TODO: use ErrNo in userInfo to figure out better error
-		else if([name isEqual:CSOutOfMemoryException]) return XADOutOfMemoryError;
-		else if([name isEqual:CSEndOfFileException]) return XADInputError;
-		else if([name isEqual:CSNotImplementedException]) return XADNotSupportedError;
-		else if([name isEqual:CSNotSupportedException]) return XADNotSupportedError;
-		else if([name isEqual:CSZlibException]) return XADDecrunchError;
-		else if([name isEqual:CSBzip2Exception]) return XADDecrunchError;
+		else if([name isEqual:CSCannotOpenFileException]) return XADErrorOpenFile;
+		else if([name isEqual:CSFileErrorException]) return XADErrorUnknown; // TODO: use ErrNo in userInfo to figure out better error
+		else if([name isEqual:CSOutOfMemoryException]) return XADErrorOutOfMemory;
+		else if([name isEqual:CSEndOfFileException]) return XADErrorInput;
+		else if([name isEqual:CSNotImplementedException]) return XADErrorNotSupported;
+		else if([name isEqual:CSNotSupportedException]) return XADErrorNotSupported;
+		else if([name isEqual:CSZlibException]) return XADErrorDecrunch;
+		else if([name isEqual:CSBzip2Exception]) return XADErrorDecrunch;
 	}
 
-	return XADUnknownError;
+	return XADErrorUnknown;
 }
 
 +(NSString *)describeXADError:(XADError)error
 {
 	switch(error)
 	{
-		case XADNoError:			return nil;
-		case XADUnknownError:		return @"Unknown error";
-		case XADInputError:			return @"Attempted to read more data than was available";
-		case XADOutputError:		return @"Failed to write to file";
-		case XADBadParametersError:	return @"Function called with illegal parameters";
-		case XADOutOfMemoryError:	return @"Not enough memory available";
-		case XADIllegalDataError:	return @"Data is corrupted";
-		case XADNotSupportedError:	return @"File is not fully supported";
-		case XADResourceError:		return @"Required resource missing";
-		case XADDecrunchError:		return @"Error on decrunching";
-		case XADFiletypeError:		return @"Unknown file type";
-		case XADOpenFileError:		return @"Opening file failed";
-		case XADSkipError:			return @"File, disk has been skipped";
-		case XADBreakError:			return @"User cancelled extraction";
-		case XADFileExistsError:	return @"File already exists";
-		case XADPasswordError:		return @"Missing or wrong password";
-		case XADMakeDirectoryError:	return @"Could not create directory";
-		case XADChecksumError:		return @"Wrong checksum";
-		case XADVerifyError:		return @"Verify failed (disk hook)";
-		case XADGeometryError:		return @"Wrong drive geometry";
-		case XADDataFormatError:	return @"Unknown data format";
-		case XADEmptyError:			return @"Source contains no files";
-		case XADFileSystemError:	return @"Unknown filesystem";
-		case XADFileDirectoryError:	return @"Name of file exists as directory";
-		case XADShortBufferError:	return @"Buffer was too short";
-		case XADEncodingError:		return @"Text encoding was defective";
-		case XADLinkError:			return @"Could not create symlink";
+		case XADErrorNone:			return nil;
+		case XADErrorUnknown:		return @"Unknown error";
+		case XADErrorInput:			return @"Attempted to read more data than was available";
+		case XADErrorOutput:		return @"Failed to write to file";
+		case XADErrorBadParameters:	return @"Function called with illegal parameters";
+		case XADErrorOutOfMemory:	return @"Not enough memory available";
+		case XADErrorIllegalData:	return @"Data is corrupted";
+		case XADErrorNotSupported:	return @"File is not fully supported";
+		case XADErrorResource:		return @"Required resource missing";
+		case XADErrorDecrunch:		return @"Error on decrunching";
+		case XADErrorFiletype:		return @"Unknown file type";
+		case XADErrorOpenFile:		return @"Opening file failed";
+		case XADErrorSkip:			return @"File, disk has been skipped";
+		case XADErrorBreak:			return @"User cancelled extraction";
+		case XADErrorFileExists:	return @"File already exists";
+		case XADErrorPassword:		return @"Missing or wrong password";
+		case XADErrorMakeDirectory:	return @"Could not create directory";
+		case XADErrorChecksum:		return @"Wrong checksum";
+		case XADErrorVerify:		return @"Verify failed (disk hook)";
+		case XADErrorGeometry:		return @"Wrong drive geometry";
+		case XADErrorDataFormat:	return @"Unknown data format";
+		case XADErrorEmpty:			return @"Source contains no files";
+		case XADErrorFileSystem:	return @"Unknown filesystem";
+		case XADErrorFileDirectory:	return @"Name of file exists as directory";
+		case XADErrorShortBuffer:	return @"Buffer was too short";
+		case XADErrorEncoding:		return @"Text encoding was defective";
+		case XADErrorLink:			return @"Could not create symlink";
 		default:					return [NSString stringWithFormat:@"Error %d",error];
 	}
 }

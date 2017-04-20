@@ -68,7 +68,7 @@
 	[parser setDelegate:olddelegate];
 	if(error) return error;
 
-	if([self _shouldStop]) return XADBreakError;
+	if([self _shouldStop]) return XADErrorBreak;
 
 	error=[self finishExtractions];
 	if(error) return error;
@@ -76,7 +76,7 @@
 	error=[parser testChecksumWithoutExceptions];
 	if(error) return error;
 
-	return XADNoError;
+	return XADErrorNone;
 }
 
 -(void)archiveParser:(XADArchiveParser *)parser foundEntryWithDictionary:(NSDictionary *)dict
@@ -150,7 +150,7 @@
 		if(![delegate unarchiver:self shouldExtractEntryWithDictionary:dict suggestedPath:&path])
 		{
 			[pool release];
-			return XADNoError;
+			return XADErrorNone;
 		}
 		[delegate unarchiver:self willExtractEntryWithDictionary:dict to:path];
 	}
@@ -170,7 +170,7 @@
 			error=[self _extractArchiveEntryWithDictionary:dict to:unarchiverpath name:[path lastPathComponent]];
 			// If extraction was attempted, and succeeded for failed, skip everything else.
 			// Otherwise, if the archive couldn't be opened, fall through and extract normally.
-			if(error!=XADSubArchiveError) goto end;
+			if(error!=XADErrorSubArchive) goto end;
 		}
 	}
 
@@ -216,7 +216,7 @@
 
 			default:
 				// TODO: better error
-				error=XADBadParametersError;
+				error=XADErrorBadParameters;
 			break;
 		}
 	}
@@ -285,7 +285,7 @@ static NSComparisonResult SortDirectoriesByDepthAndResource(id entry1,id entry2,
 	error=[self _fixDeferredDirectories];
 	if(error) return error;
 
-	return XADNoError;
+	return XADErrorNone;
 }
 
 -(XADError)_fixDeferredLinks
@@ -309,7 +309,7 @@ static NSComparisonResult SortDirectoriesByDepthAndResource(id entry1,id entry2,
 
 	[deferredlinks removeAllObjects];
 
-	return XADNoError;
+	return XADErrorNone;
 }
 
 -(XADError)_fixDeferredDirectories
@@ -329,7 +329,7 @@ static NSComparisonResult SortDirectoriesByDepthAndResource(id entry1,id entry2,
 
 	[deferreddirectories removeAllObjects];
 
-	return XADNoError;
+	return XADErrorNone;
 }
 
 
@@ -367,7 +367,7 @@ resourceForkDictionary:(NSDictionary *)forkdict wantChecksum:(BOOL)checksum erro
 {
 	CSHandle *fh;
 	@try { fh=[CSFileHandle fileHandleForWritingAtPath:destpath]; }
-	@catch(id e) { return XADOpenFileError; }
+	@catch(id e) { return XADErrorOpenFile; }
 
 	XADError err=[self runExtractorWithDictionary:dict outputHandle:fh];
 
@@ -389,7 +389,7 @@ resourceForkDictionary:(NSDictionary *)forkdict wantChecksum:(BOOL)checksum erro
 
 	NSString *linkdest=nil;
 	if(delegate) linkdest=[delegate unarchiver:self destinationForLink:link from:destpath];
-	if(!linkdest) return XADNoError; // Handle nil returns as a request to skip.
+	if(!linkdest) return XADErrorNone; // Handle nil returns as a request to skip.
 
 	// Check if the link destination is an absolute path, or if it contains
 	// any .. path components.
@@ -405,12 +405,12 @@ resourceForkDictionary:(NSDictionary *)forkdict wantChecksum:(BOOL)checksum erro
 		{
 			unlink([destpath fileSystemRepresentation]);
 			@try { fh=[CSFileHandle fileHandleForWritingAtPath:destpath]; }
-			@catch(id e) { return XADOpenFileError; }
+			@catch(id e) { return XADErrorOpenFile; }
 		}
 		[fh close];
 
 		[deferredlinks addObject:@[destpath,linkdest,dict]];
-		return XADNoError;
+		return XADErrorNone;
 	}
 	else
 	{
@@ -426,7 +426,7 @@ resourceForkDictionary:(NSDictionary *)forkdict wantChecksum:(BOOL)checksum erro
 	if(!subunarchiver)
 	{
 		if(error) return error;
-		else return XADSubArchiveError;
+		else return XADErrorSubArchive;
 	}
 
 	[subunarchiver setDestination:destpath];
@@ -447,7 +447,7 @@ resourceForkDictionary:(NSDictionary *)forkdict wantChecksum:(BOOL)checksum erro
 {
 	CSHandle *fh;
 	@try { fh=[CSFileHandle fileHandleForWritingAtPath:destpath]; }
-	@catch(id e) { return XADOpenFileError; }
+	@catch(id e) { return XADErrorOpenFile; }
 
 	off_t ressize=0;
 	NSNumber *sizenum=dict[XADFileSizeKey];
@@ -464,7 +464,7 @@ resourceForkDictionary:(NSDictionary *)forkdict wantChecksum:(BOOL)checksum erro
 	@catch(id e) { return [XADException parseException:e]; }
 
 	// Write resource fork.
-	XADError error=XADNoError;
+	XADError error=XADErrorNone;
 	if(ressize) error=[self runExtractorWithDictionary:dict outputHandle:fh];
 
 	[fh close];
@@ -483,7 +483,7 @@ deferDirectories:(BOOL)defer
 		if(dirnum&&[dirnum boolValue])
 		{
 			[deferreddirectories addObject:@[path,dict]];
-			return XADNoError;
+			return XADErrorNone;
 		}
 	}
 
@@ -493,18 +493,18 @@ deferDirectories:(BOOL)defer
 
 -(XADError)_ensureDirectoryExists:(NSString *)path
 {
-	if([path length]==0) return XADNoError;
+	if([path length]==0) return XADErrorNone;
 
 	NSFileManager *manager=[NSFileManager defaultManager];
 
 	BOOL isdir;
 	if([manager fileExistsAtPath:path isDirectory:&isdir])
 	{
-		if(isdir) return XADNoError;
+		if(isdir) return XADErrorNone;
 
-		if(!delegate) return XADMakeDirectoryError;
-		if(![delegate unarchiver:self shouldDeleteFileAndCreateDirectory:path]) return XADMakeDirectoryError;
-		if(![XADPlatform removeItemAtPath:path]) return XADMakeDirectoryError;
+		if(!delegate) return XADErrorMakeDirectory;
+		if(![delegate unarchiver:self shouldDeleteFileAndCreateDirectory:path]) return XADErrorMakeDirectory;
+		if(![XADPlatform removeItemAtPath:path]) return XADErrorMakeDirectory;
 	}
 	else
 	{
@@ -513,17 +513,17 @@ deferDirectories:(BOOL)defer
 
 		if(delegate)
 		{
-			if(![delegate unarchiver:self shouldCreateDirectory:path]) return XADMakeDirectoryError;
+			if(![delegate unarchiver:self shouldCreateDirectory:path]) return XADErrorMakeDirectory;
 		}
 	}
 
 	#if MAC_OS_X_VERSION_MIN_REQUIRED>=1050
 	if([manager createDirectoryAtPath:path
-	withIntermediateDirectories:NO attributes:nil error:NULL]) return XADNoError;
+	withIntermediateDirectories:NO attributes:nil error:NULL]) return XADErrorNone;
 	#else
-	if([manager createDirectoryAtPath:path attributes:nil]) return XADNoError;
+	if([manager createDirectoryAtPath:path attributes:nil]) return XADErrorNone;
 	#endif
-	else return XADMakeDirectoryError;
+	else return XADErrorMakeDirectory;
 }
 
 
@@ -538,8 +538,8 @@ deferDirectories:(BOOL)defer
 {
 	// TODO: combine the exception parsing for input and output
 	@try { [handle writeBytes:length fromBuffer:bytes]; }
-	@catch(id e) { return XADOutputError; }
-	return XADNoError;
+	@catch(id e) { return XADErrorOutput; }
+	return XADErrorNone;
 }
 
 -(XADError)runExtractorWithDictionary:(NSDictionary *)dict
@@ -570,7 +570,7 @@ outputTarget:(id)target selector:(SEL)selector argument:(id)argument
 
 		// Create handle and start unpacking.
 		CSHandle *srchandle=[parser handleForEntryWithDictionary:dict wantChecksum:YES];
-		if(!srchandle) return XADNotSupportedError;
+		if(!srchandle) return XADErrorNotSupported;
 
 		off_t done=0;
 		double updatetime=0;
@@ -581,7 +581,7 @@ outputTarget:(id)target selector:(SEL)selector argument:(id)argument
 
 		for(;;)
 		{
-			if([self _shouldStop]) return XADBreakError;
+			if([self _shouldStop]) return XADErrorBreak;
 
 			// Read some data, and send it to the output function.
 			// Stop if no more data was available.
@@ -613,17 +613,17 @@ outputTarget:(id)target selector:(SEL)selector argument:(id)argument
 		// Check if the file has already been marked as corrupt, and
 		// give up without testing checksum if so.
 		NSNumber *iscorrupt=dict[XADIsCorruptedKey];
-		if(iscorrupt&&[iscorrupt boolValue]) return XADDecrunchError;
+		if(iscorrupt&&[iscorrupt boolValue]) return XADErrorDecrunch;
 
 		// If the file has a checksum, check it. Otherwise, if it has a
 		// size, check that the size ended up correct.
 		if([srchandle hasChecksum])
 		{
-			if(![srchandle isChecksumCorrect]) return XADChecksumError;
+			if(![srchandle isChecksumCorrect]) return XADErrorChecksum;
 		}
 		else
 		{
-			if(sizenum&&done!=size) return XADDecrunchError; // kind of hacky
+			if(sizenum&&done!=size) return XADErrorDecrunch; // kind of hacky
 		}
 
 		// Send a final progress report.
@@ -637,7 +637,7 @@ outputTarget:(id)target selector:(SEL)selector argument:(id)argument
 
 	free(buf);
 
-	return XADNoError;
+	return XADErrorNone;
 }
 
 -(NSString *)adjustPathString:(NSString *)path forEntryWithDictionary:(NSDictionary *)dict

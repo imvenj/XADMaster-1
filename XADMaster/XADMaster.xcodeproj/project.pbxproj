@@ -1664,7 +1664,7 @@
 		55541F721EA7FBC3001A6927 /* XADArchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55541F711EA7FBC3001A6927 /* XADArchive.swift */; };
 		55541F751EA91801001A6927 /* XADMaster.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* XADMaster.framework */; };
 		55541F771EA91BE1001A6927 /* XADSimpleUnarchiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55541F761EA91BE0001A6927 /* XADSimpleUnarchiver.swift */; };
-		555EF0741EA7DB1F000CAE58 /* XADSimpleMasterSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = 555EF0721EA7DB1F000CAE58 /* XADSimpleMasterSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		555EF0741EA7DB1F000CAE58 /* XADMasterSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = 555EF0721EA7DB1F000CAE58 /* XADMasterSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		555EF07C1EA7DB57000CAE58 /* XADArchiveParserSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555EF07B1EA7DB57000CAE58 /* XADArchiveParserSwift.swift */; };
 		55B3B2541DBCC51400ECC61D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55B3B2531DBCC51400ECC61D /* Security.framework */; };
 		55B3B2551DBCC51C00ECC61D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55B3B2531DBCC51400ECC61D /* Security.framework */; };
@@ -2387,7 +2387,7 @@
 		55541F711EA7FBC3001A6927 /* XADArchive.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XADArchive.swift; sourceTree = "<group>"; };
 		55541F761EA91BE0001A6927 /* XADSimpleUnarchiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XADSimpleUnarchiver.swift; sourceTree = "<group>"; };
 		555EF0701EA7DB1F000CAE58 /* XADMasterSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = XADMasterSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		555EF0721EA7DB1F000CAE58 /* XADSimpleMasterSwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XADSimpleMasterSwift.h; sourceTree = "<group>"; };
+		555EF0721EA7DB1F000CAE58 /* XADMasterSwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XADMasterSwift.h; sourceTree = "<group>"; };
 		555EF0731EA7DB1F000CAE58 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		555EF07B1EA7DB57000CAE58 /* XADArchiveParserSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XADArchiveParserSwift.swift; sourceTree = "<group>"; };
 		557EA8751DB1C37C00A5AE04 /* XAD-simple.exp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.exports; path = "XAD-simple.exp"; sourceTree = "<group>"; };
@@ -3543,7 +3543,7 @@
 		555EF0711EA7DB1F000CAE58 /* XADSimpleMasterSwift */ = {
 			isa = PBXGroup;
 			children = (
-				555EF0721EA7DB1F000CAE58 /* XADSimpleMasterSwift.h */,
+				555EF0721EA7DB1F000CAE58 /* XADMasterSwift.h */,
 				555EF0731EA7DB1F000CAE58 /* Info.plist */,
 				555EF07B1EA7DB57000CAE58 /* XADArchiveParserSwift.swift */,
 				55D508E01EA7E63D008A3F63 /* XADResourceForkSwift.swift */,
@@ -3930,7 +3930,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				555EF0741EA7DB1F000CAE58 /* XADSimpleMasterSwift.h in Headers */,
+				555EF0741EA7DB1F000CAE58 /* XADMasterSwift.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

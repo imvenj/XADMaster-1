@@ -9,10 +9,10 @@
 #import <Cocoa/Cocoa.h>
 
 //! Project version number for XADSimpleMasterSwift.
-FOUNDATION_EXPORT double XADSimpleMasterSwiftVersionNumber;
+FOUNDATION_EXPORT double XADMasterSwiftVersionNumber;
 
 //! Project version string for XADSimpleMasterSwift.
-FOUNDATION_EXPORT const unsigned char XADSimpleMasterSwiftVersionString[];
+FOUNDATION_EXPORT const unsigned char XADMasterSwiftVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <XADSimpleMasterSwift/PublicHeader.h>
 
