@@ -1105,7 +1105,6 @@
 		1BA23E7C163CDA70000D8174 /* aes_modes.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BA23E7A163CDA70000D8174 /* aes_modes.c */; };
 		1BA23E7D163CDA70000D8174 /* aes_modes.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BA23E7A163CDA70000D8174 /* aes_modes.c */; };
 		1BA23E7E163CDA70000D8174 /* aes_modes.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BA23E7A163CDA70000D8174 /* aes_modes.c */; };
-		1BA23F95163DD4E9000D8174 /* sha.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BE97610163CC2A100BB34EA /* sha.c */; };
 		1BA23F98163DFBE4000D8174 /* hmac_sha1.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BA23F96163DFBE4000D8174 /* hmac_sha1.c */; };
 		1BA23F99163DFBE4000D8174 /* hmac_sha1.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BA23F96163DFBE4000D8174 /* hmac_sha1.c */; };
 		1BA23F9A163DFBE4000D8174 /* hmac_sha1.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BA23F96163DFBE4000D8174 /* hmac_sha1.c */; };
@@ -1114,14 +1113,8 @@
 		1BA23F9D163DFBE4000D8174 /* hmac_sha1.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BA23F97163DFBE4000D8174 /* hmac_sha1.h */; };
 		1BA23F9E163DFBE4000D8174 /* hmac_sha1.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BA23F97163DFBE4000D8174 /* hmac_sha1.h */; };
 		1BA23F9F163DFBE4000D8174 /* hmac_sha1.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BA23F97163DFBE4000D8174 /* hmac_sha1.h */; };
-		1BA241E4163E1104000D8174 /* md5.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BA241E2163E1104000D8174 /* md5.c */; };
-		1BA241E5163E1104000D8174 /* md5.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BA241E2163E1104000D8174 /* md5.c */; };
 		1BA241E6163E1104000D8174 /* md5.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BA241E2163E1104000D8174 /* md5.c */; };
-		1BA241E7163E1104000D8174 /* md5.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BA241E2163E1104000D8174 /* md5.c */; };
-		1BA241E8163E1104000D8174 /* md5.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BA241E3163E1104000D8174 /* md5.h */; };
-		1BA241E9163E1104000D8174 /* md5.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BA241E3163E1104000D8174 /* md5.h */; };
 		1BA241EA163E1104000D8174 /* md5.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BA241E3163E1104000D8174 /* md5.h */; };
-		1BA241EB163E1104000D8174 /* md5.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BA241E3163E1104000D8174 /* md5.h */; };
 		1BA241F0163E1E6F000D8174 /* des.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BA241EE163E1E6F000D8174 /* des.c */; };
 		1BA241F1163E1E6F000D8174 /* des.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BA241EE163E1E6F000D8174 /* des.c */; };
 		1BA241F2163E1E6F000D8174 /* des.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BA241EE163E1E6F000D8174 /* des.c */; };
@@ -1303,13 +1296,8 @@
 		1BE9762B163CC2A100BB34EA /* brg_endian.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BE9760E163CC2A100BB34EA /* brg_endian.h */; };
 		1BE9762C163CC2A100BB34EA /* brg_endian.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BE9760E163CC2A100BB34EA /* brg_endian.h */; };
 		1BE9762D163CC2A100BB34EA /* brg_endian.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BE9760E163CC2A100BB34EA /* brg_endian.h */; };
-		1BE97633163CC2A100BB34EA /* sha.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BE97610163CC2A100BB34EA /* sha.c */; };
 		1BE97634163CC2A100BB34EA /* sha.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BE97610163CC2A100BB34EA /* sha.c */; };
-		1BE97635163CC2A100BB34EA /* sha.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BE97610163CC2A100BB34EA /* sha.c */; };
-		1BE97636163CC2A100BB34EA /* sha.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BE97611163CC2A100BB34EA /* sha.h */; };
-		1BE97637163CC2A100BB34EA /* sha.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BE97611163CC2A100BB34EA /* sha.h */; };
 		1BE97638163CC2A100BB34EA /* sha.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BE97611163CC2A100BB34EA /* sha.h */; };
-		1BE97639163CC2A100BB34EA /* sha.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BE97611163CC2A100BB34EA /* sha.h */; };
 		1BF0EE2E13FF2FA3007B8CF8 /* ArithmeticDecoder.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BF0EE2213FF2FA3007B8CF8 /* ArithmeticDecoder.c */; };
 		1BF0EE2F13FF2FA3007B8CF8 /* ArithmeticDecoder.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BF0EE2213FF2FA3007B8CF8 /* ArithmeticDecoder.c */; };
 		1BF0EE3013FF2FA3007B8CF8 /* ArithmeticDecoder.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BF0EE2213FF2FA3007B8CF8 /* ArithmeticDecoder.c */; };
@@ -1528,9 +1516,7 @@
 		5500A51E1D776ADB00321300 /* aesopt.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BE9760B163CC2A100BB34EA /* aesopt.h */; };
 		5500A51F1D776ADB00321300 /* aestab.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BE9760D163CC2A100BB34EA /* aestab.h */; };
 		5500A5201D776ADB00321300 /* brg_endian.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BE9760E163CC2A100BB34EA /* brg_endian.h */; };
-		5500A5211D776ADB00321300 /* sha.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BE97611163CC2A100BB34EA /* sha.h */; };
 		5500A5221D776ADB00321300 /* hmac_sha1.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BA23F97163DFBE4000D8174 /* hmac_sha1.h */; };
-		5500A5231D776ADB00321300 /* md5.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BA241E3163E1104000D8174 /* md5.h */; };
 		5500A5241D776ADB00321300 /* des.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BA241EF163E1E6F000D8174 /* des.h */; };
 		5500A5251D776ADB00321300 /* XADMD5Handle.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B6F13CE163E25160054C1AE /* XADMD5Handle.h */; };
 		5500A5261D776ADB00321300 /* XADSHA1Handle.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B6F13DA163E25320054C1AE /* XADSHA1Handle.h */; };
@@ -1653,10 +1639,8 @@
 		5500A5F81D776ADB00321300 /* pbkdf2_hmac_sha256.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9F02A1892A669007D9245 /* pbkdf2_hmac_sha256.c */; };
 		5500A5F91D776ADB00321300 /* aestab.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BE9760C163CC2A100BB34EA /* aestab.c */; };
 		5500A5FA1D776ADB00321300 /* aes_modes.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BA23E7A163CDA70000D8174 /* aes_modes.c */; };
-		5500A5FB1D776ADB00321300 /* sha.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BE97610163CC2A100BB34EA /* sha.c */; };
 		5500A5FC1D776ADB00321300 /* hmac_sha1.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BA23F96163DFBE4000D8174 /* hmac_sha1.c */; };
 		5500A5FD1D776ADB00321300 /* hmac_sha256.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BA9F0241891DB01007D9245 /* hmac_sha256.c */; };
-		5500A5FE1D776ADB00321300 /* md5.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BA241E2163E1104000D8174 /* md5.c */; };
 		5500A5FF1D776ADB00321300 /* des.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BA241EE163E1E6F000D8174 /* des.c */; };
 		5500A6001D776ADB00321300 /* XADMD5Handle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B6F13CF163E25160054C1AE /* XADMD5Handle.m */; };
 		5500A6011D776ADB00321300 /* XADSHA1Handle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B6F13DB163E25320054C1AE /* XADSHA1Handle.m */; };
@@ -3639,9 +3623,7 @@
 				1BE9761F163CC2A100BB34EA /* aesopt.h in Headers */,
 				1BE97627163CC2A100BB34EA /* aestab.h in Headers */,
 				1BE9762B163CC2A100BB34EA /* brg_endian.h in Headers */,
-				1BE97637163CC2A100BB34EA /* sha.h in Headers */,
 				1BA23F9D163DFBE4000D8174 /* hmac_sha1.h in Headers */,
-				1BA241E9163E1104000D8174 /* md5.h in Headers */,
 				1BA241F5163E1E6F000D8174 /* des.h in Headers */,
 				1B6F13D1163E25160054C1AE /* XADMD5Handle.h in Headers */,
 				1B6F13DD163E25320054C1AE /* XADSHA1Handle.h in Headers */,
@@ -3716,9 +3698,7 @@
 				1BE97621163CC2A100BB34EA /* aesopt.h in Headers */,
 				1BE97629163CC2A100BB34EA /* aestab.h in Headers */,
 				1BE9762D163CC2A100BB34EA /* brg_endian.h in Headers */,
-				1BE97639163CC2A100BB34EA /* sha.h in Headers */,
 				1BA23F9F163DFBE4000D8174 /* hmac_sha1.h in Headers */,
-				1BA241EB163E1104000D8174 /* md5.h in Headers */,
 				1BA241F7163E1E6F000D8174 /* des.h in Headers */,
 				1B6F13D3163E25160054C1AE /* XADMD5Handle.h in Headers */,
 				1B6F13DF163E25320054C1AE /* XADSHA1Handle.h in Headers */,
@@ -3935,9 +3915,7 @@
 				5500A51E1D776ADB00321300 /* aesopt.h in Headers */,
 				5500A51F1D776ADB00321300 /* aestab.h in Headers */,
 				5500A5201D776ADB00321300 /* brg_endian.h in Headers */,
-				5500A5211D776ADB00321300 /* sha.h in Headers */,
 				5500A5221D776ADB00321300 /* hmac_sha1.h in Headers */,
-				5500A5231D776ADB00321300 /* md5.h in Headers */,
 				5500A5241D776ADB00321300 /* des.h in Headers */,
 				5500A5251D776ADB00321300 /* XADMD5Handle.h in Headers */,
 				5500A5261D776ADB00321300 /* XADSHA1Handle.h in Headers */,
@@ -4168,9 +4146,7 @@
 				1BE9761E163CC2A100BB34EA /* aesopt.h in Headers */,
 				1BE97626163CC2A100BB34EA /* aestab.h in Headers */,
 				1BE9762A163CC2A100BB34EA /* brg_endian.h in Headers */,
-				1BE97636163CC2A100BB34EA /* sha.h in Headers */,
 				1BA23F9C163DFBE4000D8174 /* hmac_sha1.h in Headers */,
-				1BA241E8163E1104000D8174 /* md5.h in Headers */,
 				1BA241F4163E1E6F000D8174 /* des.h in Headers */,
 				1B6F13D0163E25160054C1AE /* XADMD5Handle.h in Headers */,
 				1B6F13DC163E25320054C1AE /* XADSHA1Handle.h in Headers */,
@@ -4779,11 +4755,9 @@
 				1BE97617163CC2A100BB34EA /* aescrypt.c in Sources */,
 				1BE9761B163CC2A100BB34EA /* aeskey.c in Sources */,
 				1BE97623163CC2A100BB34EA /* aestab.c in Sources */,
-				1BE97633163CC2A100BB34EA /* sha.c in Sources */,
 				1BA23E7C163CDA70000D8174 /* aes_modes.c in Sources */,
 				1BA23F99163DFBE4000D8174 /* hmac_sha1.c in Sources */,
 				1BA9F0281891DC0D007D9245 /* hmac_sha256.c in Sources */,
-				1BA241E5163E1104000D8174 /* md5.c in Sources */,
 				1BA241F1163E1E6F000D8174 /* des.c in Sources */,
 				1B6F13D5163E25160054C1AE /* XADMD5Handle.m in Sources */,
 				1B6F13E1163E25320054C1AE /* XADSHA1Handle.m in Sources */,
@@ -5012,10 +4986,8 @@
 				1BE97619163CC2A100BB34EA /* aescrypt.c in Sources */,
 				1BE9761D163CC2A100BB34EA /* aeskey.c in Sources */,
 				1BE97625163CC2A100BB34EA /* aestab.c in Sources */,
-				1BE97635163CC2A100BB34EA /* sha.c in Sources */,
 				1BA23E7E163CDA70000D8174 /* aes_modes.c in Sources */,
 				1BA23F9B163DFBE4000D8174 /* hmac_sha1.c in Sources */,
-				1BA241E7163E1104000D8174 /* md5.c in Sources */,
 				1BA241F3163E1E6F000D8174 /* des.c in Sources */,
 				1B6F13D7163E25160054C1AE /* XADMD5Handle.m in Sources */,
 				1B6F13E3163E25320054C1AE /* XADSHA1Handle.m in Sources */,
@@ -5442,10 +5414,8 @@
 				5500A5F81D776ADB00321300 /* pbkdf2_hmac_sha256.c in Sources */,
 				5500A5F91D776ADB00321300 /* aestab.c in Sources */,
 				5500A5FA1D776ADB00321300 /* aes_modes.c in Sources */,
-				5500A5FB1D776ADB00321300 /* sha.c in Sources */,
 				5500A5FC1D776ADB00321300 /* hmac_sha1.c in Sources */,
 				5500A5FD1D776ADB00321300 /* hmac_sha256.c in Sources */,
-				5500A5FE1D776ADB00321300 /* md5.c in Sources */,
 				5500A5FF1D776ADB00321300 /* des.c in Sources */,
 				5500A6001D776ADB00321300 /* XADMD5Handle.m in Sources */,
 				5500A6011D776ADB00321300 /* XADSHA1Handle.m in Sources */,
@@ -5676,10 +5646,8 @@
 				1BA9F02C1892A669007D9245 /* pbkdf2_hmac_sha256.c in Sources */,
 				1BE97622163CC2A100BB34EA /* aestab.c in Sources */,
 				1BA23E7B163CDA70000D8174 /* aes_modes.c in Sources */,
-				1BA23F95163DD4E9000D8174 /* sha.c in Sources */,
 				1BA23F98163DFBE4000D8174 /* hmac_sha1.c in Sources */,
 				1BA9F0251891DB01007D9245 /* hmac_sha256.c in Sources */,
-				1BA241E4163E1104000D8174 /* md5.c in Sources */,
 				1BA241F0163E1E6F000D8174 /* des.c in Sources */,
 				1B6F13D4163E25160054C1AE /* XADMD5Handle.m in Sources */,
 				1B6F13E0163E25320054C1AE /* XADSHA1Handle.m in Sources */,
@@ -5890,7 +5858,10 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = XADMaster_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = "USE_COMMON_CRYPTO=1";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"USE_COMMON_CRYPTO=1",
+					"$(inherited)",
+				);
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				INSTALL_PATH = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
@@ -5942,7 +5913,10 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = XADMaster_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = "USE_COMMON_CRYPTO=1";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"USE_COMMON_CRYPTO=1",
+					"$(inherited)",
+				);
 				GCC_THUMB_SUPPORT = NO;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../Dependencies/iOS/Includes\"";
@@ -5963,7 +5937,10 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = XADMaster_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = "USE_COMMON_CRYPTO=1";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"USE_COMMON_CRYPTO=1",
+					"$(inherited)",
+				);
 				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../Dependencies/iOS/Includes\"";
 				INSTALL_PATH = /usr/local/lib;
@@ -6051,7 +6028,10 @@
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = XADMaster_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = "USE_COMMON_CRYPTO=1";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"USE_COMMON_CRYPTO=1",
+					"$(inherited)",
+				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				MODULEMAP_FILE = "XAD-whole.modulemap";
@@ -6171,7 +6151,10 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = XADMaster_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = "USE_COMMON_CRYPTO=1";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"USE_COMMON_CRYPTO=1",
+					"$(inherited)",
+				);
 				INSTALL_PATH = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_LDFLAGS = "";
@@ -6219,7 +6202,6 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_PROJECT_1)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_PROJECT_2)",
@@ -6580,7 +6562,10 @@
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = XADMaster_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = "USE_COMMON_CRYPTO=1";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"USE_COMMON_CRYPTO=1",
+					"$(inherited)",
+				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				MODULEMAP_FILE = "XAD-whole.modulemap";
@@ -6659,6 +6644,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"XADMASTER_SIMPLE=1",
 					"USE_COMMON_CRYPTO=1",
+					"$(inherited)",
 				);
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
@@ -6692,6 +6678,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"XADMASTER_SIMPLE=1",
 					"USE_COMMON_CRYPTO=1",
+					"$(inherited)",
 				);
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";

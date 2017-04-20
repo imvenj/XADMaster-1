@@ -2,7 +2,15 @@
 #import "XADException.h"
 #import "NSDateXAD.h"
 #import "XADRC4Handle.h"
+#if defined(USE_COMMON_CRYPTO) && USE_COMMON_CRYPTO
+#include <CommonCrypto/CommonDigest.h>
+typedef CC_MD5_CTX MD5_CTX;
+#define MD5_Init CC_MD5_Init
+#define MD5_Update CC_MD5_Update
+#define MD5_Final CC_MD5_Final
+#else
 #import "Crypto/md5.h"
+#endif
 
 static NSData *StuffItMD5(NSData *data);
 
@@ -438,7 +446,7 @@ static NSData *StuffItMD5(NSData *data)
 
 	MD5_CTX ctx;
 	MD5_Init(&ctx);
-	MD5_Update(&ctx,[data bytes],[data length]);
+	MD5_Update(&ctx,[data bytes],(int)[data length]);
 	MD5_Final(buf,&ctx);
 	
 	return [NSData dataWithBytes:buf length:SIT5_KEY_LENGTH];
