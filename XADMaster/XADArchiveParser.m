@@ -1216,6 +1216,43 @@ name:(NSString *)name { return nil; }
 	return nil;
 }
 
+
+#if __APPLE__
++(nullable NSString*)possibleUTIForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict error:(XADError *)errorptr
+{
+	CFStringRef baseUTI = kUTTypeData;
+	if ([dict objectForKey:XADIsDirectoryKey] && [[dict objectForKey:XADIsDirectoryKey] boolValue]) {
+		baseUTI = kUTTypeDirectory;
+	}
+	
+	if ([dict objectForKey:XADFileTypeKey] != nil && [[dict objectForKey:XADFileTypeKey] unsignedIntValue] != 0) {
+		NSNumber *numOSType = [dict objectForKey:XADFileTypeKey];
+		CFStringRef strOSType = UTCreateStringForOSType(numOSType.unsignedIntValue);
+		CFStringRef possibleOSUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassOSType, strOSType, baseUTI);
+		CFRelease(strOSType);
+		if (possibleOSUTI && UTTypeIsDeclared(possibleOSUTI)) {
+			BOOL isGood = YES;
+			
+			if (isGood) {
+				return CFBridgingRelease(possibleOSUTI);
+			}
+		}
+		if (possibleOSUTI) {
+			CFRelease(possibleOSUTI);
+		}
+	}
+	NSString *lastPathComp = [[dict[XADFileNameKey] lastPathComponent] pathExtension];
+	CFStringRef possibleOSUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (CFStringRef)(lastPathComp), baseUTI);
+	if (possibleOSUTI == NULL || !UTTypeIsDeclared(possibleOSUTI)) {
+		if (possibleOSUTI) {
+			CFRelease(possibleOSUTI);
+		}
+		return nil;
+	}
+	return CFBridgingRelease(possibleOSUTI);
+}
+#endif
+
 @end
 
 

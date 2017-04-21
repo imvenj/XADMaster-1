@@ -144,6 +144,9 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 -(nullable XADString *)linkDestinationForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict error:(XADError *)errorptr NS_REFINED_FOR_SWIFT;
 -(NSDictionary *)extendedAttributesForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict;
 -(NSData *)finderInfoForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict;
+#if __APPLE__
++(nullable NSString*)possibleUTIForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict error:(XADError *)errorptr;
+#endif
 
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL wasStopped;
 

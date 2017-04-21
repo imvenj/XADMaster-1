@@ -635,7 +635,7 @@ separators:(const char *)pathseparators
 
 -(BOOL)_isPartAbsolute { return NO; }
 -(BOOL)_isPartEmpty { return YES; }
--(NSInteger)_depthOfPartWithEncodingName:(NSString *)encoding { return 0; }
+-(NSInteger)_depthOfPartWithEncodingName:(XADStringEncodingName)encoding { return 0; }
 -(void)_addPathComponentsOfPartToArray:(NSMutableArray *)array encodingName:(NSString *)encoding {}
 -(NSString *)_lastPathComponentOfPartWithEncodingName:(NSString *)encoding { return @""; }
 -(NSString *)_firstPathComponentOfPartWithEncodingName:(NSString *)encoding { return @""; }

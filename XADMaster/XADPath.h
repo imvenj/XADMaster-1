@@ -38,7 +38,7 @@ separators:(const char *)pathseparators;
 -(BOOL)hasCanonicalPrefix:(XADPath *)other encodingName:(XADStringEncodingName)encoding;
 
 @property (NS_NONATOMIC_IOSONLY, readonly) NSInteger depth; // Note: Does not take . or .. paths into account.
--(NSInteger)depthWithEncodingName:(NSString *)encoding;
+-(NSInteger)depthWithEncodingName:(XADStringEncodingName)encoding;
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray<NSString*> *pathComponents;
 -(NSArray<NSString*> *)pathComponentsWithEncodingName:(XADStringEncodingName)encoding;
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray<NSString*> *canonicalPathComponents;
