@@ -68,7 +68,7 @@ extern NSString *const XADFinderFlags;
 	NSTimeInterval update_interval;
 	XADError lasterror;
 
-	NSMutableArray<NSDictionary<XADArchiveKeys,id>*> *dataentries,*resourceentries;
+	NSMutableArray *dataentries,*resourceentries;
 	NSMutableDictionary *namedict;
 
 	off_t extractsize,totalsize;

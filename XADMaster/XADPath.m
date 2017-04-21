@@ -651,6 +651,14 @@ separators:(const char *)pathseparators
 
 @implementation XADStringPath
 
+-(instancetype)initWithParent:(XADPath *)parentpath
+{
+	if (self = [super initWithParent:parentpath]) {
+		
+	}
+	return self;
+}
+
 -(instancetype)initWithComponentString:(NSString *)pathstring
 {
 	if((self=[super init]))
@@ -754,6 +762,14 @@ separators:(const char *)pathseparators
 
 
 @implementation XADRawPath
+
+-(instancetype)initWithParent:(XADPath *)parentpath
+{
+	if (self = [super initWithParent:parentpath]) {
+		
+	}
+	return self;
+}
 
 -(instancetype)initWithData:(NSData *)bytedata source:(XADStringSource *)stringsource
 separators:(const char *)pathseparators

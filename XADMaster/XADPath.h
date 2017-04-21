@@ -118,6 +118,7 @@ separators:(const char *)pathseparators;
 -(instancetype)initWithComponentString:(NSString *)pathstring NS_DESIGNATED_INITIALIZER;
 -(instancetype)initWithComponentString:(NSString *)pathstring parent:(XADPath *)parentpath NS_DESIGNATED_INITIALIZER;
 -(instancetype)initWithPath:(XADStringPath *)path parent:(XADPath *)parentpath;
+-(instancetype)initWithParent:(XADPath *)parentpath NS_DESIGNATED_INITIALIZER;
 
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL _isPartAbsolute;
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL _isPartEmpty;
@@ -146,6 +147,7 @@ separators:(const char *)pathseparators NS_DESIGNATED_INITIALIZER;
 -(instancetype)initWithData:(NSData *)bytedata source:(XADStringSource *)stringsource
 separators:(const char *)pathseparators parent:(XADPath *)parentpath NS_DESIGNATED_INITIALIZER;
 -(instancetype)initWithPath:(XADRawPath *)path parent:(XADPath *)parentpath;
+-(instancetype)initWithParent:(XADPath *)parentpath NS_DESIGNATED_INITIALIZER;
 
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL _isPartAbsolute;
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL _isPartEmpty;

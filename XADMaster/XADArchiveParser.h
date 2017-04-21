@@ -86,7 +86,7 @@ extern XADArchiveKeys const XADDiskLabelKey;
 	NSString *passwordencodingname;
 	BOOL caresaboutpasswordencoding;
 
-	NSMutableDictionary *properties;
+	NSMutableDictionary<XADArchiveKeys,id> *properties;
 	XADStringSource *stringsource;
 
 	int currindex;
@@ -101,7 +101,7 @@ extern XADArchiveKeys const XADDiskLabelKey;
 }
 
 +(nullable Class)archiveParserClassForHandle:(CSHandle *)handle firstBytes:(NSData *)header
-resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props;
+resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMutableDictionary<XADArchiveKeys,id> *)props;
 +(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle name:(NSString *)name NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
 +(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle name:(NSString *)name error:(nullable XADError *)errorptr NS_REFINED_FOR_SWIFT;
 +(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
