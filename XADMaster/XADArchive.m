@@ -63,8 +63,8 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 		immediatesize=0;
 		parentarchive=nil;
 
-		dataentries=[[NSMutableArray array] retain];
-		resourceentries=[[NSMutableArray array] retain];
+		dataentries=[[NSMutableArray alloc] init];
+		resourceentries=[[NSMutableArray alloc] init];
 		namedict=nil;
  	}
 	return self;
@@ -214,7 +214,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 
 -(BOOL)_parseWithErrorPointer:(XADError *)error
 {
-	unarchiver=[[XADUnarchiver unarchiverForArchiveParser:parser] retain];
+	unarchiver=[[XADUnarchiver alloc] initWithArchiveParser:parser];
 
 	[parser setDelegate:self];
 	[unarchiver setDelegate:self];
