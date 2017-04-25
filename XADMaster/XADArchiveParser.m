@@ -1218,10 +1218,28 @@ name:(NSString *)name { return nil; }
 
 
 #if __APPLE__
-+(nullable NSString*)possibleUTIForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict error:(XADError *)errorptr
++(NSString*)possibleUTIForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict
 {
+#if 0
+	if (dict[XADIsFIFOKey] && [dict[XADIsFIFOKey] boolValue]) {
+		// TODO: find the UTI
+	}
+	
+	if (dict[XADIsCharacterDeviceKey] && [dict[XADIsCharacterDeviceKey] boolValue]) {
+		// TODO: find the UTI
+	}
+
+	if (dict[XADIsBlockDeviceKey] && [dict[XADIsBlockDeviceKey] boolValue]) {
+		// TODO: find the UTI
+	}
+#endif
+
+	if (dict[XADIsLinkKey] != nil && [dict[XADIsLinkKey] boolValue]) {
+		return (NSString*)kUTTypeSymLink;
+	}
+
 	CFStringRef baseUTI = kUTTypeData;
-	if ([dict objectForKey:XADIsDirectoryKey] && [[dict objectForKey:XADIsDirectoryKey] boolValue]) {
+	if (dict[XADIsDirectoryKey] != nil && [dict[XADIsDirectoryKey] boolValue]) {
 		baseUTI = kUTTypeDirectory;
 	}
 	
@@ -1247,7 +1265,7 @@ name:(NSString *)name { return nil; }
 		if (possibleOSUTI) {
 			CFRelease(possibleOSUTI);
 		}
-		return nil;
+		return (NSString*)baseUTI;
 	}
 	return CFBridgingRelease(possibleOSUTI);
 }

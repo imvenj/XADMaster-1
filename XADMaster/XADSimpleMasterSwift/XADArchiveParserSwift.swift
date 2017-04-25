@@ -87,14 +87,6 @@ extension XADArchiveParser {
 		return newHandle
 	}
 	
-	@nonobjc open class func possibleUTI(for dict: [XADArchiveKeys: Any]) throws -> String {
-		var err = XADError.none
-		guard let uti = __possibleUTI(for: dict, error: &err) else {
-			throw err
-		}
-		return uti
-	}
-	
 	@available(*, deprecated, renamed: "testChecksum()")
 	@nonobjc open func testChecksumWithoutExceptions() throws {
 		try testChecksum()
