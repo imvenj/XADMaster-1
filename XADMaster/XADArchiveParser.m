@@ -62,6 +62,10 @@
 
 #include <dirent.h>
 
+#if TARGET_OS_MAC && !TARGET_OS_OSX
+#include <MobileCoreServices/MobileCoreServices.h>
+#endif
+
 NSString *const XADFileNameKey=@"XADFileName";
 NSString *const XADCommentKey=@"XADComment";
 NSString *const XADFileSizeKey=@"XADFileSize";
@@ -1243,6 +1247,7 @@ name:(NSString *)name { return nil; }
 		baseUTI = kUTTypeDirectory;
 	}
 	
+#if TARGET_OS_OSX
 	if ([dict objectForKey:XADFileTypeKey] != nil && [[dict objectForKey:XADFileTypeKey] unsignedIntValue] != 0) {
 		NSNumber *numOSType = [dict objectForKey:XADFileTypeKey];
 		CFStringRef strOSType = UTCreateStringForOSType(numOSType.unsignedIntValue);
@@ -1259,6 +1264,7 @@ name:(NSString *)name { return nil; }
 			CFRelease(possibleOSUTI);
 		}
 	}
+#endif
 	NSString *lastPathComp = [[dict[XADFileNameKey] lastPathComponent] pathExtension];
 	CFStringRef possibleOSUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (CFStringRef)(lastPathComp), baseUTI);
 	if (possibleOSUTI == NULL || !UTTypeIsDeclared(possibleOSUTI)) {

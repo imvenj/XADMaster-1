@@ -5922,7 +5922,6 @@
 					"$(inherited)",
 				);
 				GCC_THUMB_SUPPORT = NO;
-				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../Dependencies/iOS/Includes\"";
 				INSTALL_PATH = /usr/local/lib;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;

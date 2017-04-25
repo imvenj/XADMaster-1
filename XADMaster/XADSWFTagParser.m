@@ -8,6 +8,20 @@ NSString *const SWFNoMoreTagsException=@"SWFNoMoreTagsException";
 
 
 @implementation XADSWFTagParser
+@synthesize version;
+@synthesize compressed;
+@synthesize rect;
+@synthesize frames;
+@synthesize framesPerSecond = fps;
+@synthesize tag = currtag;
+@synthesize tagLength = currlen;
+@synthesize frame = currframe;
+@synthesize handle = fh;
+@synthesize spriteID = spriteid;
+@synthesize subFrames = subframes;
+@synthesize subTag = subtag;
+@synthesize subTagLength = sublen;
+@synthesize subFrame = subframe;
 
 +(XADSWFTagParser *)parserWithHandle:(CSHandle *)handle
 {
@@ -70,12 +84,6 @@ NSString *const SWFNoMoreTagsException=@"SWFNoMoreTagsException";
 }
 
 
--(int)version { return version; }
--(BOOL)isCompressed { return compressed; }
--(SWFRect)rect { return rect; }
--(int)frames { return frames; }
--(int)framesPerSecond { return fps; }
-
 -(int)nextTag
 {
 	if(!nexttag) [NSException raise:SWFNoMoreTagsException format:@"No more tags available in the SWF file."];
@@ -100,13 +108,9 @@ NSString *const SWFNoMoreTagsException=@"SWFNoMoreTagsException";
 	return currtag;
 }
 
--(int)tag { return currtag; }
--(int)tagLength { return currlen; }
 -(int)tagBytesLeft { return (int)(nexttag-[fh offsetInFile]); }
--(int)frame { return currframe; }
 -(double)time { return (double)currframe/((double)fps/256.0); }
 
--(CSHandle *)handle { return fh; }
 -(CSHandle *)tagHandle { return [fh subHandleOfLength:[self tagBytesLeft]]; }
 -(NSData *)tagContents { return [fh readDataOfLength:[self tagBytesLeft]]; }
 
@@ -123,9 +127,6 @@ NSString *const SWFNoMoreTagsException=@"SWFNoMoreTagsException";
 	sublen=0;
 	subframe=0;
 }
-
--(int)spriteID { return spriteid; }
--(int)subFrames { return subframes; }
 
 -(int)nextSubTag
 {
@@ -151,10 +152,7 @@ NSString *const SWFNoMoreTagsException=@"SWFNoMoreTagsException";
 	return subtag;
 }
 
--(int)subTag { return subtag; }
--(int)subTagLength { return sublen; }
 -(int)subTagBytesLeft { return (int)(nextsubtag-[fh offsetInFile]); }
--(int)subFrame { return subframe; }
 -(double)subTime { return (double)subframe/((double)fps/256.0); }
 
 @end

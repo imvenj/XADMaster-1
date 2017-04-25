@@ -395,7 +395,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 {
 	id filter=dict[@"Filter"];
 
-	if(!filter) return NO;
+	if(!filter) return nil;
 	else if([filter isKindOfClass:[NSArray class]]) return [filter lastObject];
 	else return filter;
 }
