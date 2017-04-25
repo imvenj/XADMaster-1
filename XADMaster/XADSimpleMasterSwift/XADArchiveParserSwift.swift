@@ -20,15 +20,7 @@ extension XADError: Error {
 }
 
 extension XADArchiveParser {
-	@nonobjc public class func archiveParser(for handle: XADHandle, name: String) throws -> XADArchiveParser {
-		var error = XADError.none
-		if let archiveParse = XADArchiveParser(__for: handle, name: name, error: &error) {
-			return archiveParse
-		}
-		throw error
-	}
-	
-	@nonobjc public class func archiveParser(for handle: XADHandle, resourceFork fork: XADResourceFork?, name: String) throws -> XADArchiveParser {
+	@nonobjc public class func archiveParser(for handle: XADHandle, resourceFork fork: XADResourceFork? = nil, name: String) throws -> XADArchiveParser {
 		var error = XADError.none
 		if let archiveParse = XADArchiveParser(__for: handle, resourceFork: fork, name: name, error: &error) {
 			return archiveParse
@@ -36,15 +28,7 @@ extension XADArchiveParser {
 		throw error
 	}
 
-	@nonobjc public class func archiveParser(for handle: XADHandle, firstBytes header: Data, name: String) throws -> XADArchiveParser {
-		var error = XADError.none
-		if let archiveParse = XADArchiveParser(__for: handle, firstBytes: header, name: name, error: &error) {
-			return archiveParse
-		}
-		throw error
-	}
-	
-	@nonobjc public class func archiveParser(for handle: XADHandle, firstBytes header: Data, resourceFork fork: XADResourceFork?, name: String) throws -> XADArchiveParser {
+	@nonobjc public class func archiveParser(for handle: XADHandle, firstBytes header: Data, resourceFork fork: XADResourceFork? = nil, name: String) throws -> XADArchiveParser {
 		var error = XADError.none
 		if let archiveParse = XADArchiveParser(__for: handle, firstBytes: header, resourceFork: fork, name: name, error: &error) {
 			return archiveParse
@@ -60,15 +44,7 @@ extension XADArchiveParser {
 		throw error
 	}
 	
-	@nonobjc public class func archiveParser(forEntryWith entry: [XADArchiveKeys : Any], archiveParser parser: XADArchiveParser, wantChecksum checksum: Bool) throws -> XADArchiveParser {
-		var error = XADError.none
-		if let archiveParse = XADArchiveParser(__forEntryWith: entry, archiveParser: parser, wantChecksum: checksum, error: &error) {
-			return archiveParse
-		}
-		throw error
-	}
-	
-	@nonobjc public class func archiveParser(forEntryWith entry: [XADArchiveKeys : Any], resourceForkDictionary forkentry: [XADArchiveKeys : Any]?, archiveParser parser: XADArchiveParser, wantChecksum checksum: Bool) throws -> XADArchiveParser {
+	@nonobjc public class func archiveParser(forEntryWith entry: [XADArchiveKeys : Any], resourceForkDictionary forkentry: [XADArchiveKeys : Any]? = nil, archiveParser parser: XADArchiveParser, wantChecksum checksum: Bool) throws -> XADArchiveParser {
 		var error = XADError.none
 		if let archiveParse = XADArchiveParser(__forEntryWith: entry, resourceForkDictionary: forkentry, archiveParser: parser, wantChecksum: checksum, error: &error) {
 			return archiveParse
@@ -94,7 +70,7 @@ extension XADArchiveParser {
 		}
 	}
 	
-	/// Will throw `XADBreakError` if the delegate
+	/// Will throw `XADErrorBreak` if the delegate
 	/// requested parsing to stop.
 	@nonobjc open func parse() throws {
 		let err = __parseWithoutExceptions()
@@ -111,6 +87,14 @@ extension XADArchiveParser {
 		return newHandle
 	}
 	
+	@nonobjc open class func possibleUTI(for dict: [XADArchiveKeys: Any]) throws -> String {
+		var err = XADError.none
+		guard let uti = __possibleUTI(for: dict, error: &err) else {
+			throw err
+		}
+		return uti
+	}
+	
 	@available(*, deprecated, renamed: "testChecksum()")
 	@nonobjc open func testChecksumWithoutExceptions() throws {
 		try testChecksum()
@@ -120,4 +104,5 @@ extension XADArchiveParser {
 	@nonobjc open func parseWithoutExceptions() throws {
 		try parse()
 	}
+	
 }
