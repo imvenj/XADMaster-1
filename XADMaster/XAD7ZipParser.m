@@ -738,7 +738,7 @@ packedStreams:(NSArray *)packedstreams packedStreamIndex:(NSInteger *)packedstre
 	if(checksum)
 	{
 		NSNumber *crc=dict[@"7zCRC32"];
-		if(crc) return [XADCRCHandle IEEECRC32HandleWithHandle:handle
+		if(crc != nil) return [XADCRCHandle IEEECRC32HandleWithHandle:handle
 		length:[handle fileSize] correctCRC:[crc unsignedIntValue] conditioned:YES];
 	}
 
@@ -860,7 +860,7 @@ packedStreams:(NSArray *)packedstreams packedStreamIndex:(NSInteger *)packedstre
 	}
 
 	NSNumber *sourceindex=instream[@"SourceIndex"];
-	if(sourceindex)
+	if(sourceindex != nil)
 	{
 		return [self outHandleForFolder:folder index:[sourceindex intValue]];
 	}
@@ -921,7 +921,7 @@ packedStreams:(NSArray *)packedstreams packedStreamIndex:(NSInteger *)packedstre
 	NSString *name=[self compressorNameForCoder:coder];
 
 	NSNumber *source=instream[@"SourceIndex"];
-	if(!source) return name;
+	if(source == nil) return name;
 	else return [NSString stringWithFormat:@"%@+%@",
 	[self compressorNameForFolder:folder index:[source intValue]],name];
 }
@@ -984,7 +984,7 @@ packedStreams:(NSArray *)packedstreams packedStreamIndex:(NSInteger *)packedstre
 	if([self IDForCoder:coder]==0x06f10701) return YES;
 
 	NSNumber *source=instream[@"SourceIndex"];
-	if(!source) return NO;
+	if(source == nil) return NO;
 	else return [self isFolderEncrypted:folder index:[source intValue]];
 }
 

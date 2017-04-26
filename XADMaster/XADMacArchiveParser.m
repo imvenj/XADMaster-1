@@ -149,7 +149,7 @@ name:(XADPath *)name retainPosition:(BOOL)retainpos
 	// Resource forks are at most 16 megabytes. Ignore larger files, as we will
 	// be reading the whole file into memory.
 	NSNumber *filesizenum=dict[XADFileSizeKey];
-	if(!filesizenum) return NO;
+	if(filesizenum == nil) return NO;
 
 	off_t filesize=[filesizenum longLongValue];
 	if(filesize>16*1024*1024+65536) return NO;
@@ -311,10 +311,10 @@ isDirectory:(BOOL)isdir retainPosition:(BOOL)retainpos
 name:(XADPath *)name retainPosition:(BOOL)retainpos
 {
 	NSNumber *isbinobj=dict[XADIsMacBinaryKey];
-	BOOL isbin=isbinobj?[isbinobj boolValue]:NO;
+	BOOL isbin = isbinobj != nil ? [isbinobj boolValue] : NO;
 
 	NSNumber *checkobj=dict[XADMightBeMacBinaryKey];
-	BOOL check=checkobj?[checkobj boolValue]:NO;
+	BOOL check = checkobj != nil ? [checkobj boolValue] : NO;
 
 	// Return if this file is not known or suspected to be MacBinary.
 	if(!isbin&&!check) return NO;

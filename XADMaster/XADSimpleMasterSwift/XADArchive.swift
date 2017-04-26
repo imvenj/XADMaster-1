@@ -35,4 +35,45 @@ extension XADArchive {
 			__nameEncoding = newValue.rawValue
 		}
 	}
+	
+	@nonobjc open func contents(ofEntry n: Int) throws -> Data {
+		guard let dat = __contents(ofEntry: n) else {
+			throw lastError
+		}
+		return dat
+	}
+}
+
+extension XADArchive {
+	@nonobjc public static func archive(with: Data, delegate: XADArchiveDelegate? = nil) throws -> XADArchive {
+		var err = XADError.none
+		guard let ar = XADArchive(data: with, delegate: delegate, error: &err) else {
+			throw err
+		}
+		return ar
+	}
+	
+	@nonobjc public static func archive(withPath path: String, delegate: XADArchiveDelegate? = nil) throws -> XADArchive {
+		var err = XADError.none
+		guard let ar = XADArchive(file: path, delegate: delegate, error: &err) else {
+			throw err
+		}
+		return ar
+	}
+	
+	@nonobjc public static func archive(with: XADArchive, entry: Int, delegate: XADArchiveDelegate? = nil) throws -> XADArchive {
+		var err = XADError.none
+		guard let ar = XADArchive(archive: with, entry: entry, delegate: delegate, error: &err) else {
+			throw err
+		}
+		return ar
+	}
+	
+	@nonobjc public static func archive(with: XADArchive, entry: Int, immediateExtractionTo dest: String, subArchives: Bool = false) throws -> XADArchive {
+		var err = XADError.none
+		guard let ar = XADArchive(archive: with, entry: entry, immediateExtractionTo: dest, subArchives: subArchives, error: &err) else {
+			throw err
+		}
+		return ar
+	}
 }

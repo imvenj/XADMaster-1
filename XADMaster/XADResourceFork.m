@@ -117,7 +117,7 @@
 
 			// Resolve the name (if any).
 			NSNumber *nameoffset=resource[@"NameOffset"];
-			if(nameoffset)
+			if(nameoffset != nil)
 			{
 				// untested
 				[handle seekToFileOffset:namelistoffset+[nameoffset intValue]];
