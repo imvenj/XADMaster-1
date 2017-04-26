@@ -5,6 +5,10 @@
 #import "NSDateXAD.h"
 #import "CRC.h"
 
+#if !__has_feature(objc_arc)
+#error this file needs to be compiled with Automatic Reference Counting (ARC)
+#endif
+
 NSString *const XADIsMacBinaryKey=@"XADIsMacBinary";
 NSString *const XADMightBeMacBinaryKey=@"XADMightBeMacBinary";
 NSString *const XADDisableMacForkExpansionKey=@"XADDisableMacForkExpansionKey";
@@ -61,15 +65,6 @@ NSString *const XADDisableMacForkExpansionKey=@"XADDisableMacForkExpansionKey";
 		cachedhandle=nil;
 	}
 	return self;
-}
-
--(void)dealloc
-{
-	[previousname release];
-	[dittodirectorystack release];
-	[queueddittoentry release];
-	[queueddittodata release];
-	[super dealloc];
 }
 
 -(void)parse
@@ -287,10 +282,8 @@ name:(XADPath *)name retainPosition:(BOOL)retainpos
 
 -(void)queueDittoDictionary:(NSMutableDictionary *)dict data:(NSData *)data
 {
-	[queueddittoentry autorelease];
-	[queueddittodata autorelease];
-	queueddittoentry=[dict retain];
-	queueddittodata=[data retain];
+	queueddittoentry=dict;
+	queueddittodata=data;
 }
 
 -(void)addQueuedDittoDictionaryAndRetainPosition:(BOOL)retainpos
@@ -307,9 +300,7 @@ isDirectory:(BOOL)isdir retainPosition:(BOOL)retainpos
 	[self inspectEntryDictionary:queueddittoentry];
 	[self addEntryWithDictionary:queueddittoentry retainPosition:retainpos data:queueddittodata];
 
-	[queueddittoentry release];
 	queueddittoentry=nil;
-	[queueddittodata release];
 	queueddittodata=nil;
 }
 

@@ -113,7 +113,7 @@ extern NSString *const XADFinderFlags;
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *commonTopDirectory;
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *comment;
 
-@property (NS_NONATOMIC_IOSONLY, assign) id<XADArchiveDelegate> delegate;
+@property (NS_NONATOMIC_IOSONLY, weak) id<XADArchiveDelegate> delegate;
 
 @property (NS_NONATOMIC_IOSONLY, copy) NSString *password;
 

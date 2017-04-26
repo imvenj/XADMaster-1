@@ -6,6 +6,9 @@
 #include <sys/xattr.h>
 #endif
 
+#if !__has_feature(objc_arc)
+#error this file needs to be compiled with Automatic Reference Counting (ARC)
+#endif
 
 @implementation XADSimpleUnarchiver
 @synthesize delegate;
@@ -19,7 +22,7 @@
 {
 	XADArchiveParser *archiveparser=[XADArchiveParser archiveParserForPath:path error:errorptr];
 	if(!archiveparser) return nil;
-	return [[[self alloc] initWithArchiveParser:archiveparser] autorelease];
+	return [[self alloc] initWithArchiveParser:archiveparser];
 }
 
 -(instancetype)initWithArchiveParser:(XADArchiveParser *)archiveparser
@@ -31,7 +34,7 @@
 {
 	if((self=[super init]))
 	{
-		parser=[archiveparser retain];
+		parser=archiveparser;
 		unarchiver=[[XADUnarchiver alloc] initWithArchiveParser:archiveparser];
 		subunarchiver=nil;
 
@@ -45,12 +48,12 @@
 		@"\\.(part[0-9]+\\.rar|tar\\.gz|tar\\.bz2|tar\\.lzma|tar\\.xz|tar\\.Z|sit\\.hqx)$"
 		options:REG_ICASE])
 		{
-			enclosingdir=[[[name stringByDeletingPathExtension]
-			stringByDeletingPathExtension] retain];
+			enclosingdir=[[name stringByDeletingPathExtension]
+						  stringByDeletingPathExtension];
 		}
 		else
 		{
-			enclosingdir=[[name stringByDeletingPathExtension] retain];
+			enclosingdir=[name stringByDeletingPathExtension];
 		}
 
 		// TODO: Check if we accidentally create a package. Seems impossible, though.
@@ -78,7 +81,7 @@
 		resourceforks=[NSMutableSet new];
 
 		NSString *archivename=[parser filename];
-		if(archivename) metadata=[[XADPlatform readCloneableMetadataFromPath:archivename] retain];
+		if(archivename) metadata=[XADPlatform readCloneableMetadataFromPath:archivename];
 		else metadata=nil;
 
 		unpackdestination=nil;
@@ -92,33 +95,6 @@
 	}
 
 	return self;
-}
-
--(void)dealloc
-{
-	[parser release];
-	[unarchiver release];
-	[subunarchiver release];
-
-	[destination release];
-	[enclosingdir release];
-
-	[regexes release];
-	[indices release];
-
-	[entries release];
-	[reasonsforinterest release];
-	[renames release];
-	[resourceforks release];
-	[metadata release];
-
-	[unpackdestination release];
-	[finaldestination release];
-	[overridesoloitem release];
-
-	[toplevelname release];
-
-	[super dealloc];
 }
 
 -(XADArchiveParser *)archiveParser
@@ -145,8 +121,7 @@
 {
 	if(destpath!=destination)
 	{
-		[destination release];
-		destination=[destpath retain];
+		destination=[destpath copy];
 	}
 }
 
@@ -155,8 +130,7 @@
 {
 	if(dirname!=enclosingdir)
 	{
-		[enclosingdir release];
-		enclosingdir=[dirname retain];
+		enclosingdir=[dirname copy];
 	}
 }
 
@@ -355,8 +329,8 @@
 {
 	// Create unarchiver.
 	XADError error;
-	subunarchiver=[[unarchiver unarchiverForEntryWithDictionary:datadict
-	resourceForkDictionary:resourcedict wantChecksum:YES error:&error] retain];
+	subunarchiver=[unarchiver unarchiverForEntryWithDictionary:datadict
+										resourceForkDictionary:resourcedict wantChecksum:YES error:&error];
 	if(!subunarchiver)
 	{
 		if(error) return error;
@@ -423,8 +397,8 @@
 		else destpath=@".";
 	}
 
-	unpackdestination=[destpath retain];
-	finaldestination=[destpath retain];
+	unpackdestination=[destpath copy];
+	finaldestination=[destpath copy];
 
 	// Run unarchiver on all entries.
 	[unarchiver setDelegate:self];
@@ -485,7 +459,7 @@
 		else destpath=@".";
 	}
 
-	unpackdestination=[destpath retain];
+	unpackdestination=[destpath copy];
 
 	// Disable accurate progress calculation.
 	totalsize=-1;
@@ -545,7 +519,7 @@
 			[XADPlatform removeItemAtPath:newenclosingpath];
 
 			// Remember where the item ended up.
-			finaldestination=[[finalitempath stringByDeletingLastPathComponent] retain];
+			finaldestination=[finalitempath stringByDeletingLastPathComponent];
 			soloitem=finalitempath;
 
 		}
@@ -580,23 +554,23 @@
 				}
 
 				// Remember where the items ended up.
-				finaldestination=[newenclosingpath retain];
+				finaldestination=[newenclosingpath copy];
 			}
 			else
 			{
 				// Remember where the items ended up.
-				finaldestination=[destpath retain];
+				finaldestination=[destpath copy];
 			}
 		}
 	}
 	else
 	{
 		// Remember where the items ended up.
-		finaldestination=[destpath retain];
+		finaldestination=[destpath copy];
 	}
 
 	// Save the final path to the solo item, if any.
-	overridesoloitem=[soloitem retain];
+	overridesoloitem=[soloitem copy];
 
 	if(error) return error;
 
@@ -647,7 +621,7 @@
 
 		if(!toplevelname)
 		{
-			toplevelname=[firstcomp retain];
+			toplevelname=[firstcomp copy];
 			lookslikesolo=YES;
 		}
 		else

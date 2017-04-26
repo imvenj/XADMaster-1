@@ -2,7 +2,9 @@
 
 #import "../UniversalDetector/UniversalDetector.h"
 
-
+#if !__has_feature(objc_arc)
+#error this file needs to be compiled with Automatic Reference Counting (ARC)
+#endif
 
 NSString *const XADASCIIStringEncodingName=@"US-ASCII";
 NSString *const XADUTF8StringEncodingName=@"UTF-8";
@@ -55,7 +57,7 @@ static BOOL IsDataASCII(NSData *data);
 
 +(XADString *)XADStringWithString:(NSString *)string
 {
-	return [[[self alloc] initWithString:string] autorelease];
+	return [[self alloc] initWithString:string];
 }
 
 +(XADString *)analyzedXADStringWithData:(NSData *)bytedata source:(XADStringSource *)stringsource
@@ -68,14 +70,14 @@ static BOOL IsDataASCII(NSData *data);
 	}
 	else
 	{
-		return [[[self alloc] initWithData:bytedata source:stringsource] autorelease];
+		return [[self alloc] initWithData:bytedata source:stringsource];
 	}
 }
 
 +(XADString *)decodedXADStringWithData:(NSData *)bytedata encodingName:(NSString *)encoding
 {
 	NSString *string=[XADString stringForData:bytedata encodingName:encoding];
-	return [[[self alloc] initWithString:string] autorelease];
+	return [[self alloc] initWithString:string];
 }
 
 
@@ -149,7 +151,7 @@ encodingName:(NSString *)encoding
 	{
 		data=[bytedata copy];
 		string=nil;
-		source=[stringsource retain];
+		source=stringsource;
 	}
 	return self;
 }
@@ -163,14 +165,6 @@ encodingName:(NSString *)encoding
 		source=nil;
 	}
 	return self;
-}
-
--(void)dealloc
-{
-	[data release];
-	[string release];
-	[source release];
-	[super dealloc];
 }
 
 
@@ -245,16 +239,15 @@ encodingName:(NSString *)encoding
 {
 	if(string)
 	{
-		return [[[XADString alloc]
-		initWithString:[string substringFromIndex:length]]
-		autorelease];
+		return [[XADString alloc]
+		initWithString:[string substringFromIndex:length]];
 	}
 	else
 	{
-		return [[[XADString alloc]
+		return [[XADString alloc]
 		initWithData:[data subdataWithRange:
 		NSMakeRange(length,[data length]-length)]
-		source:source] autorelease];
+		source:source];
 	}
 }
 
@@ -335,13 +328,6 @@ encodingName:(NSString *)encoding
 		hasanalyzeddata=NO;
 	}
 	return self;
-}
-
--(void)dealloc
-{
-	[detector release];
-	[fixedencodingname release];
-	[super dealloc];
 }
 
 -(void)analyzeData:(NSData *)data

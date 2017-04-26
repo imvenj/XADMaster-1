@@ -10,6 +10,10 @@
 #import <sys/time.h>
 
 
+#if !__has_feature(objc_arc)
+#error this file needs to be compiled with Automatic Reference Counting (ARC)
+#endif
+
 NSString *const XADResourceDataKey=@"XADResourceData";
 NSString *const XADFinderFlags=@"XADFinderFlags";
 
@@ -21,7 +25,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 
 +(XADArchive *)archiveForFile:(NSString *)filename
 {
-	return [[[XADArchive alloc] initWithFile:filename] autorelease];
+	return [[XADArchive alloc] initWithFile:filename];
 }
 
 +(XADArchive *)recursiveArchiveForFile:(NSString *)filename
@@ -31,10 +35,9 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	while([archive numberOfEntries]==1)
 	{
 		XADArchive *subarchive=[[XADArchive alloc] initWithArchive:archive entry:0];
-		if(subarchive) archive=[subarchive autorelease];
+		if(subarchive) archive=subarchive;
 		else
 		{
-			[subarchive release];
 			break;
 		}
 	}
@@ -80,14 +83,12 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	{
 		delegate=del;
 
-		parser=[[XADArchiveParser archiveParserForPath:file error:error] retain];
+		parser=[XADArchiveParser archiveParserForPath:file error:error];
 		if(parser)
 		{
 			if([self _parseWithErrorPointer:error]) return self;
 		}
 		else if(error) *error=XADErrorDataFormat;
-
-		[self release];
 	}
 
 	return nil;
@@ -105,14 +106,12 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	{
 		delegate=del;
 
-		parser=[[XADArchiveParser archiveParserForHandle:[CSMemoryHandle memoryHandleForReadingData:data] name:@""] retain];
+		parser=[XADArchiveParser archiveParserForHandle:[CSMemoryHandle memoryHandleForReadingData:data] name:@""];
 		if(parser)
 		{
 			if([self _parseWithErrorPointer:error]) return self;
 		}
 		else if(error) *error=XADErrorDataFormat;
-
-		[self release];
 	}
 	return nil;
 }
@@ -127,21 +126,19 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 {
 	if((self=[self init]))
 	{
-		parentarchive=[otherarchive retain];
+		parentarchive=otherarchive;
 		delegate=del;
 
 		CSHandle *handle=[otherarchive handleForEntry:n error:error];
 		if(handle)
 		{
-			parser=[[XADArchiveParser archiveParserForHandle:handle name:[otherarchive nameOfEntry:n]] retain];
+			parser=[XADArchiveParser archiveParserForHandle:handle name:[otherarchive nameOfEntry:n]];
 			if(parser)
 			{
 				if([self _parseWithErrorPointer:error]) return self;
 			}
 			else if(error) *error=XADErrorDataFormat;
 		}
-
-		[self release];
 	}
 
 	return nil;
@@ -159,16 +156,16 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 {
 	if((self=[self init]))
 	{
-		parentarchive=[otherarchive retain];
+		parentarchive=otherarchive;
 		immediatedestination=destination;
 		immediatesubarchives=sub;
 		delegate=otherarchive;
 
 		immediatesize=[otherarchive representativeSizeOfEntry:n];
 
-		parser=[[XADArchiveParser archiveParserForEntryWithDictionary:
-		[otherarchive dataForkParserDictionaryForEntry:n]
-		archiveParser:otherarchive->parser wantChecksum:YES error:error] retain];
+		parser=[XADArchiveParser archiveParserForEntryWithDictionary:
+				[otherarchive dataForkParserDictionaryForEntry:n]
+													   archiveParser:otherarchive->parser wantChecksum:YES error:error];
 		if(parser)
 		{
 			if([self _parseWithErrorPointer:error])
@@ -190,24 +187,9 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 			}
 		}
 		else if(error) *error=XADErrorSubArchive;
-
-		[self release];
 	}
 
 	return nil;
-}
-
-
--(void)dealloc
-{
-	[parser release];
-	[unarchiver release];
-	[dataentries release];
-	[resourceentries release];
-	[namedict release];
-	[parentarchive release];
-
-	[super dealloc];
 }
 
 
@@ -230,7 +212,6 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 
 	if(immediatefailed&&error) *error=lasterror;
 
-	[namedict release];
 	namedict=nil;
 
 	return lasterror==XADErrorNone||[dataentries count]!=0;
@@ -889,8 +870,6 @@ dataFork:(BOOL)datafork resourceFork:(BOOL)resfork
 
 		BOOL res=subarchive&&![subarchive immediateExtractionFailed];
 
-		[subarchive release];
-
 		if(res) return YES;
 		else if(err==XADErrorBreak||err==XADErrorDataFormat) return NO;
 		else if(delegate)
@@ -1103,13 +1082,13 @@ fileFraction:(double)fileprogress estimatedTotalFraction:(double)totalprogress
 
 	if(mod)
 	{
-		NSCalendarDate *cal=[mod dateWithCalendarFormat:nil timeZone:[NSTimeZone defaultTimeZone]];
-		fi->xfi_Date.xd_Year=(int)[cal yearOfCommonEra];
-		fi->xfi_Date.xd_Month=[cal monthOfYear];
-		fi->xfi_Date.xd_Day=[cal dayOfMonth];
-		fi->xfi_Date.xd_Hour=[cal hourOfDay];
-		fi->xfi_Date.xd_Minute=[cal minuteOfHour];
-		fi->xfi_Date.xd_Second=[cal secondOfMinute];
+		NSDateComponents* cal = [[NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian] componentsInTimeZone:[NSTimeZone defaultTimeZone] fromDate:mod];
+		fi->xfi_Date.xd_Year=(int)[cal year];
+		fi->xfi_Date.xd_Month=[cal month];
+		fi->xfi_Date.xd_Day=[cal day];
+		fi->xfi_Date.xd_Hour=[cal hour];
+		fi->xfi_Date.xd_Minute=[cal minute];
+		fi->xfi_Date.xd_Second=[cal second];
 	}
 	else fi->xfi_Flags|=1<<6;
 
@@ -1216,7 +1195,6 @@ fileFraction:(double)fileprogress estimatedTotalFraction:(double)totalprogress
 	NSMutableData *terminateddata=[[NSMutableData alloc] initWithData:data];
 	[terminateddata increaseLengthBy:1]; // append a 0 byte
 	NSStringEncoding enc=[self archive:archive encodingForName:[terminateddata bytes] guess:guess confidence:confidence];
-	[terminateddata release];
 	return enc;
 }
 
@@ -1225,7 +1203,6 @@ fileFraction:(double)fileprogress estimatedTotalFraction:(double)totalprogress
 	// Default implementation calls old method
 	NSMutableData *terminateddata=[[NSMutableData alloc] initWithData:data];
 	XADAction action=[self archive:archive nameDecodingDidFailForEntry:n bytes:[terminateddata bytes]];
-	[terminateddata release];
 	return action;
 }
 
