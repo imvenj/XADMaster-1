@@ -1,7 +1,7 @@
 #import "../CSByteStreamHandle.h"
 #import "../LZW.h"
 
-extern NSString *LZWInvalidCodeException;
+extern NSString *const LZWInvalidCodeException;
 
 @interface LZWHandle:CSByteStreamHandle
 {

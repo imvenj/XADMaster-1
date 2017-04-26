@@ -212,11 +212,13 @@ static const uint8_t *FindSignature(const uint8_t *ptr,NSInteger length)
 				// Add current file to solid file list, creating it if necessary.
 				if(!currfiles) currfiles=[NSMutableArray array];
 
-				[currfiles addObject:@{@"Parts": currparts,
-					@"OutputLength": @(previousheader.size),
-					@"Version": @(previousheader.version),
-					@"Encrypted": [NSNumber numberWithBool:(block.flags&LHD_PASSWORD)?YES:NO],
-					@"Salt": previousheader.salt}];
+				[currfiles addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+									  currparts,@"Parts",
+									  @(previousheader.size),@"OutputLength",
+									  @(previousheader.version),@"Version",
+									  @((block.flags&LHD_PASSWORD)?YES:NO),@"Encrypted",
+									  previousheader.salt,@"Salt", // Ends the list if nil.
+									  nil]];
 
 				[self addEntryWithBlock:&previousblock header:&previousheader
 				compressedSize:totalfilesize files:currfiles solidOffset:totalsolidsize
@@ -425,8 +427,8 @@ static const uint8_t *FindSignature(const uint8_t *ptr,NSInteger length)
 
 	// TODO: should this be [self handle] or block.fh?
 	NSArray *parts=@[@{@"Parts": @[@{@"Offset": @([[self handle] offsetInFile]),
-			@"InputLength": [NSNumber numberWithLongLong:block.headersize-13]}],
-		@"OutputLength": [NSNumber numberWithLongLong:commentsize],
+			@"InputLength": @(block.headersize-13)}],
+		@"OutputLength": @(commentsize),
 		@"Version": @(version),
 		@"Encrypted": @NO}];
 
@@ -712,7 +714,7 @@ isCorrupted:(BOOL)iscorrupted
 
 -(CSHandle *)inputHandleForFileWithIndex:(int)file files:(NSArray *)files
 {
-	if(file>=[files count]) [XADException raiseExceptionWithXADError:XADInputError]; // TODO: better error
+	if(file>=[files count]) [XADException raiseExceptionWithXADError:XADErrorInput]; // TODO: better error
 	NSDictionary *dict=files[file];
 
 	CSHandle *handle=[self inputHandleWithParts:dict[@"Parts"]
@@ -766,7 +768,7 @@ cryptoVersion:(int)version salt:(NSData *)salt
 
 -(off_t)outputLengthOfFileWithIndex:(int)file files:(NSArray *)files
 {
-	if(file>=[files count]) [XADException raiseExceptionWithXADError:XADInputError]; // TODO: better error
+	if(file>=[files count]) [XADException raiseExceptionWithXADError:XADErrorInput]; // TODO: better error
 	NSDictionary *dict=files[file];
 
 	return [dict[@"OutputLength"] longLongValue];

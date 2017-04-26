@@ -2,7 +2,7 @@
 
 #define CSMultiHandle XADMultiHandle
 
-extern NSString *CSSizeOfSegmentUnknownException;
+extern NSString *const CSSizeOfSegmentUnknownException;
 
 @interface CSMultiHandle:CSHandle
 {
@@ -11,7 +11,7 @@ extern NSString *CSSizeOfSegmentUnknownException;
 }
 
 +(CSMultiHandle *)multiHandleWithHandleArray:(NSArray<CSHandle*> *)handlearray;
-+(CSMultiHandle *)multiHandleWithHandles:(CSHandle *)firsthandle,...;
++(CSMultiHandle *)multiHandleWithHandles:(CSHandle *)firsthandle,... NS_REQUIRES_NIL_TERMINATION;
 
 // Initializers
 -(instancetype)initWithHandles:(NSArray<CSHandle*> *)handlearray;

@@ -4,8 +4,8 @@
 
 
 
-NSString *CSCannotOpenFileException=@"CSCannotOpenFileException";
-NSString *CSFileErrorException=@"CSFileErrorException";
+NSString *const CSCannotOpenFileException=@"CSCannotOpenFileException";
+NSString *const CSFileErrorException=@"CSFileErrorException";
 
 
 

@@ -9,7 +9,7 @@
 	if((self=[super initWithName:[parent filename]]))
 	{
 		parser=parent;
-		files=[filearray retain];
+		files=[filearray copy];
 
 		InitializeLZSS(&lzss,0x400000);
 

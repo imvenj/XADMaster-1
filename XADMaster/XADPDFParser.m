@@ -21,7 +21,7 @@ static NSData *CreateNewJPEGHeaderWithColourProfile(NSData *fileheader,NSData *p
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
 	const uint8_t *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
 	if(length<5+48) return NO;
 
@@ -124,10 +124,10 @@ static NSData *CreateNewJPEGHeaderWithColourProfile(NSData *fileheader,NSData *p
 		int width=[image imageWidth];
 		int height=[image imageHeight];
 		int bpc=[image imageBitsPerComponent];
-		int components=[image numberOfImageComponents];
+		NSInteger components=[image numberOfImageComponents];
 
 		NSData *colourprofile=[image imageICCColourProfile];
-		int profilesize=0;
+		NSInteger profilesize=0;
 		if(colourprofile) profilesize=([colourprofile length]+1)&~1;
 
 		NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
@@ -166,7 +166,7 @@ static NSData *CreateNewJPEGHeaderWithColourProfile(NSData *fileheader,NSData *p
 		}
 		else
 		{
-			int bytesperrow=(width*bpc*components+7)/8;
+			NSInteger bytesperrow=(width*bpc*components+7)/8;
 			NSData *palettedata=nil;
 
 			int type=[image imageType];
@@ -177,7 +177,7 @@ static NSData *CreateNewJPEGHeaderWithColourProfile(NSData *fileheader,NSData *p
 					{
 						// Build TIFF palette data.
 
-						int numpalettecolours=[image numberOfImagePaletteColours];
+						NSInteger numpalettecolours=[image numberOfImagePaletteColours];
 						NSData *pdfpalette=[image imagePaletteData];
 
 						if(pdfpalette)
@@ -214,7 +214,7 @@ static NSData *CreateNewJPEGHeaderWithColourProfile(NSData *fileheader,NSData *p
 
 							if(palettedata)
 							{
-								int palettecomponents=[image numberOfImagePaletteComponents];
+								NSInteger palettecomponents=[image numberOfImagePaletteComponents];
 
 								dict[@"PDFTIFFExpandedPaletteData"] = palettedata;
 								dict[@"PDFTIFFExpandedComponents"] = @(palettecomponents);
@@ -308,9 +308,9 @@ static NSData *CreateNewJPEGHeaderWithColourProfile(NSData *fileheader,NSData *p
 			}
 
 			[entries addObject:TIFFLongEntryForImageStart(273)]; // StripOffsets
-			if(components>1) [entries addObject:TIFFShortEntry(277,components)]; // SamplesPerPixel
+			if(components>1) [entries addObject:TIFFShortEntry(277,(int)components)]; // SamplesPerPixel
 			[entries addObject:TIFFLongEntry(278,height)]; // RowsPerStrip
-			[entries addObject:TIFFLongEntry(279,bytesperrow*height)]; // StripByteCounts
+			[entries addObject:TIFFLongEntry(279,(int)(bytesperrow*height))]; // StripByteCounts
 
 			if(palettedata) [entries addObject:TIFFShortArrayEntry(320,palettedata)]; // Palette
 			if(type==PDFCMYKImageType) [entries addObject:TIFFShortEntry(332,1)]; // InkSet = CMYK
@@ -352,10 +352,10 @@ static NSData *CreateNewJPEGHeaderWithColourProfile(NSData *fileheader,NSData *p
 
 	if(filter)
 	{
-		int count=[filter count];
+		NSInteger count=[filter count];
 		if(excludelast) count--;
 
-		for(int i=count-1;i>=0;i--)
+		for(NSInteger i=count-1;i>=0;i--)
 		{
 			NSString *name=filter[i];
 			if([name hasSuffix:@"Decode"]) name=[name substringToIndex:[name length]-6];
@@ -503,7 +503,7 @@ static NSData *CreateTIFFHeaderWithEntries(NSArray *entries)
 	// Write IFD header.
 	[header writeUInt16LE:[entries count]]; // Number of IFD entries.
 
-	uint32_t dataoffset=8+2+[entries count]*12+4;
+	uint32_t dataoffset=(int)(8+2+[entries count]*12+4);
 	uint32_t datasize=0;
 
 	NSEnumerator *enumerator;
@@ -514,7 +514,7 @@ static NSData *CreateTIFFHeaderWithEntries(NSArray *entries)
 	while((entry=[enumerator nextObject]))
 	{
 		NSData *data=entry[@"Data"];
-		int length=[data length];
+		NSInteger length=[data length];
 		datasize+=(length+1)&~1;
 	}
 
@@ -543,7 +543,7 @@ static NSData *CreateTIFFHeaderWithEntries(NSArray *entries)
 			NSData *data=entry[@"Data"];
 			[header writeUInt32LE:dataoffset];
 
-			int length=[data length];
+			NSInteger length=[data length];
 			dataoffset+=(length+1)&~1;
 		}
 	}
@@ -565,7 +565,7 @@ static NSData *CreateTIFFHeaderWithEntries(NSArray *entries)
 
 static NSData *CreateNewJPEGHeaderWithColourProfile(NSData *fileheader,NSData *profile,int *skiplength)
 {
-	int length=[fileheader length];
+	NSInteger length=[fileheader length];
 	const uint8_t *bytes=[fileheader bytes];
 
 	if(length<4) return nil;
@@ -592,18 +592,18 @@ static NSData *CreateNewJPEGHeaderWithColourProfile(NSData *fileheader,NSData *p
 		return nil;
 	}
 
-	int profilelength=[profile length];
+	NSInteger profilelength=[profile length];
 	const uint8_t *profilebytes=[profile bytes];
 
-	int numchunks=(profilelength+65518)/65519;
+	NSInteger numchunks=(profilelength+65518)/65519;
 
-	for(int i=0;i<numchunks;i++)
+	for(NSInteger i=0;i<numchunks;i++)
 	{
-		int chunkbytes;
+		NSInteger chunkbytes;
 		if(i==numchunks-1) chunkbytes=profilelength-i*65519;
 		else chunkbytes=65519;
 
-		int chunksize=chunkbytes+16;
+		NSInteger chunksize=chunkbytes+16;
 
 		[newheader appendBytes:(uint8_t [18]){
 			0xff,0xe2,chunksize>>8,chunksize&0xff,
@@ -647,7 +647,7 @@ numberOfChannels:(int)numberofchannels palette:(NSData *)palettedata
 	if(currentchannel>=numchannels)
 	{
 		const uint8_t *palettebytes=[palette bytes];
-		int palettelength=[palette length];
+		NSInteger palettelength=[palette length];
 
 		int pixel=CSInputNextByte(input);
 

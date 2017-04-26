@@ -10,7 +10,7 @@
 	// Geez, put some magic bytes in your file formats, people!
 
 	const uint8_t *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
 	if(length<13) return NO;
 

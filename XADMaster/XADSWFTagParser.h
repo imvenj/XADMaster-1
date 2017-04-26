@@ -30,8 +30,8 @@
 #define SWFDefineFont3Tag 75
 #define SWFDefineBitsJPEG4Tag 90
 
-extern NSString *SWFWrongMagicException;
-extern NSString *SWFNoMoreTagsException;
+extern NSString *const SWFWrongMagicException;
+extern NSString *const SWFNoMoreTagsException;
 
 @interface XADSWFTagParser:NSObject
 {
@@ -54,6 +54,7 @@ extern NSString *SWFNoMoreTagsException;
 +(instancetype)parserWithHandle:(CSHandle *)handle;
 +(instancetype)parserForPath:(NSString *)path;
 
+-(instancetype)init UNAVAILABLE_ATTRIBUTE;
 -(instancetype)initWithHandle:(CSHandle *)handle NS_DESIGNATED_INITIALIZER;
 
 -(void)parseHeader;
@@ -64,7 +65,7 @@ extern NSString *SWFNoMoreTagsException;
 @property (NS_NONATOMIC_IOSONLY, readonly) int frames;
 @property (NS_NONATOMIC_IOSONLY, readonly) int framesPerSecond;
 
-@property (NS_NONATOMIC_IOSONLY, readonly) int nextTag;
+-(int)nextTag;
 
 @property (NS_NONATOMIC_IOSONLY, readonly) int tag;
 @property (NS_NONATOMIC_IOSONLY, readonly) int tagLength;
@@ -72,7 +73,7 @@ extern NSString *SWFNoMoreTagsException;
 @property (NS_NONATOMIC_IOSONLY, readonly) int frame;
 @property (NS_NONATOMIC_IOSONLY, readonly) double time;
 
-@property (NS_NONATOMIC_IOSONLY, readonly, copy) XADHandle *handle;
+@property (NS_NONATOMIC_IOSONLY, readonly, retain) XADHandle *handle;
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) XADHandle *tagHandle;
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSData *tagContents;
 
@@ -81,7 +82,7 @@ extern NSString *SWFNoMoreTagsException;
 @property (NS_NONATOMIC_IOSONLY, readonly) int spriteID;
 @property (NS_NONATOMIC_IOSONLY, readonly) int subFrames;
 
-@property (NS_NONATOMIC_IOSONLY, readonly) int nextSubTag;
+-(int)nextSubTag;
 @property (NS_NONATOMIC_IOSONLY, readonly) int subTag;
 @property (NS_NONATOMIC_IOSONLY, readonly) int subTagLength;
 @property (NS_NONATOMIC_IOSONLY, readonly) int subTagBytesLeft;

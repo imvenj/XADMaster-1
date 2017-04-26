@@ -74,7 +74,7 @@
 	NSMutableDictionary *dict=[NSMutableDictionary dictionary];
 	while(![handle atEndOfFile])
 	{
-		NSNumber *key=@((unsigned long long)[handle offsetInFile]);
+		NSNumber *key=@([handle offsetInFile]);
 		uint32_t length=[handle readUInt32BE];
 		NSData *data=[handle readDataOfLength:length];
 		dict[key] = data;
@@ -153,7 +153,7 @@
 		NSMutableDictionary *resource=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 			key,@"ID",
 			@(attrs),@"Attributes",
-			@((unsigned long long)offset),@"DataOffset",
+			@(offset),@"DataOffset",
 		nil];
 
 		if(nameoffset!=-1) resource[@"NameOffset"] = @(nameoffset);

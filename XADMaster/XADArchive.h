@@ -11,19 +11,19 @@
 #endif
 
 typedef NS_ENUM(int, XADAction) {
-	XADAbortAction = 0,
-	XADRetryAction = 1,
-	XADSkipAction = 2,
-	XADOverwriteAction = 3,
-	XADRenameAction = 4
+	XADActionAbort = 0,
+	XADActionRetry = 1,
+	XADActionSkip = 2,
+	XADActionOverwrite = 3,
+	XADActionRename = 4
 };
 
 //typedef off_t xadSize; // deprecated
 
 
-extern NSString *XADResourceDataKey;
-extern NSString *XADResourceForkData;
-extern NSString *XADFinderFlags;
+extern NSString *const XADResourceDataKey;
+extern NSString *const XADResourceForkData UNAVAILABLE_ATTRIBUTE;
+extern NSString *const XADFinderFlags;
 
 
 @class UniversalDetector;
@@ -86,13 +86,13 @@ extern NSString *XADFinderFlags;
 
 
 -(instancetype)init NS_DESIGNATED_INITIALIZER;
--(instancetype)initWithFile:(NSString *)file;
+-(instancetype)initWithFile:(NSString *)file NS_SWIFT_UNAVAILABLE("Call throws on failure");
 -(instancetype)initWithFile:(NSString *)file error:(NSError **)error;
 -(instancetype)initWithFile:(NSString *)file delegate:(id<XADArchiveDelegate>)del error:(NSError **)error;
--(instancetype)initWithData:(NSData *)data;
+-(instancetype)initWithData:(NSData *)data NS_SWIFT_UNAVAILABLE("Call throws on failure");
 -(instancetype)initWithData:(NSData *)data error:(NSError **)error;
 -(instancetype)initWithData:(NSData *)data delegate:(id<XADArchiveDelegate>)del error:(NSError **)error;
--(instancetype)initWithArchive:(XADArchive *)archive entry:(NSInteger)n;
+-(instancetype)initWithArchive:(XADArchive *)archive entry:(NSInteger)n NS_SWIFT_UNAVAILABLE("Call throws on failure");
 -(instancetype)initWithArchive:(XADArchive *)archive entry:(NSInteger)n error:(NSError **)error;
 -(instancetype)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n delegate:(id<XADArchiveDelegate>)del error:(NSError **)error;
 -(instancetype)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n
@@ -103,7 +103,7 @@ extern NSString *XADFinderFlags;
 -(BOOL)_parseWithErrorPointer:(NSError **)error;
 
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *filename;
-@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray *allFilenames;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray<NSString*> *allFilenames;
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *formatName;
 @property (NS_NONATOMIC_IOSONLY, getter=isEncrypted, readonly) BOOL encrypted;
 @property (NS_NONATOMIC_IOSONLY, getter=isSolid, readonly) BOOL solid;
@@ -113,24 +113,24 @@ extern NSString *XADFinderFlags;
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *commonTopDirectory;
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *comment;
 
-@property (NS_NONATOMIC_IOSONLY, assign) id<XADArchiveDelegate> delegate;
+@property (NS_NONATOMIC_IOSONLY, weak) id<XADArchiveDelegate> delegate;
 
 @property (NS_NONATOMIC_IOSONLY, copy) NSString *password;
 
-@property (NS_NONATOMIC_IOSONLY) NSStringEncoding nameEncoding;
+@property (NS_NONATOMIC_IOSONLY) NSStringEncoding nameEncoding NS_REFINED_FOR_SWIFT;
 
 @property (NS_NONATOMIC_IOSONLY, readonly) XADError lastError;
 -(void)clearLastError;
 -(NSString *)describeLastError;
 -(NSString *)describeError:(XADError)error;
 
-@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *description;
+@property (readonly, copy) NSString *description;
 
 
 
--(NSDictionary *)dataForkParserDictionaryForEntry:(NSInteger)n;
--(NSDictionary *)resourceForkParserDictionaryForEntry:(NSInteger)n;
--(NSDictionary *)combinedParserDictionaryForEntry:(NSInteger)n;
+-(NSDictionary<XADArchiveKeys,id> *)dataForkParserDictionaryForEntry:(NSInteger)n;
+-(NSDictionary<XADArchiveKeys,id> *)resourceForkParserDictionaryForEntry:(NSInteger)n;
+-(NSDictionary<XADArchiveKeys,id> *)combinedParserDictionaryForEntry:(NSInteger)n;
 
 -(NSString *)nameOfEntry:(NSInteger)n;
 -(BOOL)entryHasSize:(NSInteger)n;
@@ -143,11 +143,11 @@ extern NSString *XADFinderFlags;
 -(BOOL)entryIsArchive:(NSInteger)n;
 -(BOOL)entryHasResourceFork:(NSInteger)n;
 -(NSString *)commentForEntry:(NSInteger)n;
--(NSDictionary *)attributesOfEntry:(NSInteger)n;
--(NSDictionary *)attributesOfEntry:(NSInteger)n withResourceFork:(BOOL)resfork;
--(CSHandle *)handleForEntry:(NSInteger)n;
+-(NSDictionary<NSFileAttributeKey,id> *)attributesOfEntry:(NSInteger)n;
+-(NSDictionary<NSFileAttributeKey,id> *)attributesOfEntry:(NSInteger)n withResourceFork:(BOOL)resfork;
+-(CSHandle *)handleForEntry:(NSInteger)n NS_SWIFT_UNAVAILABLE("Use error-throwing type instead");
 -(CSHandle *)handleForEntry:(NSInteger)n error:(NSError **)error;
--(CSHandle *)resourceHandleForEntry:(NSInteger)n;
+-(CSHandle *)resourceHandleForEntry:(NSInteger)n NS_SWIFT_UNAVAILABLE("Use error-throwing type instead");
 -(CSHandle *)resourceHandleForEntry:(NSInteger)n error:(NSError **)error;
 -(NSData *)contentsOfEntry:(NSInteger)n;
 //-(NSData *)resourceContentsOfEntry:(int)n;
@@ -232,3 +232,9 @@ typedef off_t xadSize;
 #define XADRename XADRenameAction
 
 #endif
+
+static const XADAction XADAbortAction API_DEPRECATED_WITH_REPLACEMENT("XADActionAbort", macosx(10.0, 10.8)) = XADActionAbort;
+static const XADAction XADRetryAction API_DEPRECATED_WITH_REPLACEMENT("XADActionRetry", macosx(10.0, 10.8)) = XADActionRetry;
+static const XADAction XADSkipAction API_DEPRECATED_WITH_REPLACEMENT("XADActionSkip", macosx(10.0, 10.8)) = XADActionSkip;
+static const XADAction XADOverwriteAction API_DEPRECATED_WITH_REPLACEMENT("XADActionOverwrite", macosx(10.0, 10.8)) = XADActionOverwrite;
+static const XADAction XADRenameAction API_DEPRECATED_WITH_REPLACEMENT("XADActionRename", macosx(10.0, 10.8)) = XADActionRename;

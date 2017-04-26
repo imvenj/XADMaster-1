@@ -17,6 +17,20 @@
 	return [obj unsignedIntValue];
 }
 
+-(NSInteger)integerValueForKey:(NSString *)key default:(NSInteger)def
+{
+	id obj=self[key];
+	if(!obj||![obj isKindOfClass:[NSNumber class]]) return def;
+	return [obj integerValue];
+}
+
+-(NSUInteger)unsignedIntegerValueForKey:(NSString *)key default:(NSUInteger)def
+{
+	id obj=self[key];
+	if(!obj||![obj isKindOfClass:[NSNumber class]]) return def;
+	return [obj unsignedIntegerValue];
+}
+
 -(BOOL)boolValueForKey:(NSString *)key default:(BOOL)def
 {
 	id obj=self[key];

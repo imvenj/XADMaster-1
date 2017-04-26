@@ -1,7 +1,21 @@
 #import "XADRARAESHandle.h"
 #import "RARBug.h"
 
-#import "Crypto/sha.h"
+#if defined(USE_COMMON_CRYPTO) && USE_COMMON_CRYPTO
+#include <CommonCrypto/CommonDigest.h>
+typedef CC_SHA1_CTX XADSHA1;
+#define XADSHA1_Init CC_SHA1_Init
+#define XADSHA1_Final CC_SHA1_Final
+#define XADSHA1_Update CC_SHA1_Update
+#define XADSHA1_Update_WithRARBug CC_SHA1_Update_WithRARBug
+#else
+#include "Crypto/sha.h"
+typedef SHA_CTX XADSHA1;
+#define XADSHA1_Init SHA1_Init
+#define XADSHA1_Final SHA1_Final
+#define XADSHA1_Update SHA1_Update
+#define XADSHA1_Update_WithRARBug SHA1_Update_WithRARBug
+#endif
 
 @implementation XADRARAESHandle
 
@@ -15,8 +29,8 @@
 	uint8_t passbuf[length*2+8];
 	for(NSInteger i=0;i<length;i++)
 	{
-		int c=[password characterAtIndex:i];
-		passbuf[2*i]=c;
+		unichar c=[password characterAtIndex:i];
+		passbuf[2*i]=c & 0xFF;
 		passbuf[2*i+1]=c>>8;
 	}
 
@@ -28,27 +42,27 @@
 		buflength+=8;
 	}
 
-	SHA_CTX sha;
-	SHA1_Init(&sha);
+	XADSHA1 sha;
+	XADSHA1_Init(&sha);
 
 	for(int i=0;i<0x40000;i++)
 	{
-		SHA1_Update_WithRARBug(&sha,passbuf,buflength,brokenhash);
+		XADSHA1_Update_WithRARBug(&sha,passbuf,buflength,brokenhash);
 
 		uint8_t num[3]={i,i>>8,i>>16};
-		SHA1_Update_WithRARBug(&sha,num,3,brokenhash);
+		XADSHA1_Update_WithRARBug(&sha,num,3,brokenhash);
 
 		if(i%0x4000==0)
 		{
-			SHA_CTX tmpsha=sha;
+			XADSHA1 tmpsha=sha;
 			uint8_t digest[20];
-			SHA1_Final(digest,&tmpsha);
+			XADSHA1_Final(digest,&tmpsha);
 			keybuf[i/0x4000]=digest[19];
 		}
 	}
 
 	uint8_t digest[20];
-	SHA1_Final(digest,&sha);
+	XADSHA1_Final(digest,&sha);
 
 	for(int i=0;i<16;i++) keybuf[i+16]=digest[i^3];
 

@@ -126,7 +126,7 @@ static int NextBitWithDoubleWeights(CarrylessRangeCoder *coder,uint32_t *weight1
 	uint32_t countbitweights[24][24];
 
 	uint8_t mtfbuffer[256];
-	uint32_t numbytes;
+	uint32_t numbytes = 0;
 	uint32_t intarray1[257];
 	uint32_t intarray2[257];
 	uint32_t intarray3[257];

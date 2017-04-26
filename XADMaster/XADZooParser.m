@@ -10,7 +10,7 @@
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
 	const uint8_t *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
 	if(length<0x22) return NO;
 	if(bytes[0x14]!=0xdc||bytes[0x15]!=0xa7||bytes[0x16]!=0xc4||bytes[0x17]!=0xfd) return NO;

@@ -1,3 +1,4 @@
+#import <Foundation/NSObject.h>
 #import "CSHandle.h"
 #import "XADException.h"
 
@@ -16,9 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)parseFromHandle:(CSHandle *)handle;
 -(nullable NSData *)resourceDataForType:(uint32_t)type identifier:(int)identifier;
 
--(nullable NSMutableDictionary *)_parseResourceDataFromHandle:(CSHandle *)handle;
--(nullable NSDictionary *)_parseMapFromHandle:(CSHandle *)handle withDataObjects:(NSMutableDictionary *)dataobjects;
--(nullable NSDictionary *)_parseReferencesFromHandle:(CSHandle *)handle count:(int)count;
+-(nullable NSMutableDictionary<NSNumber*,NSData*> *)_parseResourceDataFromHandle:(CSHandle *)handle;
+-(nullable NSDictionary<NSNumber*,NSDictionary<NSNumber*,id>*> *)_parseMapFromHandle:(CSHandle *)handle withDataObjects:(NSMutableDictionary<NSNumber*,NSData*> *)dataobjects;
+-(nullable NSDictionary<NSNumber*, NSMutableDictionary<NSString*, id>*> *)_parseReferencesFromHandle:(CSHandle *)handle count:(int)count;
 
 @end
 

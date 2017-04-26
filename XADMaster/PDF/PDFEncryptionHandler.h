@@ -2,7 +2,7 @@
 #import "PDFEncryptionUtils.h"
 #import "../CSHandle.h"
 
-extern NSString *PDFUnsupportedEncryptionException;
+extern NSString *const PDFUnsupportedEncryptionException;
 
 @class PDFEncryptionAlgorithm;
 @class PDFObjectReference,PDFString;

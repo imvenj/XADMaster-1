@@ -1,6 +1,6 @@
 #import "LZWHandle.h"
 
-NSString *LZWInvalidCodeException=@"LZWInvalidCodeException";
+NSString *const LZWInvalidCodeException=@"LZWInvalidCodeException";
 
 
 @implementation LZWHandle

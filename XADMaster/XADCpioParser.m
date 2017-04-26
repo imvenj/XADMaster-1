@@ -10,7 +10,7 @@
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
 	const uint8_t *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
 	if(length<6) return NO;
 	if(bytes[0]=='0'&&bytes[1]=='7'&&bytes[2]=='0'&&bytes[3]=='7'&&bytes[4]=='0'&&bytes[5]=='7') return YES;
@@ -31,7 +31,7 @@
 		uint8_t magic[2];
 		[fh readBytes:2 toBuffer:magic];
 
-		int devmajor,devminor,ino,mode,uid,gid,nlink,rdevmajor,rdevminor,namesize,checksum;
+		int devmajor,devminor,ino,mode,uid,gid,nlink,rdevmajor,rdevminor,namesize,checksum = 0;
 		uint64_t mtime,filesize;
 		NSData *namedata;
 		int pad=0;

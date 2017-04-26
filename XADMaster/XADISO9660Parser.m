@@ -43,12 +43,12 @@ static BOOL IsHighSierraPrimaryVolumeDescriptor(const uint8_t *bytes,int length,
 name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 {
 	const uint8_t *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
 	// Scan for a primary volume descriptor to find the start of the image.
 	for(int i=0x8000;i<length-2048-6;i++)
 	{
-		if(IsISO9660PrimaryVolumeDescriptor(bytes,length,i))
+		if(IsISO9660PrimaryVolumeDescriptor(bytes,(int)length,i))
 		{
 			// Then, scan for the volume descriptor on the next block to find the block size.
 			for(int j=2048;j<2448;j++)
@@ -63,7 +63,7 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 			}
 		}
 
-		if(IsHighSierraPrimaryVolumeDescriptor(bytes,length,i))
+		if(IsHighSierraPrimaryVolumeDescriptor(bytes,(int)length,i))
 		{
 			// Then, scan for the volume descriptor on the next block to find the block size.
 			for(int j=2048;j<2448;j++)

@@ -12,7 +12,7 @@
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
 	const uint8_t *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
 	if(length<4) return NO;
 
@@ -464,11 +464,11 @@ offset:(off_t)offset length:(off_t)length
 
 	NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 		[self XADPathWithString:name],XADFileNameKey,
-		[NSNumber numberWithLongLong:length+[data length]],XADFileSizeKey,
+		@(length+[data length]),XADFileSizeKey,
 		@(length),@"SWFDataLength",
 		@(offset),@"SWFDataOffset",
 		[self XADStringWithString:[parser isCompressed]?@"Zlib":@"None"],XADCompressionNameKey,
-		[NSNumber numberWithInt:index],@"SWFDataIndex",
+		@(index),@"SWFDataIndex",
 	nil];
 	[self addEntryWithDictionary:dict];
 }

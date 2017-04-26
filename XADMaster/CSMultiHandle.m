@@ -1,6 +1,6 @@
 #import "CSMultiHandle.h"
 
-NSString *CSSizeOfSegmentUnknownException=@"CSSizeOfSegmentUnknownException";
+NSString *const CSSizeOfSegmentUnknownException=@"CSSizeOfSegmentUnknownException";
 
 @implementation CSMultiHandle
 

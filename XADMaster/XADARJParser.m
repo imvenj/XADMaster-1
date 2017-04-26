@@ -18,11 +18,11 @@ static NSData *ReadNullTerminatedString(CSHandle *fh);
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
 	const uint8_t *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
 	if(length<40) return NO;
 
-	for(int i=0;i<=length-4;i++)
+	for(NSInteger i=0;i<=length-4;i++)
 	{
 		if(bytes[i]==0x60&&bytes[i+1]==0xea)
 		{
@@ -73,7 +73,7 @@ static NSData *ReadNullTerminatedString(CSHandle *fh);
 	int firstsize=headerbytes[0];
 	//int version=headerbytes[1];
 	//int minversion=headerbytes[2];
-	int os=headerbytes[3];
+	//int os=headerbytes[3];
 	//int archiveflags=headerbytes[4];
 	//int securityversion=headerbytes[5];
 	int filetype=headerbytes[6];
@@ -145,9 +145,9 @@ static NSData *ReadNullTerminatedString(CSHandle *fh);
 		NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 			[self XADPathWithData:filename separators:separator],XADFileNameKey,
 			@(pos),XADDataOffsetKey,
-			[NSNumber numberWithLongLong:compsize],XADDataLengthKey,
-			[NSNumber numberWithLongLong:compsize],XADCompressedSizeKey,
-			[NSNumber numberWithLongLong:size],XADFileSizeKey,
+			@(compsize),XADDataLengthKey,
+			@(compsize),XADCompressedSizeKey,
+			@(size),XADFileSizeKey,
 			[NSDate XADDateWithMSDOSDateTime:modification],XADLastModificationDateKey,
 			@(accessmode),XADDOSFileAttributesKey,
 			@(version),@"ARJVersion",
@@ -156,7 +156,7 @@ static NSData *ReadNullTerminatedString(CSHandle *fh);
 			@(flags),@"ARJFlags",
 			@(method),@"ARJMethod",
 			@(filetype),@"ARJFileType",
-			[NSNumber numberWithInt:crc],@"ARJCRC32",
+			@(crc),@"ARJCRC32",
 		nil];
 
 		if(filetype==3) dict[XADIsDirectoryKey] = @YES;
@@ -210,14 +210,14 @@ static NSData *ReadNullTerminatedString(CSHandle *fh);
 	CSHandle *handle=[self handleAtDataOffsetForDictionary:dict];
 	off_t size=[dict[XADFileSizeKey] longLongValue];
 	int method=[dict[@"ARJMethod"] intValue];
-	uint32_t crc=[dict[@"ARJCRC32"] unsignedLongValue];
+	uint32_t crc=[dict[@"ARJCRC32"] unsignedIntValue];
 	NSNumber *crypto=dict[XADIsEncryptedKey];
 
 	if(crypto&&[crypto boolValue])
 	{
 		NSMutableData *passdata=[NSMutableData dataWithData:[self encodedPassword]];
 		uint8_t *passbytes=[passdata mutableBytes];
-		int passlength=[passdata length];
+		int passlength=(int)[passdata length];
 		int mod=[dict[@"ARJPasswordModifier"] intValue];
 
 		for(int i=0;i<passlength;i++) passbytes[i]+=mod;

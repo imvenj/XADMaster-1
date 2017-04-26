@@ -31,7 +31,7 @@ static const NSString *DateFormat=@"Date";
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
 	const uint8_t *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
 	return length>=4&&bytes[0]=='x'&&bytes[1]=='a'&&bytes[2]=='r'&&bytes[3]=='!';
 }
@@ -451,14 +451,14 @@ destinationDictionary:(NSMutableDictionary *)dest
 	else if(format==HexFormat)
 	{
 		NSMutableData *data=[NSMutableData data];
-		uint8_t byte;
-		int n=0,length=[string length];
+		uint8_t byte = '\0';
+		NSInteger n=0,length=[string length];
 		for(int i=0;i<length;i++)
 		{
-			int c=[string characterAtIndex:i];
+			unichar c=[string characterAtIndex:i];
 			if(isxdigit(c))
 			{
-				int val;
+				int val = 0;
 				if(c>='0'&&c<='9') val=c-'0';
 				if(c>='A'&&c<='F') val=c-'A'+10;
 				if(c>='a'&&c<='f') val=c-'a'+10;

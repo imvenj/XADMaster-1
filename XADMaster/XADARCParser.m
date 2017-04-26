@@ -81,9 +81,9 @@ static BOOL IsARCHeader(const uint8_t *bytes,int length,BOOL acceptloader)
 name:(NSString *)name
 {
 	const uint8_t *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
-	return IsARCHeader(bytes,length,NO);
+	return IsARCHeader(bytes,(int)MIN(length, INT32_MAX),NO);
 }
 
 -(void)parse
@@ -131,7 +131,7 @@ name:(NSString *)name
 		if(method==1) uncompsize=compsize;
 		else uncompsize=[fh readUInt32LE];
 
-		uint32_t loadaddress,execaddress,fileattrs;
+		uint32_t loadaddress = 0,execaddress = 0,fileattrs = 0;
 		if(method&0x80)
 		{
 			loadaddress=[fh readUInt32LE];
@@ -326,24 +326,24 @@ name:(NSString *)name
 name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 {
 	const uint8_t *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
 	// .COM executable, type ARC520.COM. Mangled first entry contains a jump
 	// to unpack code in first entry, which we skip.
-	if(IsARCHeader(&bytes[0],length,YES))
+	if(IsARCHeader(&bytes[0],(int)MIN(length, INT32_MAX),YES))
 	{
 		uint32_t datasize=CSUInt32LE(&bytes[0x0f]);
 		uint32_t nextoffs;
 		if(bytes[1]==1) nextoffs=datasize+0x19;
 		else nextoffs=datasize+0x1d;
 
-		props[@"ARCSFXOffset"] = [NSNumber numberWithInt:nextoffs];
+		props[@"ARCSFXOffset"] = @(nextoffs);
 		return YES;
 	}
 
 	// .COM executable, type ARC512.COM. Archive is preceeded by a three-byte
 	// jump to code in a (mangled?) first entry, which we skip.
-	if(IsARCHeader(&bytes[3],length-3,YES))
+	if(IsARCHeader(&bytes[3],(int)MIN(length-3, INT32_MAX-3),YES))
 	{
 		uint32_t datasize=CSUInt32LE(&bytes[0x0f+3]);
 
@@ -359,9 +359,9 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 	if(length>2)
 	if(bytes[0]=='M'&&bytes[1]=='Z')
 	{
-		for(int i=2;i<=length-0x1d /*&& i<0x10000-0x1d*/;i++)
+		for(NSInteger i=2;i<=length-0x1d /*&& i<0x10000-0x1d*/;i++)
 		{
-			if(IsARCHeader(&bytes[i],length-i,NO))
+			if(IsARCHeader(&bytes[i],(int)(length-i),NO))
 			{
 				props[@"ARCSFXOffset"] = @(i);
 				return YES;

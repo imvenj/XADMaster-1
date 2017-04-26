@@ -19,12 +19,12 @@
 	while((byte=[fh readUInt8])) [data appendBytes:&byte length:1];
 
 	const char *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
 	NSData *namepart=data;
 	NSData *comment=nil;
-	int namelength;
-	for(int i=0;i<length;i++)
+	NSInteger namelength;
+	for(NSInteger i=0;i<length;i++)
 	{
 		if(bytes[i]=='.')
 		{
@@ -101,14 +101,14 @@
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
 	const uint8_t *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
 	if(length<9) return NO;
 
 	if(bytes[0]!=0x76 || (bytes[1]!=0xfe && bytes[1]!=0xfd)) return NO;
 
 	if(bytes[2]==0) return NO;
-	for(int i=2;i<length;i++)
+	for(NSInteger i=2;i<length;i++)
 	{
 		if(bytes[i]==0)
 		{
@@ -133,7 +133,7 @@
 	XADPath *filename=dict[XADFileNameKey];
 	NSData *namedata=[filename data];
 	const char *bytes=[namedata bytes];
-	int length=[namedata length];
+	NSInteger length=[namedata length];
 
 	if(length>4)
 	if(bytes[length-4]=='.')

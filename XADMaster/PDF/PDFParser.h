@@ -3,9 +3,9 @@
 #import "PDFStream.h"
 #import "PDFEncryptionHandler.h"
 
-extern NSString *PDFWrongMagicException;
-extern NSString *PDFInvalidFormatException;
-extern NSString *PDFParserException;
+extern NSString *const PDFWrongMagicException;
+extern NSString *const PDFInvalidFormatException;
+extern NSString *const PDFParserException;
 
 @interface PDFParser:NSObject
 {
@@ -98,13 +98,6 @@ extern NSString *PDFParserException;
 -(NSData *)rawData;
 -(NSString *)string;
 
--(BOOL)isEqual:(id)other;
--(unsigned)hash;
-
--(id)copyWithZone:(NSZone *)zone;
-
--(NSString *)description;
-
 @end
 
 
@@ -121,12 +114,6 @@ extern NSString *PDFParserException;
 
 @property (NS_NONATOMIC_IOSONLY, readonly) int number;
 @property (NS_NONATOMIC_IOSONLY, readonly) int generation;
-
--(BOOL)isEqual:(id)other;
-
--(id)copyWithZone:(NSZone *)zone;
-
--(NSString *)description;
 
 @end
 

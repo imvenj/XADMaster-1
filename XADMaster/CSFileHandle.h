@@ -4,8 +4,8 @@
 
 #define CSFileHandle XADFileHandle
 
-extern NSString *CSCannotOpenFileException;
-extern NSString *CSFileErrorException;
+extern NSString *const CSCannotOpenFileException;
+extern NSString *const CSFileErrorException;
 
 @interface CSFileHandle:CSHandle
 {

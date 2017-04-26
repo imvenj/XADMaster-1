@@ -285,7 +285,7 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 	}
 
 	uint64_t namelength=ReadRAR5VInt(handle);
-	NSData *namedata=[handle readDataOfLength:namelength];
+	NSData *namedata=[handle readDataOfLength:(int)namelength];
 
 	[dict setObject:[self XADPathWithData:namedata encodingName:XADUTF8StringEncodingName separators:XADUnixPathSeparator]
 	forKey:XADFileNameKey];
@@ -418,7 +418,7 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 					[dict setObject:[NSNumber numberWithUnsignedLongLong:flags] forKey:@"RAR5RedirectionFlags"];
 
 					uint64_t namelength=ReadRAR5VInt(handle);
-					NSData *namedata=[handle readDataOfLength:namelength];
+					NSData *namedata=[handle readDataOfLength:(int)namelength];
 
 					[dict setObject:[self XADStringWithData:namedata encodingName:XADUTF8StringEncodingName]
 					forKey:XADLinkDestinationKey];
@@ -433,7 +433,7 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 					if(flags&0x0001)
 					{
 						uint64_t namelength=ReadRAR5VInt(handle);
-						NSData *namedata=[handle readDataOfLength:namelength];
+						NSData *namedata=[handle readDataOfLength:(int)namelength];
 
 						[dict setObject:[self XADStringWithData:namedata]
 						forKey:XADPosixUserNameKey];
@@ -442,7 +442,7 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 					if(flags&0x0002)
 					{
 						uint64_t namelength=ReadRAR5VInt(handle);
-						NSData *namedata=[handle readDataOfLength:namelength];
+						NSData *namedata=[handle readDataOfLength:(int)namelength];
 
 						[dict setObject:[self XADStringWithData:namedata]
 						forKey:XADPosixGroupNameKey];

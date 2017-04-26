@@ -260,7 +260,7 @@ static CSHandle *HandleForElement(XADStuffItXParser *self,StuffItXElement *eleme
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name;
 {
 	const uint8_t *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
 	if(length<8) return NO;
 
@@ -494,14 +494,14 @@ static CSHandle *HandleForElement(XADStuffItXParser *self,StuffItXElement *eleme
 
 				// Insert the fork at the right part of the data stream.
 				// Forks can be specified out of order.
-				int count=[forks count];
+				NSInteger count=[forks count];
 				if(index==count)
 				{
 					[forks addObject:dict];
 				}
 				else if(index>count)
 				{
-					for(int i=count;i<index;i++) [forks addObject:[NSNull null]];
+					for(NSInteger i=count;i<index;i++) [forks addObject:[NSNull null]];
 					[forks addObject:dict];
 				}
 				else /*if(index<count)*/

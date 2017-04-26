@@ -278,7 +278,7 @@
 		// Parse the pair into key/value.
 		read_length = 0;
 		start_pos = position;
-		int max_len = strlen( key_val_pair );
+		int max_len = (int)strlen( key_val_pair );
 		while( key_val_pair[read_length] != '=' && read_length < max_len ) {
 			position++;
 			read_length++;
@@ -411,7 +411,7 @@
 		case 'g': {
 			// Read in the header and store for parsing
 			[currentGlobalHeader release];
-			currentGlobalHeader = [[handle readDataOfLength:size] retain];
+			currentGlobalHeader = [[handle readDataOfLength:(int)size] retain];
 			[handle seekToFileOffset:offset];
 
 			// Parse next header.
@@ -424,7 +424,7 @@
 		// POSIX.2001 extended header.
 		case 'x': {
 			// Read in the header.
-			NSData *extendedHeader = [handle readDataOfLength:size];
+			NSData *extendedHeader = [handle readDataOfLength:(int)size];
 			[handle seekToFileOffset:offset];
 
 			// Prepare a new dictionary with the next header.
@@ -454,7 +454,7 @@
 	// LongName or LongLink?
 	if( typeFlag == 'L' || typeFlag == 'K' ) {
 		// Read in the header
-		NSData *longHeader = [handle readDataOfLength:size];
+		NSData *longHeader = [handle readDataOfLength:(int)size];
 		[handle seekToFileOffset:offset];
 
 		// Check if there is a terminating null byte, and eliminate it.

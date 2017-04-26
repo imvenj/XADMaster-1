@@ -4,10 +4,10 @@
 #include <sys/stat.h>
 
 
-NSString *CSOutOfMemoryException=@"CSOutOfMemoryException";
-NSString *CSEndOfFileException=@"CSEndOfFileException";
-NSString *CSNotImplementedException=@"CSNotImplementedException";
-NSString *CSNotSupportedException=@"CSNotSupportedException";
+NSString *const CSOutOfMemoryException=@"CSOutOfMemoryException";
+NSString *const CSEndOfFileException=@"CSEndOfFileException";
+NSString *const CSNotImplementedException=@"CSNotImplementedException";
+NSString *const CSNotSupportedException=@"CSNotSupportedException";
 
 
 
@@ -18,7 +18,7 @@ NSString *CSNotSupportedException=@"CSNotSupportedException";
 {
 	if((self=[super init]))
 	{
-		name=[descname retain];
+		name=[descname copy];
 
 		bitoffs=-1;
 
@@ -266,7 +266,7 @@ CSReadValueImpl(uint32_t,readID,CSUInt32BE)
 {
 	uint8_t buffer[16384];
 	NSMutableData *data=[NSMutableData data];
-	int actual;
+	NSInteger actual;
 
 	do
 	{

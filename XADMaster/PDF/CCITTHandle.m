@@ -24,7 +24,7 @@ static int T41DBlackCodeTable[][2];
 //static int T42DCodeTable[][2];
 static int T62DCodeTable[][2];
 
-NSString *CCITTCodeException=@"CCITTCodeException";
+NSString *const CCITTCodeException=@"CCITTCodeException";
 
 @implementation CCITTFaxHandle
 

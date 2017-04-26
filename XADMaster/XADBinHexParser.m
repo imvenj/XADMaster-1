@@ -9,7 +9,7 @@
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	int length=[data length];
+	NSInteger length=[data length];
 	const uint8_t *bytes=[data bytes];
 
 	BOOL found=NO;
@@ -30,7 +30,7 @@
 
 	if(bytes[offs]!=':') return NO;
 
-	CSMemoryHandle *mh=[CSMemoryHandle memoryHandleForReadingBuffer:(uint8_t *)bytes+offs length:length-offs];
+	CSMemoryHandle *mh=[CSMemoryHandle memoryHandleForReadingBuffer:(uint8_t *)bytes+offs length:(unsigned int)(length-offs)];
 	XADBinHexHandle *fh=[[[XADBinHexHandle alloc] initWithHandle:mh] autorelease];
 	uint16_t crc=0;
 

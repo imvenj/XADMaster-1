@@ -7,7 +7,7 @@
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
 	const uint8_t *bytes=[data bytes];
-	int length=[data length];
+	NSInteger length=[data length];
 
 	if(length<8) return NO;
 
@@ -91,7 +91,7 @@ static uint64_t ParseOctal(const uint8_t *ptr,int maxlen)
 			int nameoffs=(int)ParseDecimal(&header[1],14);
 
 			const uint8_t *tablebytes=[filenametable bytes];
-			int tablelength=[filenametable length];
+			NSInteger tablelength=[filenametable length];
 
 			if(nameoffs>=tablelength) [XADException raiseIllegalDataException];
 

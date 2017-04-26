@@ -6,6 +6,9 @@
 #include <sys/xattr.h>
 #endif
 
+#if !__has_feature(objc_arc)
+#error this file needs to be compiled with Automatic Reference Counting (ARC)
+#endif
 
 @implementation XADSimpleUnarchiver
 @synthesize delegate;
@@ -19,7 +22,7 @@
 {
 	XADArchiveParser *archiveparser=[XADArchiveParser archiveParserForPath:path error:errorptr];
 	if(!archiveparser) return nil;
-	return [[[self alloc] initWithArchiveParser:archiveparser] autorelease];
+	return [[self alloc] initWithArchiveParser:archiveparser];
 }
 
 -(instancetype)initWithArchiveParser:(XADArchiveParser *)archiveparser
@@ -31,7 +34,7 @@
 {
 	if((self=[super init]))
 	{
-		parser=[archiveparser retain];
+		parser=archiveparser;
 		unarchiver=[[XADUnarchiver alloc] initWithArchiveParser:archiveparser];
 		subunarchiver=nil;
 
@@ -45,12 +48,12 @@
 		@"\\.(part[0-9]+\\.rar|tar\\.gz|tar\\.bz2|tar\\.lzma|tar\\.xz|tar\\.Z|sit\\.hqx)$"
 		options:REG_ICASE])
 		{
-			enclosingdir=[[[name stringByDeletingPathExtension]
-			stringByDeletingPathExtension] retain];
+			enclosingdir=[[name stringByDeletingPathExtension]
+						  stringByDeletingPathExtension];
 		}
 		else
 		{
-			enclosingdir=[[name stringByDeletingPathExtension] retain];
+			enclosingdir=[name stringByDeletingPathExtension];
 		}
 
 		// TODO: Check if we accidentally create a package. Seems impossible, though.
@@ -78,7 +81,7 @@
 		resourceforks=[NSMutableSet new];
 
 		NSString *archivename=[parser filename];
-		if(archivename) metadata=[[XADPlatform readCloneableMetadataFromPath:archivename] retain];
+		if(archivename) metadata=[XADPlatform readCloneableMetadataFromPath:archivename];
 		else metadata=nil;
 
 		unpackdestination=nil;
@@ -92,33 +95,6 @@
 	}
 
 	return self;
-}
-
--(void)dealloc
-{
-	[parser release];
-	[unarchiver release];
-	[subunarchiver release];
-
-	[destination release];
-	[enclosingdir release];
-
-	[regexes release];
-	[indices release];
-
-	[entries release];
-	[reasonsforinterest release];
-	[renames release];
-	[resourceforks release];
-	[metadata release];
-
-	[unpackdestination release];
-	[finaldestination release];
-	[overridesoloitem release];
-
-	[toplevelname release];
-
-	[super dealloc];
 }
 
 -(XADArchiveParser *)archiveParser
@@ -145,8 +121,7 @@
 {
 	if(destpath!=destination)
 	{
-		[destination release];
-		destination=[destpath retain];
+		destination=[destpath copy];
 	}
 }
 
@@ -155,37 +130,20 @@
 {
 	if(dirname!=enclosingdir)
 	{
-		[enclosingdir release];
-		enclosingdir=[dirname retain];
+		enclosingdir=[dirname copy];
 	}
 }
 
--(BOOL)removesEnclosingDirectoryForSoloItems { return removesolo; }
--(void)setRemovesEnclosingDirectoryForSoloItems:(BOOL)removeflag { removesolo=removeflag; }
+@synthesize removesEnclosingDirectoryForSoloItems = removesolo;
+@synthesize alwaysOverwritesFiles = overwrite;
+@synthesize alwaysRenamesFiles = rename;
+@synthesize alwaysSkipsFiles = skip;
+@synthesize extractsSubArchives = extractsubarchives;
+@synthesize copiesArchiveModificationTimeToEnclosingDirectory = copydatetoenclosing;
+@synthesize copiesArchiveModificationTimeToSoloItems = copydatetosolo;
+@synthesize resetsDateForSoloItems = resetsolodate;
+@synthesize propagatesRelevantMetadata=propagatemetadata;
 
--(BOOL)alwaysOverwritesFiles { return overwrite; }
--(void)setAlwaysOverwritesFiles:(BOOL)overwriteflag { overwrite=overwriteflag; }
-
--(BOOL)alwaysRenamesFiles { return rename; }
--(void)setAlwaysRenamesFiles:(BOOL)renameflag { rename=renameflag; }
-
--(BOOL)alwaysSkipsFiles { return skip; }
--(void)setAlwaysSkipsFiles:(BOOL)skipflag { skip=skipflag; }
-
--(BOOL)extractsSubArchives { return extractsubarchives; }
--(void)setExtractsSubArchives:(BOOL)extractflag { extractsubarchives=extractflag; }
-
--(BOOL)copiesArchiveModificationTimeToEnclosingDirectory { return copydatetoenclosing; }
--(void)setCopiesArchiveModificationTimeToEnclosingDirectory:(BOOL)copyflag { copydatetoenclosing=copyflag; }
-
--(BOOL)copiesArchiveModificationTimeToSoloItems { return copydatetosolo; }
--(void)setCopiesArchiveModificationTimeToSoloItems:(BOOL)copyflag { copydatetosolo=copyflag; }
-
--(BOOL)resetsDateForSoloItems { return resetsolodate; }
--(void)setResetsDateForSoloItems:(BOOL)resetflag { resetsolodate=resetflag; }
-
--(BOOL)propagatesRelevantMetadata { return propagatemetadata; }
--(void)setPropagatesRelevantMetadata:(BOOL)propagateflag { propagatemetadata=propagateflag; }
 
 -(int)macResourceForkStyle { return [unarchiver macResourceForkStyle]; }
 -(void)setMacResourceForkStyle:(int)style
@@ -264,14 +222,9 @@
 	return total;
 }
 
-
-
-
--(int)numberOfItemsExtracted { return numextracted; }
-
--(BOOL)wasSoloItem { return lookslikesolo; }
-
--(NSString *)actualDestination { return finaldestination; }
+@synthesize numberOfItemsExtracted = numextracted;
+@synthesize wasSoloItem = lookslikesolo;
+@synthesize actualDestination = finaldestination;
 
 -(NSString *)soloItem
 {
@@ -382,7 +335,7 @@
 		}
 	}
 
-	return XADNoError;
+	return XADErrorNone;
 }
 
 -(XADError)_setupSubArchiveForEntryWithDataFork:(NSDictionary *)datadict resourceFork:(NSDictionary *)resourcedict
@@ -390,15 +343,15 @@
 	// Create unarchiver.
 	XADError error;
 	NSError *err = nil;
-	subunarchiver=[[unarchiver unarchiverForEntryWithDictionary:datadict
-	resourceForkDictionary:resourcedict wantChecksum:YES error:&err] retain];
+	subunarchiver=[unarchiver unarchiverForEntryWithDictionary:datadict
+										resourceForkDictionary:resourcedict wantChecksum:YES error:&err];
 	error = (XADError)err.code;
 	if(!subunarchiver)
 	{
 		if(error) return error;
-		else return XADSubArchiveError;
+		else return XADErrorSubArchive;
 	}
-	return XADNoError;
+	return XADErrorNone;
 }
 
 
@@ -463,7 +416,7 @@
 
 		// Check for collision.
 		destpath=[self _checkPath:destpath forEntryWithDictionary:nil deferred:NO];
-		if(!destpath) return XADNoError;
+		if(!destpath) return XADErrorNone;
 	}
 	else
 	{
@@ -471,28 +424,28 @@
 		else destpath=@".";
 	}
 
-	unpackdestination=[destpath retain];
-	finaldestination=[destpath retain];
+	unpackdestination=[destpath copy];
+	finaldestination=[destpath copy];
 
 	// Run unarchiver on all entries.
 	[unarchiver setDelegate:self];
 
 	for (entry in entries)
 	{
-		if([self _shouldStop]) return XADBreakError;
+		if([self _shouldStop]) return XADErrorBreak;
 
 		if(totalsize>=0) currsize=[entry[XADFileSizeKey] longLongValue];
 
 		XADError error=[unarchiver extractEntryWithDictionary:entry];
-		if(error==XADBreakError) return XADBreakError;
+		if(error==XADErrorBreak) return XADErrorBreak;
 
 		if(totalsize>=0) totalprogress+=currsize;
 	}
 
-	if([self _shouldStop]) return XADBreakError;
+	if([self _shouldStop]) return XADErrorBreak;
 
 	// If we ended up extracting nothing, give up.
-	if(!numextracted) return XADNoError;
+	if(!numextracted) return XADErrorNone;
 
 	return [self _finalizeExtraction];
 }
@@ -523,7 +476,7 @@
 		{
 			// Check for collision.
 			destpath=[self _checkPath:destpath forEntryWithDictionary:nil deferred:NO];
-			if(!destpath) return XADNoError;
+			if(!destpath) return XADErrorNone;
 		}
 	}
 	else
@@ -532,7 +485,7 @@
 		else destpath=@".";
 	}
 
-	unpackdestination=[destpath retain];
+	unpackdestination=[destpath copy];
 
 	// Disable accurate progress calculation.
 	totalsize=-1;
@@ -544,8 +497,8 @@
 	error=[subunarchiver parseAndUnarchive];
 
 	// Check if the caller wants to give up.
-	if(error==XADBreakError) return XADBreakError;
-	if([self _shouldStop]) return XADBreakError;
+	if(error==XADErrorBreak) return XADErrorBreak;
+	if([self _shouldStop]) return XADErrorBreak;
 
 	// If we ended up extracting nothing, give up.
 	if(!numextracted) return error;
@@ -587,12 +540,12 @@
 
 			// Move the item into place and delete the enclosing directory.
 			if(![self _recursivelyMoveItemAtPath:newitempath toPath:finalitempath overwrite:YES])
-			error=XADFileExistsError; // TODO: Better error handling.
+			error=XADErrorFileExists; // TODO: Better error handling.
 
 			[XADPlatform removeItemAtPath:newenclosingpath];
 
 			// Remember where the item ended up.
-			finaldestination=[[finalitempath stringByDeletingLastPathComponent] retain];
+			finaldestination=[finalitempath stringByDeletingLastPathComponent];
 			soloitem=finalitempath;
 
 		}
@@ -623,27 +576,27 @@
 					// new location selected. This may end up being the original
 					// path that caused the collision.
 					if(![self _recursivelyMoveItemAtPath:enclosingpath toPath:newenclosingpath overwrite:YES])
-					error=XADFileExistsError; // TODO: Better error handling.
+					error=XADErrorFileExists; // TODO: Better error handling.
 				}
 
 				// Remember where the items ended up.
-				finaldestination=[newenclosingpath retain];
+				finaldestination=[newenclosingpath copy];
 			}
 			else
 			{
 				// Remember where the items ended up.
-				finaldestination=[destpath retain];
+				finaldestination=[destpath copy];
 			}
 		}
 	}
 	else
 	{
 		// Remember where the items ended up.
-		finaldestination=[destpath retain];
+		finaldestination=[destpath copy];
 	}
 
 	// Save the final path to the solo item, if any.
-	overridesoloitem=[soloitem retain];
+	overridesoloitem=[soloitem copy];
 
 	if(error) return error;
 
@@ -676,7 +629,7 @@
 		}
 	}
 
-	return XADNoError;
+	return XADErrorNone;
 }
 
 -(void)_testForSoloItems:(NSDictionary *)entry
@@ -694,7 +647,7 @@
 
 		if(!toplevelname)
 		{
-			toplevelname=[firstcomp retain];
+			toplevelname=[firstcomp copy];
 			lookslikesolo=YES;
 		}
 		else
@@ -839,7 +792,7 @@
 	// If we are writing OS X or HFV resource forks, keep a list of which resource
 	// forks have been extracted, for the collision tests in checkPath.
 	int style=[unarch macResourceForkStyle];
-	if(style==XADMacOSXForkStyle || style==XADHFVExplorerAppleDoubleForkStyle)
+	if(style==XADForkStyleMacOSX || style==XADForkStyleHFVExplorerAppleDouble)
 	{
 		NSNumber *resnum=dict[XADIsResourceForkKey];
 		if(resnum && [resnum boolValue]) [resourceforks addObject:path];
@@ -938,7 +891,7 @@ fileFraction:(double)fileratio estimatedTotalFraction:(double)totalratio
 		// When writing OS X data forks, some collisions will happen. Try
 		// to handle these.
 		#ifdef __APPLE__
-		if(dict && [self macResourceForkStyle]==XADMacOSXForkStyle)
+		if(dict && [self macResourceForkStyle]==XADForkStyleMacOSX)
 		{
 			NSNumber *resnum=dict[XADIsResourceForkKey];
 			if(resnum && [resnum boolValue])
@@ -961,7 +914,7 @@ fileFraction:(double)fileratio estimatedTotalFraction:(double)totalratio
 
 		// HFV Explorer style forks always create dummy data forks, which can cause collisions.
 		// Just kludge this by ignoring collisions for data forks if a resource was written earlier.
-		if(dict && [self macResourceForkStyle]==XADHFVExplorerAppleDoubleForkStyle)
+		if(dict && [self macResourceForkStyle]==XADForkStyleHFVExplorerAppleDouble)
 		{
 			NSNumber *resnum=dict[XADIsResourceForkKey];
 			if(!resnum || ![resnum boolValue])

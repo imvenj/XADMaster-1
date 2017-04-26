@@ -62,66 +62,70 @@
 
 #include <dirent.h>
 
-NSString *XADFileNameKey=@"XADFileName";
-NSString *XADCommentKey=@"XADComment";
-NSString *XADFileSizeKey=@"XADFileSize";
-NSString *XADCompressedSizeKey=@"XADCompressedSize";
-NSString *XADCompressionNameKey=@"XADCompressionName";
+#if TARGET_OS_MAC && !TARGET_OS_OSX
+#include <MobileCoreServices/MobileCoreServices.h>
+#endif
 
-NSString *XADIsDirectoryKey=@"XADIsDirectory";
-NSString *XADIsResourceForkKey=@"XADIsResourceFork";
-NSString *XADIsArchiveKey=@"XADIsArchive";
-NSString *XADIsHiddenKey=@"XADIsHidden";
-NSString *XADIsLinkKey=@"XADIsLink";
-NSString *XADIsHardLinkKey=@"XADIsHardLink";
-NSString *XADLinkDestinationKey=@"XADLinkDestination";
-NSString *XADIsCharacterDeviceKey=@"XADIsCharacterDevice";
-NSString *XADIsBlockDeviceKey=@"XADIsBlockDevice";
-NSString *XADDeviceMajorKey=@"XADDeviceMajor";
-NSString *XADDeviceMinorKey=@"XADDeviceMinor";
-NSString *XADIsFIFOKey=@"XADIsFIFO";
-NSString *XADIsEncryptedKey=@"XADIsEncrypted";
-NSString *XADIsCorruptedKey=@"XADIsCorrupted";
+NSString *const XADFileNameKey=@"XADFileName";
+NSString *const XADCommentKey=@"XADComment";
+NSString *const XADFileSizeKey=@"XADFileSize";
+NSString *const XADCompressedSizeKey=@"XADCompressedSize";
+NSString *const XADCompressionNameKey=@"XADCompressionName";
 
-NSString *XADLastModificationDateKey=@"XADLastModificationDate";
-NSString *XADLastAccessDateKey=@"XADLastAccessDate";
-NSString *XADLastAttributeChangeDateKey=@"XADLastAttributeChangeDate";
-NSString *XADLastBackupDateKey=@"XADLastBackupDate";
-NSString *XADCreationDateKey=@"XADCreationDate";
+NSString *const XADIsDirectoryKey=@"XADIsDirectory";
+NSString *const XADIsResourceForkKey=@"XADIsResourceFork";
+NSString *const XADIsArchiveKey=@"XADIsArchive";
+NSString *const XADIsHiddenKey=@"XADIsHidden";
+NSString *const XADIsLinkKey=@"XADIsLink";
+NSString *const XADIsHardLinkKey=@"XADIsHardLink";
+NSString *const XADLinkDestinationKey=@"XADLinkDestination";
+NSString *const XADIsCharacterDeviceKey=@"XADIsCharacterDevice";
+NSString *const XADIsBlockDeviceKey=@"XADIsBlockDevice";
+NSString *const XADDeviceMajorKey=@"XADDeviceMajor";
+NSString *const XADDeviceMinorKey=@"XADDeviceMinor";
+NSString *const XADIsFIFOKey=@"XADIsFIFO";
+NSString *const XADIsEncryptedKey=@"XADIsEncrypted";
+NSString *const XADIsCorruptedKey=@"XADIsCorrupted";
 
-NSString *XADExtendedAttributesKey=@"XADExtendedAttributes";
-NSString *XADFileTypeKey=@"XADFileType";
-NSString *XADFileCreatorKey=@"XADFileCreator";
-NSString *XADFinderFlagsKey=@"XADFinderFlags";
-NSString *XADFinderInfoKey=@"XADFinderInfo";
-NSString *XADPosixPermissionsKey=@"XADPosixPermissions";
-NSString *XADPosixUserKey=@"XADPosixUser";
-NSString *XADPosixGroupKey=@"XADPosixGroup";
-NSString *XADPosixUserNameKey=@"XADPosixUserName";
-NSString *XADPosixGroupNameKey=@"XADPosixGroupName";
-NSString *XADDOSFileAttributesKey=@"XADDOSFileAttributes";
-NSString *XADWindowsFileAttributesKey=@"XADWindowsFileAttributes";
-NSString *XADAmigaProtectionBitsKey=@"XADAmigaProtectionBits";
+NSString *const XADLastModificationDateKey=@"XADLastModificationDate";
+NSString *const XADLastAccessDateKey=@"XADLastAccessDate";
+NSString *const XADLastAttributeChangeDateKey=@"XADLastAttributeChangeDate";
+NSString *const XADLastBackupDateKey=@"XADLastBackupDate";
+NSString *const XADCreationDateKey=@"XADCreationDate";
 
-NSString *XADIndexKey=@"XADIndex";
-NSString *XADDataOffsetKey=@"XADDataOffset";
-NSString *XADDataLengthKey=@"XADDataLength";
-NSString *XADSkipOffsetKey=@"XADSkipOffset";
-NSString *XADSkipLengthKey=@"XADSkipLength";
+NSString *const XADExtendedAttributesKey=@"XADExtendedAttributes";
+NSString *const XADFileTypeKey=@"XADFileType";
+NSString *const XADFileCreatorKey=@"XADFileCreator";
+NSString *const XADFinderFlagsKey=@"XADFinderFlags";
+NSString *const XADFinderInfoKey=@"XADFinderInfo";
+NSString *const XADPosixPermissionsKey=@"XADPosixPermissions";
+NSString *const XADPosixUserKey=@"XADPosixUser";
+NSString *const XADPosixGroupKey=@"XADPosixGroup";
+NSString *const XADPosixUserNameKey=@"XADPosixUserName";
+NSString *const XADPosixGroupNameKey=@"XADPosixGroupName";
+NSString *const XADDOSFileAttributesKey=@"XADDOSFileAttributes";
+NSString *const XADWindowsFileAttributesKey=@"XADWindowsFileAttributes";
+NSString *const XADAmigaProtectionBitsKey=@"XADAmigaProtectionBits";
 
-NSString *XADIsSolidKey=@"XADIsSolid";
-NSString *XADFirstSolidIndexKey=@"XADFirstSolidIndex";
-NSString *XADFirstSolidEntryKey=@"XADFirstSolidEntry";
-NSString *XADNextSolidIndexKey=@"XADNextSolidIndex";
-NSString *XADNextSolidEntryKey=@"XADNextSolidEntry";
-NSString *XADSolidObjectKey=@"XADSolidObject";
-NSString *XADSolidOffsetKey=@"XADSolidOffset";
-NSString *XADSolidLengthKey=@"XADSolidLength";
+NSString *const XADIndexKey=@"XADIndex";
+NSString *const XADDataOffsetKey=@"XADDataOffset";
+NSString *const XADDataLengthKey=@"XADDataLength";
+NSString *const XADSkipOffsetKey=@"XADSkipOffset";
+NSString *const XADSkipLengthKey=@"XADSkipLength";
 
-NSString *XADArchiveNameKey=@"XADArchiveName";
-NSString *XADVolumesKey=@"XADVolumes";
-NSString *XADVolumeScanningFailedKey=@"XADVolumeScanningFailed";
-NSString *XADDiskLabelKey=@"XADDiskLabel";
+NSString *const XADIsSolidKey=@"XADIsSolid";
+NSString *const XADFirstSolidIndexKey=@"XADFirstSolidIndex";
+NSString *const XADFirstSolidEntryKey=@"XADFirstSolidEntry";
+NSString *const XADNextSolidIndexKey=@"XADNextSolidIndex";
+NSString *const XADNextSolidEntryKey=@"XADNextSolidEntry";
+NSString *const XADSolidObjectKey=@"XADSolidObject";
+NSString *const XADSolidOffsetKey=@"XADSolidOffset";
+NSString *const XADSolidLengthKey=@"XADSolidLength";
+
+NSString *const XADArchiveNameKey=@"XADArchiveName";
+NSString *const XADVolumesKey=@"XADVolumes";
+NSString *const XADVolumeScanningFailedKey=@"XADVolumeScanningFailed";
+NSString *const XADDiskLabelKey=@"XADDiskLabel";
 
 
 @implementation XADArchiveParser
@@ -130,6 +134,7 @@ NSString *XADDiskLabelKey=@"XADDiskLabel";
 @synthesize resourceFork = resourcefork;
 @synthesize stringSource = stringsource;
 @synthesize handle = sourcehandle;
+@synthesize passwordEncodingName = passwordencodingname;
 
 static NSMutableArray<Class> *parserclasses=nil;
 static int maxheader=0;
@@ -226,6 +231,18 @@ static int maxheader=0;
 	{
 		int header=[class requiredHeaderSize];
 		if(header>maxheader) maxheader=header;
+	}
+}
+
++(void)load
+{
+	if ([NSError respondsToSelector:@selector(setUserInfoValueProviderForDomain:provider:)]) {
+		[NSError setUserInfoValueProviderForDomain:XADErrorDomain provider:^id _Nullable(NSError * _Nonnull err, NSString * _Nonnull userInfoKey) {
+			if ([userInfoKey isEqualToString:NSLocalizedDescriptionKey]) {
+				return [XADException describeXADError:(XADError)err.code];
+			}
+			return nil;
+		}];
 	}
 }
 
@@ -510,6 +527,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 	[currsolidhandle release];
 	[firstsoliddict release];
 	[prevsoliddict release];
+	[resourcefork release];
 	[super dealloc];
 }
 
@@ -625,15 +643,6 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 {
 	if(!passwordencodingname) return [self encodingName];
 	else return passwordencodingname;
-}
-
--(void)setPasswordEncodingName:(NSString *)encodingname
-{
-	if(encodingname!=passwordencodingname)
-	{
-		[passwordencodingname release];
-		passwordencodingname=[encodingname retain];
-	}
 }
 
 
@@ -753,9 +762,9 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 
 -(XADError)testChecksumWithoutExceptions
 {
-	@try { if(![self testChecksum]) return XADChecksumError; }
+	@try { if(![self testChecksum]) return XADErrorChecksum; }
 	@catch(id exception) { return [XADException parseException:exception]; }
-	return XADNoError;
+	return XADErrorNone;
 }
 
 
@@ -894,7 +903,7 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext
 	else return sourcehandle;
 }
 
--(off_t)offsetForVolume:(int)disk offset:(off_t)offset
+-(off_t)offsetForVolume:(NSInteger)disk offset:(off_t)offset
 {
 	if([sourcehandle respondsToSelector:@selector(handles)])
 	{
@@ -976,8 +985,8 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext
 	XADString *actualcomment=dict[XADCommentKey];
 	if(extcomment && !actualcomment)
 	{
-		id plist=[NSPropertyListSerialization propertyListFromData:extcomment
-		mutabilityOption:0 format:NULL errorDescription:NULL];
+		id plist=[NSPropertyListSerialization propertyListWithData:extcomment
+		options:0 format:NULL error:NULL];
 
 		if(plist&&[plist isKindOfClass:[NSString class]])
 		dict[XADCommentKey] = [self XADStringWithString:plist];
@@ -1173,14 +1182,19 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext
 {
 	va_list args;
 	va_start(args,reason);
-	NSString *fullreason=[[[NSString alloc] initWithFormat:reason arguments:args] autorelease];
+	[self reportInterestingFileWithReason:reason format:args];
 	va_end(args);
-
-	[delegate archiveParser:self findsFileInterestingForReason:[NSString stringWithFormat:
-	@"%@: %@",[self formatName],fullreason]];
 }
 
+-(void)reportInterestingFileWithReason:(NSString *)reason format:(va_list)args
+{
+	NSString *fullreason=[[NSString alloc] initWithFormat:reason arguments:args];
+	
+	[delegate archiveParser:self findsFileInterestingForReason:[NSString stringWithFormat:
+																@"%@: %@", [self formatName], fullreason]];
 
+	[fullreason release];
+}
 
 
 +(int)requiredHeaderSize { return 0; }
@@ -1216,8 +1230,8 @@ name:(NSString *)name { return nil; }
 {
 	@try { [self parse]; }
 	@catch(id exception) { return [XADException parseException:exception]; }
-	if(shouldstop) return XADBreakError;
-	return XADNoError;
+	if(shouldstop) return XADErrorBreak;
+	return XADErrorNone;
 }
 
 -(BOOL)parseWithError:(NSError**)error
@@ -1235,7 +1249,7 @@ name:(NSString *)name { return nil; }
 
 -(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum error:(NSError **)errorptr
 {
-	if(errorptr) *errorptr=XADNoError;
+	if(errorptr) *errorptr=XADErrorNone;
 	@try
 	{
 		CSHandle *handle=[self handleForEntryWithDictionary:dict wantChecksum:checksum];
@@ -1249,6 +1263,63 @@ name:(NSString *)name { return nil; }
 
 	return nil;
 }
+
+
+#if __APPLE__
++(NSString*)possibleUTIForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict
+{
+#if 0
+	if (dict[XADIsFIFOKey] && [dict[XADIsFIFOKey] boolValue]) {
+		// TODO: find the UTI
+	}
+	
+	if (dict[XADIsCharacterDeviceKey] && [dict[XADIsCharacterDeviceKey] boolValue]) {
+		// TODO: find the UTI
+	}
+
+	if (dict[XADIsBlockDeviceKey] && [dict[XADIsBlockDeviceKey] boolValue]) {
+		// TODO: find the UTI
+	}
+#endif
+
+	if (dict[XADIsLinkKey] != nil && [dict[XADIsLinkKey] boolValue]) {
+		return (NSString*)kUTTypeSymLink;
+	}
+
+	CFStringRef baseUTI = kUTTypeData;
+	if (dict[XADIsDirectoryKey] != nil && [dict[XADIsDirectoryKey] boolValue]) {
+		baseUTI = kUTTypeDirectory;
+	}
+	
+#if TARGET_OS_OSX
+	if ([dict objectForKey:XADFileTypeKey] != nil && [[dict objectForKey:XADFileTypeKey] unsignedIntValue] != 0) {
+		NSNumber *numOSType = [dict objectForKey:XADFileTypeKey];
+		CFStringRef strOSType = UTCreateStringForOSType(numOSType.unsignedIntValue);
+		CFStringRef possibleOSUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassOSType, strOSType, baseUTI);
+		CFRelease(strOSType);
+		if (possibleOSUTI && UTTypeIsDeclared(possibleOSUTI)) {
+			BOOL isGood = YES;
+			
+			if (isGood) {
+				return CFBridgingRelease(possibleOSUTI);
+			}
+		}
+		if (possibleOSUTI) {
+			CFRelease(possibleOSUTI);
+		}
+	}
+#endif
+	NSString *lastPathComp = [[dict[XADFileNameKey] lastPathComponent] pathExtension];
+	CFStringRef possibleOSUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (CFStringRef)(lastPathComp), baseUTI);
+	if (possibleOSUTI == NULL || !UTTypeIsDeclared(possibleOSUTI)) {
+		if (possibleOSUTI) {
+			CFRelease(possibleOSUTI);
+		}
+		return (NSString*)baseUTI;
+	}
+	return CFBridgingRelease(possibleOSUTI);
+}
+#endif
 
 @end
 

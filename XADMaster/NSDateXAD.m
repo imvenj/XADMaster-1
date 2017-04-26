@@ -2,6 +2,10 @@
 
 #import <math.h>
 
+#if !__has_feature(objc_arc)
+#error this file needs to be compiled with Automatic Reference Counting (ARC)
+#endif
+
 #define SecondsFrom2000To2001 31622400
 #define SecondsFrom1904To1970 2082844800
 #define SecondsFrom1601To1970 11644473600
@@ -12,8 +16,7 @@
 +(NSDate *)XADDateWithYear:(int)year month:(int)month day:(int)day
 hour:(int)hour minute:(int)minute second:(int)second timeZone:(NSTimeZone *)timezone
 {
-	#if MAC_OS_X_VERSION_MIN_REQUIRED>=1040
-	NSDateComponents *components=[[NSDateComponents new] autorelease];
+	NSDateComponents *components=[NSDateComponents new];
 	[components setYear:year];
 	[components setMonth:month];
 	[components setDay:day];
@@ -22,11 +25,8 @@ hour:(int)hour minute:(int)minute second:(int)second timeZone:(NSTimeZone *)time
 	[components setSecond:second];
 	if(timezone) [components setTimeZone:timezone];
 
-	NSCalendar *gregorian=[[[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar] autorelease];
+	NSCalendar *gregorian=[[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
 	return [gregorian dateFromComponents:components];
-	#else
-	return [NSCalendarDate dateWithYear:year month:month day:day hour:hour minute:minute second:second timeZone:nil];
-	#endif
 }
 
 +(NSDate *)XADDateWithTimeIntervalSince2000:(NSTimeInterval)interval

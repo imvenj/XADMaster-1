@@ -889,11 +889,11 @@ static int MatchZipEntry(const uint8_t *bytes,int available,off_t offset,void *s
 	return dict;
 }
 
--(NSDictionary *)parseZipExtraWithLength:(int)length nameData:(NSData *)namedata
+-(NSDictionary<XADArchiveKeys,id> *)parseZipExtraWithLength:(int)length nameData:(NSData *)namedata
 uncompressedSizePointer:(off_t *)uncompsizeptr compressedSizePointer:(off_t *)compsizeptr
 {
 	CSHandle *fh=[self handle];
-	NSMutableDictionary *dict=[NSMutableDictionary dictionary];
+	NSMutableDictionary<XADArchiveKeys,id> *dict=[NSMutableDictionary dictionary];
 
 	off_t end=[fh offsetInFile]+length;
 
@@ -1059,7 +1059,7 @@ uncompressedSizePointer:(off_t *)uncompsizeptr compressedSizePointer:(off_t *)co
 			dict[@"WinZipAESVersion"] = @(version=[fh readUInt16LE]);
 			dict[@"WinZipAESVendor"] = @([fh readUInt16LE]);
 			dict[@"WinZipAESKeySize"] = @([fh readUInt8]);
-			dict[@"WinZipAESCompressionMethod"] = [NSNumber numberWithInt:[fh readUInt16LE]];
+			dict[@"WinZipAESCompressionMethod"] = @([fh readUInt16LE]);
 		}
 		else
 		{
@@ -1225,8 +1225,8 @@ isLastEntry:(BOOL)islastentry
 	{
 		if(system==0) // MS-DOS
 		{
-			if(extfileattrib&0x10 && compsize==0 && uncompsize==0) [dict setObject:[NSNumber numberWithBool:YES] forKey:XADIsDirectoryKey];
-			[dict setObject:[NSNumber numberWithUnsignedInt:extfileattrib] forKey:XADDOSFileAttributesKey];
+			if(extfileattrib&0x10 && compsize==0 && uncompsize==0) dict[XADIsDirectoryKey] = @YES;
+			dict[XADDOSFileAttributesKey] = @(extfileattrib);
 		}
 		else if(system==1) // Amiga
 		{
@@ -1319,7 +1319,7 @@ isLastEntry:(BOOL)islastentry
 			if(vendor!=0x4541) [XADException raiseNotSupportedException];
 			if(keysize<1||keysize>3) [XADException raiseNotSupportedException];
 
-			int keybytes;
+			int keybytes = 0;
 			switch(keysize)
 			{
 				case 1: keybytes=16; break;

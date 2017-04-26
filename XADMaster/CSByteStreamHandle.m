@@ -1,6 +1,6 @@
 #import "CSByteStreamHandle.h"
 
-NSString *CSByteStreamEOFReachedException=@"CSByteStreamEOFReachedException";
+NSString *const CSByteStreamEOFReachedException=@"CSByteStreamEOFReachedException";
 
 @implementation CSByteStreamHandle
 

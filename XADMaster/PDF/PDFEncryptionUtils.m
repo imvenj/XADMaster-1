@@ -1,6 +1,6 @@
 #import "PDFEncryptionUtils.h"
 
-NSString *PDFMD5FinishedException=@"PDFMD5FinishedException";
+NSString *const PDFMD5FinishedException=@"PDFMD5FinishedException";
 
 
 
@@ -8,7 +8,7 @@ NSString *PDFMD5FinishedException=@"PDFMD5FinishedException";
 
 +(PDFMD5Engine *)engine { return [[[self class] new] autorelease]; }
 
-+(NSData *)digestForData:(NSData *)data { return [self digestForBytes:[data bytes] length:[data length]]; }
++(NSData *)digestForData:(NSData *)data { return [self digestForBytes:[data bytes] length:(int)[data length]]; }
 
 +(NSData *)digestForBytes:(const void *)bytes length:(int)length
 {
@@ -23,7 +23,7 @@ NSString *PDFMD5FinishedException=@"PDFMD5FinishedException";
 {
 	if(self=[super init])
 	{
-		MD5_Init(&md5);
+		XADMD5_Init(&md5);
 		done=NO;
 	}
 	return self;
@@ -34,18 +34,18 @@ NSString *PDFMD5FinishedException=@"PDFMD5FinishedException";
 -(void)updateWithBytes:(const void *)bytes length:(unsigned long)length
 {
 	if(done) [NSException raise:PDFMD5FinishedException format:@"Attempted to update a finished %@ object",[self class]];
-	MD5_Update(&md5,bytes,length);
+	XADMD5_Update(&md5,bytes,(unsigned int)length);
 }
 
 -(NSData *)digest
 {
-	if(!done) { MD5_Final(digest_bytes,&md5); done=YES; }
+	if(!done) { XADMD5_Final(digest_bytes,&md5); done=YES; }
 	return [NSData dataWithBytes:digest_bytes length:16];
 }
 
 -(NSString *)hexDigest
 {
-	if(!done) { MD5_Final(digest_bytes,&md5); done=YES; }
+	if(!done) { XADMD5_Final(digest_bytes,&md5); done=YES; }
 	return [NSString stringWithFormat:@"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
 	digest_bytes[0],digest_bytes[1],digest_bytes[2],digest_bytes[3],
 	digest_bytes[4],digest_bytes[5],digest_bytes[6],digest_bytes[7],
@@ -78,7 +78,12 @@ NSString *PDFMD5FinishedException=@"PDFMD5FinishedException";
 
 		[self setBlockPointer:streambuffer];
 
-		aes_decrypt_key([key bytes],[key length]*8,&aes);
+#if (defined(USE_COMMON_CRYPTO) && USE_COMMON_CRYPTO) && TARGET_OS_OSX
+		NSDictionary *keyStuff = @{(id)kSecAttrKeyType : (id)kSecAttrKeyTypeAES};
+		aeskey = SecKeyCreateFromData((CFDictionaryRef)keyStuff, (CFDataRef)key, NULL);
+#else
+		aes_decrypt_key([key bytes],(int)[key length]*8,&aes);
+#endif
 	}
 	return self;
 }
@@ -88,6 +93,9 @@ NSString *PDFMD5FinishedException=@"PDFMD5FinishedException";
 	[parent release];
 	[key release];
 	[iv release];
+#if (defined(USE_COMMON_CRYPTO) && USE_COMMON_CRYPTO) && TARGET_OS_OSX
+	CFRelease(aeskey);
+#endif
 	[super dealloc];
 }
 
@@ -101,7 +109,23 @@ NSString *PDFMD5FinishedException=@"PDFMD5FinishedException";
 {
 	uint8_t inbuf[16];
 	[parent readBytes:16 toBuffer:inbuf];
+#if (defined(USE_COMMON_CRYPTO) && USE_COMMON_CRYPTO) && TARGET_OS_OSX
+	SecTransformRef decrypt = SecDecryptTransformCreate(aeskey, NULL);
+	SecTransformSetAttribute(decrypt, kSecEncryptionMode, kSecModeCBCKey, NULL);
+	SecTransformSetAttribute(decrypt, kSecIVKey, (CFDataRef)[NSData dataWithBytesNoCopy:ivbuffer length:16 freeWhenDone:NO], NULL);
+	NSData *encData = [NSData dataWithBytes:inbuf length:sizeof(inbuf)];
+	
+	SecTransformSetAttribute(decrypt, kSecTransformInputAttributeName,
+							 (CFDataRef)encData, NULL);
+	
+	NSData *decryptedData = CFBridgingRelease(SecTransformExecute(decrypt, NULL));
+	[decryptedData getBytes:streambuffer length:16];
+	CFRelease(decrypt);
+	
+#else
+	
 	aes_cbc_decrypt(inbuf,streambuffer,16,ivbuffer,&aes);
+#endif
 
 	if([parent atEndOfFile])
 	{

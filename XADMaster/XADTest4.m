@@ -1,6 +1,6 @@
 #import "XADArchiveParser.h"
 
-@interface ArchiveTester:NSObject
+@interface ArchiveTester:NSObject <XADArchiveParserDelegate>
 {
 	int indent;
 	int successcount,unknowncount,dircount,linkcount;

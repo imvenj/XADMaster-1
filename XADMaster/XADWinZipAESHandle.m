@@ -77,6 +77,8 @@ static void DeriveKey(NSData *password,NSData *salt,int iterations,uint8_t *keyb
 
 	aes_encrypt_key(keybuf,keybytes*8,&aes);
 	memset(counter,0,16);
+	//kSecDigestHMACSHA1
+	//SecTransformRef ref = SecDigestTransformCreate(kSecDigestHMACSHA1, keybytes* 2 + 2, NULL);
 
 	HMAC_SHA1_Init(&hmac);
 	HMAC_SHA1_UpdateKey(&hmac,keybuf+keybytes,keybytes);

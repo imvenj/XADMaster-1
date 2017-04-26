@@ -245,7 +245,7 @@
 	// Read the last segment of data, if required.
 	if( regions[ currentRegion ].hasData )
 	{
-		[parent readAtMost:(num - positionInBuffer) toBuffer:buffer];
+		[parent readAtMost:(int)(num - positionInBuffer) toBuffer:buffer];
 		currentOffset += num - positionInBuffer;
 	}
 
@@ -266,7 +266,7 @@
 	
 // 	fprintf( stderr, "Readatmost okay, read %d.\n", positionInBuffer );
 
-	return( positionInBuffer );
+	return( (int)positionInBuffer );
 }
 
 @end

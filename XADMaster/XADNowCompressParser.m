@@ -14,7 +14,7 @@
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	int length=[data length];
+	NSInteger length=[data length];
 	const uint8_t *bytes=[data bytes];
 
 	if(length<134) return NO;
@@ -54,8 +54,8 @@
 
 	[self parseDirectoryWithParent:[self XADPath] numberOfEntries:INT_MAX];
 
-	int numdicts=[entries count];
-	for(int i=0;i<numdicts && [self shouldKeepParsing];i++)
+	NSInteger numdicts=[entries count];
+	for(NSInteger i=0;i<numdicts && [self shouldKeepParsing];i++)
 	[self addEntryWithDictionary:entries[i]];
 }
 

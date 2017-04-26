@@ -1,5 +1,9 @@
 #import "XADString.h"
 
+#if !__has_feature(objc_arc)
+#error this file needs to be compiled with Automatic Reference Counting (ARC)
+#endif
+
 @implementation XADString (PlatformSpecific)
 
 +(NSString *)encodingNameForEncoding:(NSStringEncoding)encoding
@@ -56,7 +60,7 @@
 	CFStringEncoding cfenc=[XADString CFStringEncodingForEncodingName:encoding];
 	if(cfenc==kCFStringEncodingInvalidId) return nil;
 	CFStringRef str=CFStringCreateWithBytes(kCFAllocatorDefault,bytes,length,cfenc,false);
-	return [(id)str autorelease];
+	return CFBridgingRelease(str);
 }
 
 +(NSData *)dataForString:(NSString *)string encodingName:(NSString *)encoding

@@ -5,9 +5,17 @@
 #import "NSDateXAD.h"
 #import "CRC.h"
 
-NSString *XADIsMacBinaryKey=@"XADIsMacBinary";
-NSString *XADMightBeMacBinaryKey=@"XADMightBeMacBinary";
-NSString *XADDisableMacForkExpansionKey=@"XADDisableMacForkExpansionKey";
+#if !__has_feature(objc_arc)
+#error this file needs to be compiled with Automatic Reference Counting (ARC)
+#endif
+
+#ifndef __MACERRORS__
+#define unimpErr (-4)
+#endif
+
+NSString *const XADIsMacBinaryKey=@"XADIsMacBinary";
+NSString *const XADMightBeMacBinaryKey=@"XADMightBeMacBinary";
+NSString *const XADDisableMacForkExpansionKey=@"XADDisableMacForkExpansionKey";
 
 @implementation XADMacArchiveParser
 @synthesize previousFilename = previousname;
@@ -61,15 +69,6 @@ NSString *XADDisableMacForkExpansionKey=@"XADDisableMacForkExpansionKey";
 		cachedhandle=nil;
 	}
 	return self;
-}
-
--(void)dealloc
-{
-	[previousname release];
-	[dittodirectorystack release];
-	[queueddittoentry release];
-	[queueddittodata release];
-	[super dealloc];
 }
 
 - (BOOL)parseWithError:(NSError **)error
@@ -303,10 +302,8 @@ name:(XADPath *)name retainPosition:(BOOL)retainpos
 
 -(void)queueDittoDictionary:(NSMutableDictionary *)dict data:(NSData *)data
 {
-	[queueddittoentry autorelease];
-	[queueddittodata autorelease];
-	queueddittoentry=[dict retain];
-	queueddittodata=[data retain];
+	queueddittoentry=dict;
+	queueddittodata=data;
 }
 
 -(void)addQueuedDittoDictionaryAndRetainPosition:(BOOL)retainpos
@@ -323,9 +320,7 @@ isDirectory:(BOOL)isdir retainPosition:(BOOL)retainpos
 	[self inspectEntryDictionary:queueddittoentry];
 	[self addEntryWithDictionary:queueddittoentry retainPosition:retainpos data:queueddittodata];
 
-	[queueddittoentry release];
 	queueddittoentry=nil;
-	[queueddittodata release];
 	queueddittodata=nil;
 }
 

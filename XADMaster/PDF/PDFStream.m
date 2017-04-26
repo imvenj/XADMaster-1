@@ -152,7 +152,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 	NSData *data;
 	if([palette isKindOfClass:[PDFStream class]])
 	{
-		data=[[palette handle] readDataOfLength:numcomponents*numcolours];
+		data=[[palette handle] readDataOfLength:(int)(numcomponents*numcolours)];
 		if(!data) return nil;
 	}
 	else if([palette isKindOfClass:[PDFString class]])
@@ -395,7 +395,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 {
 	id filter=dict[@"Filter"];
 
-	if(!filter) return NO;
+	if(!filter) return nil;
 	else if([filter isKindOfClass:[NSArray class]]) return [filter lastObject];
 	else return filter;
 }
@@ -665,7 +665,7 @@ components:(int)components bitsPerComponent:(int)bitspercomp
 		int a=prevbuf[(cols*comps+comps+bufoffs)%buflen];
 		int b=prevbuf[(comps+bufoffs)%buflen];
 		int c=prevbuf[bufoffs];
-		int val;
+		int val = 0;
 
 		switch(type)
 		{
