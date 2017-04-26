@@ -63,9 +63,16 @@ extension XADArchiveParser {
 	}
 	
 	
-	@nonobjc open func testChecksum() throws {
+	@nonobjc open func testChecksum() throws -> Bool {
 		let err = __testChecksumWithoutExceptions()
-		if err != .none {
+		switch err {
+		case .checksum:
+			return false
+			
+		case .none:
+			return true
+			
+		default:
 			throw err
 		}
 	}
@@ -89,7 +96,10 @@ extension XADArchiveParser {
 	
 	@available(*, deprecated, renamed: "testChecksum()")
 	@nonobjc open func testChecksumWithoutExceptions() throws {
-		try testChecksum()
+		if try testChecksum() == false {
+			// match the Objective-C method's behavior
+			throw XADError.checksum
+		}
 	}
 	
 	@available(*, deprecated, renamed: "parse()")
