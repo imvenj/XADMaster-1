@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface XADPlatform:NSObject {}
+@interface XADPlatform:NSObject
 
 // Archive entry extraction.
 +(XADError)extractResourceForkEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict
@@ -33,6 +33,9 @@ preservePermissions:(BOOL)preservepermissions NS_REFINED_FOR_SWIFT;
 
 // Time functions.
 +(double)currentTimeInSeconds;
+#if __has_feature(objc_class_property)
+@property (class, readonly) double currentTimeInSeconds;
+#endif
 
 @end
 

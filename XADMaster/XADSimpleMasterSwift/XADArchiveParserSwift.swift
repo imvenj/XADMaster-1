@@ -62,7 +62,8 @@ extension XADArchiveParser {
 		return linkDest
 	}
 	
-	
+	/// - returns: `true` if the checksum is valid,
+	/// `false` otherwise.
 	@nonobjc open func testChecksum() throws -> Bool {
 		let err = __testChecksumWithoutExceptions()
 		switch err {
@@ -77,6 +78,7 @@ extension XADArchiveParser {
 		}
 	}
 	
+	/// Exception-free wrapper for subclass method
 	/// Will throw `XADErrorBreak` if the delegate
 	/// requested parsing to stop.
 	@nonobjc open func parse() throws {
@@ -86,6 +88,7 @@ extension XADArchiveParser {
 		}
 	}
 	
+	/// Exception-free wrapper for subclass method
 	@nonobjc open func handleForEntry(with dict: [XADArchiveKeys : Any], wantChecksum checksum: Bool) throws -> XADHandle {
 		var err = XADError.none
 		guard let newHandle = __handleForEntry(with: dict, wantChecksum: checksum, error: &err) else {

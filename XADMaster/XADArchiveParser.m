@@ -877,7 +877,7 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext
 	else return sourcehandle;
 }
 
--(off_t)offsetForVolume:(int)disk offset:(off_t)offset
+-(off_t)offsetForVolume:(NSInteger)disk offset:(off_t)offset
 {
 	if([sourcehandle respondsToSelector:@selector(handles)])
 	{
@@ -1156,14 +1156,19 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext
 {
 	va_list args;
 	va_start(args,reason);
-	NSString *fullreason=[[[NSString alloc] initWithFormat:reason arguments:args] autorelease];
+	[self reportInterestingFileWithReason:reason format:args];
 	va_end(args);
-
-	[delegate archiveParser:self findsFileInterestingForReason:[NSString stringWithFormat:
-	@"%@: %@",[self formatName],fullreason]];
 }
 
+-(void)reportInterestingFileWithReason:(NSString *)reason format:(va_list)args
+{
+	NSString *fullreason=[[NSString alloc] initWithFormat:reason arguments:args];
+	
+	[delegate archiveParser:self findsFileInterestingForReason:[NSString stringWithFormat:
+																@"%@: %@", [self formatName], fullreason]];
 
+	[fullreason release];
+}
 
 
 +(int)requiredHeaderSize { return 0; }

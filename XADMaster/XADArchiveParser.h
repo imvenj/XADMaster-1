@@ -49,7 +49,7 @@ extern XADArchiveKeys const XADPosixUserKey;
 extern XADArchiveKeys const XADPosixGroupKey;
 extern XADArchiveKeys const XADPosixUserNameKey;
 extern XADArchiveKeys const XADPosixGroupNameKey;
-extern XADArchiveKeys const XADDOSFileAttributesKey;
+extern XADArchiveKeys const XADDOSFileAttributesKey NS_SWIFT_NAME(dosFileAttributesKey);
 extern XADArchiveKeys const XADWindowsFileAttributesKey;
 extern XADArchiveKeys const XADAmigaProtectionBitsKey;
 
@@ -101,7 +101,7 @@ extern XADArchiveKeys const XADDiskLabelKey;
 }
 
 +(nullable Class)archiveParserClassForHandle:(CSHandle *)handle firstBytes:(NSData *)header
-resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMutableDictionary<XADArchiveKeys,id> *)props;
+resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMutableDictionary<XADArchiveKeys,id> *)props;
 +(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle name:(NSString *)name NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
 +(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle name:(NSString *)name error:(nullable XADError *)errorptr NS_REFINED_FOR_SWIFT;
 +(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
@@ -142,7 +142,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 
 -(nullable XADString *)linkDestinationForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict NS_SWIFT_UNAVAILABLE("Call throws on failure");
 -(nullable XADString *)linkDestinationForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict error:(XADError *)errorptr NS_REFINED_FOR_SWIFT;
--(NSDictionary *)extendedAttributesForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict;
+-(NSDictionary<NSString*,id> *)extendedAttributesForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict;
 -(NSData *)finderInfoForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict;
 #if __APPLE__
 +(NSString*)possibleUTIForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict;
@@ -165,13 +165,13 @@ regex:(XADRegex *)regex firstFileExtension:(nullable NSString *)firstext;
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL shouldKeepParsing;
 
 -(CSHandle *)handleAtDataOffsetForDictionary:(NSDictionary<XADArchiveKeys,id> *)dict;
-@property (NS_NONATOMIC_IOSONLY, readonly, copy) XADSkipHandle *skipHandle;
+@property (NS_NONATOMIC_IOSONLY, readonly, retain) XADSkipHandle *skipHandle;
 -(CSHandle *)zeroLengthHandleWithChecksum:(BOOL)checksum;
 -(nullable CSHandle *)subHandleFromSolidStreamForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict;
 
-@property (NS_NONATOMIC_IOSONLY, readonly, copy, nullable) NSArray *volumes;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy, nullable) NSArray<CSHandle*> *volumes;
 @property (NS_NONATOMIC_IOSONLY, readonly, retain) CSHandle *currentHandle;
--(off_t)offsetForVolume:(int)disk offset:(off_t)offset;
+-(off_t)offsetForVolume:(NSInteger)disk offset:(off_t)offset;
 
 -(void)setObject:(id)object forPropertyKey:(XADArchiveKeys)key;
 -(void)addPropertiesFromDictionary:(NSDictionary<XADArchiveKeys,id> *)dict;
@@ -202,6 +202,7 @@ regex:(XADRegex *)regex firstFileExtension:(nullable NSString *)firstext;
 @property (NS_NONATOMIC_IOSONLY, readonly, nullable) const char *encodedCStringPassword;
 
 -(void)reportInterestingFileWithReason:(NSString *)reason,... NS_FORMAT_FUNCTION(1,2);
+-(void)reportInterestingFileWithReason:(NSString *)reason format:(va_list)args;
 
 
 
@@ -227,10 +228,12 @@ name:(NSString *)name;
 
 -(nullable CSHandle *)handleForSolidStreamWithObject:(id)obj wantChecksum:(BOOL)checksum;
 
-//! Exception-free wrappers for subclass methods:
-//! \c parseWithoutExceptions will in addition return \c XADBreakError if the delegate
+//! Exception-free wrapper for subclass method.<br>
+//! Will, in addition, return \c XADBreakError if the delegate
 //! requested parsing to stop.
 -(XADError)parseWithoutExceptions NS_REFINED_FOR_SWIFT;
+
+//! Exception-free wrapper for subclass method.
 -(nullable CSHandle *)handleForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict wantChecksum:(BOOL)checksum error:(nullable XADError *)errorptr NS_REFINED_FOR_SWIFT;
 
 @end
