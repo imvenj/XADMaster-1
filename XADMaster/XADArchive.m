@@ -88,7 +88,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 		{
 			if([self _parseWithErrorPointer:error]) return self;
 		}
-		else if(error) *error=[NSError errorWithDomain:XADErrorDomain code:XADDataFormatError userInfo:nil];
+		else if(error) *error=[NSError errorWithDomain:XADErrorDomain code:XADErrorDataFormat userInfo:nil];
 	}
 
 	return nil;
@@ -111,7 +111,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 		{
 			if([self _parseWithErrorPointer:error]) return self;
 		}
-		else if(error) *error=[NSError errorWithDomain:XADErrorDomain code:XADDataFormatError userInfo:nil];
+		else if(error) *error=[NSError errorWithDomain:XADErrorDomain code:XADErrorDataFormat userInfo:nil];
 	}
 	return nil;
 }

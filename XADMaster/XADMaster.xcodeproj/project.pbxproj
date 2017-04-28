@@ -2858,7 +2858,6 @@
 		55CD16B21C4AEA49002C2B17 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		55D508E01EA7E63D008A3F63 /* XADResourceForkSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XADResourceForkSwift.swift; sourceTree = "<group>"; };
 		55D93FE91DB9E6AC00F01BBC /* XAD-whole.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = "XAD-whole.modulemap"; sourceTree = "<group>"; };
-		55DAB5271D78FCB30041DA58 /* simple.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = simple.modulemap; sourceTree = "<group>"; };
 		56FBC92B0A57541300BE98CF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
 		8DC2EF5B0486A6940098B216 /* XADMaster.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = XADMaster.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -3117,7 +3116,6 @@
 		089C1665FE841158C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				55DAB5271D78FCB30041DA58 /* simple.modulemap */,
 				559B9CCC1A13F30E006BDB74 /* XAD.modulemap */,
 				55D93FE91DB9E6AC00F01BBC /* XAD-whole.modulemap */,
 				56FBC92B0A57541300BE98CF /* Info.plist */,
@@ -7022,13 +7020,12 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
-				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_COMPATIBILITY_VERSION = 2;
+				DYLIB_CURRENT_VERSION = 2;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				EXPORTED_SYMBOLS_FILE = XAD.exp;
-				FRAMEWORK_VERSION = A;
+				FRAMEWORK_VERSION = B;
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
@@ -7559,11 +7556,11 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_COMPATIBILITY_VERSION = 2;
+				DYLIB_CURRENT_VERSION = 2;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				EXPORTED_SYMBOLS_FILE = XAD.exp;
-				FRAMEWORK_VERSION = A;
+				FRAMEWORK_VERSION = B;
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -7639,11 +7636,11 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_COMPATIBILITY_VERSION = 2;
+				DYLIB_CURRENT_VERSION = 2;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				EXPORTED_SYMBOLS_FILE = "XAD-simple.exp";
-				FRAMEWORK_VERSION = A;
+				FRAMEWORK_VERSION = B;
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -7673,11 +7670,11 @@
 				COPY_PHASE_STRIP = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_COMPATIBILITY_VERSION = 2;
+				DYLIB_CURRENT_VERSION = 2;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				EXPORTED_SYMBOLS_FILE = "XAD-simple.exp";
-				FRAMEWORK_VERSION = A;
+				FRAMEWORK_VERSION = B;
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = s;
@@ -7705,11 +7702,11 @@
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
 				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_COMPATIBILITY_VERSION = 2;
+				DYLIB_CURRENT_VERSION = 2;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				EXPORTED_SYMBOLS_FILE = XAD.exp;
-				FRAMEWORK_VERSION = A;
+				FRAMEWORK_VERSION = B;
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -7741,13 +7738,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
-				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_COMPATIBILITY_VERSION = 2;
+				DYLIB_CURRENT_VERSION = 2;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				EXPORTED_SYMBOLS_FILE = XAD.exp;
-				FRAMEWORK_VERSION = A;
+				FRAMEWORK_VERSION = B;
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;

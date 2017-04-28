@@ -58,6 +58,27 @@
 	return NO;
 }
 
+- (BOOL)parseWithError:(NSError * _Nullable *)error
+{
+	[self setIsMacArchive:YES];
+	
+	CSHandle *fh=[self handle];
+	uint32_t magic=[fh readID];
+	
+	if(magic==0xabcd0054)
+	{
+		NSString *name=[self name];
+		if([[name pathExtension] isEqual:@"dd"]) name=[name stringByDeletingPathExtension];
+		XADPath *xadname=[self XADPathWithUnseparatedString:name];
+		[self parseFileHeaderWithHandle:fh name:xadname];
+		
+	}
+	else if(magic=='DDAR') return [self parseArchive1WithError:error];
+	else if(magic=='DDA2') return [self parseArchive2WithError:error];
+
+	return NO;
+}
+
 -(void)parse
 {
 	[self setIsMacArchive:YES];
@@ -268,6 +289,16 @@
 
 		[fh seekToFileOffset:start+totalsize];
 	}
+}
+
+- (BOOL)parseArchive1WithError:(NSError **)error
+{
+	return NO;
+}
+
+- (BOOL)parseArchive2WithError:(NSError **)error
+{
+	return NO;
 }
 
 -(uint32_t)parseFileHeaderWithHandle:(CSHandle *)fh name:(XADPath *)name

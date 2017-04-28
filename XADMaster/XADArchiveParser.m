@@ -457,7 +457,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 				[forkhandle seekToEndOfFile];
 				if(![forkhandle isChecksumCorrect]) {
 					if (errorptr) {
-						*errorptr = [NSError errorWithDomain:XADErrorDomain code:XADChecksumError userInfo:/*@{NSLocalizedFailureReasonErrorKey:@""}*/ nil];
+						*errorptr = [NSError errorWithDomain:XADErrorDomain code:XADErrorChecksum userInfo:/*@{NSLocalizedFailureReasonErrorKey:@""}*/ nil];
 					}
 					return nil;
 				};
@@ -1237,7 +1237,7 @@ name:(NSString *)name { return nil; }
 -(BOOL)parseWithError:(NSError**)error
 {
 	XADError err = [self parseWithoutExceptions];
-	if (err == XADNoError) {
+	if (err == XADErrorNone) {
 		return YES;
 	} else {
 		if (error) {
@@ -1253,7 +1253,7 @@ name:(NSString *)name { return nil; }
 	@try
 	{
 		CSHandle *handle=[self handleForEntryWithDictionary:dict wantChecksum:checksum];
-		if(!handle&&errorptr) *errorptr=[NSError errorWithDomain:XADErrorDomain code:XADNotSupportedError userInfo:nil];
+		if(!handle&&errorptr) *errorptr=[NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:nil];
 		return handle;
 	}
 	@catch(id exception)
