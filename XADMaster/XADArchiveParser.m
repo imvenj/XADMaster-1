@@ -382,7 +382,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 	}
 	@catch(id e) { } // Fall through to a single file instead.
 
-	XADArchiveParser *parser=[[[parserclass alloc] init] autorelease];
+	XADArchiveParser *parser=[[parserclass alloc] init];
 	[parser setHandle:handle];
 	[parser setResourceFork:fork];
 	[parser setFilename:filename];
@@ -391,7 +391,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 	props[XADVolumesKey] = @[filename];
 	[parser addPropertiesFromDictionary:props];
 
-	return parser;
+	return [parser autorelease];
 }
 
 +(XADArchiveParser *)archiveParserForPath:(NSString *)filename error:(XADError *)errorptr

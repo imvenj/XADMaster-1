@@ -132,6 +132,7 @@ static BOOL IsRegexSpecialCharacter(unichar c)
 {
 	matchrange=range;
 	if(data==currdata) return;
+	currdata = [data copy];
 }
 
 -(void)finishMatching { currdata=nil; }
