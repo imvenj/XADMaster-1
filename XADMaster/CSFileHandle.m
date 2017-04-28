@@ -33,7 +33,7 @@ NSString *const CSFileErrorException=@"CSFileErrorException";
 	#endif
 
 	if(!fileh) [NSException raise:CSCannotOpenFileException
-	format:@"Error attempting to open file \"%@\" in mode \"%@\".",path,modes];
+	format:@"Error attempting to open file \"%@\" in mode \"%@\" (%d).",path,modes, (int)errno];
 
 	CSFileHandle *handle=[[[CSFileHandle alloc] initWithFilePointer:fileh closeOnDealloc:YES name:path] autorelease];
 	if(handle) return handle;

@@ -235,10 +235,10 @@ typedef off_t xadSize;
 
 #endif
 
-static const XADAction XADAbortAction API_DEPRECATED_WITH_REPLACEMENT("XADActionAbort", macosx(10.0, 10.8)) = XADActionAbort;
-static const XADAction XADRetryAction API_DEPRECATED_WITH_REPLACEMENT("XADActionRetry", macosx(10.0, 10.8)) = XADActionRetry;
-static const XADAction XADSkipAction API_DEPRECATED_WITH_REPLACEMENT("XADActionSkip", macosx(10.0, 10.8)) = XADActionSkip;
-static const XADAction XADOverwriteAction API_DEPRECATED_WITH_REPLACEMENT("XADActionOverwrite", macosx(10.0, 10.8)) = XADActionOverwrite;
-static const XADAction XADRenameAction API_DEPRECATED_WITH_REPLACEMENT("XADActionRename", macosx(10.0, 10.8)) = XADActionRename;
+static const XADAction XADAbortAction API_DEPRECATED_WITH_REPLACEMENT("XADActionAbort", macosx(10.0, 10.8), ios(3.0, 8.0)) = XADActionAbort;
+static const XADAction XADRetryAction API_DEPRECATED_WITH_REPLACEMENT("XADActionRetry", macosx(10.0, 10.8), ios(3.0, 8.0)) = XADActionRetry;
+static const XADAction XADSkipAction API_DEPRECATED_WITH_REPLACEMENT("XADActionSkip", macosx(10.0, 10.8), ios(3.0, 8.0)) = XADActionSkip;
+static const XADAction XADOverwriteAction API_DEPRECATED_WITH_REPLACEMENT("XADActionOverwrite", macosx(10.0, 10.8), ios(3.0, 8.0)) = XADActionOverwrite;
+static const XADAction XADRenameAction API_DEPRECATED_WITH_REPLACEMENT("XADActionRename", macosx(10.0, 10.8), ios(3.0, 8.0)) = XADActionRename;
 
 NS_ASSUME_NONNULL_END
