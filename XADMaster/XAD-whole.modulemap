@@ -58,8 +58,6 @@ framework module XADMaster [extern_c] {
 				export *
 			}
 			
-			// Because Apple is dumb and doesn't include bzip2 or zlib's headers as modules.
-			/*
 			 explicit module Bzip2 {
 				header "CSBzip2Handle.h"
 				export *
@@ -69,7 +67,6 @@ framework module XADMaster [extern_c] {
 				header "CSZlibHandle.h"
 				export *
 			 }
-			 */
 		}
 		
 		explicit module File {
@@ -172,11 +169,6 @@ framework module XADMaster [extern_c] {
 			export *
 		}
 
-
 		export *
 	}
-	
-	// Because Apple is dumb and doesn't include bzip2 or zlib's headers as modules.
-	exclude header "CSBzip2Handle.h"
-	exclude header "CSZlibHandle.h"
 }

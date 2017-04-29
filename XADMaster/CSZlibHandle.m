@@ -1,5 +1,14 @@
 #import "CSZlibHandle.h"
 
+#ifndef __MACTYPES__
+#define Byte zlibByte
+#include <zlib.h>
+#undef Byte
+#else
+#include <zlib.h>
+#endif
+
+
 #if !__has_feature(objc_arc)
 #error this file needs to be compiled with Automatic Reference Counting (ARC)
 #endif
@@ -9,7 +18,13 @@ NSString *const CSZlibException=@"CSZlibException";
 
 
 @implementation CSZlibHandle
-
+{
+	off_t startoffs;
+	z_stream zs;
+	BOOL inited,seekback,endstreamateof;
+	
+	uint8_t inbuffer[0x4000];
+}
 
 +(CSZlibHandle *)zlibHandleWithHandle:(CSHandle *)handle
 {

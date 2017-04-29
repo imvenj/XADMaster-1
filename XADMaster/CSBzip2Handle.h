@@ -1,7 +1,5 @@
 #import "CSStreamHandle.h"
 
-#include <bzlib.h>
-
 #define CSBzip2Handle XADBzip2Handle
 
 extern NSString *const CSBzip2Exception;
@@ -9,11 +7,6 @@ extern NSString *const CSBzip2Exception;
 @interface CSBzip2Handle:CSStreamHandle
 {
 	CSHandle *parent;
-	off_t startoffs;
-	bz_stream bzs;
-	BOOL inited,checksumcorrect;
-
-	uint8_t inbuffer[16*1024];
 }
 
 +(CSBzip2Handle *)bzip2HandleWithHandle:(CSHandle *)handle;

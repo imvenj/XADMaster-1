@@ -1,4 +1,5 @@
 #import "CSBzip2Handle.h"
+#include <bzlib.h>
 
 #if !__has_feature(objc_arc)
 #error this file needs to be compiled with Automatic Reference Counting (ARC)
@@ -7,6 +8,13 @@
 NSString *const CSBzip2Exception=@"CSBzip2Exception";
 
 @implementation CSBzip2Handle
+{
+	off_t startoffs;
+	bz_stream bzs;
+	BOOL inited,checksumcorrect;
+	
+	uint8_t inbuffer[16*1024];
+}
 @synthesize checksumCorrect = checksumcorrect;
 
 +(CSBzip2Handle *)bzip2HandleWithHandle:(CSHandle *)handle
