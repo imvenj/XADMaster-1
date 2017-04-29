@@ -1,28 +1,31 @@
 #import "CSMemoryHandle.h"
 
+#if !__has_feature(objc_arc)
+#error this file needs to be compiled with Automatic Reference Counting (ARC)
+#endif
 
 @implementation CSMemoryHandle
-
+@synthesize data = backingdata;
 
 
 +(CSMemoryHandle *)memoryHandleForReadingData:(NSData *)data
 {
-	return [[[CSMemoryHandle alloc] initWithData:data] autorelease];
+	return [[CSMemoryHandle alloc] initWithData:data];
 }
 
 +(CSMemoryHandle *)memoryHandleForReadingBuffer:(const void *)buf length:(unsigned)len
 {
-	return [[[CSMemoryHandle alloc] initWithData:[NSData dataWithBytesNoCopy:(void *)buf length:len freeWhenDone:NO]] autorelease];
+	return [[CSMemoryHandle alloc] initWithData:[NSData dataWithBytesNoCopy:(void *)buf length:len freeWhenDone:NO]];
 }
 
 +(CSMemoryHandle *)memoryHandleForReadingMappedFile:(NSString *)filename
 {
-	return [[[CSMemoryHandle alloc] initWithData:[NSData dataWithContentsOfFile:filename options:NSDataReadingMappedIfSafe error:NULL]] autorelease];
+	return [[CSMemoryHandle alloc] initWithData:[NSData dataWithContentsOfFile:filename options:NSDataReadingMappedIfSafe error:NULL]];
 }
 
 +(CSMemoryHandle *)memoryHandleForWriting
 {
-	return [[[CSMemoryHandle alloc] initWithData:[NSMutableData data]] autorelease];
+	return [[CSMemoryHandle alloc] initWithData:[NSMutableData data]];
 }
 
 
@@ -31,7 +34,7 @@
 	if((self=[super initWithName:[NSString stringWithFormat:@"%@ at %p",[data class],data]]))
 	{
 		memorypos=0;
-		backingdata=[data retain];
+		backingdata=data;
 	}
 	return self;
 }
@@ -41,20 +44,10 @@
 	if((self=[super initAsCopyOf:other]))
 	{
 		memorypos=other->memorypos;
-		backingdata=[other->backingdata retain];
+		backingdata=other->backingdata;
 	}
 	return self;
 }
-
--(void)dealloc
-{
-	[backingdata release];
-	[super dealloc];
-}
-
-
-
--(NSData *)data { return backingdata; }
 
 -(NSMutableData *)mutableData
 {
@@ -132,8 +125,8 @@
 	return subbackingdata;
 }
 
--(NSData *)copyDataOfLength:(int)length { return [[self readDataOfLength:length] retain]; }
+-(NSData *)copyDataOfLength:(int)length { return [self readDataOfLength:length]; }
 
--(NSData *)copyDataOfLengthAtMost:(int)length { return [[self readDataOfLengthAtMost:length] retain]; }
+-(NSData *)copyDataOfLengthAtMost:(int)length { return [self readDataOfLengthAtMost:length]; }
 
 @end

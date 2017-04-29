@@ -27,7 +27,7 @@ extern NSString *const CSFileErrorException;
 -(void)close;
 
 // Public methods
--(FILE *)filePointer;
+@property (NS_NONATOMIC_IOSONLY, readonly) FILE *filePointer;
 
 // Implemented by this class
 @property (NS_NONATOMIC_IOSONLY, readonly) off_t fileSize;
@@ -41,7 +41,7 @@ extern NSString *const CSFileErrorException;
 -(void)writeBytes:(int)num fromBuffer:(const void *)buffer;
 
 // Internal methods
--(void)_raiseError;
+-(void)_raiseError NS_SWIFT_UNAVAILABLE("Call throws exception");
 -(void)_setMultiMode;
 
 @end

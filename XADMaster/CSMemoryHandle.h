@@ -18,7 +18,7 @@
 -(instancetype)initAsCopyOf:(CSMemoryHandle *)other;
 
 // Public methods
--(NSData *)data;
+@property (NS_NONATOMIC_IOSONLY, readonly, strong) NSData *data;
 -(NSMutableData *)mutableData;
 
 // Implemented by this class

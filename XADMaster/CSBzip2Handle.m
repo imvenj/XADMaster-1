@@ -1,24 +1,29 @@
 #import "CSBzip2Handle.h"
 
+#if !__has_feature(objc_arc)
+#error this file needs to be compiled with Automatic Reference Counting (ARC)
+#endif
+
 NSString *const CSBzip2Exception=@"CSBzip2Exception";
 
 @implementation CSBzip2Handle
+@synthesize checksumCorrect = checksumcorrect;
 
 +(CSBzip2Handle *)bzip2HandleWithHandle:(CSHandle *)handle
 {
-	return [[[self alloc] initWithHandle:handle length:CSHandleMaxLength name:[handle name]] autorelease];
+	return [[self alloc] initWithHandle:handle length:CSHandleMaxLength name:[handle name]];
 }
 
 +(CSBzip2Handle *)bzip2HandleWithHandle:(CSHandle *)handle length:(off_t)length
 {
-	return [[[self alloc] initWithHandle:handle length:length name:[handle name]] autorelease];
+	return [[self alloc] initWithHandle:handle length:length name:[handle name]];
 }
 
 -(id)initWithHandle:(CSHandle *)handle length:(off_t)length name:(NSString *)descname
 {
 	if((self=[super initWithName:descname]))
 	{
-		parent=[handle retain];
+		parent=handle;
 		startoffs=[parent offsetInFile];
 		inited=NO;
 		checksumcorrect=YES;
@@ -29,9 +34,6 @@ NSString *const CSBzip2Exception=@"CSBzip2Exception";
 -(void)dealloc
 {
 	if(inited) BZ2_bzDecompressEnd(&bzs);
-	[parent release];
-
-	[super dealloc];
 }
 
 -(void)resetStream
@@ -98,8 +100,6 @@ NSString *const CSBzip2Exception=@"CSBzip2Exception";
 }
 
 -(BOOL)hasChecksum { return YES; }
-
--(BOOL)isChecksumCorrect { return checksumcorrect; }
 
 -(void)_raiseBzip2:(int)error
 {
