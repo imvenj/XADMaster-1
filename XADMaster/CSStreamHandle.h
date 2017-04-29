@@ -1,3 +1,4 @@
+#import <Foundation/Foundation.h>
 #import "CSHandle.h"
 #import "CSInputBuffer.h"
 

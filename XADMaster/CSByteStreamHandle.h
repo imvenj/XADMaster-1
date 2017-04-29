@@ -1,6 +1,7 @@
+#import <Foundation/Foundation.h>
 #import "CSStreamHandle.h"
 
-#import <setjmp.h>
+#include <setjmp.h>
 
 #define CSByteStreamHandle XADByteStreamHandle
 
