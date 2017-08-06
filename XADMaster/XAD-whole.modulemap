@@ -122,11 +122,11 @@ framework module XADMaster [extern_c] {
 	explicit module ArchiveParser {
 		requires objc
 		header "XADArchiveParser.h"
-		export *
 		module Descriptions {
 			header "XADArchiveParserDescriptions.h"
 			export *
 		}
+		export *
 	}
 	
 	explicit module Unarchiver {
