@@ -1,3 +1,4 @@
+#import <Foundation/Foundation.h>
 #import "XADUnarchiver.h"
 #import "CSHandle.h"
 

@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import <stdint.h>
+#include <stdint.h>
 
 
 
@@ -141,13 +141,13 @@ extern NSString *const CSNotSupportedException;
 -(void)writeData:(NSData *)data NS_SWIFT_UNAVAILABLE("Call can throw exception");
 
 //-(void)_raiseClosed;
--(void)_raiseMemory;
--(void)_raiseEOF;
--(void)_raiseNotImplemented:(SEL)selector;
--(void)_raiseNotSupported:(SEL)selector;
+-(void)_raiseMemory NS_SWIFT_UNAVAILABLE("Call throws exception");
+-(void)_raiseEOF NS_SWIFT_UNAVAILABLE("Call throws exception");
+-(void)_raiseNotImplemented:(SEL)selector NS_SWIFT_UNAVAILABLE("Call throws exception");
+-(void)_raiseNotSupported:(SEL)selector NS_SWIFT_UNAVAILABLE("Call throws exception");
 
 @property (readonly, copy) NSString *name;
--(NSString *)description;
+@property (readonly, copy) NSString *description;
 
 
 -(BOOL)skipBytes:(off_t)bytes error:(NSError**)error;

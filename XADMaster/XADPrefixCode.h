@@ -1,3 +1,4 @@
+#import <Foundation/Foundation.h>
 #import "CSInputBuffer.h"
 
 extern NSString *const XADInvalidPrefixCodeException;
@@ -18,8 +19,8 @@ typedef struct XADCodeTableEntry XADCodeTableEntry;
 	XADCodeTableEntry *table1,*table2;
 }
 
-+(XADPrefixCode *)prefixCode;
-+(XADPrefixCode *)prefixCodeWithLengths:(const int *)lengths numberOfSymbols:(int)numsymbols
++(instancetype)prefixCode;
++(instancetype)prefixCodeWithLengths:(const int *)lengths numberOfSymbols:(int)numsymbols
 maximumLength:(int)maxlength shortestCodeIsZeros:(BOOL)zeros;
 
 -(instancetype)init NS_DESIGNATED_INITIALIZER;

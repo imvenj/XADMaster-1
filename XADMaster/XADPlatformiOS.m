@@ -18,7 +18,7 @@
 +(XADError)extractResourceForkEntryWithDictionary:(NSDictionary *)dict
 unarchiver:(XADUnarchiver *)unarchiver toPath:(NSString *)destpath
 {
-	return XADNotSupportedError;
+	return XADErrorNotSupported;
 }
 
 +(XADError)updateFileAttributesAtPath:(NSString *)path
@@ -29,7 +29,7 @@ preservePermissions:(BOOL)preservepermissions
 
 	// Read file permissions.
 	struct stat st;
-	if(lstat(cpath,&st)!=0) return XADOpenFileError; // TODO: better error
+	if(lstat(cpath,&st)!=0) return XADErrorOpenFile; // TODO: better error
 
 	// If the file does not have write permissions, change this temporarily.
 	if(!(st.st_mode&S_IWUSR)) chmod(cpath,0700);
@@ -103,7 +103,7 @@ preservePermissions:(BOOL)preservepermissions
 	// Finally, set all attributes.
 	setattrlist(cpath,&list,attrdata,attrptr-attrdata,FSOPT_NOFOLLOW);
 
-	return XADNoError;
+	return XADErrorNone;
 }
 
 +(XADError)createLinkAtPath:(NSString *)path withDestinationPath:(NSString *)link
@@ -111,9 +111,9 @@ preservePermissions:(BOOL)preservepermissions
 	struct stat st;
 	const char *destcstr=[path fileSystemRepresentation];
 	if(lstat(destcstr,&st)==0) unlink(destcstr);
-	if(symlink([link fileSystemRepresentation],destcstr)!=0) return XADLinkError;
+	if(symlink([link fileSystemRepresentation],destcstr)!=0) return XADErrorLink;
 
-	return XADNoError;
+	return XADErrorNone;
 }
 
 
@@ -133,8 +133,8 @@ preservePermissions:(BOOL)preservepermissions
 	if(stat(csrc,&st)!=0) return NO;
 
 	struct timeval times[2]={
-		{st.st_atimespec.tv_sec,st.st_atimespec.tv_nsec/1000},
-		{st.st_mtimespec.tv_sec,st.st_mtimespec.tv_nsec/1000},
+		{st.st_atimespec.tv_sec,(int)(st.st_atimespec.tv_nsec/1000)},
+		{st.st_mtimespec.tv_sec,(int)(st.st_mtimespec.tv_nsec/1000)},
 	};
 
 	const char *cdest=[dest fileSystemRepresentation];

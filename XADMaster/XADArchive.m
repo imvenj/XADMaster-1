@@ -227,7 +227,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	XADPath *name=dict[XADFileNameKey];
 
 	NSNumber *index=namedict[name];
-	if(index) // Try to update an existing entry
+	if(index != nil) // Try to update an existing entry
 	{
 		int n=[index intValue];
 		if(isres) // Adding a resource fork to an earlier data fork
@@ -360,14 +360,14 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 -(BOOL)isSolid
 {
 	NSNumber *issolid=[parser properties][XADIsSolidKey];
-	if(!issolid) return NO;
+	if(issolid == nil) return NO;
 	return [issolid boolValue];
 }
 
 -(BOOL)isCorrupted
 {
 	NSNumber *iscorrupted=[parser properties][XADIsCorruptedKey];
-	if(!iscorrupted) return NO;
+	if(iscorrupted == nil) return NO;
 	return [iscorrupted boolValue];
 }
 
@@ -498,7 +498,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	NSDictionary *dict=[self dataForkParserDictionaryForEntry:n];
 	if(!dict) return 0; // Special case for resource forks without data forks
 	NSNumber *size=dict[XADFileSizeKey];
-	if(!size) return CSHandleMaxLength;
+	if(size == nil) return CSHandleMaxLength;
 	return [size longLongValue];
 }
 
@@ -507,7 +507,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	NSDictionary *dict=[self dataForkParserDictionaryForEntry:n];
 	if(!dict) return 0; // Special case for resource forks without data forks
 	NSNumber *size=dict[XADCompressedSizeKey];
-	if(!size) return CSHandleMaxLength;
+	if(size == nil) return CSHandleMaxLength;
 	return [size longLongValue];
 }
 
@@ -516,8 +516,8 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	NSDictionary *dict=[self dataForkParserDictionaryForEntry:n];
 	if(!dict) return 0; // Special case for resource forks without data forks
 	NSNumber *size=dict[XADFileSizeKey];
-	if(!size) size=dict[XADCompressedSizeKey];
-	if(!size) return 1000;
+	if(size == nil) size=dict[XADCompressedSizeKey];
+	if(size == nil) return 1000;
 	return [size longLongValue];
 }
 
@@ -558,7 +558,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	NSDictionary *resdict=[self resourceForkParserDictionaryForEntry:n];
 	if(!resdict) return NO;
 	NSNumber *num=resdict[XADFileSizeKey];
-	if(!num) return NO;
+	if(num == nil) return NO;
 
 	return [num intValue]!=0;
 }
@@ -582,16 +582,16 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	if(creation) attrs[NSFileCreationDate] = creation;
 
 	NSNumber *type=dict[XADFileTypeKey];
-	if(type) attrs[NSFileHFSTypeCode] = type;
+	if(type != nil) attrs[NSFileHFSTypeCode] = type;
 
 	NSNumber *creator=dict[XADFileCreatorKey];
-	if(creator) attrs[NSFileHFSCreatorCode] = creator;
+	if(creator != nil) attrs[NSFileHFSCreatorCode] = creator;
 
 	NSNumber *flags=dict[XADFinderFlagsKey];
-	if(flags) attrs[XADFinderFlagsKey] = flags;
+	if(flags != nil) attrs[XADFinderFlagsKey] = flags;
 
 	NSNumber *perm=dict[XADPosixPermissionsKey];
-	if(perm) attrs[NSFilePosixPermissions] = perm;
+	if(perm != nil) attrs[NSFilePosixPermissions] = perm;
 
 	XADString *user=dict[XADPosixUserNameKey];
 	if(user)
@@ -635,7 +635,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 		}
 	}
 
-	return [NSDictionary dictionaryWithDictionary:attrs];
+	return [attrs copy];
 }
 
 -(CSHandle *)handleForEntry:(NSInteger)n
@@ -1031,7 +1031,7 @@ fileFraction:(double)fileprogress estimatedTotalFraction:(double)totalprogress
 	NSDictionary *dict=[self dataForkParserDictionaryForEntry:n];
 	if(!dict) return 0; // Special case for resource forks without data forks
 	NSNumber *size=dict[XADFileSizeKey];
-	if(!size) return INT_MAX;
+	if(size == nil) return INT_MAX;
 	return [size intValue];
 }
 
@@ -1094,7 +1094,7 @@ fileFraction:(double)fileprogress estimatedTotalFraction:(double)totalprogress
 	}
 	else fi->xfi_Flags|=1<<6;
 
-	if(size) fi->xfi_Size=[size longLongValue];
+	if(size != nil) fi->xfi_Size=[size longLongValue];
 	else fi->xfi_Size=0;
 
 	return fi;

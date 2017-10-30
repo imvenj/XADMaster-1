@@ -1,20 +1,24 @@
 #import "CSSubHandle.h"
 
+#if !__has_feature(objc_arc)
+#error this file needs to be compiled with Automatic Reference Counting (ARC)
+#endif
+
 @implementation CSSubHandle
+@synthesize parentHandle = parent;
+@synthesize startOffsetInParent = start;
 
 -(id)initWithHandle:(CSHandle *)handle from:(off_t)from length:(off_t)length
 {
 	if((self=[super initWithName:[NSString stringWithFormat:@"%@ (Subrange from %qd, length %qd)",[handle name],from,length]]))
 	{
-		parent=[handle retain];
+		parent=handle;
 		start=from;
 		end=from+length;
 
 		[parent seekToFileOffset:start];
 
 		if(parent) return self;
-
-		[self release];
 	}
 	return nil;
 }
@@ -54,15 +58,6 @@
 	}
 	return self;
 }
-
--(void)dealloc
-{
-	[parent release];
-	[super dealloc];
-}
-
-@synthesize parentHandle = parent;
-@synthesize startOffsetInParent = start;
 
 -(off_t)fileSize
 {

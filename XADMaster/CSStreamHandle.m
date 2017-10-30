@@ -1,6 +1,12 @@
 #import "CSStreamHandle.h"
 
+#if !__has_feature(objc_arc)
+#error this file needs to be compiled with Automatic Reference Counting (ARC)
+#endif
+
 @implementation CSStreamHandle
+@synthesize fileSize = streamlength;
+@synthesize offsetInFile = streampos;
 
 -(id)initWithName:(NSString *)descname
 {
@@ -61,14 +67,8 @@
 -(void)dealloc
 {
 	CSInputBufferFree(input);
-	[super dealloc];
 }
 
-
-
--(off_t)fileSize { return streamlength; }
-
--(off_t)offsetInFile { return streampos; }
 
 -(BOOL)atEndOfFile
 {

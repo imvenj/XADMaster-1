@@ -1,3 +1,4 @@
+#import <Foundation/Foundation.h>
 #import "CSHandle.h"
 
 #import <stdio.h>
@@ -30,7 +31,7 @@ extern NSString *const CSFileErrorException;
 -(void)close;
 
 // Public methods
-@property (readonly, assign) FILE *filePointer;
+@property (NS_NONATOMIC_IOSONLY, readonly) FILE *filePointer;
 
 // Implemented by this class
 @property (NS_NONATOMIC_IOSONLY, readonly) off_t fileSize;
@@ -51,7 +52,7 @@ extern NSString *const CSFileErrorException;
 -(BOOL)writeBytes:(size_t)num fromBuffer:(const void *)buffer error:(NSError**)error;
 
 // Internal methods
--(void)_raiseError NS_SWIFT_UNAVAILABLE("Call always throws exception");
+-(void)_raiseError NS_SWIFT_UNAVAILABLE("Call throws exception");
 -(void)_setMultiMode NS_SWIFT_UNAVAILABLE("Call always throws exception");
 
 @end

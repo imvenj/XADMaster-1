@@ -1,12 +1,5 @@
+#import <Foundation/Foundation.h>
 #import "CSStreamHandle.h"
-
-#ifndef __MACTYPES__
-#define Byte zlibByte
-#include <zlib.h>
-#undef Byte
-#else
-#include <zlib.h>
-#endif
 
 #define CSZlibHandle XADZlibHandle
 
@@ -15,11 +8,6 @@ extern NSString *const CSZlibException;
 @interface CSZlibHandle:CSStreamHandle
 {
 	CSHandle *parent;
-	off_t startoffs;
-	z_stream zs;
-	BOOL inited,seekback,endstreamateof;
-
-	uint8_t inbuffer[0x4000];
 }
 
 +(CSZlibHandle *)zlibHandleWithHandle:(CSHandle *)handle;

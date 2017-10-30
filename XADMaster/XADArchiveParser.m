@@ -382,7 +382,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 	}
 	@catch(id e) { } // Fall through to a single file instead.
 
-	XADArchiveParser *parser=[[[parserclass alloc] init] autorelease];
+	XADArchiveParser *parser=[[parserclass alloc] init];
 	[parser setHandle:handle];
 	[parser setResourceFork:fork];
 	[parser setFilename:filename];
@@ -391,7 +391,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 	props[XADVolumesKey] = @[filename];
 	[parser addPropertiesFromDictionary:props];
 
-	return parser;
+	return [parser autorelease];
 }
 
 +(XADArchiveParser *)archiveParserForPath:(NSString *)filename error:(NSError **)errorptr
@@ -654,7 +654,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 
 	// Check if this entry actually is a link.
 	NSNumber *islink=dict[XADIsLinkKey];
-	if(!islink||![islink boolValue]) return nil;
+	if(islink==nil||![islink boolValue]) return nil;
 
 	// If the destination is stored in the dictionary, return it directly.
 	XADString *linkdest=dict[XADLinkDestinationKey];
@@ -735,12 +735,12 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 			NSNumber *typenum=dict[XADFileTypeKey];
 			NSNumber *creatornum=dict[XADFileCreatorKey];
 
-			if(typenum) CSSetUInt32BE(&finderinfo[0],[typenum unsignedIntValue]);
-			if(creatornum) CSSetUInt32BE(&finderinfo[4],[creatornum unsignedIntValue]);
+			if(typenum != nil) CSSetUInt32BE(&finderinfo[0],[typenum unsignedIntValue]);
+			if(creatornum != nil) CSSetUInt32BE(&finderinfo[4],[creatornum unsignedIntValue]);
 		}
 
 		NSNumber *flagsnum=dict[XADFinderFlagsKey];
-		if(flagsnum) CSSetUInt16BE(&finderinfo[8],[flagsnum unsignedShortValue]);
+		if(flagsnum != nil) CSSetUInt16BE(&finderinfo[8],[flagsnum unsignedShortValue]);
 
 		// Check if any data was filled in at all. If not, return nil.
 		bool zero=true;
@@ -838,12 +838,12 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext
 -(CSHandle *)handleAtDataOffsetForDictionary:(NSDictionary *)dict
 {
 	NSNumber *skipoffs=dict[XADSkipOffsetKey];
-	if(skipoffs)
+	if(skipoffs != nil)
 	{
 		[skiphandle seekToFileOffset:[skipoffs longLongValue]];
 
 		NSNumber *length=dict[XADSkipLengthKey];
-		if(length) return [skiphandle nonCopiedSubHandleOfLength:[length longLongValue]];
+		if(length != nil) return [skiphandle nonCopiedSubHandleOfLength:[length longLongValue]];
 		else return skiphandle;
 	}
 	else
@@ -851,7 +851,7 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext
 		[sourcehandle seekToFileOffset:[dict[XADDataOffsetKey] longLongValue]];
 
 		NSNumber *length=dict[XADDataLengthKey];
-		if(length) return [sourcehandle nonCopiedSubHandleOfLength:[length longLongValue]];
+		if(length != nil) return [sourcehandle nonCopiedSubHandleOfLength:[length longLongValue]];
 		else return sourcehandle;
 	}
 }
@@ -954,7 +954,7 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext
 
 	// Extract further flags from PosixPermissions, if possible.
 	NSNumber *perms=dict[XADPosixPermissionsKey];
-	if(perms)
+	if(perms != nil)
 	switch([perms unsignedIntValue]&0xf000)
 	{
 		case 0x1000: dict[XADIsFIFOKey] = @YES; break;
@@ -967,8 +967,8 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext
 
 	// Set hidden flag if DOS or Windows file attributes are available and indicate it.
 	NSNumber *attrs=dict[XADDOSFileAttributesKey];
-	if(!attrs) attrs=dict[XADWindowsFileAttributesKey];
-	if(attrs)
+	if(attrs == nil) attrs=dict[XADWindowsFileAttributesKey];
+	if(attrs != nil)
 	{
 		if([attrs intValue]&0x02) dict[XADIsHiddenKey] = @YES;
 	}
@@ -999,7 +999,7 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext
 		const uint8_t *bytes=[finderinfo bytes];
 		NSNumber *isdir=dict[XADIsDirectoryKey];
 
-		if(!isdir||![isdir boolValue])
+		if(isdir==nil||![isdir boolValue])
 		{
 			uint32_t filetype=CSUInt32BE(bytes+0);
 			uint32_t filecreator=CSUInt32BE(bytes+4);

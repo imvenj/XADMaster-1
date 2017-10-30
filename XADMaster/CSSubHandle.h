@@ -1,3 +1,4 @@
+#import <Foundation/Foundation.h>
 #import "CSHandle.h"
 
 #define CSSubHandle XADSubHandle
@@ -14,7 +15,7 @@
 -(instancetype)initAsCopyOf:(CSSubHandle *)other;
 
 // Public methods
-@property (readonly, retain) CSHandle *parentHandle;
+@property (readonly, strong) CSHandle *parentHandle;
 @property (readonly) off_t startOffsetInParent;
 
 // Implemented by this class

@@ -1,6 +1,9 @@
 #import "CSInputBuffer.h"
 
 
+#if __has_feature(objc_arc)
+#error this file needs to be compiled WITHOUT Automatic Reference Counting (ARC)
+#endif
 
 // Allocation and management
 

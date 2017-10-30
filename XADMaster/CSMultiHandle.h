@@ -1,3 +1,4 @@
+#import <Foundation/Foundation.h>
 #import "CSHandle.h"
 
 #define CSMultiHandle XADMultiHandle
@@ -10,15 +11,15 @@ extern NSString *const CSSizeOfSegmentUnknownException;
 	NSInteger currhandle;
 }
 
-+(CSMultiHandle *)multiHandleWithHandleArray:(NSArray<CSHandle*> *)handlearray;
-+(CSMultiHandle *)multiHandleWithHandles:(CSHandle *)firsthandle,... NS_REQUIRES_NIL_TERMINATION;
++(instancetype)multiHandleWithHandleArray:(NSArray<CSHandle*> *)handlearray;
++(instancetype)multiHandleWithHandles:(CSHandle *)firsthandle,... NS_REQUIRES_NIL_TERMINATION;
 
 // Initializers
 -(instancetype)initWithHandles:(NSArray<CSHandle*> *)handlearray;
 -(instancetype)initAsCopyOf:(CSMultiHandle *)other;
 
 // Public methods
-@property (readonly, retain) NSArray<CSHandle*> *handles;
+@property (readonly, copy) NSArray<CSHandle*> *handles;
 @property (readonly) CSHandle *currentHandle;
 
 // Implemented by this class
@@ -37,6 +38,6 @@ extern NSString *const CSSizeOfSegmentUnknownException;
 
 
 // Internal methods
--(void)_raiseSizeUnknownForSegment:(long)i;
+-(void)_raiseSizeUnknownForSegment:(long)i NS_SWIFT_UNAVAILABLE("Call throws exception");
 
 @end

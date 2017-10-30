@@ -212,8 +212,8 @@ static NSComparisonResult OrderKeys(id first,id second,void *context)
 	NSNumber *secondorder=ordering[second];
 
 	if(firstorder&&secondorder) return [firstorder compare:secondorder];
-	else if(firstorder) return NSOrderedAscending;
-	else if(secondorder) return NSOrderedDescending;
+	else if(firstorder != nil) return NSOrderedAscending;
+	else if(secondorder != nil) return NSOrderedDescending;
 	else return [first compare:second];
 }
 

@@ -47,7 +47,7 @@ unarchiver:(XADUnarchiver *)unarchiver toPath:(NSString *)destpath
 		if(S_ISLNK(st.st_mode))
 		{
 			NSNumber *sizenum=dict[XADFileSizeKey];
-			if(!sizenum) return XADErrorNone;
+			if(sizenum == nil) return XADErrorNone;
 			else if([sizenum longLongValue]==0) return XADErrorNone;
 		}
 
@@ -154,7 +154,7 @@ preservePermissions:(BOOL)preservepermissions
 	// Figure out permissions, or reuse the earlier value.
 	mode_t mode=st.st_mode;
 	NSNumber *permissions=dict[XADPosixPermissionsKey];
-	if(permissions)
+	if(permissions != nil)
 	{
 		mode=[permissions unsignedShortValue];
 		if(!preservepermissions)

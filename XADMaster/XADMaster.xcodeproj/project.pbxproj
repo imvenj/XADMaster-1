@@ -55,7 +55,7 @@
 		1B23DAA01177C99900620319 /* Scanning.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B23DA9E1177C99900620319 /* Scanning.m */; };
 		1B23DB8F117BA91D00620319 /* XADNowCompressParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B23DB8D117BA91D00620319 /* XADNowCompressParser.m */; };
 		1B23DD3D117FC7B900620319 /* XADTarSparseHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B23DD3B117FC7B900620319 /* XADTarSparseHandle.m */; };
-		1B23DDA51185DFC100620319 /* XADUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B81DD450FFEB87B005C5B23 /* XADUnarchiver.m */; };
+		1B23DDA51185DFC100620319 /* XADUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B81DD450FFEB87B005C5B23 /* XADUnarchiver.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		1B23E77B1199E55B00620319 /* XADRAR20Handle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B23E75D1199CB7C00620319 /* XADRAR20Handle.m */; };
 		1B2A4A190F1D7E58009B5B89 /* StuffItXUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B2A4A170F1D7E58009B5B89 /* StuffItXUtilities.m */; };
 		1B2F17E60EE8AF7B0000DAFF /* XADSkipHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B2F17E40EE8AF7B0000DAFF /* XADSkipHandle.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -180,7 +180,7 @@
 		1B34A97E11C2FE1900396C26 /* XADException.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B578C330DDBC8BF005B0F68 /* XADException.m */; };
 		1B34A97F11C2FE1B00396C26 /* XADPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BA266DD0FC78BF600279E95 /* XADPath.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		1B34A98011C2FE1C00396C26 /* XADString.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B06D5BA0DDA67E000D9C000 /* XADString.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		1B34A98111C2FE1C00396C26 /* XADUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B81DD450FFEB87B005C5B23 /* XADUnarchiver.m */; };
+		1B34A98111C2FE1C00396C26 /* XADUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B81DD450FFEB87B005C5B23 /* XADUnarchiver.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		1B34A98211C2FE1F00396C26 /* XADPlatformMacOSX.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B349EF011BACA2900396C26 /* XADPlatformMacOSX.m */; };
 		1B34A98311C2FE2700396C26 /* XADArchiveParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBAB6770EC26AA6007FE6A2 /* XADArchiveParser.m */; };
 		1B34A98411C2FE2A00396C26 /* XADMacArchiveParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAD660EC5D4E8006D2F06 /* XADMacArchiveParser.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -303,15 +303,15 @@
 		1B34AA3811C3087A00396C26 /* Scanning.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B23DA9E1177C99900620319 /* Scanning.m */; };
 		1B34AA3911C3087E00396C26 /* CSBlockStreamHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAFB0EC3859F006D2F06 /* CSBlockStreamHandle.m */; };
 		1B34AA3A11C3087F00396C26 /* CSByteStreamHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAFD0EC3859F006D2F06 /* CSByteStreamHandle.m */; };
-		1B34AA3B11C3088000396C26 /* CSBzip2Handle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC8A0F00EE61C42006B47FE /* CSBzip2Handle.m */; };
-		1B34AA3C11C3088000396C26 /* CSFileHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF50EC3859F006D2F06 /* CSFileHandle.m */; };
-		1B34AA3D11C3088100396C26 /* CSHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAEF0EC3859F006D2F06 /* CSHandle.m */; };
+		1B34AA3B11C3088000396C26 /* CSBzip2Handle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC8A0F00EE61C42006B47FE /* CSBzip2Handle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		1B34AA3C11C3088000396C26 /* CSFileHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF50EC3859F006D2F06 /* CSFileHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		1B34AA3D11C3088100396C26 /* CSHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAEF0EC3859F006D2F06 /* CSHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		1B34AA3E11C3088200396C26 /* CSInputBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC8903F0ED47D76006B47FE /* CSInputBuffer.m */; };
-		1B34AA3F11C3088500396C26 /* CSMemoryHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF70EC3859F006D2F06 /* CSMemoryHandle.m */; };
-		1B34AA4011C3088500396C26 /* CSMultiHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF30EC3859F006D2F06 /* CSMultiHandle.m */; };
-		1B34AA4111C3088700396C26 /* CSStreamHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF90EC3859F006D2F06 /* CSStreamHandle.m */; };
-		1B34AA4211C3088700396C26 /* CSSubHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF10EC3859F006D2F06 /* CSSubHandle.m */; };
-		1B34AA4311C3088900396C26 /* CSZlibHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAFF0EC3859F006D2F06 /* CSZlibHandle.m */; };
+		1B34AA3F11C3088500396C26 /* CSMemoryHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF70EC3859F006D2F06 /* CSMemoryHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		1B34AA4011C3088500396C26 /* CSMultiHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF30EC3859F006D2F06 /* CSMultiHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		1B34AA4111C3088700396C26 /* CSStreamHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF90EC3859F006D2F06 /* CSStreamHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		1B34AA4211C3088700396C26 /* CSSubHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF10EC3859F006D2F06 /* CSSubHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		1B34AA4311C3088900396C26 /* CSZlibHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAFF0EC3859F006D2F06 /* CSZlibHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		1B34AA7211C30B3600396C26 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BBCC54C0EE73B7F006C3AE2 /* libbz2.tbd */; };
 		1B34AA7411C30B3A00396C26 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B3FAC5C0EC5255A006D2F06 /* Foundation.framework */; };
 		1B34AA7511C30B3D00396C26 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B216A7F0F8E9D9E001207C9 /* Carbon.framework */; };
@@ -406,21 +406,21 @@
 		1B3E37800F422D2F003EEF98 /* NumberParsing.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3E377E0F422D2F003EEF98 /* NumberParsing.m */; };
 		1B3E39F50F45F62F003EEF98 /* XADChecksumHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3E39F30F45F62F003EEF98 /* XADChecksumHandle.m */; };
 		1B3FAB000EC3859F006D2F06 /* CSHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B3FAAEE0EC3859F006D2F06 /* CSHandle.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1B3FAB010EC3859F006D2F06 /* CSHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAEF0EC3859F006D2F06 /* CSHandle.m */; };
+		1B3FAB010EC3859F006D2F06 /* CSHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAEF0EC3859F006D2F06 /* CSHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		1B3FAB020EC3859F006D2F06 /* CSSubHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B3FAAF00EC3859F006D2F06 /* CSSubHandle.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1B3FAB030EC3859F006D2F06 /* CSSubHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF10EC3859F006D2F06 /* CSSubHandle.m */; };
+		1B3FAB030EC3859F006D2F06 /* CSSubHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF10EC3859F006D2F06 /* CSSubHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		1B3FAB040EC3859F006D2F06 /* CSMultiHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B3FAAF20EC3859F006D2F06 /* CSMultiHandle.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1B3FAB050EC3859F006D2F06 /* CSMultiHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF30EC3859F006D2F06 /* CSMultiHandle.m */; };
+		1B3FAB050EC3859F006D2F06 /* CSMultiHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF30EC3859F006D2F06 /* CSMultiHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		1B3FAB060EC3859F006D2F06 /* CSFileHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B3FAAF40EC3859F006D2F06 /* CSFileHandle.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1B3FAB070EC3859F006D2F06 /* CSFileHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF50EC3859F006D2F06 /* CSFileHandle.m */; };
+		1B3FAB070EC3859F006D2F06 /* CSFileHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF50EC3859F006D2F06 /* CSFileHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		1B3FAB080EC3859F006D2F06 /* CSMemoryHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B3FAAF60EC3859F006D2F06 /* CSMemoryHandle.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1B3FAB090EC3859F006D2F06 /* CSMemoryHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF70EC3859F006D2F06 /* CSMemoryHandle.m */; };
+		1B3FAB090EC3859F006D2F06 /* CSMemoryHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF70EC3859F006D2F06 /* CSMemoryHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		1B3FAB0A0EC3859F006D2F06 /* CSStreamHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B3FAAF80EC3859F006D2F06 /* CSStreamHandle.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1B3FAB0B0EC3859F006D2F06 /* CSStreamHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF90EC3859F006D2F06 /* CSStreamHandle.m */; };
+		1B3FAB0B0EC3859F006D2F06 /* CSStreamHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF90EC3859F006D2F06 /* CSStreamHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		1B3FAB0C0EC3859F006D2F06 /* CSBlockStreamHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B3FAAFA0EC3859F006D2F06 /* CSBlockStreamHandle.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1B3FAB0F0EC3859F006D2F06 /* CSByteStreamHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAFD0EC3859F006D2F06 /* CSByteStreamHandle.m */; };
 		1B3FAB100EC3859F006D2F06 /* CSZlibHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B3FAAFE0EC3859F006D2F06 /* CSZlibHandle.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1B3FAB110EC3859F006D2F06 /* CSZlibHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAFF0EC3859F006D2F06 /* CSZlibHandle.m */; };
+		1B3FAB110EC3859F006D2F06 /* CSZlibHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAFF0EC3859F006D2F06 /* CSZlibHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		1B3FAB2C0EC3D5E7006D2F06 /* XADException.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B578C330DDBC8BF005B0F68 /* XADException.m */; };
 		1B3FAB740EC4CC50006D2F06 /* XADTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B5A7BA90A24FA0200B189EB /* XADTest.m */; };
 		1B3FABA80EC52532006D2F06 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B3FABA70EC52532006D2F06 /* libz.tbd */; };
@@ -489,7 +489,7 @@
 		1B467A3615CD9A73001AB1DD /* XADException.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B578C330DDBC8BF005B0F68 /* XADException.m */; };
 		1B467A3715CD9A73001AB1DD /* XADPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BA266DD0FC78BF600279E95 /* XADPath.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		1B467A3815CD9A73001AB1DD /* XADString.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B06D5BA0DDA67E000D9C000 /* XADString.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		1B467A3915CD9A73001AB1DD /* XADUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B81DD450FFEB87B005C5B23 /* XADUnarchiver.m */; };
+		1B467A3915CD9A73001AB1DD /* XADUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B81DD450FFEB87B005C5B23 /* XADUnarchiver.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		1B467A3B15CD9A73001AB1DD /* XADArchiveParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBAB6770EC26AA6007FE6A2 /* XADArchiveParser.m */; };
 		1B467A3C15CD9A73001AB1DD /* XADMacArchiveParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAD660EC5D4E8006D2F06 /* XADMacArchiveParser.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		1B467A3D15CD9A73001AB1DD /* XADDeflateHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC89F120EE0CD71006B47FE /* XADDeflateHandle.m */; };
@@ -611,15 +611,15 @@
 		1B467AB215CD9A73001AB1DD /* Scanning.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B23DA9E1177C99900620319 /* Scanning.m */; };
 		1B467AB315CD9A73001AB1DD /* CSBlockStreamHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAFB0EC3859F006D2F06 /* CSBlockStreamHandle.m */; };
 		1B467AB415CD9A73001AB1DD /* CSByteStreamHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAFD0EC3859F006D2F06 /* CSByteStreamHandle.m */; };
-		1B467AB515CD9A73001AB1DD /* CSBzip2Handle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC8A0F00EE61C42006B47FE /* CSBzip2Handle.m */; };
-		1B467AB615CD9A73001AB1DD /* CSFileHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF50EC3859F006D2F06 /* CSFileHandle.m */; };
-		1B467AB715CD9A73001AB1DD /* CSHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAEF0EC3859F006D2F06 /* CSHandle.m */; };
+		1B467AB515CD9A73001AB1DD /* CSBzip2Handle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC8A0F00EE61C42006B47FE /* CSBzip2Handle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		1B467AB615CD9A73001AB1DD /* CSFileHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF50EC3859F006D2F06 /* CSFileHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		1B467AB715CD9A73001AB1DD /* CSHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAEF0EC3859F006D2F06 /* CSHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		1B467AB815CD9A73001AB1DD /* CSInputBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC8903F0ED47D76006B47FE /* CSInputBuffer.m */; };
-		1B467AB915CD9A73001AB1DD /* CSMemoryHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF70EC3859F006D2F06 /* CSMemoryHandle.m */; };
-		1B467ABA15CD9A73001AB1DD /* CSMultiHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF30EC3859F006D2F06 /* CSMultiHandle.m */; };
-		1B467ABB15CD9A73001AB1DD /* CSStreamHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF90EC3859F006D2F06 /* CSStreamHandle.m */; };
-		1B467ABC15CD9A73001AB1DD /* CSSubHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF10EC3859F006D2F06 /* CSSubHandle.m */; };
-		1B467ABD15CD9A73001AB1DD /* CSZlibHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAFF0EC3859F006D2F06 /* CSZlibHandle.m */; };
+		1B467AB915CD9A73001AB1DD /* CSMemoryHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF70EC3859F006D2F06 /* CSMemoryHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		1B467ABA15CD9A73001AB1DD /* CSMultiHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF30EC3859F006D2F06 /* CSMultiHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		1B467ABB15CD9A73001AB1DD /* CSStreamHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF90EC3859F006D2F06 /* CSStreamHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		1B467ABC15CD9A73001AB1DD /* CSSubHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF10EC3859F006D2F06 /* CSSubHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		1B467ABD15CD9A73001AB1DD /* CSZlibHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAFF0EC3859F006D2F06 /* CSZlibHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		1B467ABE15CD9A73001AB1DD /* clients.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B06D52E0DDA623800D9C000 /* clients.c */; };
 		1B467ABF15CD9A73001AB1DD /* emulation.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B06D54F0DDA623800D9C000 /* emulation.c */; };
 		1B467AC015CD9A73001AB1DD /* RARBug.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BCD65510EF8164900D86C43 /* RARBug.c */; };
@@ -1025,15 +1025,15 @@
 		1B91CD4911D97E7C0081E40A /* Scanning.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B23DA9E1177C99900620319 /* Scanning.m */; };
 		1B91CD4A11D97E7C0081E40A /* CSBlockStreamHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAFB0EC3859F006D2F06 /* CSBlockStreamHandle.m */; };
 		1B91CD4B11D97E7C0081E40A /* CSByteStreamHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAFD0EC3859F006D2F06 /* CSByteStreamHandle.m */; };
-		1B91CD4C11D97E7C0081E40A /* CSBzip2Handle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC8A0F00EE61C42006B47FE /* CSBzip2Handle.m */; };
-		1B91CD4D11D97E7C0081E40A /* CSFileHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF50EC3859F006D2F06 /* CSFileHandle.m */; };
-		1B91CD4E11D97E7C0081E40A /* CSHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAEF0EC3859F006D2F06 /* CSHandle.m */; };
+		1B91CD4C11D97E7C0081E40A /* CSBzip2Handle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC8A0F00EE61C42006B47FE /* CSBzip2Handle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		1B91CD4D11D97E7C0081E40A /* CSFileHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF50EC3859F006D2F06 /* CSFileHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		1B91CD4E11D97E7C0081E40A /* CSHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAEF0EC3859F006D2F06 /* CSHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		1B91CD4F11D97E7C0081E40A /* CSInputBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC8903F0ED47D76006B47FE /* CSInputBuffer.m */; };
-		1B91CD5011D97E7C0081E40A /* CSMemoryHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF70EC3859F006D2F06 /* CSMemoryHandle.m */; };
-		1B91CD5111D97E7C0081E40A /* CSMultiHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF30EC3859F006D2F06 /* CSMultiHandle.m */; };
-		1B91CD5211D97E7C0081E40A /* CSStreamHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF90EC3859F006D2F06 /* CSStreamHandle.m */; };
-		1B91CD5311D97E7C0081E40A /* CSSubHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF10EC3859F006D2F06 /* CSSubHandle.m */; };
-		1B91CD5411D97E7C0081E40A /* CSZlibHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAFF0EC3859F006D2F06 /* CSZlibHandle.m */; };
+		1B91CD5011D97E7C0081E40A /* CSMemoryHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF70EC3859F006D2F06 /* CSMemoryHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		1B91CD5111D97E7C0081E40A /* CSMultiHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF30EC3859F006D2F06 /* CSMultiHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		1B91CD5211D97E7C0081E40A /* CSStreamHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF90EC3859F006D2F06 /* CSStreamHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		1B91CD5311D97E7C0081E40A /* CSSubHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF10EC3859F006D2F06 /* CSSubHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		1B91CD5411D97E7C0081E40A /* CSZlibHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAFF0EC3859F006D2F06 /* CSZlibHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		1B91CD5511D97E7C0081E40A /* clients.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B06D52E0DDA623800D9C000 /* clients.c */; };
 		1B91CD5611D97E7C0081E40A /* emulation.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B06D54F0DDA623800D9C000 /* emulation.c */; };
 		1B91CD5711D97E7C0081E40A /* RARBug.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BCD65510EF8164900D86C43 /* RARBug.c */; };
@@ -1052,7 +1052,7 @@
 		1B91CE5211D984F20081E40A /* regex.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B34A0B911BB293A00396C26 /* regex.c */; };
 		1B91CF7311DCF4140081E40A /* XADStringWindows.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B91CF7211DCF4140081E40A /* XADStringWindows.m */; };
 		1B91D03511DE925B0081E40A /* XADArchiveParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBAB6770EC26AA6007FE6A2 /* XADArchiveParser.m */; };
-		1B91D03611DE925F0081E40A /* XADUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B81DD450FFEB87B005C5B23 /* XADUnarchiver.m */; };
+		1B91D03611DE925F0081E40A /* XADUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B81DD450FFEB87B005C5B23 /* XADUnarchiver.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		1B91D03711DE92620081E40A /* XADPlatformWindows.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B349EF711BACA4F00396C26 /* XADPlatformWindows.m */; };
 		1B91D0AE11DFC05D0081E40A /* XADStringCFString.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B91D0AC11DFC0480081E40A /* XADStringCFString.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		1B91D10B11E0F1160081E40A /* XADStringCFString.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B91D0AC11DFC0480081E40A /* XADStringCFString.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -1155,7 +1155,7 @@
 		1BBC415C10B85B5E00A05E29 /* XADMSZipHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBC415A10B85B5E00A05E29 /* XADMSZipHandle.m */; };
 		1BBC416010B85B6600A05E29 /* XADQuantumHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBC415E10B85B6600A05E29 /* XADQuantumHandle.m */; };
 		1BBC42E110BA065D00A05E29 /* XADCABBlockHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBC42DF10BA065D00A05E29 /* XADCABBlockHandle.m */; };
-		1BBCC4FA0EE73AC9006C3AE2 /* CSBzip2Handle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC8A0F00EE61C42006B47FE /* CSBzip2Handle.m */; };
+		1BBCC4FA0EE73AC9006C3AE2 /* CSBzip2Handle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC8A0F00EE61C42006B47FE /* CSBzip2Handle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		1BBCC54D0EE73B7F006C3AE2 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BBCC54C0EE73B7F006C3AE2 /* libbz2.tbd */; };
 		1BBCC5790EE747F6006C3AE2 /* XADBzip2Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B578C5B0DDCFFE0005B0F68 /* XADBzip2Parser.m */; };
 		1BBEF8B014D8A31800790E4B /* XADArchiveParserDescriptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BBEF8AE14D8A31700790E4B /* XADArchiveParserDescriptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1528,14 +1528,14 @@
 		5500A5311D776ADB00321300 /* XADGzipParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B578C570DDCFFD0005B0F68 /* XADGzipParser.m */; };
 		5500A5321D776ADB00321300 /* XADArchiveParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBAB6770EC26AA6007FE6A2 /* XADArchiveParser.m */; };
 		5500A5331D776ADB00321300 /* XADString.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B06D5BA0DDA67E000D9C000 /* XADString.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		5500A5341D776ADB00321300 /* CSHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAEF0EC3859F006D2F06 /* CSHandle.m */; };
-		5500A5351D776ADB00321300 /* CSSubHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF10EC3859F006D2F06 /* CSSubHandle.m */; };
-		5500A5361D776ADB00321300 /* CSMultiHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF30EC3859F006D2F06 /* CSMultiHandle.m */; };
-		5500A5371D776ADB00321300 /* CSFileHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF50EC3859F006D2F06 /* CSFileHandle.m */; };
-		5500A5381D776ADB00321300 /* CSMemoryHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF70EC3859F006D2F06 /* CSMemoryHandle.m */; };
-		5500A5391D776ADB00321300 /* CSStreamHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF90EC3859F006D2F06 /* CSStreamHandle.m */; };
+		5500A5341D776ADB00321300 /* CSHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAEF0EC3859F006D2F06 /* CSHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		5500A5351D776ADB00321300 /* CSSubHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF10EC3859F006D2F06 /* CSSubHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		5500A5361D776ADB00321300 /* CSMultiHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF30EC3859F006D2F06 /* CSMultiHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		5500A5371D776ADB00321300 /* CSFileHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF50EC3859F006D2F06 /* CSFileHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		5500A5381D776ADB00321300 /* CSMemoryHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF70EC3859F006D2F06 /* CSMemoryHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		5500A5391D776ADB00321300 /* CSStreamHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF90EC3859F006D2F06 /* CSStreamHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		5500A53A1D776ADB00321300 /* CSByteStreamHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAFD0EC3859F006D2F06 /* CSByteStreamHandle.m */; };
-		5500A53B1D776ADB00321300 /* CSZlibHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAFF0EC3859F006D2F06 /* CSZlibHandle.m */; };
+		5500A53B1D776ADB00321300 /* CSZlibHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAFF0EC3859F006D2F06 /* CSZlibHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		5500A53C1D776ADB00321300 /* XADException.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B578C330DDBC8BF005B0F68 /* XADException.m */; };
 		5500A53D1D776ADB00321300 /* XADMacArchiveParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAD660EC5D4E8006D2F06 /* XADMacArchiveParser.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		5500A53E1D776ADB00321300 /* NSDateXAD.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAD7F0EC6826E006D2F06 /* NSDateXAD.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -1556,7 +1556,7 @@
 		5500A55C1D776ADB00321300 /* Checksums.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC89C9D0EDCAA51006B47FE /* Checksums.m */; };
 		5500A55D1D776ADB00321300 /* XADRARAESHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC89DEB0EDDBB33006B47FE /* XADRARAESHandle.m */; };
 		5500A55E1D776ADB00321300 /* XADDeflateHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC89F120EE0CD71006B47FE /* XADDeflateHandle.m */; };
-		5500A5601D776ADB00321300 /* CSBzip2Handle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC8A0F00EE61C42006B47FE /* CSBzip2Handle.m */; };
+		5500A5601D776ADB00321300 /* CSBzip2Handle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC8A0F00EE61C42006B47FE /* CSBzip2Handle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		5500A5611D776ADB00321300 /* XADBzip2Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B578C5B0DDCFFE0005B0F68 /* XADBzip2Parser.m */; };
 		5500A5631D776ADB00321300 /* XADSkipHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B2F17E50EE8AF7B0000DAFF /* XADSkipHandle.m */; };
 		5500A5641D776ADB00321300 /* XADRegex.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B21106F0A4452C2005ED2AF /* XADRegex.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -1591,7 +1591,7 @@
 		5500A5A71D776ADB00321300 /* XADBlockHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B32D2A910F8D11D002A2C76 /* XADBlockHandle.m */; };
 		5500A5A91D776ADB00321300 /* Scanning.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B23DA9E1177C99900620319 /* Scanning.m */; };
 		5500A5AB1D776ADB00321300 /* XADTarSparseHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B23DD3B117FC7B900620319 /* XADTarSparseHandle.m */; };
-		5500A5AC1D776ADB00321300 /* XADUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B81DD450FFEB87B005C5B23 /* XADUnarchiver.m */; };
+		5500A5AC1D776ADB00321300 /* XADUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B81DD450FFEB87B005C5B23 /* XADUnarchiver.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		5500A5AD1D776ADB00321300 /* XADRAR20Handle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B23E75D1199CB7C00620319 /* XADRAR20Handle.m */; };
 		5500A5AE1D776ADB00321300 /* XADRARVirtualMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B4CFDAD119EDD0D00CDACC1 /* XADRARVirtualMachine.m */; };
 		5500A5AF1D776ADB00321300 /* XADFastLZSSHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B4CFEB611A3334200CDACC1 /* XADFastLZSSHandle.m */; };
@@ -1884,14 +1884,14 @@
 		551BACF41EB032B500EAF64E /* XADGzipParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B578C570DDCFFD0005B0F68 /* XADGzipParser.m */; };
 		551BACF51EB032B500EAF64E /* XADArchiveParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBAB6770EC26AA6007FE6A2 /* XADArchiveParser.m */; };
 		551BACF61EB032B500EAF64E /* XADString.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B06D5BA0DDA67E000D9C000 /* XADString.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		551BACF71EB032B500EAF64E /* CSHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAEF0EC3859F006D2F06 /* CSHandle.m */; };
-		551BACF81EB032B500EAF64E /* CSSubHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF10EC3859F006D2F06 /* CSSubHandle.m */; };
-		551BACF91EB032B500EAF64E /* CSMultiHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF30EC3859F006D2F06 /* CSMultiHandle.m */; };
-		551BACFA1EB032B500EAF64E /* CSFileHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF50EC3859F006D2F06 /* CSFileHandle.m */; };
-		551BACFB1EB032B500EAF64E /* CSMemoryHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF70EC3859F006D2F06 /* CSMemoryHandle.m */; };
-		551BACFC1EB032B500EAF64E /* CSStreamHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF90EC3859F006D2F06 /* CSStreamHandle.m */; };
+		551BACF71EB032B500EAF64E /* CSHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAEF0EC3859F006D2F06 /* CSHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		551BACF81EB032B500EAF64E /* CSSubHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF10EC3859F006D2F06 /* CSSubHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		551BACF91EB032B500EAF64E /* CSMultiHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF30EC3859F006D2F06 /* CSMultiHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		551BACFA1EB032B500EAF64E /* CSFileHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF50EC3859F006D2F06 /* CSFileHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		551BACFB1EB032B500EAF64E /* CSMemoryHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF70EC3859F006D2F06 /* CSMemoryHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		551BACFC1EB032B500EAF64E /* CSStreamHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAF90EC3859F006D2F06 /* CSStreamHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		551BACFD1EB032B500EAF64E /* CSByteStreamHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAFD0EC3859F006D2F06 /* CSByteStreamHandle.m */; };
-		551BACFE1EB032B500EAF64E /* CSZlibHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAFF0EC3859F006D2F06 /* CSZlibHandle.m */; };
+		551BACFE1EB032B500EAF64E /* CSZlibHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAFF0EC3859F006D2F06 /* CSZlibHandle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		551BACFF1EB032B500EAF64E /* XADException.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B578C330DDBC8BF005B0F68 /* XADException.m */; };
 		551BAD001EB032B500EAF64E /* XADMacArchiveParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAD660EC5D4E8006D2F06 /* XADMacArchiveParser.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		551BAD011EB032B500EAF64E /* NSDateXAD.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAD7F0EC6826E006D2F06 /* NSDateXAD.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -1928,7 +1928,7 @@
 		551BAD201EB032B500EAF64E /* XADRARAESHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC89DEB0EDDBB33006B47FE /* XADRARAESHandle.m */; };
 		551BAD211EB032B500EAF64E /* XADDeflateHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC89F120EE0CD71006B47FE /* XADDeflateHandle.m */; };
 		551BAD221EB032B500EAF64E /* XADALZipParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC8A07A0EE4C4DA006B47FE /* XADALZipParser.m */; };
-		551BAD231EB032B500EAF64E /* CSBzip2Handle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC8A0F00EE61C42006B47FE /* CSBzip2Handle.m */; };
+		551BAD231EB032B500EAF64E /* CSBzip2Handle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC8A0F00EE61C42006B47FE /* CSBzip2Handle.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		551BAD241EB032B500EAF64E /* XADBzip2Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B578C5B0DDCFFE0005B0F68 /* XADBzip2Parser.m */; };
 		551BAD251EB032B500EAF64E /* XADPowerPackerParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B2F183F0EE965880000DAFF /* XADPowerPackerParser.m */; };
 		551BAD261EB032B500EAF64E /* XADSkipHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B2F17E50EE8AF7B0000DAFF /* XADSkipHandle.m */; };
@@ -2004,7 +2004,7 @@
 		551BAD6C1EB032B500EAF64E /* Scanning.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B23DA9E1177C99900620319 /* Scanning.m */; };
 		551BAD6D1EB032B500EAF64E /* XADNowCompressParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B23DB8D117BA91D00620319 /* XADNowCompressParser.m */; };
 		551BAD6E1EB032B500EAF64E /* XADTarSparseHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B23DD3B117FC7B900620319 /* XADTarSparseHandle.m */; };
-		551BAD6F1EB032B500EAF64E /* XADUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B81DD450FFEB87B005C5B23 /* XADUnarchiver.m */; };
+		551BAD6F1EB032B500EAF64E /* XADUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B81DD450FFEB87B005C5B23 /* XADUnarchiver.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		551BAD701EB032B500EAF64E /* XADRAR20Handle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B23E75D1199CB7C00620319 /* XADRAR20Handle.m */; };
 		551BAD711EB032B500EAF64E /* XADRARVirtualMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B4CFDAD119EDD0D00CDACC1 /* XADRARVirtualMachine.m */; };
 		551BAD721EB032B500EAF64E /* XADFastLZSSHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B4CFEB611A3334200CDACC1 /* XADFastLZSSHandle.m */; };
@@ -2105,6 +2105,15 @@
 		55541F771EA91BE1001A6927 /* XADSimpleUnarchiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55541F761EA91BE0001A6927 /* XADSimpleUnarchiver.swift */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		555EF0741EA7DB1F000CAE58 /* XADMasterSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = 555EF0721EA7DB1F000CAE58 /* XADMasterSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		555EF07C1EA7DB57000CAE58 /* XADArchiveParserSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555EF07B1EA7DB57000CAE58 /* XADArchiveParserSwift.swift */; };
+		5591220C1EB3D07D007CF99D /* XADMasterSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = 555EF0721EA7DB1F000CAE58 /* XADMasterSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5591220E1EB3D07D007CF99D /* XADPlatformSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55541F6D1EA7EF90001A6927 /* XADPlatformSwift.swift */; };
+		5591220F1EB3D07D007CF99D /* XADArchiveParserSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555EF07B1EA7DB57000CAE58 /* XADArchiveParserSwift.swift */; };
+		559122101EB3D07D007CF99D /* XADResourceForkSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D508E01EA7E63D008A3F63 /* XADResourceForkSwift.swift */; };
+		559122111EB3D07D007CF99D /* XADSimpleUnarchiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55541F761EA91BE0001A6927 /* XADSimpleUnarchiver.swift */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		559122121EB3D07D007CF99D /* XADUnarchiverSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55541F6B1EA7EBC5001A6927 /* XADUnarchiverSwift.swift */; };
+		559122131EB3D07D007CF99D /* XADArchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55541F711EA7FBC3001A6927 /* XADArchive.swift */; };
+		559122141EB3D07D007CF99D /* XADStringSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55541F6F1EA7F339001A6927 /* XADStringSwift.swift */; };
+		559122161EB3D07D007CF99D /* XADMaster.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* XADMaster.framework */; };
 		55B3B2541DBCC51400ECC61D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55B3B2531DBCC51400ECC61D /* Security.framework */; };
 		55B3B2551DBCC51C00ECC61D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55B3B2531DBCC51400ECC61D /* Security.framework */; };
 		55CD16B31C4AEA49002C2B17 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CD16B21C4AEA49002C2B17 /* main.swift */; };
@@ -2280,6 +2289,13 @@
 			remoteInfo = XADMaster;
 		};
 		55541F731EA917FA001A6927 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = XADMaster;
+		};
+		5591220A1EB3D07D007CF99D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
@@ -2490,7 +2506,7 @@
 		1B3A64B41015030700AE25A8 /* XADLZHSFXParsers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADLZHSFXParsers.h; sourceTree = "<group>"; };
 		1B3A64B51015030700AE25A8 /* XADLZHSFXParsers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XADLZHSFXParsers.m; sourceTree = "<group>"; };
 		1B3A64C610150DB600AE25A8 /* XADLZHOldHandles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADLZHOldHandles.h; sourceTree = "<group>"; };
-		1B3A64C710150DB600AE25A8 /* XADLZHOldHandles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XADLZHOldHandles.m; sourceTree = "<group>"; };
+		1B3A64C710150DB600AE25A8 /* XADLZHOldHandles.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = XADLZHOldHandles.m; sourceTree = "<group>"; };
 		1B3A650110154DCE00AE25A8 /* CSHexDump.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSHexDump.m; sourceTree = "<group>"; };
 		1B3A66D51017B7E000AE25A8 /* XADNSISParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADNSISParser.h; sourceTree = "<group>"; };
 		1B3A66D61017B7E000AE25A8 /* XADNSISParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XADNSISParser.m; sourceTree = "<group>"; };
@@ -2852,7 +2868,10 @@
 		555EF07B1EA7DB57000CAE58 /* XADArchiveParserSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XADArchiveParserSwift.swift; sourceTree = "<group>"; };
 		557EA8751DB1C37C00A5AE04 /* XAD-simple.exp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.exports; path = "XAD-simple.exp"; sourceTree = "<group>"; };
 		558A1EDB1E70E00C00C41ADA /* XAD.exp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.exports; path = XAD.exp; sourceTree = "<group>"; };
+		5591221B1EB3D07D007CF99D /* XADMasterSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = XADMasterSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5591221D1EB3D21D007CF99D /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		559B9CCC1A13F30E006BDB74 /* XAD.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = XAD.modulemap; sourceTree = "<group>"; };
+		559B9CCF1A13F443006BDB74 /* XADMaster-umbrella.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XADMaster-umbrella.h"; sourceTree = "<group>"; };
 		55B3B2531DBCC51400ECC61D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		55CD16B01C4AEA49002C2B17 /* XADTestSwift2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = XADTestSwift2; sourceTree = BUILT_PRODUCTS_DIR; };
 		55CD16B21C4AEA49002C2B17 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -3025,6 +3044,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		559122151EB3D07D007CF99D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				559122161EB3D07D007CF99D /* XADMaster.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		55CD16AD1C4AEA49002C2B17 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -3069,6 +3096,7 @@
 				5500A60F1D776ADB00321300 /* XADMaster.framework */,
 				555EF0701EA7DB1F000CAE58 /* XADMasterSwift.framework */,
 				551BADD11EB032B500EAF64E /* XADMaster.framework */,
+				5591221B1EB3D07D007CF99D /* XADMasterSwift.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3097,10 +3125,12 @@
 			);
 			name = XADMaster;
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 		0867D69AFE84028FC02AAC07 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5591221D1EB3D21D007CF99D /* CoreFoundation.framework */,
 				55B3B2531DBCC51400ECC61D /* Security.framework */,
 				1B3FABA70EC52532006D2F06 /* libz.tbd */,
 				1BBCC54C0EE73B7F006C3AE2 /* libbz2.tbd */,
@@ -4011,6 +4041,7 @@
 			children = (
 				5500A6131D776B2500321300 /* XADSimple */,
 				32DBCF5E0370ADEE00C91783 /* XADMaster_Prefix.pch */,
+				559B9CCF1A13F443006BDB74 /* XADMaster-umbrella.h */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -4650,6 +4681,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5591220B1EB3D07D007CF99D /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5591220C1EB3D07D007CF99D /* XADMasterSwift.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8DC2EF500486A6940098B216 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -5160,6 +5199,25 @@
 			productReference = 555EF0701EA7DB1F000CAE58 /* XADMasterSwift.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		559122081EB3D07D007CF99D /* XADMasterSwift-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 559122181EB3D07D007CF99D /* Build configuration list for PBXNativeTarget "XADMasterSwift-iOS" */;
+			buildPhases = (
+				5591220B1EB3D07D007CF99D /* Headers */,
+				5591220D1EB3D07D007CF99D /* Sources */,
+				559122151EB3D07D007CF99D /* Frameworks */,
+				559122171EB3D07D007CF99D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				559122091EB3D07D007CF99D /* PBXTargetDependency */,
+			);
+			name = "XADMasterSwift-iOS";
+			productName = XADSimpleMasterSwift;
+			productReference = 5591221B1EB3D07D007CF99D /* XADMasterSwift.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		55CD16AF1C4AEA49002C2B17 /* XADTestSwift2 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 55CD16B41C4AEA49002C2B17 /* Build configuration list for PBXNativeTarget "XADTestSwift2" */;
@@ -5204,7 +5262,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0900;
 				TargetAttributes = {
 					555EF06F1EA7DB1F000CAE58 = {
 						CreatedOnToolsVersion = 8.3.1;
@@ -5233,8 +5291,9 @@
 			targets = (
 				8DC2EF4F0486A6940098B216 /* XADMaster */,
 				551BAC111EB032B500EAF64E /* XADMaster-iOS */,
-				555EF06F1EA7DB1F000CAE58 /* XADMasterSwift */,
 				5500A44A1D776ADB00321300 /* XADMaster-simple */,
+				555EF06F1EA7DB1F000CAE58 /* XADMasterSwift */,
+				559122081EB3D07D007CF99D /* XADMasterSwift-iOS */,
 				1B34A97411C2FD0500396C26 /* libXADMaster.a */,
 				1B91CCBE11D97E7C0081E40A /* libXADMaster.win.a */,
 				1B4679F715CD9A73001AB1DD /* libXADMaster.ios.a */,
@@ -5270,6 +5329,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		555EF06E1EA7DB1F000CAE58 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		559122171EB3D07D007CF99D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -6428,6 +6494,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5591220D1EB3D07D007CF99D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5591220E1EB3D07D007CF99D /* XADPlatformSwift.swift in Sources */,
+				5591220F1EB3D07D007CF99D /* XADArchiveParserSwift.swift in Sources */,
+				559122101EB3D07D007CF99D /* XADResourceForkSwift.swift in Sources */,
+				559122111EB3D07D007CF99D /* XADSimpleUnarchiver.swift in Sources */,
+				559122121EB3D07D007CF99D /* XADUnarchiverSwift.swift in Sources */,
+				559122131EB3D07D007CF99D /* XADArchive.swift in Sources */,
+				559122141EB3D07D007CF99D /* XADStringSwift.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		55CD16AC1C4AEA49002C2B17 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -6761,6 +6841,11 @@
 			target = 8DC2EF4F0486A6940098B216 /* XADMaster */;
 			targetProxy = 55541F731EA917FA001A6927 /* PBXContainerItemProxy */;
 		};
+		559122091EB3D07D007CF99D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8DC2EF4F0486A6940098B216 /* XADMaster */;
+			targetProxy = 5591220A1EB3D07D007CF99D /* PBXContainerItemProxy */;
+		};
 		55CD16B81C4AEA93002C2B17 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8DC2EF4F0486A6940098B216 /* XADMaster */;
@@ -6869,7 +6954,7 @@
 				);
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				INSTALL_PATH = /usr/local/lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = XADMaster;
 			};
@@ -6984,7 +7069,9 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -6992,7 +7079,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = NO;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -7008,9 +7099,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TVOS_DEPLOYMENT_TARGET = 9.0;
 				USE_HEADERMAP = NO;
 			};
 			name = Release;
@@ -7160,7 +7253,7 @@
 					"$(inherited)",
 				);
 				INSTALL_PATH = /usr/local/lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = XADMaster;
 			};
@@ -7596,7 +7689,9 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -7604,7 +7699,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = NO;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -7622,10 +7721,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TVOS_DEPLOYMENT_TARGET = 9.0;
 				USE_HEADERMAP = NO;
 			};
 			name = Debug;
@@ -7730,6 +7831,8 @@
 				PRODUCT_NAME = XADMaster;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "appletvsimulator appletvos iphonesimulator iphoneos";
+				TVOS_DEPLOYMENT_TARGET = 9.0;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Debug;
@@ -7767,6 +7870,8 @@
 				PRODUCT_NAME = XADMaster;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "appletvsimulator appletvos iphonesimulator iphoneos";
+				TVOS_DEPLOYMENT_TARGET = 9.0;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;
@@ -7834,6 +7939,71 @@
 			};
 			name = Release;
 		};
+		559122191EB3D07D007CF99D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = XADSimpleMasterSwift/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.maddthesane.XADMasterSwift;
+				PRODUCT_NAME = XADMasterSwift;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "appletvsimulator appletvos iphonesimulator iphoneos";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 3.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		5591221A1EB3D07D007CF99D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = XADSimpleMasterSwift/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.maddthesane.XADMasterSwift;
+				PRODUCT_NAME = XADMasterSwift;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "appletvsimulator appletvos iphonesimulator iphoneos";
+				SWIFT_VERSION = 3.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		55CD16B51C4AEA49002C2B17 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -7848,7 +8018,6 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -7861,7 +8030,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -7887,6 +8056,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -8060,6 +8230,15 @@
 			buildConfigurations = (
 				555EF0751EA7DB1F000CAE58 /* Debug */,
 				555EF0761EA7DB1F000CAE58 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		559122181EB3D07D007CF99D /* Build configuration list for PBXNativeTarget "XADMasterSwift-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				559122191EB3D07D007CF99D /* Debug */,
+				5591221A1EB3D07D007CF99D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

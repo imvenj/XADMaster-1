@@ -3,6 +3,9 @@
 
 #include <sys/stat.h>
 
+#if !__has_feature(objc_arc)
+#error this file needs to be compiled with Automatic Reference Counting (ARC)
+#endif
 
 NSString *const CSOutOfMemoryException=@"CSOutOfMemoryException";
 NSString *const CSEndOfFileException=@"CSEndOfFileException";
@@ -32,7 +35,7 @@ NSString *const CSNotSupportedException=@"CSNotSupportedException";
 {
 	if((self=[super init]))
 	{
-		name=[[[other name] stringByAppendingString:@" (copy)"] retain];
+		name=[[other name] stringByAppendingString:@" (copy)"];
 
 		bitoffs=other->bitoffs;
 		readbyte=other->readbyte;
@@ -41,12 +44,6 @@ NSString *const CSNotSupportedException=@"CSNotSupportedException";
 		writebitsleft=other->writebitsleft;
 	}
 	return self;
-}
-
--(void)dealloc
-{
-	[name release];
-	[super dealloc];
 }
 
 -(void)close {}
@@ -246,12 +243,12 @@ CSReadValueImpl(uint32_t,readID,CSUInt32BE)
 
 -(NSString *)readLineWithEncoding:(NSStringEncoding)encoding
 {
-	return [[[NSString alloc] initWithData:[self readLine] encoding:encoding] autorelease];
+	return [[NSString alloc] initWithData:[self readLine] encoding:encoding];
 }
 
 -(NSString *)readUTF8Line
 {
-	return [[[NSString alloc] initWithData:[self readLine] encoding:NSUTF8StringEncoding] autorelease];
+	return [[NSString alloc] initWithData:[self readLine] encoding:NSUTF8StringEncoding];
 }
 
 
@@ -280,12 +277,12 @@ CSReadValueImpl(uint32_t,readID,CSUInt32BE)
 
 -(NSData *)readDataOfLength:(int)length
 {
-	return [[self copyDataOfLength:length] autorelease];
+	return [self copyDataOfLength:length];
 }
 
 -(NSData *)readDataOfLengthAtMost:(int)length
 {
-	return [[self copyDataOfLengthAtMost:length] autorelease];
+	return [self copyDataOfLengthAtMost:length];
 }
 
 -(NSData *)copyDataOfLength:(int)length
@@ -336,12 +333,12 @@ CSReadValueImpl(uint32_t,readID,CSUInt32BE)
 
 -(CSHandle *)subHandleOfLength:(off_t)length
 {
-	return [[[CSSubHandle alloc] initWithHandle:[[self copy] autorelease] from:[self offsetInFile] length:length] autorelease];
+	return [[CSSubHandle alloc] initWithHandle:[self copy] from:[self offsetInFile] length:length];
 }
 
 -(CSHandle *)subHandleFrom:(off_t)start length:(off_t)length
 {
-	return [[[CSSubHandle alloc] initWithHandle:[[self copy] autorelease] from:start length:length] autorelease];
+	return [[CSSubHandle alloc] initWithHandle:[self copy] from:start length:length];
 }
 
 -(CSHandle *)subHandleToEndOfFileFrom:(off_t)start
@@ -349,24 +346,24 @@ CSReadValueImpl(uint32_t,readID,CSUInt32BE)
 	off_t size=[self fileSize];
 	if(size==CSHandleMaxLength)
 	{
-		return [[[CSSubHandle alloc] initWithHandle:[[self copy] autorelease]
-		from:start length:CSHandleMaxLength] autorelease];
+		return [[CSSubHandle alloc] initWithHandle:[self copy]
+		from:start length:CSHandleMaxLength];
 	}
 	else
 	{
-		return [[[CSSubHandle alloc] initWithHandle:[[self copy] autorelease]
-		from:start length:size-start] autorelease];
+		return [[CSSubHandle alloc] initWithHandle:[self copy]
+		from:start length:size-start];
 	}
 }
 
 -(CSHandle *)nonCopiedSubHandleOfLength:(off_t)length
 {
-	return [[[CSSubHandle alloc] initWithHandle:self from:[self offsetInFile] length:length] autorelease];
+	return [[CSSubHandle alloc] initWithHandle:self from:[self offsetInFile] length:length];
 }
 
 -(CSHandle *)nonCopiedSubHandleFrom:(off_t)start length:(off_t)length
 {
-	return [[[CSSubHandle alloc] initWithHandle:self from:start length:length] autorelease];
+	return [[CSSubHandle alloc] initWithHandle:self from:start length:length];
 }
 
 -(CSHandle *)nonCopiedSubHandleToEndOfFileFrom:(off_t)start
@@ -374,13 +371,13 @@ CSReadValueImpl(uint32_t,readID,CSUInt32BE)
 	off_t size=[self fileSize];
 	if(size==CSHandleMaxLength)
 	{
-		return [[[CSSubHandle alloc] initWithHandle:self
-		from:start length:CSHandleMaxLength] autorelease];
+		return [[CSSubHandle alloc] initWithHandle:self
+		from:start length:CSHandleMaxLength];
 	}
 	else
 	{
-		return [[[CSSubHandle alloc] initWithHandle:self
-		from:start length:size-start] autorelease];
+		return [[CSSubHandle alloc] initWithHandle:self
+		from:start length:size-start];
 	}
 }
 

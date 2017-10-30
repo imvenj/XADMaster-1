@@ -210,7 +210,7 @@
 	while((dict=[enumerator nextObject]))
 	{
 		NSNumber *num=dict[XADFileSizeKey];
-		if(!num)
+		if(num == nil)
 		{
 			if(ignoreunknown) continue;
 			else return -1;
@@ -397,7 +397,7 @@
 			NSNumber *size=entry[XADFileSizeKey];
 
 			// Disable accurate progress calculation if any sizes are unknown.
-			if(size) totalsize+=[size longLongValue];
+			if(size != nil) totalsize+=[size longLongValue];
 			else totalsize=-1;
 		}
 		
@@ -917,7 +917,7 @@ fileFraction:(double)fileratio estimatedTotalFraction:(double)totalratio
 		if(dict && [self macResourceForkStyle]==XADForkStyleHFVExplorerAppleDouble)
 		{
 			NSNumber *resnum=dict[XADIsResourceForkKey];
-			if(!resnum || ![resnum boolValue])
+			if(resnum == nil || ![resnum boolValue])
 			{
 				NSString *forkpath=[[path stringByDeletingLastPathComponent] stringByAppendingPathComponent:
 				[@"%" stringByAppendingString:[path lastPathComponent]]];

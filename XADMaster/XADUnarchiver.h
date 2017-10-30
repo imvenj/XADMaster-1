@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (NS_NONATOMIC_IOSONLY, readonly, strong) XADArchiveParser *archiveParser;
 
-@property (NS_NONATOMIC_IOSONLY, assign, nullable) id<XADUnarchiverDelegate> delegate;
+@property (NS_NONATOMIC_IOSONLY, weak, nullable) id<XADUnarchiverDelegate> delegate;
 
 @property (NS_NONATOMIC_IOSONLY, copy) NSString *destination;
 
@@ -123,12 +123,12 @@ fileFraction:(double)fileprogress estimatedTotalFraction:(double)totalprogress;
 @end
 
 
-static const XADForkStyle XADIgnoredForkStyle API_DEPRECATED_WITH_REPLACEMENT("XADForkStyleIgnored", macosx(10.0, 10.9)) = XADForkStyleIgnored;
-static const XADForkStyle XADMacOSXForkStyle API_DEPRECATED_WITH_REPLACEMENT("XADForkStyleMacOSX", macosx(10.0, 10.9)) = XADForkStyleMacOSX;
-static const XADForkStyle XADHiddenAppleDoubleForkStyle API_DEPRECATED_WITH_REPLACEMENT("XADForkStyleHiddenAppleDouble", macosx(10.0, 10.9)) = XADForkStyleHiddenAppleDouble;
-static const XADForkStyle XADVisibleAppleDoubleForkStyle API_DEPRECATED_WITH_REPLACEMENT("XADForkStyleVisibleAppleDouble", macosx(10.0, 10.9)) = XADForkStyleVisibleAppleDouble;
-static const XADForkStyle XADHFVExplorerAppleDoubleForkStyle API_DEPRECATED_WITH_REPLACEMENT("XADForkStyleHFVExplorerAppleDouble", macosx(10.0, 10.9)) = XADForkStyleHFVExplorerAppleDouble;
-static const XADForkStyle XADDefaultForkStyle API_DEPRECATED_WITH_REPLACEMENT("XADForkStyleDefault", macosx(10.0, 10.9)) = XADForkStyleDefault;
+static const XADForkStyle XADIgnoredForkStyle API_DEPRECATED_WITH_REPLACEMENT("XADForkStyleIgnored", macosx(10.0, 10.8), ios(3.0, 8.0)) = XADForkStyleIgnored;
+static const XADForkStyle XADMacOSXForkStyle API_DEPRECATED_WITH_REPLACEMENT("XADForkStyleMacOSX", macosx(10.0, 10.8), ios(3.0, 8.0)) = XADForkStyleMacOSX;
+static const XADForkStyle XADHiddenAppleDoubleForkStyle API_DEPRECATED_WITH_REPLACEMENT("XADForkStyleHiddenAppleDouble", macosx(10.0, 10.8), ios(3.0, 8.0)) = XADForkStyleHiddenAppleDouble;
+static const XADForkStyle XADVisibleAppleDoubleForkStyle API_DEPRECATED_WITH_REPLACEMENT("XADForkStyleVisibleAppleDouble", macosx(10.0, 10.8), ios(3.0, 8.0)) = XADForkStyleVisibleAppleDouble;
+static const XADForkStyle XADHFVExplorerAppleDoubleForkStyle API_DEPRECATED_WITH_REPLACEMENT("XADForkStyleHFVExplorerAppleDouble", macosx(10.0, 10.8), ios(3.0, 8.0)) = XADForkStyleHFVExplorerAppleDouble;
+static const XADForkStyle XADDefaultForkStyle API_DEPRECATED_WITH_REPLACEMENT("XADForkStyleDefault", macosx(10.0, 10.8), ios(3.0, 8.0)) = XADForkStyleDefault;
 
 NS_ASSUME_NONNULL_END
 

@@ -1,8 +1,13 @@
 #import "CSMultiHandle.h"
 
+#if !__has_feature(objc_arc)
+#error this file needs to be compiled with Automatic Reference Counting (ARC)
+#endif
+
 NSString *const CSSizeOfSegmentUnknownException=@"CSSizeOfSegmentUnknownException";
 
 @implementation CSMultiHandle
+@synthesize handles;
 
 +(CSMultiHandle *)multiHandleWithHandleArray:(NSArray *)handlearray
 {
@@ -10,7 +15,7 @@ NSString *const CSSizeOfSegmentUnknownException=@"CSSizeOfSegmentUnknownExceptio
 	long count=[handlearray count];
 	if(count==0) return nil;
 	else if(count==1) return handlearray[0];
-	else return [[[self alloc] initWithHandles:handlearray] autorelease];
+	else return [[self alloc] initWithHandles:handlearray];
 }
 
 +(CSMultiHandle *)multiHandleWithHandles:(CSHandle *)firsthandle,...
@@ -46,21 +51,13 @@ NSString *const CSSizeOfSegmentUnknownException=@"CSSizeOfSegmentUnknownExceptio
 		NSMutableArray *handlearray=[NSMutableArray arrayWithCapacity:[other->handles count]];
 		NSEnumerator *enumerator=[other->handles objectEnumerator];
 		CSHandle *handle;
-		while((handle=[enumerator nextObject])) [handlearray addObject:[[handle copy] autorelease]];
+		while((handle=[enumerator nextObject])) [handlearray addObject:[handle copy]];
 
-		handles=[[NSArray arrayWithArray:handlearray] retain];
+		handles=[handlearray copy];
 		currhandle=other->currhandle;
 	}
 	return self;
 }
-
--(void)dealloc
-{
-	[handles release];
-	[super dealloc];
-}
-
--(NSArray *)handles { return handles; }
 
 -(CSHandle *)currentHandle { return handles[currhandle]; }
 

@@ -1,32 +1,49 @@
 #import "CSZlibHandle.h"
 
+#ifndef __MACTYPES__
+#define Byte zlibByte
+#include <zlib.h>
+#undef Byte
+#else
+#include <zlib.h>
+#endif
 
+
+#if !__has_feature(objc_arc)
+#error this file needs to be compiled with Automatic Reference Counting (ARC)
+#endif
 
 NSString *const CSZlibException=@"CSZlibException";
 
 
 
 @implementation CSZlibHandle
-
+{
+	off_t startoffs;
+	z_stream zs;
+	BOOL inited,seekback,endstreamateof;
+	
+	uint8_t inbuffer[0x4000];
+}
 
 +(CSZlibHandle *)zlibHandleWithHandle:(CSHandle *)handle
 {
-	return [[[CSZlibHandle alloc] initWithHandle:handle length:CSHandleMaxLength header:YES name:[handle name]] autorelease];
+	return [[CSZlibHandle alloc] initWithHandle:handle length:CSHandleMaxLength header:YES name:[handle name]];
 }
 
 +(CSZlibHandle *)zlibHandleWithHandle:(CSHandle *)handle length:(off_t)length
 {
-	return [[[CSZlibHandle alloc] initWithHandle:handle length:length header:YES name:[handle name]] autorelease];
+	return [[CSZlibHandle alloc] initWithHandle:handle length:length header:YES name:[handle name]];
 }
 
 +(CSZlibHandle *)deflateHandleWithHandle:(CSHandle *)handle
 {
-	return [[[CSZlibHandle alloc] initWithHandle:handle length:CSHandleMaxLength header:NO name:[handle name]] autorelease];
+	return [[CSZlibHandle alloc] initWithHandle:handle length:CSHandleMaxLength header:NO name:[handle name]];
 }
 
 +(CSZlibHandle *)deflateHandleWithHandle:(CSHandle *)handle length:(off_t)length
 {
-	return [[[CSZlibHandle alloc] initWithHandle:handle length:length header:NO name:[handle name]] autorelease];
+	return [[CSZlibHandle alloc] initWithHandle:handle length:length header:NO name:[handle name]];
 }
 
 
@@ -36,7 +53,7 @@ NSString *const CSZlibException=@"CSZlibException";
 {
 	if((self=[super initWithName:descname length:length]))
 	{
-		parent=[handle retain];
+		parent=handle;
 		startoffs=[parent offsetInFile];
 		inited=YES;
 		seekback=NO;
@@ -68,8 +85,6 @@ NSString *const CSZlibException=@"CSZlibException";
 			inited=YES;
 			return self;
 		}
-
-		[self release];
 	}
 	return nil;
 }
@@ -77,9 +92,6 @@ NSString *const CSZlibException=@"CSZlibException";
 -(void)dealloc
 {
 	if(inited) inflateEnd(&zs);
-	[parent release];
-
-	[super dealloc];
 }
 
 -(void)setSeekBackAtEOF:(BOOL)seekateof { seekback=seekateof; }

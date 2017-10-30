@@ -4,16 +4,21 @@
 #import "CSFileHandle.h"
 #import "Progress.h"
 
+#if !__has_feature(objc_arc)
+#error this file needs to be compiled with Automatic Reference Counting (ARC)
+#endif
+
 @implementation XADUnarchiver
 @synthesize delegate;
 @synthesize destination;
 @synthesize macResourceForkStyle = forkstyle;
 @synthesize updateInterval = updateinterval;
 @synthesize preservesPermissions = preservepermissions;
+@synthesize archiveParser = parser;
 
 +(XADUnarchiver *)unarchiverForArchiveParser:(XADArchiveParser *)archiveparser
 {
-	return [[[self alloc] initWithArchiveParser:archiveparser] autorelease];
+	return [[self alloc] initWithArchiveParser:archiveparser];
 }
 
 +(XADUnarchiver *)unarchiverForPath:(NSString *)path
@@ -25,14 +30,14 @@
 {
 	XADArchiveParser *archiveparser=[XADArchiveParser archiveParserForPath:path error:errorptr];
 	if(!archiveparser) return nil;
-	return [[[self alloc] initWithArchiveParser:archiveparser] autorelease];
+	return [[self alloc] initWithArchiveParser:archiveparser];
 }
 
 -(instancetype)initWithArchiveParser:(XADArchiveParser *)archiveparser
 {
 	if((self=[super init]))
 	{
-		parser=[archiveparser retain];
+		parser=archiveparser;
 		destination=nil;
 		forkstyle=XADForkStyleDefault;
 		preservepermissions=NO;
@@ -45,19 +50,6 @@
 	}
 	return self;
 }
-
--(void)dealloc
-{
-	[parser release];
-	[destination release];
-	[deferreddirectories release];
-	[deferredlinks release];
-	[super dealloc];
-}
-
--(XADArchiveParser *)archiveParser { return parser; }
-
-
 
 -(XADError)parseAndUnarchive
 {
@@ -120,7 +112,7 @@
 
 -(XADError)extractEntryWithDictionary:(NSDictionary *)dict as:(NSString *)path forceDirectories:(BOOL)force
 {
-	NSAutoreleasePool *pool=[NSAutoreleasePool new];
+	@autoreleasepool {
 
 	NSNumber *dirnum=dict[XADIsDirectoryKey];
 	NSNumber *linknum=dict[XADIsLinkKey];
@@ -149,7 +141,6 @@
 	{
 		if(![delegate unarchiver:self shouldExtractEntryWithDictionary:dict suggestedPath:&path])
 		{
-			[pool release];
 			return XADErrorNone;
 		}
 		[delegate unarchiver:self willExtractEntryWithDictionary:dict to:path];
@@ -245,9 +236,8 @@
 		[delegate unarchiver:self didExtractEntryWithDictionary:dict to:path error:error];
 	}
 
-	[pool release];
-
 	return error;
+	}
 }
 
 
