@@ -813,11 +813,11 @@ CSReadValueImpl(uint32_t,readID,CSUInt32BE)
 
 -(NSData *)readDataOfLength:(NSInteger)length error:(NSError**)error;
 {
-	return [[self copyDataOfLength:length error:error] autorelease];
+	return [self copyDataOfLength:length error:error];
 }
 -(NSData *)readDataOfLengthAtMost:(NSInteger)length error:(NSError**)error;
 {
-	return [[self copyDataOfLengthAtMost:length error:error] autorelease];
+	return [self copyDataOfLengthAtMost:length error:error];
 }
 
 -(NSData *)copyDataOfLength:(NSInteger)length error:(NSError**)error;
@@ -909,47 +909,47 @@ CSReadValueImpl(uint32_t,readID,CSUInt32BE)
 
 -(CSHandle *)subHandleOfLength:(off_t)length error:(NSError**)error;
 {
-	return [[[CSSubHandle alloc] initWithHandle:[[self copy] autorelease] from:[self offsetInFile] length:length error:error] autorelease];
+	return [[CSSubHandle alloc] initWithHandle:[self copy] from:[self offsetInFile] length:length error:error];
 }
 
 -(CSHandle *)subHandleFrom:(off_t)start length:(off_t)length error:(NSError**)error;
 {
-	return [[[CSSubHandle alloc] initWithHandle:[[self copy] autorelease] from:start length:length error:error] autorelease];
+	return [[CSSubHandle alloc] initWithHandle:[self copy] from:start length:length error:error];
 }
 
 -(CSHandle *)subHandleToEndOfFileFrom:(off_t)start error:(NSError**)error;
 {
 	off_t size=[self fileSize];
 	if (size == CSHandleMaxLength) {
-		return [[[CSSubHandle alloc] initWithHandle:[[self copy] autorelease]
-											   from:start length:CSHandleMaxLength
-											  error:error] autorelease];
+        return [[CSSubHandle alloc] initWithHandle:[self copy]
+                                              from:start length:CSHandleMaxLength
+                                             error:error];
 	} else {
-		return [[[CSSubHandle alloc] initWithHandle:[[self copy] autorelease]
-											   from:start length:size-start error:error] autorelease];
+        return [[CSSubHandle alloc] initWithHandle:[self copy]
+                                              from:start length:size-start error:error];
 	}
 }
 
 -(CSHandle *)nonCopiedSubHandleOfLength:(off_t)length error:(NSError**)error;
 {
-	return [[[CSSubHandle alloc] initWithHandle:self from:[self offsetInFile] length:length error:error] autorelease];
+	return [[CSSubHandle alloc] initWithHandle:self from:[self offsetInFile] length:length error:error];
 }
 -(CSHandle *)nonCopiedSubHandleFrom:(off_t)start length:(off_t)length error:(NSError**)error;
 {
-	return [[[CSSubHandle alloc] initWithHandle:self from:start length:length error:error] autorelease];
+	return [[CSSubHandle alloc] initWithHandle:self from:start length:length error:error];
 }
 -(CSHandle *)nonCopiedSubHandleToEndOfFileFrom:(off_t)start error:(NSError**)error;
 {
 	off_t size=[self fileSize];
 	if(size==CSHandleMaxLength)
 	{
-		return [[[CSSubHandle alloc] initWithHandle:self
-											   from:start length:CSHandleMaxLength error:error] autorelease];
+        return [[CSSubHandle alloc] initWithHandle:self
+                                              from:start length:CSHandleMaxLength error:error];
 	}
 	else
 	{
-		return [[[CSSubHandle alloc] initWithHandle:self
-											   from:start length:size-start error:error] autorelease];
+        return [[CSSubHandle alloc] initWithHandle:self
+                                              from:start length:size-start error:error];
 	}
 }
 

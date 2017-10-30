@@ -76,7 +76,7 @@ NSString *const CSFileErrorException=@"CSFileErrorException";
 		return nil;
 	}
 	
-	CSFileHandle *handle=[[[CSFileHandle alloc] initWithFilePointer:fileh closeOnDealloc:YES name:path] autorelease];
+	CSFileHandle *handle=[[CSFileHandle alloc] initWithFilePointer:fileh closeOnDealloc:YES name:path];
 	if(handle) return handle;
 	
 	fclose(fileh);

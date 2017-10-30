@@ -27,7 +27,7 @@
 {
 	if((self=[super initWithName:[NSString stringWithFormat:@"%@ (Subrange from %qd, length %qd)",[handle name],from,length]]))
 	{
-		parent=[handle retain];
+		parent=handle;
 		start=from;
 		end=from+length;
 		
@@ -35,12 +35,10 @@
 			if (error) {
 				*error = [NSError errorWithDomain:NSOSStatusErrorDomain code:paramErr userInfo:nil];
 			}
-			[self release];
 			return nil;
 		}
 
 		if (![parent seekToFileOffset:start error:error]) {
-			[self release];
 			return nil;
 		}
 	}

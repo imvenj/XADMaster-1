@@ -61,9 +61,9 @@ NS_ASSUME_NONNULL_BEGIN
 -(XADError)_fixDeferredDirectories;
 
 -(nullable XADUnarchiver *)unarchiverForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict
-wantChecksum:(BOOL)checksum error:(NSError *__nullable*__nullable)errorptr;
+wantChecksum:(BOOL)checksum error:(NSError *__nullable*__nullable)errorptr NS_REFINED_FOR_SWIFT;
 -(nullable XADUnarchiver *)unarchiverForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict
-resourceForkDictionary:(nullable NSDictionary<XADArchiveKeys,id> *)forkdict wantChecksum:(BOOL)checksum error:(NSError *__nullable*__nullable)errorptr;
+resourceForkDictionary:(nullable NSDictionary<XADArchiveKeys,id> *)forkdict wantChecksum:(BOOL)checksum error:(NSError *__nullable*__nullable)errorptr NS_REFINED_FOR_SWIFT;
 
 -(XADError)_extractFileEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict as:(NSString *)destpath;
 -(XADError)_extractDirectoryEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict as:(NSString *)destpath;

@@ -18,10 +18,6 @@ extension XADUnarchiver {
 	}
 	
 	@nonobjc public func forEntryWith(_ dict: [XADArchiveKeys : Any], resourceForkDictionary forkdict: [XADArchiveKeys : Any]? = nil, wantChecksum checksum: Bool) throws -> XADUnarchiver {
-		var err = XADError.none
-		guard let unarch = __forEntryWith(dict, resourceForkDictionary: forkdict, wantChecksum: checksum, error: &err) else {
-			throw err
-		}
-		return unarch
+		return try __forEntryWith(dict, resourceForkDictionary: forkdict, wantChecksum: checksum)
 	}
 }

@@ -1249,7 +1249,6 @@ name:(NSString *)name { return nil; }
 
 -(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum error:(NSError **)errorptr
 {
-	if(errorptr) *errorptr=XADErrorNone;
 	@try
 	{
 		CSHandle *handle=[self handleForEntryWithDictionary:dict wantChecksum:checksum];
