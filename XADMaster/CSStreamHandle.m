@@ -72,7 +72,7 @@
 
 -(BOOL)atEndOfFile
 {
-	if(needsreset) { [self resetStream]; needsreset=NO; }
+	if(needsreset) { [self resetStreamWithError:NULL]; needsreset=NO; }
 
 	if(endofstream) return YES;
 	if(streampos==streamlength) return YES;
@@ -81,7 +81,7 @@
 	uint8_t b[1];
 	@try
 	{
-		if([self streamAtMost:1 toBuffer:b]==1)
+		if([self streamAtMost:1 toBuffer:b totalRead:<#(ssize_t *)#> error:NULL]==1)
 		{
 			nextstreambyte=b[0];
 			return NO;
@@ -93,9 +93,11 @@
 	return YES;
 }
 
--(void)seekToFileOffset:(off_t)offs
+-(BOOL)seekToFileOffset:(off_t)offs error:(NSError *__autoreleasing *)error
 {
-	if(![self _prepareStreamSeekTo:offs]) return;
+	if(![self _prepareStreamSeekTo:offs error:error]) {
+		return NO;
+	}
 
 	if(offs<streampos)
 	{
@@ -103,19 +105,24 @@
 		endofstream=NO;
 		//nextstreambyte=-1;
 		if(input) CSInputRestart(input);
-		[self resetStream];
+		if (![self resetStreamWithError:error]) {
+			return NO;
+		}
 	}
 
-	if(offs==0) return;
+	if(offs==0) return YES;
 
-	[self readAndDiscardBytes:offs-streampos];
+	return [self readAndDiscardBytes:offs-streampos error:error];
 }
 
--(void)seekToEndOfFile { [self readAndDiscardAtMost:CSHandleMaxLength]; }
-
--(int)readAtMost:(int)num toBuffer:(void *)buffer
+-(BOOL)seekToEndOfFileWithError:(NSError *__autoreleasing *)error
 {
-	if(needsreset) { [self resetStream]; needsreset=NO; }
+	return [self readAndDiscardAtMost:CSHandleMaxLength error:error];
+}
+
+-(BOOL)readAtMost:(size_t)num toBuffer:(void *)buffer totalWritten:(ssize_t *)tw error:(NSError *__autoreleasing *)error
+{
+	if(needsreset) { [self resetStreamWithError:error]; needsreset=NO; }
 
 	if(endofstream) return 0;
 	if(streampos+num>streamlength) num=(int)(streamlength-streampos);
@@ -128,23 +135,42 @@
 		streampos++;
 		nextstreambyte=-1;
 		offs=1;
-		if(num==1) return 1;
+		if(num==1) {
+			if (tw) {
+				*tw = 1;
+			}
+			return YES;
+		}
 	}
 
-	int actual=[self streamAtMost:num-offs toBuffer:((uint8_t *)buffer)+offs];
+	ssize_t actual = 0;
+	if ([self streamAtMost:num-offs toBuffer:((uint8_t *)buffer)+offs totalRead:&actual error:error]) {
+		
+	}
 
 	if(actual==0) endofstream=YES;
 
 	streampos+=actual;
 
-	return actual+offs;
+	if (tw) {
+		*tw = actual + offs;
+	}
+	return YES;
 }
 
 
 
--(void)resetStream {}
+-(BOOL)resetStreamWithError:(NSError *__autoreleasing *)error {
+	return YES;
+}
 
--(int)streamAtMost:(int)num toBuffer:(void *)buffer { return 0; }
+-(BOOL)streamAtMost:(size_t)num toBuffer:(void *)buffer totalRead:(ssize_t *)tw error:(NSError *__autoreleasing *)error
+{
+	if (tw) {
+		*tw = 0;
+	}
+	return YES;
+}
 
 
 
@@ -154,15 +180,23 @@
 	endofstream=YES;
 }
 
--(BOOL)_prepareStreamSeekTo:(off_t)offs
+-(BOOL)_prepareStreamSeekTo:(off_t)offs error:(NSError *__autoreleasing *)error
 {
-	if(needsreset) { [self resetStream]; needsreset=NO; }
+	if(needsreset) {
+		[self resetStreamWithError:error];
+		needsreset=NO;
+	}
 
-	if(offs==streampos) return NO;
-	if(endofstream&&offs>streampos) [self _raiseEOF];
-	if(offs>streamlength) [self _raiseEOF];
-	if(nextstreambyte>=0)
-	{
+	if (offs == streampos) {
+		return NO;
+	}
+	if (endofstream && offs > streampos) {
+		[self _raiseEOF];
+	}
+	if (offs > streamlength) {
+		[self _raiseEOF];
+	}
+	if (nextstreambyte >= 0) {
 		nextstreambyte=-1;
 		streampos+=1;
 		if(offs==streampos) return NO;

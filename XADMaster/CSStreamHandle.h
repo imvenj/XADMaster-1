@@ -27,17 +27,17 @@
 @property (NS_NONATOMIC_IOSONLY, readonly) off_t fileSize;
 @property (NS_NONATOMIC_IOSONLY, readonly) off_t offsetInFile;
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL atEndOfFile;
--(void)seekToFileOffset:(off_t)offs;
--(void)seekToEndOfFile;
--(int)readAtMost:(int)num toBuffer:(void *)buffer;
+-(BOOL)seekToFileOffset:(off_t)offs error:(NSError **)error;
+-(BOOL)seekToEndOfFileWithError:(NSError **)error;
+-(BOOL)readAtMost:(size_t)num toBuffer:(void *)buffer totalWritten:(ssize_t *)tw error:(NSError **)error;
 
 // Implemented by subclasses
--(void)resetStream;
--(int)streamAtMost:(int)num toBuffer:(void *)buffer;
+-(BOOL)resetStreamWithError:(NSError**)error;
+-(BOOL)streamAtMost:(size_t)num toBuffer:(void *)buffer totalRead:(ssize_t *)tw error:(NSError **)error;
 
 // Called by subclasses
 -(void)endStream;
--(BOOL)_prepareStreamSeekTo:(off_t)offs;
+-(BOOL)_prepareStreamSeekTo:(off_t)offs error:(NSError**)error;
 -(void)setStreamLength:(off_t)length;
 -(void)setInputBuffer:(CSInputBuffer *)inputbuffer;
 

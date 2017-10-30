@@ -10,8 +10,8 @@
 }
 
 +(CSMemoryHandle *)memoryHandleForReadingData:(NSData *)data;
-+(CSMemoryHandle *)memoryHandleForReadingBuffer:(const void *)buf length:(unsigned)len;
-+(CSMemoryHandle *)memoryHandleForReadingMappedFile:(NSString *)filename;
++(CSMemoryHandle *)memoryHandleForReadingBuffer:(const void *)buf length:(size_t)len;
++(CSMemoryHandle *)memoryHandleForReadingMappedFile:(NSString *)filename error:(NSError**)error;
 +(CSMemoryHandle *)memoryHandleForWriting;
 
 // Initializers
@@ -20,18 +20,12 @@
 
 // Public methods
 @property (NS_NONATOMIC_IOSONLY, readonly, strong) NSData *data;
--(NSMutableData *)mutableData;
+-(NSMutableData *)mutableDataWithError:(NSError**)error;
 
 // Implemented by this class
 @property (NS_NONATOMIC_IOSONLY, readonly) off_t fileSize;
 @property (NS_NONATOMIC_IOSONLY, readonly) off_t offsetInFile;
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL atEndOfFile;
-
--(void)seekToFileOffset:(off_t)offs DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(void)seekToEndOfFile DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Call can throw exception");
-//-(void)pushBackByte:(int)byte DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(int)readAtMost:(int)num toBuffer:(void *)buffer DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(void)writeBytes:(int)num fromBuffer:(const void *)buffer DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Call can throw exception");
 
 
 -(BOOL)seekToFileOffset:(off_t)offs error:(NSError**)error;
@@ -41,11 +35,11 @@
 -(BOOL)writeBytes:(size_t)num fromBuffer:(const void *)buffer error:(NSError**)error;
 
 
--(NSData *)fileContents;
--(NSData *)remainingFileContents;
--(NSData *)readDataOfLength:(int)length;
--(NSData *)readDataOfLengthAtMost:(int)length;
--(NSData *)copyDataOfLength:(int)length;
--(NSData *)copyDataOfLengthAtMost:(int)length;
+-(NSData *)fileContentsWithError:(NSError **)error;
+-(NSData *)remainingFileContentsWithError:(NSError **)error;
+-(NSData *)readDataOfLength:(NSInteger)length error:(NSError **)error;
+-(NSData *)readDataOfLengthAtMost:(NSInteger)length error:(NSError **)error;
+-(NSData *)copyDataOfLength:(NSInteger)length error:(NSError **)error;
+-(NSData *)copyDataOfLengthAtMost:(NSInteger)length error:(NSError **)error;
 
 @end

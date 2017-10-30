@@ -30,7 +30,7 @@ NSString *const CSByteStreamEOFReachedException=@"CSByteStreamEOFReachedExceptio
 
 
 
--(int)streamAtMost:(int)num toBuffer:(void *)buffer
+-(BOOL)streamAtMost:(size_t)num toBuffer:(void *)buffer totalRead:(ssize_t *)tw error:(NSError **)error;
 {
 	bytesproduced=0;
 
@@ -48,12 +48,16 @@ NSString *const CSByteStreamEOFReachedException=@"CSByteStreamEOFReachedExceptio
 		[self endStream];
 	}
 
-	return bytesproduced;
+	if (tw) {
+		*tw = bytesproduced;
+	}
+	return YES;
 }
 
--(void)resetStream
+-(BOOL)resetStreamWithError:(NSError **)error
 {
 	[self resetByteStream];
+	return YES;
 }
 
 -(void)resetByteStream {}

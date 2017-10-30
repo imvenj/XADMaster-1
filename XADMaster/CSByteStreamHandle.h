@@ -19,8 +19,8 @@
 -(instancetype)initAsCopyOf:(CSByteStreamHandle *)other;
 
 // Implemented by this class
--(int)streamAtMost:(int)num toBuffer:(void *)buffer;
--(void)resetStream;
+-(BOOL)streamAtMost:(size_t)num toBuffer:(void *)buffer totalRead:(ssize_t *)tw error:(NSError **)error;
+-(BOOL)resetStreamWithError:(NSError **)error;
 
 // Implemented by subclasses
 -(void)resetByteStream;

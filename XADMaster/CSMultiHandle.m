@@ -13,7 +13,7 @@ NSErrorDomain const CSMultiHandleErrorDomain = @"CSMultiHandleError";
 +(CSMultiHandle *)multiHandleWithHandleArray:(NSArray *)handlearray
 {
 	if(!handlearray) return nil;
-	long count=[handlearray count];
+	NSInteger count=[handlearray count];
 	if(count==0) return nil;
 	else if(count==1) return handlearray[0];
 	else return [[self alloc] initWithHandles:handlearray];
@@ -50,9 +50,9 @@ NSErrorDomain const CSMultiHandleErrorDomain = @"CSMultiHandleError";
 	if((self=[super initAsCopyOf:other]))
 	{
 		NSMutableArray *handlearray=[NSMutableArray arrayWithCapacity:[other->handles count]];
-		NSEnumerator *enumerator=[other->handles objectEnumerator];
-		CSHandle *handle;
-		while((handle=[enumerator nextObject])) [handlearray addObject:[handle copy]];
+		for (CSHandle *handle in other->handles) {
+			[handlearray addObject:[handle copy]];
+		}
 
 		handles=[handlearray copy];
 		currhandle=other->currhandle;
@@ -130,14 +130,26 @@ NSErrorDomain const CSMultiHandleErrorDomain = @"CSMultiHandleError";
 
 -(BOOL)readAtMost:(size_t)num toBuffer:(void *)buffer totalWritten:(ssize_t*)tw error:(NSError**)error;
 {
-	int total=0;
+	size_t total=0;
 	for(;;)
 	{
-		off_t actual=[handles[currhandle] readAtMost:num-total toBuffer:((char *)buffer)+total];
+		ssize_t actual;
+		BOOL success = [handles[currhandle] readAtMost:num-total toBuffer:((char *)buffer)+total totalWritten:&actual error:error];
+		if (!success) {
+			return NO;
+		}
 		total+=actual;
-		if(total==num||currhandle==[handles count]-1) return total;
+		if(total==num||currhandle==[handles count]-1) {
+			if (tw) {
+				*tw = total;
+			}
+			return YES;
+		}
 		currhandle++;
-		[(CSHandle *)handles[currhandle] seekToFileOffset:0];
+		success = [(CSHandle *)handles[currhandle] seekToFileOffset:0 error:error];
+		if (!success) {
+			return NO;
+		}
 	}
 }
 

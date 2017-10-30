@@ -1,4 +1,5 @@
 #import "CSMemoryHandle.h"
+#import "XADException.h"
 
 #if !__has_feature(objc_arc)
 #error this file needs to be compiled with Automatic Reference Counting (ARC)
@@ -13,14 +14,18 @@
 	return [[CSMemoryHandle alloc] initWithData:data];
 }
 
-+(CSMemoryHandle *)memoryHandleForReadingBuffer:(const void *)buf length:(unsigned)len
++(CSMemoryHandle *)memoryHandleForReadingBuffer:(const void *)buf length:(size_t)len
 {
 	return [[CSMemoryHandle alloc] initWithData:[NSData dataWithBytesNoCopy:(void *)buf length:len freeWhenDone:NO]];
 }
 
-+(CSMemoryHandle *)memoryHandleForReadingMappedFile:(NSString *)filename
++(CSMemoryHandle *)memoryHandleForReadingMappedFile:(NSString *)filename error:(NSError *__autoreleasing *)error
 {
-	return [[CSMemoryHandle alloc] initWithData:[NSData dataWithContentsOfFile:filename options:NSDataReadingMappedIfSafe error:NULL]];
+	NSData *mappedData = [NSData dataWithContentsOfFile:filename options:NSDataReadingMappedAlways error:error];
+	if (!mappedData) {
+		return nil;
+	}
+	return [[CSMemoryHandle alloc] initWithData:mappedData];
 }
 
 +(CSMemoryHandle *)memoryHandleForWriting
@@ -49,9 +54,15 @@
 	return self;
 }
 
--(NSMutableData *)mutableData
+-(NSMutableData *)mutableDataWithError:(NSError *__autoreleasing *)error
 {
-	if(![backingdata isKindOfClass:[NSMutableData class]]) [self _raiseNotSupported:_cmd];
+	if(![backingdata isKindOfClass:[NSMutableData class]]) {
+		if (error) {
+			*error = nil;
+		}
+		[self _raiseNotSupported:_cmd];
+		return nil;
+	}
 	return (NSMutableData *)backingdata;
 }
 
@@ -65,14 +76,27 @@
 
 
 
--(void)seekToFileOffset:(off_t)offs
+-(BOOL)seekToFileOffset:(off_t)offs error:(NSError *__autoreleasing *)error
 {
-	if(offs<0) [self _raiseNotSupported:_cmd];
-	if(offs>[backingdata length]) [self _raiseEOF];
+	if(offs<0) {
+		[self _raiseNotSupported:_cmd];
+		return NO;
+	}
+	if(offs>[backingdata length]) {
+		if (error) {
+			*error = [NSError errorWithDomain:XADErrorDomain code:XADErrorEndOfFile userInfo:nil];
+		}
+		return NO;
+	}
 	memorypos=offs;
+	return YES;
 }
 
--(void)seekToEndOfFile { memorypos=[backingdata length]; }
+-(BOOL)seekToEndOfFileWithError:(NSError *__autoreleasing *)error
+{
+	memorypos=[backingdata length];
+	return YES;
+}
 
 //-(void)pushBackByte:(int)byte {}
 
@@ -99,24 +123,29 @@
 }
 
 
--(NSData *)fileContents { return backingdata; }
+-(NSData *)fileContentsWithError:(NSError *__autoreleasing *)error { return backingdata; }
 
--(NSData *)remainingFileContents
+-(NSData *)remainingFileContentsWithError:(NSError *__autoreleasing *)error
 {
 	if(memorypos==0) return backingdata;
-	else return [super remainingFileContents];
+	else return [super remainingFileContentsWithError:error];
 }
 
--(NSData *)readDataOfLength:(int)length
+-(NSData *)readDataOfLength:(NSInteger)length error:(NSError *__autoreleasing *)error
 {
 	unsigned long totallen=[backingdata length];
-	if(memorypos+length>totallen) [self _raiseEOF];
+	if(memorypos+length>totallen) {
+		if (error) {
+			*error = [NSError errorWithDomain:XADErrorDomain code:XADErrorEndOfFile userInfo:nil];
+		}
+		return nil;
+	};
 	NSData *subbackingdata=[backingdata subdataWithRange:NSMakeRange((long)memorypos,length)];
 	memorypos+=length;
 	return subbackingdata;
 }
 
--(NSData *)readDataOfLengthAtMost:(int)length;
+-(NSData *)readDataOfLengthAtMost:(NSInteger)length error:(NSError *__autoreleasing *)error
 {
 	unsigned long totallen=[backingdata length];
 	if(memorypos+length>totallen) length=(int)(totallen-memorypos);
@@ -125,8 +154,15 @@
 	return subbackingdata;
 }
 
--(NSData *)copyDataOfLength:(int)length { return [self readDataOfLength:length]; }
+-(NSData *)copyDataOfLength:(NSInteger)length error:(NSError *__autoreleasing *)error
+{
+	return [self readDataOfLength:length error:error];
+	
+}
 
--(NSData *)copyDataOfLengthAtMost:(int)length { return [self readDataOfLengthAtMost:length]; }
+-(NSData *)copyDataOfLengthAtMost:(NSInteger)length error:(NSError *__autoreleasing *)error
+{
+	return [self readDataOfLengthAtMost:length error:error];
+}
 
 @end

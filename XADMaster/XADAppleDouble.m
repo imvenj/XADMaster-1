@@ -7,12 +7,35 @@
 @implementation XADAppleDouble
 
 +(BOOL)parseAppleDoubleWithHandle:(CSHandle *)fh resourceForkOffset:(off_t *)resourceoffsetptr
-resourceForkLength:(off_t *)resourcelengthptr extendedAttributes:(NSDictionary<NSString*,NSData*> **)extattrsptr
+resourceForkLength:(off_t *)resourcelengthptr extendedAttributes:(NSDictionary<NSString*,NSData*> **)extattrsptr error:(NSError **)error
 {
-	if([fh readUInt32BE]!=0x00051607) return NO;
-	if([fh readUInt32BE]!=0x00020000) return NO;
+    NSError *tmpErr = nil;
+    BOOL success = YES;
+    if([fh readUInt32BEWithError:&tmpErr]!=0x00051607) {
+        if (tmpErr) {
+            if (error) {
+                *error = tmpErr;
+            }
+        } else if (error) {
+            *error = [NSError errorWithDomain:XADErrorDomain code:XADErrorIllegalData userInfo:nil];
+        }
+        return NO;
+    }
+    if([fh readUInt32BEWithError:error]!=0x00020000) {
+        if (tmpErr) {
+            if (error) {
+                *error = tmpErr;
+            }
+        } else if (error) {
+            *error = [NSError errorWithDomain:XADErrorDomain code:XADErrorIllegalData userInfo:nil];
+        }
+        return NO;
+    }
 
-	[fh skipBytes:16];
+	success = [fh skipBytes:16 error:error];
+    if (!success) {
+        return NO;
+    }
 
 	int num=[fh readUInt16BE];
 
@@ -46,9 +69,12 @@ resourceForkLength:(off_t *)resourcelengthptr extendedAttributes:(NSDictionary<N
  	if(finderoffs)
 	{
 		// First 32 bytes are the FinderInfo struct.
-		[fh seekToFileOffset:finderoffs];
-		if(finderlen>32) finderinfo=[fh readDataOfLength:32];
-		else finderinfo=[fh readDataOfLength:finderlen];
+		success = [fh seekToFileOffset:finderoffs error:error];
+        if (!success) {
+            return NO;
+        }
+		if(finderlen>32) finderinfo=[fh readDataOfLength:32 error:&tmpErr];
+		else finderinfo=[fh readDataOfLength:finderlen error:&tmpErr];
 
 		// Add FinderInfo to extended attributes only if it is not empty.
 		static const uint8_t zerobytes[32]={0x00};
@@ -62,7 +88,7 @@ resourceForkLength:(off_t *)resourcelengthptr extendedAttributes:(NSDictionary<N
 		if(finderlen>70)
 		{
 			if(!extattrs) extattrs=[NSMutableDictionary dictionary];
-			[self parseAppleDoubleExtendedAttributesWithHandle:fh intoDictionary:extattrs];
+			[self parseAppleDoubleExtendedAttributesWithHandle:fh intoDictionary:extattrs error:&tmpErr];
 		}
 	}
 
@@ -73,20 +99,25 @@ resourceForkLength:(off_t *)resourcelengthptr extendedAttributes:(NSDictionary<N
 	return YES;
 }
 
-+(void)parseAppleDoubleExtendedAttributesWithHandle:(CSHandle *)fh intoDictionary:(NSMutableDictionary *)extattrs
++(BOOL)parseAppleDoubleExtendedAttributesWithHandle:(CSHandle *)fh intoDictionary:(NSMutableDictionary *)extattrs error:(NSError **)error
 {
-	[fh skipBytes:2];
-	uint32_t magic=[fh readUInt32BE];
+	[fh skipBytes:2 error:error];
+	uint32_t magic=[fh readUInt32BEWithError:error];
 
-	if(magic!=0x41545452) return;
+    if(magic!=0x41545452) {
+        if (error) {
+            *error = [NSError errorWithDomain:XADErrorDomain code:XADErrorIllegalData userInfo:nil];
+        }
+        return NO;
+    }
 
-	/*uint32_t debug=*/[fh readUInt32BE];
-	/*uint32_t totalsize=*/[fh readUInt32BE];
-	/*uint32_t datastart=*/[fh readUInt32BE];
-	/*uint32_t datalength=*/[fh readUInt32BE];
-	[fh skipBytes:12];
-	/*int flags=*/[fh readUInt16BE];
-	int numattrs=[fh readUInt16BE];
+	/*uint32_t debug=*/[fh readUInt32BEWithError:error];
+	/*uint32_t totalsize=*/[fh readUInt32BEWithError:error];
+	/*uint32_t datastart=*/[fh readUInt32BEWithError:error];
+	/*uint32_t datalength=*/[fh readUInt32BEWithError:error];
+	[fh skipBytes:12 error:error];
+	/*int flags=*/[fh readUInt16BEWithError:error];
+	int numattrs=[fh readUInt16BEWithError:error];
 
 	struct
 	{
@@ -96,14 +127,14 @@ resourceForkLength:(off_t *)resourcelengthptr extendedAttributes:(NSDictionary<N
 
 	for(int i=0;i<numattrs;i++)
 	{
-		entries[i].offset=[fh readUInt32BE];
-		entries[i].length=[fh readUInt32BE];
-		/*int flags=*/[fh readUInt16BE];
-		entries[i].namelen=[fh readUInt8];
-		[fh readBytes:entries[i].namelen toBuffer:entries[i].namebytes];
+		entries[i].offset=[fh readUInt32BEWithError:error];
+		entries[i].length=[fh readUInt32BEWithError:error];
+		/*int flags=*/[fh readUInt16BEWithError:error];
+		entries[i].namelen=[fh readUInt8WithError:error];
+		[fh readBytes:entries[i].namelen toBuffer:entries[i].namebytes error:error];
 
 		int padbytes=(-(entries[i].namelen+11))&3;
-		[fh skipBytes:padbytes]; // Align to 4 bytes.
+		[fh skipBytes:padbytes error:error]; // Align to 4 bytes.
 	}
 
 	for(int i=0;i<numattrs;i++)
@@ -123,20 +154,21 @@ resourceForkLength:(off_t *)resourcelengthptr extendedAttributes:(NSDictionary<N
 		}
 		if(minindex<0) break; // File structure was messed up, so give up.
 
-		if(minoffset!=curroffset) [fh seekToFileOffset:minoffset];
-		NSData *data=[fh readDataOfLength:entries[minindex].length];
+		if(minoffset!=curroffset) [fh seekToFileOffset:minoffset error:error];
+		NSData *data=[fh readDataOfLength:entries[minindex].length error:error];
 
 		NSString *name=[[[NSString alloc] initWithBytes:entries[minindex].namebytes
 		length:entries[minindex].namelen-1 encoding:NSUTF8StringEncoding] autorelease];
 
 		extattrs[name] = data;
 	}
+    return YES;
 }
 
 
 
-+(void)writeAppleDoubleHeaderToHandle:(CSHandle *)fh resourceForkSize:(int)ressize
-extendedAttributes:(NSDictionary *)extattrs
++(BOOL)writeAppleDoubleHeaderToHandle:(CSHandle *)fh resourceForkSize:(int)ressize
+extendedAttributes:(NSDictionary *)extattrs error:(NSError **)error
 {
 	// AppleDouble header template.
 	uint8_t header[0x32]=
@@ -283,6 +315,7 @@ extendedAttributes:(NSDictionary *)extattrs
 			[fh writeData:data];
 		}
 	}
+    return YES;
 }
 
 @end
