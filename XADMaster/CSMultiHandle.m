@@ -5,6 +5,7 @@
 #endif
 
 NSString *const CSSizeOfSegmentUnknownException=@"CSSizeOfSegmentUnknownException";
+NSErrorDomain const CSMultiHandleErrorDomain = @"CSMultiHandleError";
 
 @implementation CSMultiHandle
 @synthesize handles;
@@ -94,7 +95,7 @@ NSString *const CSSizeOfSegmentUnknownException=@"CSSizeOfSegmentUnknownExceptio
 	return currhandle==[handles count]-1&&[handles[currhandle] atEndOfFile];
 }
 
--(void)seekToFileOffset:(off_t)offs
+-(BOOL)seekToFileOffset:(off_t)offs error:(NSError *__autoreleasing *)error
 {
 	long count=[handles count];
 
@@ -107,22 +108,27 @@ NSString *const CSSizeOfSegmentUnknownException=@"CSSizeOfSegmentUnknownExceptio
 		for(currhandle=0;currhandle<count-1;currhandle++)
 		{
 			off_t segsize=[(CSHandle *)handles[currhandle] fileSize];
-			if(segsize==CSHandleMaxLength) [self _raiseSizeUnknownForSegment:currhandle];
+			if(segsize==CSHandleMaxLength) {
+				if (error) {
+					*error = [NSError errorWithDomain:CSMultiHandleErrorDomain code:CSMultiHandleErrorUnknownSizeOfSegment userInfo:@{NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Size of CSMultiHandle segment %ld (%@) unknown.",currhandle,handles[currhandle]]}];
+				}
+				return NO;
+			};
 			if(offs<segsize) break;
 			offs-=segsize;
 		}
 	}
 
-	[(CSHandle *)handles[currhandle] seekToFileOffset:offs];
+	return [(CSHandle *)handles[currhandle] seekToFileOffset:offs error:error];
 }
 
--(void)seekToEndOfFile
+-(BOOL)seekToEndOfFileWithError:(NSError *__autoreleasing *)error
 {
 	currhandle=[handles count]-1;
-	[(CSHandle *)handles[currhandle] seekToEndOfFile];
+	return [(CSHandle *)handles[currhandle] seekToEndOfFileWithError:error];
 }
 
--(int)readAtMost:(int)num toBuffer:(void *)buffer
+-(BOOL)readAtMost:(size_t)num toBuffer:(void *)buffer totalWritten:(ssize_t*)tw error:(NSError**)error;
 {
 	int total=0;
 	for(;;)

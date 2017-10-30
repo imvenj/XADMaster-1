@@ -1,4 +1,5 @@
 #import "CSSubHandle.h"
+#import "XADException.h"
 
 #if !__has_feature(objc_arc)
 #error this file needs to be compiled with Automatic Reference Counting (ARC)
@@ -7,21 +8,6 @@
 @implementation CSSubHandle
 @synthesize parentHandle = parent;
 @synthesize startOffsetInParent = start;
-
--(id)initWithHandle:(CSHandle *)handle from:(off_t)from length:(off_t)length
-{
-	if((self=[super initWithName:[NSString stringWithFormat:@"%@ (Subrange from %qd, length %qd)",[handle name],from,length]]))
-	{
-		parent=handle;
-		start=from;
-		end=from+length;
-
-		[parent seekToFileOffset:start];
-
-		if(parent) return self;
-	}
-	return nil;
-}
 
 -(id)initWithHandle:(CSHandle *)handle from:(off_t)from length:(off_t)length error:(NSError**)error
 {
@@ -76,18 +62,28 @@
 	return [parent offsetInFile]==end||[parent atEndOfFile];
 }
 
--(void)seekToFileOffset:(off_t)offs
+-(BOOL)seekToFileOffset:(off_t)offs error:(NSError**)error
 {
-	if(offs<0) [self _raiseNotSupported:_cmd];
-	if(offs>end) [self _raiseEOF];
-	[parent seekToFileOffset:offs+start];
+    if(offs<0) {
+        if (error) {
+            *error = [NSError errorWithDomain:XADErrorDomain code:XADErrorBadParameters userInfo:nil];
+        }
+        return NO;
+    }
+    if(offs>end) {
+        if (error) {
+            *error = [NSError errorWithDomain:XADErrorDomain code:XADErrorEndOfFile userInfo:nil];
+        }
+        return NO;
+    }
+    return [parent seekToFileOffset:offs+start error:error];
 }
 
--(void)seekToEndOfFile
+-(BOOL)seekToEndOfFileWithError:(NSError *__autoreleasing *)error
 {
 //	@try
 	{
-		[parent seekToFileOffset:end];
+		return [parent seekToFileOffset:end error:error];
 	}
 /*	@catch(NSException *e)
 	{
@@ -96,12 +92,18 @@
 	}*/
 }
 
--(int)readAtMost:(int)num toBuffer:(void *)buffer
+-(BOOL)readAtMost:(size_t)num toBuffer:(void *)buffer totalWritten:(ssize_t*)tw error:(NSError**)error;
 {
 	off_t curr=[parent offsetInFile];
-	if(curr+num>end) num=(int)(end-curr);
-	if(num<=0) return 0;
-	else return [parent readAtMost:num toBuffer:buffer];
+	if(curr+num>end) num=(ssize_t)(end-curr);
+	if(num<=0) {
+		if (tw) {
+			*tw = 0;
+		}
+		return 0;
+	} else {
+		return [parent readAtMost:num toBuffer:buffer totalWritten:tw error:error];
+	}
 }
 
 @end

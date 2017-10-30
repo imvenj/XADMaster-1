@@ -17,8 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 	NSData *currdata;
 }
 
-+(nullable instancetype)regexWithPattern:(NSString *)pattern options:(int)options;
-+(nullable instancetype)regexWithPattern:(NSString *)pattern;
++(nullable instancetype)regexWithPattern:(NSString *)pattern options:(int)options error:(NSError**)error;
++(nullable instancetype)regexWithPattern:(NSString *)pattern error:(NSError**)error;
 
 +(NSString *)patternForLiteralString:(NSString *)string;
 +(NSString *)patternForGlob:(NSString *)glob;
@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 +(NSString *)null;
 
 -(nonnull instancetype)init UNAVAILABLE_ATTRIBUTE;
--(nullable instancetype)initWithPattern:(NSString *)pattern options:(int)options NS_DESIGNATED_INITIALIZER;
+-(nullable instancetype)initWithPattern:(NSString *)pattern options:(int)options error:(NSError**)error NS_DESIGNATED_INITIALIZER;
 
 -(void)beginMatchingString:(NSString *)string;
 //-(void)beginMatchingString:(NSString *)string range:(NSRange)range;
@@ -55,23 +55,23 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NSString (XADRegex)
 
--(BOOL)matchedByPattern:(NSString *)pattern;
--(BOOL)matchedByPattern:(NSString *)pattern options:(int)options;
+-(BOOL)matchedByPattern:(NSString *)pattern error:(NSError**)error;
+-(BOOL)matchedByPattern:(NSString *)pattern options:(int)options error:(NSError**)error;
 
--(nullable NSString *)substringMatchedByPattern:(NSString *)pattern;
--(nullable NSString *)substringMatchedByPattern:(NSString *)pattern options:(int)options;
+-(nullable NSString *)substringMatchedByPattern:(NSString *)pattern error:(NSError**)error;
+-(nullable NSString *)substringMatchedByPattern:(NSString *)pattern options:(int)options error:(NSError**)error;
 
--(nullable NSArray<NSString*> *)substringsCapturedByPattern:(NSString *)pattern;
--(nullable NSArray<NSString*> *)substringsCapturedByPattern:(NSString *)pattern options:(int)options;
+-(nullable NSArray<NSString*> *)substringsCapturedByPattern:(NSString *)pattern error:(NSError**)error;
+-(nullable NSArray<NSString*> *)substringsCapturedByPattern:(NSString *)pattern options:(int)options error:(NSError**)error;
 
--(nullable NSArray<NSString*> *)allSubstringsMatchedByPattern:(NSString *)pattern;
--(nullable NSArray<NSString*> *)allSubstringsMatchedByPattern:(NSString *)pattern options:(int)options;
+-(nullable NSArray<NSString*> *)allSubstringsMatchedByPattern:(NSString *)pattern error:(NSError**)error;
+-(nullable NSArray<NSString*> *)allSubstringsMatchedByPattern:(NSString *)pattern options:(int)options error:(NSError**)error;
 
--(nullable NSArray<NSString*> *)allSubstringsCapturedByPattern:(NSString *)pattern;
--(nullable NSArray<NSString*> *)allSubstringsCapturedByPattern:(NSString *)pattern options:(int)options;
+-(nullable NSArray<NSString*> *)allSubstringsCapturedByPattern:(NSString *)pattern error:(NSError**)error;
+-(nullable NSArray<NSString*> *)allSubstringsCapturedByPattern:(NSString *)pattern options:(int)options error:(NSError**)error;
 
--(nullable NSArray<NSString*> *)componentsSeparatedByPattern:(NSString *)pattern;
--(nullable NSArray<NSString*> *)componentsSeparatedByPattern:(NSString *)pattern options:(int)options;
+-(nullable NSArray<NSString*> *)componentsSeparatedByPattern:(NSString *)pattern error:(NSError**)error;
+-(nullable NSArray<NSString*> *)componentsSeparatedByPattern:(NSString *)pattern options:(int)options error:(NSError**)error;
 
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *escapedPattern;
 

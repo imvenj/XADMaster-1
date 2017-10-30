@@ -53,7 +53,7 @@ void _CSInputFillBuffer(CSInputBuffer *self);
 // Byte reading
 
 #define CSInputBufferLookAhead 4
-
+static inline void _CSInputBufferRaiseEOF(CSInputBuffer *self) NS_SWIFT_UNAVAILABLE("Call throws exception");
 static inline void _CSInputBufferRaiseEOF(CSInputBuffer *self)
 {
 	[self->parent _raiseEOF];

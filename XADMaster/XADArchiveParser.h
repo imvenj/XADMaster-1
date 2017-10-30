@@ -102,19 +102,12 @@ extern XADArchiveKeys const XADDiskLabelKey;
 
 +(nullable Class)archiveParserClassForHandle:(CSHandle *)handle firstBytes:(NSData *)header
 resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMutableDictionary<XADArchiveKeys,id> *)props;
-+(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle name:(NSString *)name DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
 +(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle name:(NSString *)name error:(NSError *__nullable*__nullable)errorptr;
-+(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
 +(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name error:(NSError *__nullable*__nullable)errorptr;
-+(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header name:(NSString *)name DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Uncaught exception!");
 +(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header name:(NSString *)name error:(NSError *__nullable*__nullable)errorptr;
-+(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
 +(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name error:(NSError *__nullable*__nullable)errorptr;
-+(nullable XADArchiveParser *)archiveParserForPath:(NSString *)filename DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
 +(nullable XADArchiveParser *)archiveParserForPath:(NSString *)filename error:(NSError *__nullable*__nullable)errorptr;
-+(nullable XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)entry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
 +(nullable XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)entry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum error:(NSError *__nullable*__nullable)errorptr;
-+(nullable XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)entry resourceForkDictionary:(nullable NSDictionary<XADArchiveKeys,id> *)forkentry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
 +(nullable XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)entry resourceForkDictionary:(nullable NSDictionary<XADArchiveKeys,id> *)forkentry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum error:(NSError *__nullable*__nullable)errorptr;
 
 -(instancetype)init NS_DESIGNATED_INITIALIZER;
@@ -222,16 +215,9 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 +(nullable NSArray<NSString*> *)volumesForHandle:(CSHandle *)handle firstBytes:(NSData *)data
 name:(NSString *)name;
 
--(void)parse DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow");
--(nullable CSHandle *)handleForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict wantChecksum:(BOOL)checksum NS_SWIFT_UNAVAILABLE("This function throws exceptions as part of its control flow; use handleForEntryWithDictionary:wantChecksum:error: instead");
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *formatName;
 
 -(nullable CSHandle *)handleForSolidStreamWithObject:(id)obj wantChecksum:(BOOL)checksum;
-
-//! Exception-free wrapper for subclass method.<br>
-//! Will, in addition, return \c XADBreakError if the delegate
-//! requested parsing to stop.
--(XADError)parseWithoutExceptions NS_REFINED_FOR_SWIFT;
 
 -(BOOL)parseWithError:(NSError**)error;
 

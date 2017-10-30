@@ -28,6 +28,7 @@ typedef NS_ENUM(int, XADError) {
 	XADErrorShortBuffer =	0x0018, /*!< buffer was too short */
 	XADErrorEncoding =		0x0019, /*!< text encoding was defective */
 	XADErrorLink =			0x001a, /*!< could not create link */
+    XADErrorEndOfFile =		0x001b, /*!< reached end of file */
 
 	XADErrorSubArchive = 0x10000
 };

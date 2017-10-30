@@ -10,7 +10,6 @@
 }
 
 // Initializers
--(instancetype)initWithHandle:(CSHandle *)handle from:(off_t)from length:(off_t)length;
 -(instancetype)initWithHandle:(CSHandle *)handle from:(off_t)from length:(off_t)length error:(NSError**)error;
 -(instancetype)initAsCopyOf:(CSSubHandle *)other;
 
@@ -22,10 +21,6 @@
 @property (NS_NONATOMIC_IOSONLY, readonly) off_t fileSize;
 @property (NS_NONATOMIC_IOSONLY, readonly) off_t offsetInFile;
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL atEndOfFile;
-
--(void)seekToFileOffset:(off_t)offs DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(void)seekToEndOfFile DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(int)readAtMost:(int)num toBuffer:(void *)buffer DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Call can throw exception");
 
 -(BOOL)seekToFileOffset:(off_t)offs error:(NSError**)error;
 -(BOOL)seekToEndOfFileWithError:(NSError**)error;

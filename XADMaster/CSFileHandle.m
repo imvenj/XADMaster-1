@@ -15,42 +15,11 @@ NSString *const CSFileErrorException=@"CSFileErrorException";
 @implementation CSFileHandle
 @synthesize filePointer = fh;
 
-+(CSFileHandle *)fileHandleForReadingAtPath:(NSString *)path
-{ return [self fileHandleForPath:path modes:@"rb"]; }
-
-+(CSFileHandle *)fileHandleForWritingAtPath:(NSString *)path
-{ return [self fileHandleForPath:path modes:@"wb"]; }
-
 +(CSFileHandle *)fileHandleForReadingAtPath:(NSString *)path error:(NSError**)error
 { return [self fileHandleForPath:path modes:@"rb" error:error]; }
 
 +(CSFileHandle *)fileHandleForWritingAtPath:(NSString *)path error:(NSError**)error
 { return [self fileHandleForPath:path modes:@"wb" error:error]; }
-
-
-+(CSFileHandle *)fileHandleForPath:(NSString *)path modes:(NSString *)modes
-{
-	if(!path) return nil;
-
-	#if defined(__COCOTRON__) // Cocotron
-	FILE *fileh=_wfopen([path fileSystemRepresentationW],
-	(const wchar_t *)[modes cStringUsingEncoding:NSUnicodeStringEncoding]);
-	#elif defined(__MINGW32__) // GNUstep under mingw32 - sort of untested
-	FILE *fileh=_wfopen((const wchar_t *)[path fileSystemRepresentation],
-	(const wchar_t *)[modes cStringUsingEncoding:NSUnicodeStringEncoding]);
-	#else // Cocoa or GNUstep under Linux
-	FILE *fileh=fopen([path fileSystemRepresentation],[modes UTF8String]);
-	#endif
-
-	if(!fileh) [NSException raise:CSCannotOpenFileException
-	format:@"Error attempting to open file \"%@\" in mode \"%@\" (%d).",path,modes, (int)errno];
-
-	CSFileHandle *handle=[[CSFileHandle alloc] initWithFilePointer:fileh closeOnDealloc:YES name:path];
-	if(handle) return handle;
-
-	fclose(fileh);
-	return nil;
-}
 
 +(CSFileHandle *)fileHandleForPath:(NSString *)path modes:(NSString *)modes error:(NSError**)error
 {
@@ -150,47 +119,6 @@ NSString *const CSFileErrorException=@"CSFileErrorException";
 /*	if(multi) return pos==[self fileSize];
 	else return feof(fh);*/ // feof() only returns true after trying to read past the end
 }
-
-
-
--(void)seekToFileOffset:(off_t)offs
-{
-	if(multilock) { [multilock lock]; }
-	//if(offs>[self fileSize]) [self _raiseEOF];
-	if(fseeko(fh,offs,SEEK_SET)) [self _raiseError];
-	if(multilock) { pos=ftello(fh); [multilock unlock]; }
-}
-
--(void)seekToEndOfFile
-{
-	if(multilock) { [multilock lock]; }
-	if(fseeko(fh,0,SEEK_END)) [self _raiseError];
-	if(multilock) { pos=ftello(fh); [multilock unlock]; }
-}
-
--(void)pushBackByte:(int)byte
-{
-	if(multilock) [self _raiseNotSupported:_cmd];
-	if(ungetc(byte,fh)==EOF) [self _raiseError];
-}
-
--(int)readAtMost:(int)num toBuffer:(void *)buffer
-{
-	if(num==0) return 0;
-	if(multilock) { [multilock lock]; fseeko(fh,pos,SEEK_SET); }
-	int n=(int)fread(buffer,1,num,fh);
-	if(n<=0&&!feof(fh)) [self _raiseError];
-	if(multilock) { pos=ftello(fh); [multilock unlock]; }
-	return n;
-}
-
--(void)writeBytes:(int)num fromBuffer:(const void *)buffer
-{
-	if(multilock) { [multilock lock]; fseeko(fh,pos,SEEK_SET); }
-	if(fwrite(buffer,1,num,fh)!=num) [self _raiseError];
-	if(multilock) { pos=ftello(fh); [multilock unlock]; }
-}
-
 
 -(BOOL)seekToFileOffset:(off_t)offs error:(NSError**)error
 {

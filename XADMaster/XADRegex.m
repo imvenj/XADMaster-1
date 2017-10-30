@@ -13,11 +13,11 @@ static BOOL IsRegexSpecialCharacter(unichar c)
 @implementation XADRegex
 @synthesize pattern = patternstring;
 
-+(XADRegex *)regexWithPattern:(NSString *)pattern options:(int)options
-{ return [[XADRegex alloc] initWithPattern:pattern options:options]; }
++(XADRegex *)regexWithPattern:(NSString *)pattern options:(int)options error:(NSError**)error
+{ return [[XADRegex alloc] initWithPattern:pattern options:options error:error]; }
 
-+(XADRegex *)regexWithPattern:(NSString *)pattern
-{ return [[XADRegex alloc] initWithPattern:pattern options:0]; }
++(XADRegex *)regexWithPattern:(NSString *)pattern error:(NSError**)error
+{ return [[XADRegex alloc] initWithPattern:pattern options:0 error:error]; }
 
 +(NSString *)null
 {
@@ -92,7 +92,7 @@ static BOOL IsRegexSpecialCharacter(unichar c)
 	return [NSString stringWithString:pattern];
 }
 
--(instancetype)initWithPattern:(NSString *)pattern options:(int)options
+-(instancetype)initWithPattern:(NSString *)pattern options:(int)options error:(NSError**)error
 {
 	if((self=[super init]))
 	{
@@ -105,7 +105,9 @@ static BOOL IsRegexSpecialCharacter(unichar c)
 		{
 			char errbuf[256];
 			regerror(err,&preg,errbuf,sizeof(errbuf));
-			[NSException raise:@"XADRegexException" format:@"Could not compile regex \"%@\": %s",pattern,errbuf];
+            if (error) {
+                *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:err userInfo:@{NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Could not compile regex \"%@\": %s",pattern,errbuf]}];
+            }
 			return nil;
 		}
 
@@ -246,29 +248,60 @@ static BOOL IsRegexSpecialCharacter(unichar c)
 
 @implementation NSString (XADRegex)
 
--(BOOL)matchedByPattern:(NSString *)pattern { return [self matchedByPattern:pattern options:0]; }
--(BOOL)matchedByPattern:(NSString *)pattern options:(int)options
-{ return [[XADRegex regexWithPattern:pattern options:options] matchesString:self]; }
+-(BOOL)matchedByPattern:(NSString *)pattern error:(NSError**)error
+{
+    return [self matchedByPattern:pattern options:0 error:error];
+}
+-(BOOL)matchedByPattern:(NSString *)pattern options:(int)options error:(NSError**)error
+{
+    return [[XADRegex regexWithPattern:pattern options:options error:error] matchesString:self];
+}
 
--(NSString *)substringMatchedByPattern:(NSString *)pattern { return [self substringMatchedByPattern:pattern options:0]; }
--(NSString *)substringMatchedByPattern:(NSString *)pattern options:(int)options
-{ return [[XADRegex regexWithPattern:pattern options:options] matchedSubstringOfString:self]; }
+-(NSString *)substringMatchedByPattern:(NSString *)pattern error:(NSError**)error
+{
+    return [self substringMatchedByPattern:pattern options:0 error:error];
+}
+-(NSString *)substringMatchedByPattern:(NSString *)pattern options:(int)options error:(NSError**)error
+{
+    return [[XADRegex regexWithPattern:pattern options:options error:error] matchedSubstringOfString:self];
+}
 
--(NSArray *)substringsCapturedByPattern:(NSString *)pattern { return [self substringsCapturedByPattern:pattern options:0]; }
--(NSArray *)substringsCapturedByPattern:(NSString *)pattern options:(int)options
-{ return [[XADRegex regexWithPattern:pattern options:options] capturedSubstringsOfString:self]; }
+-(NSArray *)substringsCapturedByPattern:(NSString *)pattern error:(NSError**)error
+{
+    return [self substringsCapturedByPattern:pattern options:0 error:error];
+    
+}
+-(NSArray *)substringsCapturedByPattern:(NSString *)pattern options:(int)options error:(NSError**)error
+{
+    return [[XADRegex regexWithPattern:pattern options:options error:error] capturedSubstringsOfString:self];
+}
 
--(NSArray *)allSubstringsMatchedByPattern:(NSString *)pattern { return [self allSubstringsMatchedByPattern:pattern options:0]; }
--(NSArray *)allSubstringsMatchedByPattern:(NSString *)pattern options:(int)options
-{ return [[XADRegex regexWithPattern:pattern options:options] allMatchedSubstringsOfString:self]; }
+-(NSArray *)allSubstringsMatchedByPattern:(NSString *)pattern error:(NSError**)error
+{
+    return [self allSubstringsMatchedByPattern:pattern options:0 error:error];
+}
+-(NSArray *)allSubstringsMatchedByPattern:(NSString *)pattern options:(int)options error:(NSError**)error
+{
+    return [[XADRegex regexWithPattern:pattern options:options error:error] allMatchedSubstringsOfString:self];
+}
 
--(NSArray *)allSubstringsCapturedByPattern:(NSString *)pattern { return [self allSubstringsCapturedByPattern:pattern options:0]; }
--(NSArray *)allSubstringsCapturedByPattern:(NSString *)pattern options:(int)options
-{ return [[XADRegex regexWithPattern:pattern options:options] allCapturedSubstringsOfString:self]; }
+-(NSArray *)allSubstringsCapturedByPattern:(NSString *)pattern error:(NSError**)error
+{
+    return [self allSubstringsCapturedByPattern:pattern options:0 error:error];
+}
+-(NSArray *)allSubstringsCapturedByPattern:(NSString *)pattern options:(int)options error:(NSError**)error
+{
+    return [[XADRegex regexWithPattern:pattern options:options error:error] allCapturedSubstringsOfString:self];
+}
 
--(NSArray *)componentsSeparatedByPattern:(NSString *)pattern { return [self componentsSeparatedByPattern:pattern options:0]; }
--(NSArray *)componentsSeparatedByPattern:(NSString *)pattern options:(int)options
-{ return [[XADRegex regexWithPattern:pattern options:options] componentsOfSeparatedString:self]; }
+-(NSArray *)componentsSeparatedByPattern:(NSString *)pattern error:(NSError**)error
+{
+    return [self componentsSeparatedByPattern:pattern options:0 error:error];
+}
+-(NSArray *)componentsSeparatedByPattern:(NSString *)pattern options:(int)options error:(NSError**)error
+{
+    return [[XADRegex regexWithPattern:pattern options:options error:error] componentsOfSeparatedString:self];
+}
 
 -(NSString *)escapedPattern { return [XADRegex patternForLiteralString:self]; }
 

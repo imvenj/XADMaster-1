@@ -4,6 +4,11 @@
 #define CSMultiHandle XADMultiHandle
 
 extern NSString *const CSSizeOfSegmentUnknownException;
+extern NSErrorDomain const CSMultiHandleErrorDomain;
+
+typedef NS_ENUM(NSInteger, CSMultiHandleError) {
+	CSMultiHandleErrorUnknownSizeOfSegment,
+};
 
 @interface CSMultiHandle:CSHandle
 {
@@ -26,11 +31,6 @@ extern NSString *const CSSizeOfSegmentUnknownException;
 @property (NS_NONATOMIC_IOSONLY, readonly) off_t fileSize;
 @property (NS_NONATOMIC_IOSONLY, readonly) off_t offsetInFile;
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL atEndOfFile;
-
--(void)seekToFileOffset:(off_t)offs DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(void)seekToEndOfFile DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(int)readAtMost:(int)num toBuffer:(void *)buffer DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Call can throw exception");
-
 
 -(BOOL)seekToFileOffset:(off_t)offs error:(NSError**)error;
 -(BOOL)seekToEndOfFileWithError:(NSError**)error;

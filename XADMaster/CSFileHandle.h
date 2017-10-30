@@ -18,11 +18,8 @@ extern NSString *const CSFileErrorException;
 	off_t pos;
 }
 
-+(CSFileHandle *)fileHandleForReadingAtPath:(NSString *)path DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Call can throw exception");
-+(CSFileHandle *)fileHandleForWritingAtPath:(NSString *)path DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Call can throw exception");
 +(CSFileHandle *)fileHandleForReadingAtPath:(NSString *)path error:(NSError**)error;
 +(CSFileHandle *)fileHandleForWritingAtPath:(NSString *)path error:(NSError**)error;
-+(CSFileHandle *)fileHandleForPath:(NSString *)path modes:(NSString *)modes DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Call can throw exception");
 +(CSFileHandle *)fileHandleForPath:(NSString *)path modes:(NSString *)modes error:(NSError**)error;
 
 // Initializers
@@ -38,13 +35,6 @@ extern NSString *const CSFileErrorException;
 @property (NS_NONATOMIC_IOSONLY, readonly) off_t offsetInFile;
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL atEndOfFile;
 
--(void)seekToFileOffset:(off_t)offs DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(void)seekToEndOfFile DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(void)pushBackByte:(int)byte DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(int)readAtMost:(int)num toBuffer:(void *)buffer DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(void)writeBytes:(int)num fromBuffer:(const void *)buffer DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Call can throw exception");
-
-
 -(BOOL)seekToFileOffset:(off_t)offs error:(NSError**)error;
 -(BOOL)seekToEndOfFileWithError:(NSError**)error;
 -(BOOL)pushBackByte:(uint8_t)byte error:(NSError**)error;
@@ -52,7 +42,7 @@ extern NSString *const CSFileErrorException;
 -(BOOL)writeBytes:(size_t)num fromBuffer:(const void *)buffer error:(NSError**)error;
 
 // Internal methods
--(void)_raiseError NS_SWIFT_UNAVAILABLE("Call throws exception");
+-(void)_raiseError NS_SWIFT_UNAVAILABLE("Call throws exception") DEPRECATED_ATTRIBUTE;
 -(void)_setMultiMode NS_SWIFT_UNAVAILABLE("Call always throws exception");
 
 @end

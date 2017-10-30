@@ -1,7 +1,9 @@
 #import <Foundation/Foundation.h>
 #include <stdint.h>
 
+//DEPRECATED_ATTRIBUTE
 
+#define XAD_DEPRECATED_THROW DEPRECATED_ATTRIBUTE NS_SWIFT_UNAVAILABLE("Call can throw exception") UNAVAILABLE_ATTRIBUTE
 
 #define CSHandleMaxLength 0x7fffffffffffffffll
 #define CSHandle XADHandle
@@ -44,11 +46,11 @@ extern NSString *const CSNotSupportedException;
 @property (NS_NONATOMIC_IOSONLY, readonly) off_t offsetInFile;
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL atEndOfFile;
 
--(void)seekToFileOffset:(off_t)offs;
--(void)seekToEndOfFile;
--(void)pushBackByte:(int)byte;
--(int)readAtMost:(int)num toBuffer:(void *)buffer;
--(void)writeBytes:(int)num fromBuffer:(const void *)buffer;
+-(void)seekToFileOffset:(off_t)offs XAD_DEPRECATED_THROW;
+-(void)seekToEndOfFile XAD_DEPRECATED_THROW;
+-(void)pushBackByte:(int)byte XAD_DEPRECATED_THROW;
+-(int)readAtMost:(int)num toBuffer:(void *)buffer XAD_DEPRECATED_THROW;
+-(void)writeBytes:(int)num fromBuffer:(const void *)buffer XAD_DEPRECATED_THROW;
 
 -(BOOL)seekToFileOffset:(off_t)offs error:(NSError**)error;
 -(BOOL)seekToEndOfFileWithError:(NSError**)error;
@@ -58,89 +60,6 @@ extern NSString *const CSNotSupportedException;
 
 
 // Utility methods
-
--(void)skipBytes:(off_t)bytes;
-
--(int8_t)readInt8 NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(uint8_t)readUInt8 NS_SWIFT_UNAVAILABLE("Call can throw exception");
-
--(int16_t)readInt16BE NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(int32_t)readInt32BE NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(int64_t)readInt64BE NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(uint16_t)readUInt16BE NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(uint32_t)readUInt32BE NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(uint64_t)readUInt64BE NS_SWIFT_UNAVAILABLE("Call can throw exception");
-
--(int16_t)readInt16LE NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(int32_t)readInt32LE NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(int64_t)readInt64LE NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(uint16_t)readUInt16LE NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(uint32_t)readUInt32LE NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(uint64_t)readUInt64LE NS_SWIFT_UNAVAILABLE("Call can throw exception");
-
--(int16_t)readInt16InBigEndianOrder:(BOOL)isbigendian NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(int32_t)readInt32InBigEndianOrder:(BOOL)isbigendian NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(int64_t)readInt64InBigEndianOrder:(BOOL)isbigendian NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(uint16_t)readUInt16InBigEndianOrder:(BOOL)isbigendian NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(uint32_t)readUInt32InBigEndianOrder:(BOOL)isbigendian NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(uint64_t)readUInt64InBigEndianOrder:(BOOL)isbigendian NS_SWIFT_UNAVAILABLE("Call can throw exception");
-
--(uint32_t)readID NS_SWIFT_UNAVAILABLE("Call can throw exception");
-
--(uint32_t)readBits:(int)bits NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(uint32_t)readBitsLE:(int)bits NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(int32_t)readSignedBits:(int)bits NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(int32_t)readSignedBitsLE:(int)bits NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(void)flushReadBits NS_SWIFT_UNAVAILABLE("Call can throw exception");
-
--(NSData *)readLine NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(NSString *)readLineWithEncoding:(NSStringEncoding)encoding NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(NSString *)readUTF8Line NS_SWIFT_UNAVAILABLE("Call can throw exception");
-
--(NSData *)fileContents NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(NSData *)remainingFileContents NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(NSData *)readDataOfLength:(int)length NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(NSData *)readDataOfLengthAtMost:(int)length NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(NSData *)copyDataOfLength:(int)length NS_RETURNS_RETAINED NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(NSData *)copyDataOfLengthAtMost:(int)length NS_RETURNS_RETAINED NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(void)readBytes:(int)num toBuffer:(void *)buffer NS_SWIFT_UNAVAILABLE("Call can throw exception");
-
--(off_t)readAndDiscardAtMost:(off_t)num NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(void)readAndDiscardBytes:(off_t)num NS_SWIFT_UNAVAILABLE("Call can throw exception");
-
--(CSHandle *)subHandleOfLength:(off_t)length NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(CSHandle *)subHandleFrom:(off_t)start length:(off_t)length NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(CSHandle *)subHandleToEndOfFileFrom:(off_t)start NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(CSHandle *)nonCopiedSubHandleOfLength:(off_t)length NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(CSHandle *)nonCopiedSubHandleFrom:(off_t)start length:(off_t)length NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(CSHandle *)nonCopiedSubHandleToEndOfFileFrom:(off_t)start NS_SWIFT_UNAVAILABLE("Call can throw exception");
-
--(void)writeInt8:(int8_t)val NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(void)writeUInt8:(uint8_t)val NS_SWIFT_UNAVAILABLE("Call can throw exception");
-
--(void)writeInt16BE:(int16_t)val NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(void)writeInt32BE:(int32_t)val NS_SWIFT_UNAVAILABLE("Call can throw exception");
-//-(void)writeInt64BE:(int64_t)val NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(void)writeUInt16BE:(uint16_t)val NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(void)writeUInt32BE:(uint32_t)val NS_SWIFT_UNAVAILABLE("Call can throw exception");
-//-(void)writeUInt64BE:(uint64_t)val NS_SWIFT_UNAVAILABLE("Call can throw exception");
-
--(void)writeInt16LE:(int16_t)val NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(void)writeInt32LE:(int32_t)val NS_SWIFT_UNAVAILABLE("Call can throw exception");
-//-(void)writeInt64LE:(int64_t)val NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(void)writeUInt16LE:(uint16_t)val NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(void)writeUInt32LE:(uint32_t)val NS_SWIFT_UNAVAILABLE("Call can throw exception");
-//-(void)writeUInt64LE:(uint64_t)val NS_SWIFT_UNAVAILABLE("Call can throw exception");
-
--(void)writeID:(uint32_t)val NS_SWIFT_UNAVAILABLE("Call can throw exception");
-
--(void)writeBits:(int)bits value:(uint32_t)val NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(void)writeSignedBits:(int)bits value:(int32_t)val NS_SWIFT_UNAVAILABLE("Call can throw exception");
--(void)flushWriteBits NS_SWIFT_UNAVAILABLE("Call can throw exception");
-
--(void)writeData:(NSData *)data NS_SWIFT_UNAVAILABLE("Call can throw exception");
-
-//-(void)_raiseClosed;
 -(void)_raiseMemory NS_SWIFT_UNAVAILABLE("Call throws exception");
 -(void)_raiseEOF NS_SWIFT_UNAVAILABLE("Call throws exception");
 -(void)_raiseNotImplemented:(SEL)selector NS_SWIFT_UNAVAILABLE("Call throws exception");
@@ -149,25 +68,24 @@ extern NSString *const CSNotSupportedException;
 @property (readonly, copy) NSString *name;
 @property (readonly, copy) NSString *description;
 
-
 -(BOOL)skipBytes:(off_t)bytes error:(NSError**)error;
 
--(int8_t)readInt8WithError:(NSError**)error;
--(uint8_t)readUInt8WithError:(NSError**)error;
+-(int8_t)readInt8WithError:(NSError**)error NS_REFINED_FOR_SWIFT;
+-(uint8_t)readUInt8WithError:(NSError**)error NS_REFINED_FOR_SWIFT;
 
--(int16_t)readInt16BEWithError:(NSError**)error;
--(int32_t)readInt32BEWithError:(NSError**)error;
--(int64_t)readInt64BEWithError:(NSError**)error;
--(uint16_t)readUInt16BEWithError:(NSError**)error;
--(uint32_t)readUInt32BEWithError:(NSError**)error;
--(uint64_t)readUInt64BEWithError:(NSError**)error;
+-(int16_t)readInt16BEWithError:(NSError**)error NS_REFINED_FOR_SWIFT;
+-(int32_t)readInt32BEWithError:(NSError**)error NS_REFINED_FOR_SWIFT;
+-(int64_t)readInt64BEWithError:(NSError**)error NS_REFINED_FOR_SWIFT;
+-(uint16_t)readUInt16BEWithError:(NSError**)error NS_REFINED_FOR_SWIFT;
+-(uint32_t)readUInt32BEWithError:(NSError**)error NS_REFINED_FOR_SWIFT;
+-(uint64_t)readUInt64BEWithError:(NSError**)error NS_REFINED_FOR_SWIFT;
 
--(int16_t)readInt16LEWithError:(NSError**)error;
--(int32_t)readInt32LEWithError:(NSError**)error;
--(int64_t)readInt64LEWithError:(NSError**)error;
--(uint16_t)readUInt16LEWithError:(NSError**)error;
--(uint32_t)readUInt32LEWithError:(NSError**)error;
--(uint64_t)readUInt64LEWithError:(NSError**)error;
+-(int16_t)readInt16LEWithError:(NSError**)error NS_REFINED_FOR_SWIFT;
+-(int32_t)readInt32LEWithError:(NSError**)error NS_REFINED_FOR_SWIFT;
+-(int64_t)readInt64LEWithError:(NSError**)error NS_REFINED_FOR_SWIFT;
+-(uint16_t)readUInt16LEWithError:(NSError**)error NS_REFINED_FOR_SWIFT;
+-(uint32_t)readUInt32LEWithError:(NSError**)error NS_REFINED_FOR_SWIFT;
+-(uint64_t)readUInt64LEWithError:(NSError**)error NS_REFINED_FOR_SWIFT;
 
 -(int16_t)readInt16InBigEndianOrder:(BOOL)isbigendian error:(NSError**)error;
 -(int32_t)readInt32InBigEndianOrder:(BOOL)isbigendian error:(NSError**)error;
@@ -176,13 +94,13 @@ extern NSString *const CSNotSupportedException;
 -(uint32_t)readUInt32InBigEndianOrder:(BOOL)isbigendian error:(NSError**)error;
 -(uint64_t)readUInt64InBigEndianOrder:(BOOL)isbigendian error:(NSError**)error;
 
--(uint32_t)readIDWithError:(NSError**)error;
+-(uint32_t)readIDWithError:(NSError**)error NS_REFINED_FOR_SWIFT;
 
--(uint32_t)readBits:(int)bits error:(NSError**)error;
--(uint32_t)readBitsLE:(int)bits error:(NSError**)error;
--(int32_t)readSignedBits:(int)bits error:(NSError**)error;
--(int32_t)readSignedBitsLE:(int)bits error:(NSError**)error;
--(BOOL)flushReadBitsWithError:(NSError**)error;
+-(uint32_t)readBits:(int)bits error:(NSError**)error NS_REFINED_FOR_SWIFT;
+-(uint32_t)readBitsLE:(int)bits error:(NSError**)error NS_REFINED_FOR_SWIFT;
+-(int32_t)readSignedBits:(int)bits error:(NSError**)error NS_REFINED_FOR_SWIFT;
+-(int32_t)readSignedBitsLE:(int)bits error:(NSError**)error NS_REFINED_FOR_SWIFT;
+-(void)flushReadBits;
 
 -(NSData *)readLineWithError:(NSError**)error;
 -(NSString *)readLineWithEncoding:(NSStringEncoding)encoding error:(NSError**)error;

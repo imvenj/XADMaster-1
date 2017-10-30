@@ -82,7 +82,7 @@
 
 	if(time) [dict setObject:[NSDate dateWithTimeIntervalSince1970:time] forKey:XADLastModificationDateKey];
 
-	if([contentname matchedByPattern:@"\\.(tar|cpio|pax)$" options:REG_ICASE])
+	if([contentname matchedByPattern:@"\\.(tar|cpio|pax)$" options:REG_ICASE error:NULL])
 	dict[XADIsArchiveKey] = @YES;
 
 	off_t filesize=[handle fileSize];
