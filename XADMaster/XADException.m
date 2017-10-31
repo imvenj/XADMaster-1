@@ -52,6 +52,38 @@ NSString *const XADErrorDomain=@"de.dstoecker.xadmaster.error";
 	return XADErrorUnknown;
 }
 
++(NSError*)parseExceptionReturningNSError:(nonnull id)exception
+{
+    if([exception isKindOfClass:[NSException class]])
+    {
+        NSException *e=exception;
+        NSString *name=[e name];
+        if([name isEqual:XADExceptionName]) {
+            XADError errVal = [[e userInfo][@"XADError"] intValue];
+            return [NSError errorWithDomain:XADErrorDomain code:errVal userInfo:@{NSLocalizedFailureReasonErrorKey: e.reason}];
+        } else if([name isEqual:CSCannotOpenFileException]) {
+            return [NSError errorWithDomain:XADErrorDomain code:XADErrorOpenFile userInfo:@{NSLocalizedFailureReasonErrorKey: e.reason}];
+        } else if([name isEqual:CSFileErrorException]) {
+            int errNo = [[e userInfo][@"ErrNo"] intValue];
+            return [NSError errorWithDomain:NSPOSIXErrorDomain code:errNo userInfo:@{NSLocalizedFailureReasonErrorKey: e.reason}];
+        } else if([name isEqual:CSOutOfMemoryException]) {
+            return [NSError errorWithDomain:XADErrorDomain code:XADErrorOutOfMemory userInfo:@{NSLocalizedFailureReasonErrorKey: e.reason}];
+        } else if([name isEqual:CSEndOfFileException]) {
+            return [NSError errorWithDomain:XADErrorDomain code:XADErrorInput userInfo:@{NSLocalizedFailureReasonErrorKey: e.reason}];
+        } else if([name isEqual:CSNotImplementedException]) {
+            return [NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:@{NSLocalizedFailureReasonErrorKey: e.reason}];
+        } else if([name isEqual:CSNotSupportedException]) {
+            return [NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:@{NSLocalizedFailureReasonErrorKey: e.reason}];
+        } else if([name isEqual:CSZlibException]) {
+            return [NSError errorWithDomain:XADErrorDomain code:XADErrorDecrunch userInfo:@{NSLocalizedFailureReasonErrorKey: e.reason}];
+        } else if([name isEqual:CSBzip2Exception]) {
+            return [NSError errorWithDomain:XADErrorDomain code:XADErrorDecrunch userInfo:@{NSLocalizedFailureReasonErrorKey: e.reason}];
+        }
+    }
+    
+    return [NSError errorWithDomain:XADErrorDomain code:XADErrorUnknown userInfo:nil];
+}
+
 +(NSString *)describeXADError:(XADError)error
 {
 	switch(error)

@@ -18,7 +18,7 @@
 	return [self simpleUnarchiverForPath:path error:NULL];
 }
 
-+(XADSimpleUnarchiver *)simpleUnarchiverForPath:(NSString *)path error:(XADError *)errorptr;
++(XADSimpleUnarchiver *)simpleUnarchiverForPath:(NSString *)path error:(NSError *_Nullable __autoreleasing *_Nullable)errorptr;
 {
 	XADArchiveParser *archiveparser=[XADArchiveParser archiveParserForPath:path error:errorptr];
 	if(!archiveparser) return nil;
@@ -328,13 +328,18 @@
 -(XADError)_setupSubArchiveForEntryWithDataFork:(NSDictionary *)datadict resourceFork:(NSDictionary *)resourcedict
 {
 	// Create unarchiver.
-	XADError error;
+	NSError *error;
 	subunarchiver=[unarchiver unarchiverForEntryWithDictionary:datadict
 										resourceForkDictionary:resourcedict wantChecksum:YES error:&error];
 	if(!subunarchiver)
 	{
-		if(error) return error;
-		else return XADErrorSubArchive;
+        if (error) {
+            if ([error.domain isEqualToString:XADErrorDomain]) {
+                return (int)error.code;
+            } else {
+                return XADErrorUnknown;
+            }
+        } else return XADErrorSubArchive;
 	}
 	return XADErrorNone;
 }

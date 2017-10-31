@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 +(nullable instancetype)unarchiverForArchiveParser:(XADArchiveParser *)archiveparser;
 +(nullable instancetype)unarchiverForPath:(NSString *)path NS_SWIFT_UNAVAILABLE("Call may throw exceptions, use init(for:error:) instead");
-+(nullable instancetype)unarchiverForPath:(NSString *)path error:(nullable XADError *)errorptr;
++(nullable instancetype)unarchiverForPath:(NSString *)path error:(NSError *_Nullable __autoreleasing *_Nullable)errorptr;
 
 -(instancetype)init UNAVAILABLE_ATTRIBUTE;
 -(instancetype)initWithArchiveParser:(XADArchiveParser *)archiveparser NS_DESIGNATED_INITIALIZER;
@@ -61,9 +61,9 @@ NS_ASSUME_NONNULL_BEGIN
 -(XADError)_fixDeferredDirectories;
 
 -(nullable XADUnarchiver *)unarchiverForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict
-wantChecksum:(BOOL)checksum error:(nullable XADError *)errorptr NS_REFINED_FOR_SWIFT;
+wantChecksum:(BOOL)checksum error:(NSError *_Nullable __autoreleasing *_Nullable)errorptr;
 -(nullable XADUnarchiver *)unarchiverForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict
-resourceForkDictionary:(nullable NSDictionary<XADArchiveKeys,id> *)forkdict wantChecksum:(BOOL)checksum error:(nullable XADError *)errorptr NS_REFINED_FOR_SWIFT;
+resourceForkDictionary:(nullable NSDictionary<XADArchiveKeys,id> *)forkdict wantChecksum:(BOOL)checksum error:(NSError *_Nullable __autoreleasing *_Nullable)errorptr;
 
 -(XADError)_extractFileEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict as:(NSString *)destpath;
 -(XADError)_extractDirectoryEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict as:(NSString *)destpath;

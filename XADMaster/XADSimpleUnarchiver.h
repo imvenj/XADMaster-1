@@ -41,7 +41,7 @@
 }
 
 +(instancetype)simpleUnarchiverForPath:(NSString *)path NS_SWIFT_UNAVAILABLE("Call may throw exceptions, use init(for:error:) instead");
-+(instancetype)simpleUnarchiverForPath:(NSString *)path error:(XADError *)errorptr;
++(instancetype)simpleUnarchiverForPath:(NSString *)path error:(NSError **)errorptr;
 
 -(instancetype)init UNAVAILABLE_ATTRIBUTE;
 -(instancetype)initWithArchiveParser:(XADArchiveParser *)archiveparser;

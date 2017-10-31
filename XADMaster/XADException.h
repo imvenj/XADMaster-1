@@ -65,6 +65,7 @@ NS_SWIFT_UNAVAILABLE("Exceptions aren't supported by Swift")
 +(void)raiseExceptionWithXADError:(XADError)errnum CLANG_ANALYZER_NORETURN;
 
 +(XADError)parseException:(nonnull id)exception;
++(nonnull NSError*)parseExceptionReturningNSError:(nonnull id)exception;
 +(nullable NSString *)describeXADError:(XADError)errnum;
 
 @end

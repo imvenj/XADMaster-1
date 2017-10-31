@@ -20,40 +20,6 @@ extension XADError: Error {
 }
 
 extension XADArchiveParser {
-	@nonobjc public class func archiveParser(for handle: XADHandle, resourceFork fork: XADResourceFork? = nil, name: String) throws -> XADArchiveParser {
-		var error = XADError.none
-		if let archiveParse = XADArchiveParser(__for: handle, resourceFork: fork, name: name, error: &error) {
-			return archiveParse
-		}
-		throw error
-	}
-
-	@nonobjc public class func archiveParser(for handle: XADHandle, firstBytes header: Data, resourceFork fork: XADResourceFork? = nil, name: String) throws -> XADArchiveParser {
-		var error = XADError.none
-		if let archiveParse = XADArchiveParser(__for: handle, firstBytes: header, resourceFork: fork, name: name, error: &error) {
-			return archiveParse
-		}
-		throw error
-	}
-
-	@nonobjc public class func archiveParser(forPath filename: String) throws -> XADArchiveParser {
-		var error = XADError.none
-		if let archiveParse = XADArchiveParser(__forPath: filename, error: &error) {
-			return archiveParse
-		}
-		throw error
-	}
-	
-	@nonobjc public class func archiveParser(forEntryWith entry: [XADArchiveKeys : Any], resourceForkDictionary forkentry: [XADArchiveKeys : Any]? = nil, archiveParser parser: XADArchiveParser, wantChecksum checksum: Bool) throws -> XADArchiveParser {
-		var error = XADError.none
-		if let archiveParse = XADArchiveParser(__forEntryWith: entry, resourceForkDictionary: forkentry, archiveParser: parser, wantChecksum: checksum, error: &error) {
-			return archiveParse
-		}
-		throw error
-	}
-}
-
-extension XADArchiveParser {
 	@nonobjc open func linkDestination(for dict: [XADArchiveKeys : Any]) throws -> XADString {
 		var err = XADError.none
 		guard let linkDest = __linkDestination(for: dict, error: &err) else {

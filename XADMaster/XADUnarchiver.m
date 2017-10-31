@@ -26,7 +26,7 @@
 	return [self unarchiverForPath:path error:NULL];
 }
 
-+(XADUnarchiver *)unarchiverForPath:(NSString *)path error:(XADError *)errorptr
++(XADUnarchiver *)unarchiverForPath:(NSString *)path error:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
 {
 	XADArchiveParser *archiveparser=[XADArchiveParser archiveParserForPath:path error:errorptr];
 	if(!archiveparser) return nil;
@@ -325,14 +325,14 @@ static NSComparisonResult SortDirectoriesByDepthAndResource(id entry1,id entry2,
 
 
 -(XADUnarchiver *)unarchiverForEntryWithDictionary:(NSDictionary *)dict
-wantChecksum:(BOOL)checksum error:(XADError *)errorptr
+wantChecksum:(BOOL)checksum error:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
 {
 	return [self unarchiverForEntryWithDictionary:dict resourceForkDictionary:nil
 	wantChecksum:checksum error:errorptr];
 }
 
 -(XADUnarchiver *)unarchiverForEntryWithDictionary:(NSDictionary *)dict
-resourceForkDictionary:(NSDictionary *)forkdict wantChecksum:(BOOL)checksum error:(XADError *)errorptr
+resourceForkDictionary:(NSDictionary *)forkdict wantChecksum:(BOOL)checksum error:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
 {
 	XADArchiveParser *subparser=[XADArchiveParser
 	archiveParserForEntryWithDictionary:dict
@@ -410,11 +410,17 @@ resourceForkDictionary:(NSDictionary *)forkdict wantChecksum:(BOOL)checksum erro
 
 -(XADError)_extractArchiveEntryWithDictionary:(NSDictionary *)dict to:(NSString *)destpath name:(NSString *)filename
 {
-	XADError error;
+	XADError error = 0;
+    NSError *nsErr;
 	XADUnarchiver *subunarchiver=[self unarchiverForEntryWithDictionary:dict
-	wantChecksum:YES error:&error];
+	wantChecksum:YES error:&nsErr];
 	if(!subunarchiver)
 	{
+        if (nsErr) {
+            if ([nsErr.domain isEqualToString:XADErrorDomain]) {
+                return (int)nsErr.code;
+            }
+        }
 		if(error) return error;
 		else return XADErrorSubArchive;
 	}

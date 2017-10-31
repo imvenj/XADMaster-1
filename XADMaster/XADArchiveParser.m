@@ -271,11 +271,10 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 	return [self archiveParserForHandle:handle resourceFork:nil name:name];
 }
 
-+(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle name:(NSString *)name error:(XADError *)errorptr
++(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle name:(NSString *)name error:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
 {
-	if(errorptr) *errorptr=XADErrorNone;
 	@try { return [self archiveParserForHandle:handle resourceFork:nil name:name]; }
-	@catch(id exception) { if(errorptr) *errorptr=[XADException parseException:exception]; }
+	@catch(id exception) { if(errorptr) *errorptr=[XADException parseExceptionReturningNSError:exception]; }
 	return nil;
 }
 
@@ -285,11 +284,10 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 	return [self archiveParserForHandle:handle firstBytes:header resourceFork:fork name:name];
 }
 
-+(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle resourceFork:(XADResourceFork *)fork name:(NSString *)name error:(XADError *)errorptr
++(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle resourceFork:(XADResourceFork *)fork name:(NSString *)name error:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
 {
-	if(errorptr) *errorptr=XADErrorNone;
 	@try { return [self archiveParserForHandle:handle resourceFork:fork name:name]; }
-	@catch(id exception) { if(errorptr) *errorptr=[XADException parseException:exception]; }
+	@catch(id exception) { if(errorptr) *errorptr=[XADException parseExceptionReturningNSError:exception]; }
 	return nil;
 }
 
@@ -298,11 +296,10 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 	return [self archiveParserForHandle:handle firstBytes:header resourceFork:nil name:name];
 }
 
-+(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header name:(NSString *)name error:(XADError *)errorptr
++(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header name:(NSString *)name error:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
 {
-	if(errorptr) *errorptr=XADErrorNone;
 	@try { return [self archiveParserForHandle:handle firstBytes:header resourceFork:nil name:name]; }
-	@catch(id exception) { if(errorptr) *errorptr=[XADException parseException:exception]; }
+	@catch(id exception) { if(errorptr) *errorptr=[XADException parseExceptionReturningNSError:exception]; }
 	return nil;
 }
 
@@ -323,11 +320,10 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 	return parser;
 }
 
-+(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header resourceFork:(XADResourceFork *)fork name:(NSString *)name error:(XADError *)errorptr
++(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header resourceFork:(XADResourceFork *)fork name:(NSString *)name error:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
 {
-	if(errorptr) *errorptr=XADErrorNone;
 	@try { return [self archiveParserForHandle:handle firstBytes:header resourceFork:fork name:name]; }
-	@catch(id exception) { if(errorptr) *errorptr=[XADException parseException:exception]; }
+	@catch(id exception) { if(errorptr) *errorptr=[XADException parseExceptionReturningNSError:exception]; }
 	return nil;
 }
 
@@ -394,11 +390,10 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 	return [parser autorelease];
 }
 
-+(XADArchiveParser *)archiveParserForPath:(NSString *)filename error:(XADError *)errorptr
++(XADArchiveParser *)archiveParserForPath:(NSString *)filename error:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
 {
-	if(errorptr) *errorptr=XADErrorNone;
 	@try { return [self archiveParserForPath:filename]; }
-	@catch(id exception) { if(errorptr) *errorptr=[XADException parseException:exception]; }
+	@catch(id exception) { if(errorptr) *errorptr=[XADException parseExceptionReturningNSError:exception]; }
 	return nil;
 }
 
@@ -407,11 +402,10 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 	return [self archiveParserForEntryWithDictionary:entry resourceForkDictionary:nil archiveParser:parser wantChecksum:checksum];
 }
 
-+(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum error:(XADError *)errorptr
++(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum error:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
 {
-	if(errorptr) *errorptr=XADErrorNone;
 	@try { return [self archiveParserForEntryWithDictionary:entry resourceForkDictionary:nil archiveParser:parser wantChecksum:checksum]; }
-	@catch(id exception) { if(errorptr) *errorptr=[XADException parseException:exception]; }
+	@catch(id exception) { if(errorptr) *errorptr=[XADException parseExceptionReturningNSError:exception]; }
 	return nil;
 }
 
@@ -446,11 +440,10 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 	return subparser;
 }
 
-+(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry resourceForkDictionary:(NSDictionary *)forkentry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum error:(XADError *)errorptr
++(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry resourceForkDictionary:(NSDictionary *)forkentry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum error:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
 {
-	if(errorptr) *errorptr=XADErrorNone;
 	@try { return [self archiveParserForEntryWithDictionary:entry resourceForkDictionary:forkentry archiveParser:parser wantChecksum:checksum]; }
-	@catch(id exception) { if(errorptr) *errorptr=[XADException parseException:exception]; }
+	@catch(id exception) { if(errorptr) *errorptr=[XADException parseExceptionReturningNSError:exception]; }
 	return nil;
 }
 
