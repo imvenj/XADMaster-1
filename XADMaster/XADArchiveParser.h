@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NSString *XADArchiveKeys NS_EXTENSIBLE_STRING_ENUM;
+typedef NSString *XADArchiveKeys NS_TYPED_EXTENSIBLE_ENUM;
 
 extern XADArchiveKeys const XADFileNameKey;
 extern XADArchiveKeys const XADCommentKey;
