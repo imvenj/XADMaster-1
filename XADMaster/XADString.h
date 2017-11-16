@@ -1,11 +1,19 @@
 #import <Foundation/Foundation.h>
 
+#ifndef NS_TYPED_ENUM
+#define NS_TYPED_ENUM
+#endif
+
+#ifndef NS_SWIFT_NAME
+#define NS_SWIFT_NAME(x)
+#endif
+
 NS_ASSUME_NONNULL_BEGIN
 
 @class XADStringSource, UniversalDetector;
 
 //! The supported encodings used by \c XADString
-typedef NSString *XADStringEncodingName NS_STRING_ENUM;
+typedef NSString *XADStringEncodingName NS_TYPED_ENUM;
 
 extern XADStringEncodingName const XADUTF8StringEncodingName NS_SWIFT_NAME(XADStringEncodingName.utf8);
 extern XADStringEncodingName const XADASCIIStringEncodingName NS_SWIFT_NAME(XADStringEncodingName.ascii);

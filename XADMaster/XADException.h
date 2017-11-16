@@ -44,8 +44,8 @@ typedef NS_ENUM(int, XADError) {
 	#endif
 #endif
 
-extern NSString * __nonnull const XADExceptionName;
-extern NSString * __nonnull const XADErrorDomain;
+extern NSExceptionName __nonnull const XADExceptionName;
+extern NSErrorDomain __nonnull const XADErrorDomain;
 
 NS_SWIFT_UNAVAILABLE("Exceptions aren't supported by Swift")
 @interface XADException:NSObject

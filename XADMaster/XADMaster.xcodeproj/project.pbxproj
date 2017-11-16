@@ -4037,6 +4037,7 @@
 			);
 			path = XADSimpleMasterSwift;
 			sourceTree = "<group>";
+			usesTabs = 1;
 		};
 /* End PBXGroup section */
 
@@ -7584,7 +7585,7 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = XADMaster_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"USE_COMMON_CRYPTO=1",
