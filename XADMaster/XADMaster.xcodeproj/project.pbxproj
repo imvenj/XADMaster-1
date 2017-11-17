@@ -4010,18 +4010,10 @@
 		32C88DFF0371C24200C91783 /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				5500A6131D776B2500321300 /* XADSimple */,
 				32DBCF5E0370ADEE00C91783 /* XADMaster_Prefix.pch */,
 				559B9CCF1A13F443006BDB74 /* XADMaster-umbrella.h */,
 			);
 			name = "Other Sources";
-			sourceTree = "<group>";
-		};
-		5500A6131D776B2500321300 /* XADSimple */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = XADSimple;
 			sourceTree = "<group>";
 		};
 		555EF0711EA7DB1F000CAE58 /* XADSimpleMasterSwift */ = {

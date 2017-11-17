@@ -22,6 +22,17 @@
 	return nil;
 }
 
++(instancetype)resourceForkWithHandle:(XADHandle *)handle nserror:(NSError * _Nullable *)errorptr
+{
+	@try { return [self resourceForkWithHandle:handle]; }
+	@catch(id exception) {
+		if(errorptr)
+			*errorptr=[XADException parseExceptionReturningNSError:exception];
+		return nil;
+	}
+	return nil;
+}
+
 -(instancetype)init
 {
 	if((self=[super init]))

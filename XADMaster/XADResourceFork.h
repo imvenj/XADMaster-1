@@ -11,6 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 +(nullable instancetype)resourceForkWithHandle:(CSHandle *)handle NS_SWIFT_UNAVAILABLE("Call may throw, use init(handle:error:) instead");
 +(nullable instancetype)resourceForkWithHandle:(CSHandle *)handle error:(nullable XADError *)errorptr;
++(nullable instancetype)resourceForkWithHandle:(CSHandle *)handle nserror:(NSError*__autoreleasing __nullable* __nullable)errorptr;
 
 -(instancetype)init NS_DESIGNATED_INITIALIZER;
 
