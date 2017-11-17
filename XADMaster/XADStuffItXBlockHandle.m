@@ -5,10 +5,10 @@
 
 -(id)initWithHandle:(CSHandle *)handle
 {
-	if((self=[super initWithName:[handle name]]))
+	if((self=[super initWithName:handle.name]))
 	{
 		parent=[handle retain];
-		startoffs=[parent offsetInFile];
+		startoffs=parent.offsetInFile;
 		buffer=NULL;
 		currsize=0;
 	}

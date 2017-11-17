@@ -10,19 +10,19 @@ static NSData *PowerPackerUnpack(NSData *packeddata,int unpackedlength);
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	NSInteger length=[data length];
-	const uint8_t *bytes=[data bytes];
+	NSInteger length=data.length;
+	const uint8_t *bytes=data.bytes;
 
 	return length>=8&&bytes[0]=='P'&&bytes[1]=='P'&&bytes[2]=='2'&&bytes[3]=='0';
 }
 
 -(void)parse
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
 	[fh seekToEndOfFile];
 
-	off_t compsize=[fh offsetInFile]-4;
+	off_t compsize=fh.offsetInFile-4;
 
 	[fh skipBytes:-4];
 
@@ -31,8 +31,8 @@ static NSData *PowerPackerUnpack(NSData *packeddata,int unpackedlength);
 	size|=[fh readUInt8];
 
 	[self addEntryWithDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:
-		[self XADPathWithUnseparatedString:[[self name] stringByDeletingPathExtension]],XADFileNameKey,
-		[NSNumber numberWithLongLong:size],XADFileSizeKey,
+		[self XADPathWithUnseparatedString:self.name.stringByDeletingPathExtension],XADFileNameKey,
+		@(size),XADFileSizeKey,
 		@(compsize),XADCompressedSizeKey,
 		[self XADStringWithString:@"PowerPacker"],XADCompressionNameKey,
 
@@ -75,11 +75,11 @@ static uint32_t GetBits(int n,const uint8_t *buffer,int *bitpos)
 
 static NSData *PowerPackerUnpack(NSData *packeddata,int unpackedlength)
 {
-	const uint8_t *packed=[packeddata bytes];
-	NSInteger packedlength=[packeddata length];
+	const uint8_t *packed=packeddata.bytes;
+	NSInteger packedlength=packeddata.length;
 
 	NSMutableData *unpackeddata=[NSMutableData dataWithLength:unpackedlength];
-	uint8_t *unpacked=[unpackeddata mutableBytes];
+	uint8_t *unpacked=unpackeddata.mutableBytes;
 
 	int bitpos=(int)(packedlength*8-32);
 	uint8_t *dest=unpacked+unpackedlength;

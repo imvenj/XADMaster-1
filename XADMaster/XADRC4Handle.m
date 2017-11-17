@@ -6,10 +6,10 @@
 
 -(instancetype)initWithHandle:(CSHandle *)handle key:(NSData *)keydata
 {
-	if((self=[super initWithName:[handle name] length:[handle fileSize]]))
+	if((self=[super initWithName:handle.name length:handle.fileSize]))
 	{
 		parent=[handle retain];
-		startoffs=[parent offsetInFile];
+		startoffs=parent.offsetInFile;
 		key=[keydata retain];
 		rc4=nil;
 	}
@@ -55,8 +55,8 @@
 {
 	if((self=[super init]))
 	{
-		const uint8_t *keybytes=[key bytes];
-		NSInteger keylength=[key length];
+		const uint8_t *keybytes=key.bytes;
+		NSInteger keylength=key.length;
 
 		for(i=0;i<256;i++) s[i]=i;
 
@@ -75,7 +75,7 @@
 -(NSData *)encryptedData:(NSData *)data
 {
 	NSMutableData *res=[NSMutableData dataWithData:data];
-	[self encryptBytes:[res mutableBytes] length:(int)[res length]];
+	[self encryptBytes:res.mutableBytes length:(int)res.length];
 	return [NSData dataWithData:res];
 }
 

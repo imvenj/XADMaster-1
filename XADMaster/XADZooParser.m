@@ -9,8 +9,8 @@
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	if(length<0x22) return NO;
 	if(bytes[0x14]!=0xdc||bytes[0x15]!=0xa7||bytes[0x16]!=0xc4||bytes[0x17]!=0xfd) return NO;
@@ -20,14 +20,14 @@
 
 -(void)parse
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
 	[fh seekToFileOffset:0x18];
 	uint32_t firstoffset=[fh readUInt32LE];
 
 	[fh seekToFileOffset:firstoffset];
 
-	while([self shouldKeepParsing])
+	while(self.shouldKeepParsing)
 	{
 		uint32_t magic=[fh readUInt32LE];
 		if(magic!=0xfdc4a7dc) [XADException raiseIllegalDataException];
@@ -57,10 +57,10 @@
 		NSData *shortnamedata=[NSData dataWithBytes:shortnamebuf length:shortnamelength];
 
 		NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
-			[NSNumber numberWithUnsignedLong:uncompsize],XADFileSizeKey,
-			[NSNumber numberWithUnsignedLong:compsize],XADCompressedSizeKey,
-			[NSNumber numberWithUnsignedLong:dataoffset],XADDataOffsetKey,
-			[NSNumber numberWithUnsignedLong:compsize],XADDataLengthKey,
+			@(uncompsize),XADFileSizeKey,
+			@(compsize),XADCompressedSizeKey,
+			@(dataoffset),XADDataOffsetKey,
+			@(compsize),XADDataLengthKey,
 			@(type),@"ZooType",
 			@(method),@"ZooMethod",
 			@(crc16),@"ZooCRC16",
@@ -104,7 +104,7 @@
 
 				// Strip trailing nul byte, if it exists. Not sure if it is
 				// always present, so make this conditional.
-				const uint8_t *bytes=[longnamedata bytes];
+				const uint8_t *bytes=longnamedata.bytes;
 				if(bytes[longnamelength-1]==0)
 				longnamedata=[longnamedata subdataWithRange:NSMakeRange(0,longnamelength-1)];
 			}
@@ -115,7 +115,7 @@
 
 				// Strip trailing nul byte, if it exists. Not sure if it is
 				// always present, so make this conditional.
-				const uint8_t *bytes=[dirdata bytes];
+				const uint8_t *bytes=dirdata.bytes;
 				if(bytes[dirlength-1]==0)
 				dirdata=[dirdata subdataWithRange:NSMakeRange(0,dirlength-1)];
 			}
@@ -155,7 +155,7 @@
 			{
 				XADPath *parent;
 				if(dirdata) parent=[self XADPathWithData:dirdata separators:XADUnixPathSeparator];
-				else parent=[self XADPath];
+				else parent=self.XADPath;
 
 				NSData *namedata;
 				if(longnamedata) namedata=longnamedata;
@@ -186,7 +186,7 @@
 
 			// Strip trailing nul byte, if it exists. Not sure if it is
 			// always present, so make this conditional.
-			const uint8_t *bytes=[commentdata bytes];
+			const uint8_t *bytes=commentdata.bytes;
 			if(bytes[commentlength-1]==0)
 			commentdata=[commentdata subdataWithRange:NSMakeRange(0,commentlength-1)];
 

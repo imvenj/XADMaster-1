@@ -6,8 +6,8 @@
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	if(length<6) return NO;
 	if(bytes[0]==0xed&&bytes[1]==0xab&&bytes[2]==0xee&&bytes[3]==0xdb)
@@ -39,7 +39,7 @@ static int FindStringLength(const uint8_t *buffer,int size,int offset)
 
 -(void)parse
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
 	[fh skipBytes:4];
 	int major=[fh readUInt8];
@@ -96,8 +96,8 @@ static int FindStringLength(const uint8_t *buffer,int size,int offset)
 		NSData *entrydata=[fh readDataOfLength:headentries*16];
 		NSData *storagedata=[fh readDataOfLength:headbytes];
 
-		const uint8_t *entries=[entrydata bytes];
-		const uint8_t *storage=[storagedata bytes];
+		const uint8_t *entries=entrydata.bytes;
+		const uint8_t *storage=storagedata.bytes;
 
 
 		for(int i=0;i<headentries;i++)
@@ -158,14 +158,14 @@ static int FindStringLength(const uint8_t *buffer,int size,int offset)
 
 	NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 		[self XADPathWithData:namedata separators:XADUnixPathSeparator],XADFileNameKey,
-		@([fh offsetInFile]),XADDataOffsetKey,
+		@(fh.offsetInFile),XADDataOffsetKey,
 		@YES,XADIsArchiveKey,
 	nil];
 
-	off_t filesize=[fh fileSize];
+	off_t filesize=fh.fileSize;
 	if(filesize!=CSHandleMaxLength)
 	{
-		off_t length=filesize-[fh offsetInFile];
+		off_t length=filesize-fh.offsetInFile;
 		dict[XADFileSizeKey] = @(length);
 		dict[XADCompressedSizeKey] = @(length);
 		dict[XADDataLengthKey] = @(length);

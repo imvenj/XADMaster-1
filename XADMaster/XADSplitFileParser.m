@@ -43,16 +43,16 @@
 
 -(void)parse
 {
-	NSString *basename=[[self name] stringByDeletingPathExtension];
-	CSHandle *handle=[self handle];
+	NSString *basename=self.name.stringByDeletingPathExtension;
+	CSHandle *handle=self.handle;
 
 	NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 		[self XADPathWithUnseparatedString:basename],XADFileNameKey,
-		@([handle fileSize]),XADFileSizeKey,
-		@([handle fileSize]),XADCompressedSizeKey,
+		@(handle.fileSize),XADFileSizeKey,
+		@(handle.fileSize),XADCompressedSizeKey,
 	nil];
 
-	NSString *ext=[basename pathExtension];
+	NSString *ext=basename.pathExtension;
 	if([ext caseInsensitiveCompare:@"zip"]==0)
 	dict[XADIsArchiveKey] = @YES;
 
@@ -61,7 +61,7 @@
 
 -(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum
 {
-	CSHandle *handle=[self handle];
+	CSHandle *handle=self.handle;
 	[handle seekToFileOffset:0];
 	return handle;
 }

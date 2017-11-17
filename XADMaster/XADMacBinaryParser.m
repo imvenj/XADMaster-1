@@ -24,15 +24,15 @@
 
 -(CSHandle *)rawHandleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum
 {
-	return [self handle];
+	return self.handle;
 }
 
 -(void)inspectEntryDictionary:(NSMutableDictionary *)dict
 {
 	NSNumber *rsrc=dict[XADIsResourceForkKey];
-	if(rsrc&&[rsrc boolValue]) return;
+	if(rsrc&&rsrc.boolValue) return;
 
-	if([[self name] matchedByPattern:@"\\.sea(\\.|$)" options:REG_ICASE]||
+	if([self.name matchedByPattern:@"\\.sea(\\.|$)" options:REG_ICASE]||
 	[[dict[XADFileNameKey] string] matchedByPattern:@"\\.(sea|sit|cpt)$" options:REG_ICASE])
 	dict[XADIsArchiveKey] = @YES;
 

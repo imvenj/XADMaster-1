@@ -22,28 +22,28 @@ NSString *const CSZlibException=@"CSZlibException";
 	off_t startoffs;
 	z_stream zs;
 	BOOL inited,seekback,endstreamateof;
-	
+
 	uint8_t inbuffer[0x4000];
 }
 
 +(CSZlibHandle *)zlibHandleWithHandle:(CSHandle *)handle
 {
-	return [[CSZlibHandle alloc] initWithHandle:handle length:CSHandleMaxLength header:YES name:[handle name]];
+	return [[CSZlibHandle alloc] initWithHandle:handle length:CSHandleMaxLength header:YES name:handle.name];
 }
 
 +(CSZlibHandle *)zlibHandleWithHandle:(CSHandle *)handle length:(off_t)length
 {
-	return [[CSZlibHandle alloc] initWithHandle:handle length:length header:YES name:[handle name]];
+	return [[CSZlibHandle alloc] initWithHandle:handle length:length header:YES name:handle.name];
 }
 
 +(CSZlibHandle *)deflateHandleWithHandle:(CSHandle *)handle
 {
-	return [[CSZlibHandle alloc] initWithHandle:handle length:CSHandleMaxLength header:NO name:[handle name]];
+	return [[CSZlibHandle alloc] initWithHandle:handle length:CSHandleMaxLength header:NO name:handle.name];
 }
 
 +(CSZlibHandle *)deflateHandleWithHandle:(CSHandle *)handle length:(off_t)length
 {
-	return [[CSZlibHandle alloc] initWithHandle:handle length:length header:NO name:[handle name]];
+	return [[CSZlibHandle alloc] initWithHandle:handle length:length header:NO name:handle.name];
 }
 
 
@@ -54,7 +54,7 @@ NSString *const CSZlibException=@"CSZlibException";
 	if((self=[super initWithName:descname length:length]))
 	{
 		parent=handle;
-		startoffs=[parent offsetInFile];
+		startoffs=parent.offsetInFile;
 		inited=YES;
 		seekback=NO;
 

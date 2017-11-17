@@ -8,7 +8,7 @@
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
 	if(!name) return NO;
-	if(![[name lastPathComponent] matchedByPattern:@"^arc[0-9]*\\.sar$" options:REG_ICASE]) return NO;
+	if(![name.lastPathComponent matchedByPattern:@"^arc[0-9]*\\.sar$" options:REG_ICASE]) return NO;
 
 	//const uint8_t *bytes=[data bytes];
 	//int length=[data length];
@@ -18,14 +18,14 @@
 
 -(void)parse
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
 	int numfiles=[fh readUInt16BE];
 	if(numfiles==0) numfiles=[fh readUInt16BE];
 
 	uint32_t offset=[fh readUInt32BE];
 
-	for(int i=0;i<numfiles && [self shouldKeepParsing];i++)
+	for(int i=0;i<numfiles && self.shouldKeepParsing;i++)
 	{
 		NSMutableData *namedata=[NSMutableData data];
 		uint8_t c;

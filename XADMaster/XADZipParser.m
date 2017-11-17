@@ -25,8 +25,8 @@
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	if(length<8) return NO;
 
@@ -97,10 +97,10 @@
 
 -(void)parseWithSeparateMacForks
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
 	[fh seekToEndOfFile];
-	off_t end=[fh offsetInFile];
+	off_t end=fh.offsetInFile;
 
 	int numbytes=0x10011;
 	if(numbytes>end) numbytes=(int)end;
@@ -164,7 +164,7 @@
 
 -(void)parseWithCentralDirectoryAtOffset:(off_t)centraloffs zip64Offset:(off_t)zip64offs
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
 	[fh seekToFileOffset:centraloffs+4];
 
@@ -213,7 +213,7 @@
 
 	for(int i=0;i<numentries;i++)
 	{
-		if(![self shouldKeepParsing]) break;
+		if(!self.shouldKeepParsing) break;
 
 		NSAutoreleasePool *pool=[NSAutoreleasePool new];
 
@@ -250,7 +250,7 @@
 
 			if(size>length) break;
 			length-=size;
-			off_t nextextra=[fh offsetInFile]+size;
+			off_t nextextra=fh.offsetInFile+size;
 
 			if(extid==1)
 			{
@@ -267,8 +267,8 @@
 
 		NSData *commentdata=nil;
 		if(commentlength) commentdata=[fh readDataOfLength:commentlength];
-        
-		off_t next=[fh offsetInFile];
+
+		off_t next=fh.offsetInFile;
 
 		// Some idiotic compressors write files with more than 65535 files without
 		// using Zip64, so numentries overflows. Try to detect if there is enough space
@@ -297,7 +297,7 @@
 			int localnamelength=[fh readUInt16LE];
 			int localextralength=[fh readUInt16LE];
 
-			off_t dataoffset=[fh offsetInFile]+localnamelength+localextralength;
+			off_t dataoffset=fh.offsetInFile+localnamelength+localextralength;
 
 			NSData *namedata=nil;
 			if(localnamelength) namedata=[fh readDataOfLength:localnamelength];
@@ -329,11 +329,11 @@
 
 -(void)parseWithoutCentralDirectory
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
 	[fh seekToFileOffset:0];
 
-	while([self shouldKeepParsing])
+	while(self.shouldKeepParsing)
 	{
 		NSAutoreleasePool *pool=[NSAutoreleasePool new];
 
@@ -356,7 +356,7 @@
 				int namelength=[fh readUInt16LE];
 				int extralength=[fh readUInt16LE];
 
-				off_t dataoffset=[fh offsetInFile]+namelength+extralength;
+				off_t dataoffset=fh.offsetInFile+namelength+extralength;
 
 				NSData *namedata=nil;
 				if(namelength) namedata=[fh readDataOfLength:namelength];
@@ -375,11 +375,11 @@
 				{
 					NSNumber *zip64num=extradict[@"Zip64"];
 
-					[self findEndOfStreamMarkerWithZip64Flag:zip64num&&[zip64num boolValue]
+					[self findEndOfStreamMarkerWithZip64Flag:zip64num&&zip64num.boolValue
 					uncompressedSizePointer:&uncompsize compressedSizePointer:&compsize
 					CRCPointer:&crc];
 
-					next=[fh offsetInFile];
+					next=fh.offsetInFile;
 				}
 				else
 				{
@@ -390,7 +390,7 @@
 				compressionMethod:compressionmethod date:date crc:crc localDate:date
 				compressedSize:compsize uncompressedSize:uncompsize extendedFileAttributes:0xffffffff
 				extraDictionary:extradict dataOffset:dataoffset nameData:namedata commentData:nil
-				isLastEntry:NO];
+isLastEntry:NO];
 
 				[fh seekToFileOffset:next];
 			}
@@ -497,7 +497,7 @@ static int MatchZip64DataDescriptor(const uint8_t *bytes,int available,off_t off
 -(void)findEndOfStreamMarkerWithZip64Flag:(BOOL)zip64 uncompressedSizePointer:(off_t *)uncompsizeptr
 compressedSizePointer:(off_t *)compsizeptr CRCPointer:(uint32_t *)crcptr
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
 	if(zip64)
 	{
@@ -538,7 +538,7 @@ static int MatchZipEntry(const uint8_t *bytes,int available,off_t offset,void *s
 
 -(void)findNextEntry
 {
-	[[self handle] scanUsingMatchingFunction:MatchZipEntry maximumLength:4];
+	[self.handle scanUsingMatchingFunction:MatchZipEntry maximumLength:4];
 }
 
 
@@ -547,10 +547,10 @@ static int MatchZipEntry(const uint8_t *bytes,int available,off_t offset,void *s
 -(NSDictionary<XADArchiveKeys,id> *)parseZipExtraWithLength:(int)length nameData:(NSData *)namedata
 uncompressedSizePointer:(off_t *)uncompsizeptr compressedSizePointer:(off_t *)compsizeptr
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 	NSMutableDictionary<XADArchiveKeys,id> *dict=[NSMutableDictionary dictionary];
 
-	off_t end=[fh offsetInFile]+length;
+	off_t end=fh.offsetInFile+length;
 
 	while(length>9)
 	{
@@ -560,7 +560,7 @@ uncompressedSizePointer:(off_t *)uncompsizeptr compressedSizePointer:(off_t *)co
 
 		if(size>length) break;
 		length-=size;
-		off_t next=[fh offsetInFile]+size;
+		off_t next=fh.offsetInFile+size;
 
 		if(extid==1&&compsizeptr&&uncompsizeptr) // Zip64 extended information extra field
 		{
@@ -688,7 +688,7 @@ uncompressedSizePointer:(off_t *)uncompsizeptr compressedSizePointer:(off_t *)co
 
 				// Some archivers append garbage zero bytes to the end of the name.
 				// Remove them if necessary.
-				const uint8_t *bytes=[unicodedata bytes];
+				const uint8_t *bytes=unicodedata.bytes;
 				int length=size-5;
 				if(length && bytes[length-1]==0)
 				{
@@ -696,7 +696,7 @@ uncompressedSizePointer:(off_t *)uncompsizeptr compressedSizePointer:(off_t *)co
 					unicodedata=[unicodedata subdataWithRange:NSMakeRange(0,length)];
 				}
 
-				if((XADCalculateCRC(0xffffffff,[namedata bytes],[namedata length],
+				if((XADCalculateCRC(0xffffffff,namedata.bytes,namedata.length,
 				XADCRCTable_edb88320)^0xffffffff)==crc)
 				{
 					XADPath *oldname=dict[XADFileNameKey];
@@ -755,11 +755,11 @@ isLastEntry:(BOOL)islastentry
 		[NSDate XADDateWithMSDOSDateTime:date],XADLastModificationDateKey,
 		@(crc),@"ZipCRC32",
 		@(localdate),@"ZipLocalDate",
-		[NSNumber numberWithInt:extfileattrib],@"ZipFileAttributes",
-		[NSNumber numberWithUnsignedLongLong:compsize],XADCompressedSizeKey,
-		[NSNumber numberWithUnsignedLongLong:uncompsize],XADFileSizeKey,
+		@(extfileattrib),@"ZipFileAttributes",
+		@(compsize),XADCompressedSizeKey,
+		@(uncompsize),XADFileSizeKey,
 		@(dataoffset),XADDataOffsetKey,
-		[NSNumber numberWithUnsignedLongLong:compsize],XADDataLengthKey,
+		@(compsize),XADDataLengthKey,
 	nil];
 	if(flags&0x01) dict[XADIsEncryptedKey] = @YES;
 
@@ -816,8 +816,8 @@ isLastEntry:(BOOL)islastentry
 
 	if(namedata)
 	{
-		const uint8_t *namebytes=[namedata bytes];
-		NSInteger namelength=[namedata length];
+		const uint8_t *namebytes=namedata.bytes;
+		NSInteger namelength=namedata.length;
 
 		char *separators;
 		if(system==0)
@@ -844,8 +844,8 @@ isLastEntry:(BOOL)islastentry
 		// entry is a file inside it and set the directory flag for the previous one.
 		if(prevdict)
 		{
-			const char *prevbytes=[prevname bytes];
-			NSInteger prevlength=[prevname length];
+			const char *prevbytes=prevname.bytes;
+			NSInteger prevlength=prevname.length;
 			if(prevlength<namelength)
 			{
 				int i=0;
@@ -864,7 +864,7 @@ isLastEntry:(BOOL)islastentry
 	}
 	else
 	{
-		dict[XADFileNameKey] = [self XADPathWithUnseparatedString:[[self name] stringByDeletingPathExtension]];
+		dict[XADFileNameKey] = [self XADPathWithUnseparatedString:self.name.stringByDeletingPathExtension];
 		// TODO: set no filename flag
 	}
 
@@ -952,14 +952,14 @@ isLastEntry:(BOOL)islastentry
 -(CSHandle *)rawHandleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum
 {
 	CSHandle *fh=[self handleAtDataOffsetForDictionary:dict];
-
+	
 	int compressionmethod=[dict[@"ZipCompressionMethod"] intValue];
 	int flags=[dict[@"ZipFlags"] intValue];
 	off_t size=[dict[XADFileSizeKey] longLongValue];
 	BOOL wrapchecksum=NO;
 
 	NSNumber *enc=dict[XADIsEncryptedKey];
-	if(enc && [enc boolValue])
+	if(enc && enc.boolValue)
 	{
 		off_t compsize=[dict[XADCompressedSizeKey] longLongValue];
 
@@ -985,7 +985,7 @@ isLastEntry:(BOOL)islastentry
 			if(version==2) wrapchecksum=YES;
 
 			fh=[[[XADWinZipAESHandle alloc] initWithHandle:fh length:compsize
-			password:[self encodedPassword] keyLength:keybytes] autorelease];
+			password:self.encodedPassword keyLength:keybytes] autorelease];
 		}
 		else
 		{
@@ -996,7 +996,7 @@ isLastEntry:(BOOL)islastentry
 			else test=[dict[@"ZipCRC32"] unsignedIntValue]>>24;
 
 			fh=[[[XADZipCryptHandle alloc] initWithHandle:fh length:compsize
-			password:[self encodedPassword] testByte:test] autorelease];
+			password:self.encodedPassword testByte:test] autorelease];
 		}
 	}
 
@@ -1013,7 +1013,7 @@ isLastEntry:(BOOL)islastentry
 		{
 			NSNumber *crc=dict[@"ZipCRC32"];
 			return [XADCRCHandle IEEECRC32HandleWithHandle:handle
-			length:[handle fileSize] correctCRC:[crc unsignedIntValue] conditioned:YES];
+			length:handle.fileSize correctCRC:crc.unsignedIntValue conditioned:YES];
 		}
 	}
 

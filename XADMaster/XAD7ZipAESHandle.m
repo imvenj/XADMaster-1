@@ -18,8 +18,8 @@ typedef SHA_CTX XADSHA256;
 
 +(int)logRoundsForPropertyData:(NSData *)propertydata
 {
-	NSInteger length=[propertydata length];
-	const uint8_t *bytes=[propertydata bytes];
+	NSInteger length=propertydata.length;
+	const uint8_t *bytes=propertydata.bytes;
 
 	if(length<1) return -1;
 
@@ -28,8 +28,8 @@ typedef SHA_CTX XADSHA256;
 
 +(NSData *)saltForPropertyData:(NSData *)propertydata
 {
-	NSInteger length=[propertydata length];
-	const uint8_t *bytes=[propertydata bytes];
+	NSInteger length=propertydata.length;
+	const uint8_t *bytes=propertydata.bytes;
 
 	if(length<1) return nil;
 
@@ -51,8 +51,8 @@ typedef SHA_CTX XADSHA256;
 
 +(NSData *)IVForPropertyData:(NSData *)propertydata
 {
-	NSInteger length=[propertydata length];
-	const uint8_t *bytes=[propertydata bytes];
+	NSInteger length=propertydata.length;
+	const uint8_t *bytes=propertydata.bytes;
 
 	if(length<1) return nil;
 
@@ -80,7 +80,7 @@ typedef SHA_CTX XADSHA256;
 {
 	uint8_t key[32];
 
-	NSInteger passchars=[password length];
+	NSInteger passchars=password.length;
 	NSInteger passlength=passchars*2;
 	uint8_t passbytes[passlength];
 	for(int i=0;i<passchars;i++)
@@ -90,8 +90,8 @@ typedef SHA_CTX XADSHA256;
 		passbytes[2*i+1]=c>>8;
 	}
 
-	NSInteger saltlength=[salt length];
-	const uint8_t *saltbytes=[salt bytes];
+	NSInteger saltlength=salt.length;
+	const uint8_t *saltbytes=salt.bytes;
 
 	if(logrounds==0x3f)
 	{
@@ -127,17 +127,17 @@ typedef SHA_CTX XADSHA256;
 
 -(id)initWithHandle:(CSHandle *)handle length:(off_t)length key:(NSData *)keydata IV:(NSData *)ivdata
 {
-	if((self=[super initWithName:[handle name] length:length]))
+	if((self=[super initWithName:handle.name length:length]))
 	{
 		parent=[handle retain];
-		startoffs=[handle offsetInFile];
+		startoffs=handle.offsetInFile;
 
-		NSInteger ivlength=[ivdata length];
-		const uint8_t *ivbytes=[ivdata bytes];
+		NSInteger ivlength=ivdata.length;
+		const uint8_t *ivbytes=ivdata.bytes;
 		memset(iv,0,sizeof(iv));
 		memcpy(iv,ivbytes,ivlength);
 
-		const uint8_t *keybytes=[keydata bytes];
+		const uint8_t *keybytes=keydata.bytes;
 		aes_decrypt_key256(keybytes,&aes);
 	}
 

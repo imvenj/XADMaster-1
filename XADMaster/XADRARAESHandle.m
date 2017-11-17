@@ -23,7 +23,7 @@ typedef SHA_CTX XADSHA1;
 {
 	uint8_t keybuf[2*16];
 
-	NSInteger length=[password length];
+	NSInteger length=password.length;
 	if(length>126) length=126;
 
 	uint8_t passbuf[length*2+8];
@@ -82,12 +82,12 @@ keybuf[8],keybuf[9],keybuf[10],keybuf[11],keybuf[12],keybuf[13],keybuf[14],keybu
 
 -(id)initWithHandle:(CSHandle *)handle length:(off_t)length key:(NSData *)keydata
 {
-	if((self=[super initWithName:[handle name] length:length]))
+	if((self=[super initWithName:handle.name length:length]))
 	{
 		parent=[handle retain];
-		startoffs=[handle offsetInFile];
+		startoffs=handle.offsetInFile;
 
-		const uint8_t *keybytes=[keydata bytes];
+		const uint8_t *keybytes=keydata.bytes;
 		memcpy(iv,&keybytes[0],16);
 		aes_decrypt_key128(&keybytes[16],&aes);
 	}
@@ -101,13 +101,13 @@ keybuf[8],keybuf[9],keybuf[10],keybuf[11],keybuf[12],keybuf[13],keybuf[14],keybu
 
 -(id)initWithHandle:(CSHandle *)handle length:(off_t)length RAR5Key:(NSData *)keydata IV:(NSData *)ivdata
 {
-	if((self=[super initWithName:[handle name] length:length]))
+	if((self=[super initWithName:handle.name length:length]))
 	{
 		parent=[handle retain];
-		startoffs=[handle offsetInFile];
+		startoffs=handle.offsetInFile;
 
 		memcpy(iv,[ivdata bytes],16);
-		aes_decrypt_key256([keydata bytes],&aes);
+		aes_decrypt_key256(keydata.bytes,&aes);
 	}
 	return self;
 }

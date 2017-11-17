@@ -9,8 +9,8 @@
 {
 	// Geez, put some magic bytes in your file formats, people!
 
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	if(length<13) return NO;
 
@@ -37,13 +37,13 @@
 
 -(void)parse
 {
-	CSHandle *handle=[self handle];
+	CSHandle *handle=self.handle;
 
-	NSString *name=[self name];
-	NSString *extension=[[name pathExtension] lowercaseString];
+	NSString *name=self.name;
+	NSString *extension=name.pathExtension.lowercaseString;
 	NSString *contentname;
-	if([extension isEqual:@"tlz"]) contentname=[[name stringByDeletingPathExtension] stringByAppendingPathExtension:@"tar"];
-	else contentname=[name stringByDeletingPathExtension];
+	if([extension isEqual:@"tlz"]) contentname=[name.stringByDeletingPathExtension stringByAppendingPathExtension:@"tar"];
+	else contentname=name.stringByDeletingPathExtension;
 
 	NSData *props=[handle readDataOfLength:5];
 
@@ -61,20 +61,20 @@
 	if(size!=0xffffffffffffffff)
 	dict[XADFileSizeKey] = @(size);
 
-	off_t filesize=[[self handle] fileSize];
+	off_t filesize=self.handle.fileSize;
 	if(filesize!=CSHandleMaxLength)
-	dict[XADCompressedSizeKey] = [NSNumber numberWithUnsignedLongLong:filesize-13];
+	dict[XADCompressedSizeKey] = @(filesize-13);
 
 	[self addEntryWithDictionary:dict];
 }
 
 -(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dictionary wantChecksum:(BOOL)checksum
 {
-	CSHandle *handle=[self handle];
+	CSHandle *handle=self.handle;
 	NSNumber *size=dictionary[XADFileSizeKey];
 	[handle seekToFileOffset:13];
 
-	if(size) return [[[XADLZMAHandle alloc] initWithHandle:handle length:[size unsignedLongLongValue]
+	if(size) return [[[XADLZMAHandle alloc] initWithHandle:handle length:size.unsignedLongLongValue
 	propertyData:dictionary[@"LZMAProperties"]] autorelease];
 	else return [[[XADLZMAHandle alloc] initWithHandle:handle
 	propertyData:dictionary[@"LZMAProperties"]] autorelease];

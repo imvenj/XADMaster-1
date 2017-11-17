@@ -97,8 +97,8 @@ static const uint8_t *FindSignature(const uint8_t *ptr,NSInteger length)
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	if(length<7) return NO; // TODO: fix to use correct min size
 
@@ -110,8 +110,8 @@ static const uint8_t *FindSignature(const uint8_t *ptr,NSInteger length)
 
 +(NSArray *)volumesForHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	if([data length]<12) return nil;
-	const uint8_t *header=[data bytes];
+	if(data.length<12) return nil;
+	const uint8_t *header=data.bytes;
 	uint16_t flags=CSUInt16LE(&header[10]);
 
 	// Don't bother looking for volumes if it the volume bit is not set.
@@ -127,7 +127,7 @@ static const uint8_t *FindSignature(const uint8_t *ptr,NSInteger length)
 		return [self scanForVolumesWithFilename:name
 		regex:[XADRegex regexWithPattern:[NSString stringWithFormat:@"^%@[0-9]{%ld}%@.rar$",
 			[matches[1] escapedPattern],
-			(long)[(NSString *)matches[2] length],
+			(long)((NSString *)matches[2]).length,
 			[matches[3] escapedPattern]] options:REG_ICASE]
 		];
 	}
@@ -167,15 +167,15 @@ static const uint8_t *FindSignature(const uint8_t *ptr,NSInteger length)
 	// Make sure to clear key cache if password changes.
 	[keys release];
 	keys=nil;
-	[super setPassword:newpassword];
+	super.password = newpassword;
 }
 
 -(void)parse
 {
-	CSHandle *handle=[self handle];
+	CSHandle *handle=self.handle;
 
 	uint8_t buf[7];
-	[handle readBytes:7 toBuffer:buf];	
+	[handle readBytes:7 toBuffer:buf];
 
 	if(IsAncientRARSignature(buf))
 	{
@@ -198,7 +198,7 @@ static const uint8_t *FindSignature(const uint8_t *ptr,NSInteger length)
 	off_t totalsolidsize=0;
 
 	RARBlock block;
-	while([self shouldKeepParsing])
+	while(self.shouldKeepParsing)
 	{
 		block=[self readBlockHeader];
 		if(IsZeroBlock(block))
@@ -368,8 +368,8 @@ static const uint8_t *FindSignature(const uint8_t *ptr,NSInteger length)
 
 				[self skipBlock:block];
 
-				CSHandle *handle=[self currentHandle];
-				if([handle offsetInFile]!=0) [handle seekToEndOfFile];
+				CSHandle *handle=self.currentHandle;
+				if(handle.offsetInFile!=0) [handle seekToEndOfFile];
 			}
 			break;
 
@@ -426,7 +426,7 @@ static const uint8_t *FindSignature(const uint8_t *ptr,NSInteger length)
 	/*int crc=*/[fh readUInt16LE];
 
 	// TODO: should this be [self handle] or block.fh?
-	NSArray *parts=@[@{@"Parts": @[@{@"Offset": @([[self handle] offsetInFile]),
+	NSArray *parts=@[@{@"Parts": @[@{@"Offset": @(self.handle.offsetInFile),
 			@"InputLength": @(block.headersize-13)}],
 		@"OutputLength": @(commentsize),
 		@"Version": @(version),
@@ -442,11 +442,11 @@ static const uint8_t *FindSignature(const uint8_t *ptr,NSInteger length)
 
 -(RARBlock)readBlockHeader
 {
-	CSHandle *fh=[self handle];
-	if([fh atEndOfFile]) return ZeroBlock;
+	CSHandle *fh=self.handle;
+	if(fh.atEndOfFile) return ZeroBlock;
 
 	RARBlock block;
-	block.start=[[self handle] offsetInFile];
+	block.start=self.handle.offsetInFile;
 
 	if(archiveflags&MHD_PASSWORD)
 	{
@@ -513,7 +513,7 @@ NSLog(@"%04x %04x %s",~crc&0xffff,block.crc,(~crc&0xffff)==block.crc?"<-------":
 
 -(void)skipBlock:(RARBlock)block
 {
-	[[self handle] seekToFileOffset:block.datastart+block.datasize];
+	[self.handle seekToFileOffset:block.datastart+block.datasize];
 }
 
 
@@ -538,7 +538,7 @@ isCorrupted:(BOOL)iscorrupted
 		@(header->crc),@"RARCRC32",
 		@(header->os),@"RAROS",
 		@(header->attrs),@"RARAttributes",
-		@([files count]-1),@"RARSolidIndex",
+		@(files.count-1),@"RARSolidIndex",
 	nil];
 
 	if(iscorrupted) dict[XADIsCorruptedKey] = @YES;
@@ -583,8 +583,8 @@ isCorrupted:(BOOL)iscorrupted
 {
 	if(flags&LHD_UNICODE)
 	{
-		NSInteger length=[data length];
-		const uint8_t *bytes=[data bytes];
+		NSInteger length=data.length;
+		const uint8_t *bytes=data.bytes;
 
 		NSInteger n=0;
 		while(n<length&&bytes[n]) n++;
@@ -602,7 +602,7 @@ isCorrupted:(BOOL)iscorrupted
 			int highbyte=[fh readUInt8]<<8;
 			int flagbyte,flagbits=0;
 
-			while(![fh atEndOfFile])
+			while(!fh.atEndOfFile)
 			{
 				if(flagbits==0)
 				{
@@ -623,10 +623,10 @@ isCorrupted:(BOOL)iscorrupted
 						{
 							int correction=[fh readUInt8];
 							for(int i=0;i<(len&0x7f)+2;i++)
-							[str appendFormat:@"%C",(unichar)(highbyte+(bytes[[str length]]+correction&0xff))];
+							[str appendFormat:@"%C",(unichar)(highbyte+(bytes[str.length]+correction&0xff))];
 						}
 						else for(int i=0;i<(len&0x7f)+2;i++)
-						[str appendFormat:@"%C",(unichar)(bytes[[str length]])];
+						[str appendFormat:@"%C",(unichar)(bytes[str.length])];
 					}
 					break;
 				}
@@ -649,11 +649,11 @@ isCorrupted:(BOOL)iscorrupted
 {
 	// Give the caller some ahead notice if we will be using a password.
 	NSNumber *encryptnum=dict[XADIsEncryptedKey];
-	if(encryptnum && [encryptnum boolValue])
+	if(encryptnum && encryptnum.boolValue)
 	{
 		if([dict[@"RARCompressionVersion"] intValue]<=20) caresaboutpasswordencoding=YES;
 		[self password];
-		if(![self hasPassword]) return nil;
+		if(!self.hasPassword) return nil;
 	}
 
 	CSHandle *handle;
@@ -665,7 +665,7 @@ isCorrupted:(BOOL)iscorrupted
 		handle=[self inputHandleForFileWithIndex:index files:files];
 
 		off_t length=[dict[XADSolidLengthKey] longLongValue];
-		if(length!=[handle fileSize]) handle=[handle nonCopiedSubHandleOfLength:length];
+		if(length!=handle.fileSize) handle=[handle nonCopiedSubHandleOfLength:length];
 	}
 	else
 	{
@@ -676,7 +676,7 @@ isCorrupted:(BOOL)iscorrupted
 		else handle=[self subHandleFromSolidStreamForEntryWithDictionary:dict];
 	}
 
-	if(checksum) handle=[XADCRCHandle IEEECRC32HandleWithHandle:handle length:[handle fileSize]
+	if(checksum) handle=[XADCRCHandle IEEECRC32HandleWithHandle:handle length:handle.fileSize
 	correctCRC:[dict[@"RARCRC32"] unsignedIntValue] conditioned:YES];
 
 	return handle;
@@ -714,7 +714,7 @@ isCorrupted:(BOOL)iscorrupted
 
 -(CSHandle *)inputHandleForFileWithIndex:(int)file files:(NSArray *)files
 {
-	if(file>=[files count]) [XADException raiseExceptionWithXADError:XADErrorInput]; // TODO: better error
+	if(file>=files.count) [XADException raiseExceptionWithXADError:XADErrorInput]; // TODO: better error
 	NSDictionary *dict=files[file];
 
 	CSHandle *handle=[self inputHandleWithParts:dict[@"Parts"]
@@ -735,17 +735,17 @@ cryptoVersion:(int)version salt:(NSData *)salt
 		switch(version)
 		{
 			case 13: return [[[XADRAR13CryptHandle alloc] initWithHandle:handle
-			length:[handle fileSize] password:[self encodedPassword]] autorelease];
+			length:handle.fileSize password:self.encodedPassword] autorelease];
 
 			case 15: return [[[XADRAR15CryptHandle alloc] initWithHandle:handle
-			length:[handle fileSize] password:[self encodedPassword]] autorelease];
+			length:handle.fileSize password:self.encodedPassword] autorelease];
 
 			case 20: return [[[XADRAR20CryptHandle alloc] initWithHandle:handle
-			length:[handle fileSize] password:[self encodedPassword]] autorelease];
+			length:handle.fileSize password:self.encodedPassword] autorelease];
 
 			default:
 			return [[[XADRARAESHandle alloc] initWithHandle:handle
-			length:[handle fileSize] key:[self keyForSalt:salt]] autorelease];
+			length:handle.fileSize key:[self keyForSalt:salt]] autorelease];
 		}
 	}
 	else return handle;
@@ -758,7 +758,7 @@ cryptoVersion:(int)version salt:(NSData *)salt
 	NSData *key=keys[salt];
 	if(key) return key;
 
-	key=[XADRARAESHandle keyForPassword:[self password] salt:salt brokenHash:encryptversion<36];
+	key=[XADRARAESHandle keyForPassword:self.password salt:salt brokenHash:encryptversion<36];
 	keys[salt] = key;
 	return key;
 }
@@ -768,7 +768,7 @@ cryptoVersion:(int)version salt:(NSData *)salt
 
 -(off_t)outputLengthOfFileWithIndex:(int)file files:(NSArray *)files
 {
-	if(file>=[files count]) [XADException raiseExceptionWithXADError:XADErrorInput]; // TODO: better error
+	if(file>=files.count) [XADException raiseExceptionWithXADError:XADErrorInput]; // TODO: better error
 	NSDictionary *dict=files[file];
 
 	return [dict[@"OutputLength"] longLongValue];
@@ -798,8 +798,8 @@ cryptoVersion:(int)version salt:(NSData *)salt
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data
 name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 {
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	const uint8_t *header=FindSignature(bytes,length);
 	if(header)
@@ -813,8 +813,8 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 
 +(NSArray *)volumesForHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	const uint8_t *header=FindSignature(bytes,length);
 	if(!header) return nil; // Shouldn't happen
@@ -834,7 +834,7 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 	return [self scanForVolumesWithFilename:name
 	regex:[XADRegex regexWithPattern:[NSString stringWithFormat:@"^%@[0-9]{%ld}%@.(rar|exe|sfx)$",
 		[matches[1] escapedPattern],
-		(long)[(NSString *)matches[2] length],
+		(long)((NSString *)matches[2]).length,
 		[matches[3] escapedPattern]] options:REG_ICASE]
 	];
 
@@ -843,8 +843,8 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 
 -(void)parse
 {
-	off_t offs=[[self properties][@"RAREmbedOffset"] longLongValue];
-	[[self handle] seekToFileOffset:offs];
+	off_t offs=[self.properties[@"RAREmbedOffset"] longLongValue];
+	[self.handle seekToFileOffset:offs];
 
 	[super parse];
 }

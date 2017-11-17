@@ -80,7 +80,7 @@ static BOOL IsDelimiter(uint8_t c);
 -(BOOL)needsPassword
 {
 	if(!encryption) return NO;
-	return [encryption needsPassword];
+	return encryption.needsPassword;
 }
 
 -(BOOL)setPassword:(NSString *)password
@@ -140,7 +140,7 @@ static BOOL IsDelimiter(uint8_t c);
 
 -(off_t)parserFileOffset
 {
-	return [fh offsetInFile]-1;
+	return fh.offsetInFile-1;
 }
 
 -(void)proceed
@@ -206,7 +206,7 @@ static BOOL IsDelimiter(uint8_t c);
 	NSNumber *prev=trailerdict[@"Prev"];
 	while(prev)
 	{
-		[self startParsingFromHandle:mainhandle atOffset:[prev longLongValue]];
+		[self startParsingFromHandle:mainhandle atOffset:prev.longLongValue];
 		NSDictionary *oldtrailer=[self parsePDFXref];
 		prev=oldtrailer[@"Prev"];
 	}
@@ -222,7 +222,7 @@ static BOOL IsDelimiter(uint8_t c);
 
 -(NSDictionary *)parsePDFXrefTable
 {
-	off_t totalsize=[mainhandle fileSize];
+	off_t totalsize=mainhandle.fileSize;
 
 	[self proceedAssumingCharacter:'x' errorMessage:@"Error parsing xref"];
 	[self proceedAssumingCharacter:'r' errorMessage:@"Error parsing xref"];
@@ -305,13 +305,13 @@ static BOOL IsDelimiter(uint8_t c);
 	PDFStream *stream=[self parsePDFObjectWithReferencePointer:NULL];
 	if(![stream isKindOfClass:[PDFStream class]]) [self _raiseParserException:@"Error parsing xref stream"];
 
-	NSDictionary *dict=[stream dictionary];
+	NSDictionary *dict=stream.dictionary;
 	if(![dict[@"Type"] isEqual:@"XRef"]) [self _raiseParserException:@"Error parsing xref stream"];
 
 	NSArray *w=dict[@"W"];
 	if(!w) [self _raiseParserException:@"Error parsing xref stream"];
 	if(![w isKindOfClass:[NSArray class]]) [self _raiseParserException:@"Error parsing xref stream"];
-	if([w count]!=3) [self _raiseParserException:@"Error parsing xref stream"];
+	if(w.count!=3) [self _raiseParserException:@"Error parsing xref stream"];
 
 	int typesize=[w[0] intValue];
 	int value1size=[w[1] intValue];
@@ -336,7 +336,7 @@ static BOOL IsDelimiter(uint8_t c);
 
 	NSMutableArray *objstreams=[NSMutableArray array];
 
-	for(int i=0;i<[index count];i+=2)
+	for(int i=0;i<index.count;i+=2)
 	{
 		NSNumber *firstnum=index[i];
 		NSNumber *numnum=index[i+1];
@@ -344,8 +344,8 @@ static BOOL IsDelimiter(uint8_t c);
 		if(![firstnum isKindOfClass:[NSNumber class]]) [self _raiseParserException:@"Error decoding xref stream"];
 		if(![numnum isKindOfClass:[NSNumber class]]) [self _raiseParserException:@"Error decoding xref stream"];
 
-		int first=[firstnum intValue];
-		int num=[numnum intValue];
+		int first=firstnum.intValue;
+		int num=numnum.intValue;
 
 		for(int n=first;n<first+num;n++)
 		{
@@ -358,7 +358,7 @@ static BOOL IsDelimiter(uint8_t c);
 
 			NSAutoreleasePool *pool=[NSAutoreleasePool new];
 
-			off_t curroffs=[mainhandle offsetInFile];
+			off_t curroffs=mainhandle.offsetInFile;
 			[self startParsingFromHandle:mainhandle atOffset:value1];
 
 			PDFObjectReference *ref;
@@ -392,7 +392,7 @@ static BOOL IsDelimiter(uint8_t c);
 	PDFStream *objstream;
 	while((objstream=[enumerator nextObject]))
 	{
-		off_t curroffs=[mainhandle offsetInFile];
+		off_t curroffs=mainhandle.offsetInFile;
 		[self parsePDFCompressedObjectStream:objstream];
 		[mainhandle seekToFileOffset:curroffs];
 	}
@@ -420,7 +420,7 @@ static BOOL IsDelimiter(uint8_t c);
 	encryption=[[PDFEncryptionHandler alloc]
 	initWithEncryptDictionary:encryptdict permanentID:permanentid];
 
-	if([encryption needsPassword] && passwordaction)
+	if(encryption.needsPassword && passwordaction)
 	{
 		[passwordtarget performSelector:passwordaction withObject:self];
 	}
@@ -527,7 +527,7 @@ static BOOL IsDelimiter(uint8_t c);
 
 -(void)parsePDFCompressedObjectStream:(PDFStream *)stream
 {
-	NSDictionary *dict=[stream dictionary];
+	NSDictionary *dict=stream.dictionary;
 
 	NSNumber *n=dict[@"N"];
 	if(!n) [self _raiseParserException:@"Error decoding compressed object stream"];
@@ -540,8 +540,8 @@ static BOOL IsDelimiter(uint8_t c);
 	CSHandle *handle=[stream handle];
 	if(!handle) [self _raiseParserException:@"Error decoding compressed object stream"];
 
-	int num=[n intValue];
-	off_t startoffset=[first longLongValue];
+	int num=n.intValue;
+	off_t startoffset=first.longLongValue;
 
 	int objnums[num];
 	off_t offsets[num];
@@ -677,12 +677,12 @@ static BOOL IsDelimiter(uint8_t c);
 		}
 
 		[data appendBytes:(uint8_t [1]){0} length:1];
-		return @(atof([data bytes]));
+		return @(atof(data.bytes));
 	}
 	else
 	{
 		[data appendBytes:(uint8_t [1]){0} length:1];
-		return @(atoll([data bytes]));
+		return @(atoll(data.bytes));
 	}
 }
 
@@ -762,7 +762,7 @@ static BOOL IsDelimiter(uint8_t c);
 						[self proceedWithoutCommentHandling];
 						if(currchar=='\n') [self proceedWithoutCommentHandling]; // Ignore CRLF.
 						continue;
- 					break;
+					 break;
 					case 'n': b='\n'; break; // Line feed.
 					case 'r': b='\r'; break; // Carriage return.
 					case 't': b='\t'; break; // Tab.
@@ -839,8 +839,8 @@ static BOOL IsDelimiter(uint8_t c);
 		{
 			[self proceed];
 
-			id num=array[[array count]-2];
-			id gen=array[[array count]-1];
+			id num=array[array.count-2];
+			id gen=array[array.count-1];
 
 			if(![num isKindOfClass:[NSNumber class]] || ![gen isKindOfClass:[NSNumber class]])
 			[self _raiseParserException:@"Error parsing indirect object in array"];
@@ -922,7 +922,7 @@ static BOOL IsDelimiter(uint8_t c);
 		if([obj isKindOfClass:[NSDictionary class]])
 		{
 			NSMutableDictionary *dict=obj;
-			NSEnumerator *keyenum=[[dict allKeys] objectEnumerator];
+			NSEnumerator *keyenum=[dict.allKeys objectEnumerator];
 			NSString *key;
 			while(key=[keyenum nextObject])
 			{
@@ -937,7 +937,7 @@ static BOOL IsDelimiter(uint8_t c);
 		else if([obj isKindOfClass:[NSArray class]])
 		{
 			NSMutableArray *array=obj;
-			NSInteger count=[array count];
+			NSInteger count=array.count;
 			for(NSInteger i=0;i<count;i++)
 			{
 				id value=array[i];
@@ -955,7 +955,7 @@ static BOOL IsDelimiter(uint8_t c);
 {
 	NSData *start;
 
-	off_t offs=[fh offsetInFile];
+	off_t offs=fh.offsetInFile;
 	if(offs<100)
 	{
 		[fh seekToFileOffset:0];
@@ -967,15 +967,15 @@ static BOOL IsDelimiter(uint8_t c);
 		start=[fh readDataOfLength:100];
 	}
 
-	NSInteger length=[start length];
-	const uint8_t *bytes=[start bytes];
+	NSInteger length=start.length;
+	const uint8_t *bytes=start.bytes;
 	NSInteger skip=0;
 	for(NSInteger i=0;i<length;i++) if(bytes[i]=='\n'||bytes[i]=='\r') skip=i+1;
 	NSString *startstr=[[[NSString alloc] initWithBytes:bytes+skip length:length-skip encoding:NSISOLatin1StringEncoding] autorelease];
 
 	NSData *end=[fh readDataOfLengthAtMost:100];
-	length=[end length];
-	bytes=[end bytes];
+	length=end.length;
+	bytes=end.bytes;
 	for(NSInteger i=0;i<length;i++) if(bytes[i]=='\n'||bytes[i]=='\r') { length=i; break; }
 	NSString *endstr=[[[NSString alloc] initWithBytes:bytes length:length encoding:NSISOLatin1StringEncoding] autorelease];
 
@@ -1020,8 +1020,8 @@ static BOOL IsDelimiter(uint8_t c);
 -(NSString *)string
 {
 	NSData *characters=[self data];
-	NSInteger length=[characters length];
-	const unsigned char *bytes=[characters bytes];
+	NSInteger length=characters.length;
+	const unsigned char *bytes=characters.bytes;
 
 	if(length>=2&&bytes[0]==0xfe&&bytes[1]==0xff)
 	{
@@ -1045,7 +1045,7 @@ static BOOL IsDelimiter(uint8_t c);
 	return [other isKindOfClass:[PDFString class]]&&[data isEqual:((PDFString *)other)->data];
 }
 
--(NSUInteger)hash { return [data hash]; }
+-(NSUInteger)hash { return data.hash; }
 
 -(id)copyWithZone:(NSZone *)zone
 {
@@ -1073,7 +1073,7 @@ static BOOL IsDelimiter(uint8_t c);
 
 +(PDFObjectReference *)referenceWithNumberObject:(NSNumber *)objnum generationObject:(NSNumber *)objgen
 {
-	return [[[[self class] alloc] initWithNumber:[objnum intValue] generation:[objgen intValue]] autorelease];
+	return [[[[self class] alloc] initWithNumber:objnum.intValue generation:objgen.intValue] autorelease];
 }
 
 -(id)initWithNumber:(int)objnum generation:(int)objgen

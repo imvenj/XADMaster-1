@@ -12,8 +12,8 @@
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name;
 {
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	if(length<3) return NO;
 	if(bytes[0]==0x1f)
@@ -26,7 +26,7 @@
 
 -(void)parse
 {
-	CSHandle *handle=[self handle];
+	CSHandle *handle=self.handle;
 
 	uint16_t headid=[handle readUInt16BE];
 	uint8_t method=[handle readUInt8];
@@ -39,8 +39,8 @@
 
 	NSMutableData *filename=nil,*comment=nil;
 
-    if(headid!=0x1fa1)
-    {
+	if(headid!=0x1fa1)
+	{
 		if(flags&0x04) // FEXTRA: extra fields
 		{
 			uint16_t len=[handle readUInt16LE];
@@ -62,30 +62,30 @@
 		{
 			[handle skipBytes:2];
 		}
-    }
+	}
 
-	NSString *name=[self name];
-	NSString *extension=[[name pathExtension] lowercaseString];
+	NSString *name=self.name;
+	NSString *extension=name.pathExtension.lowercaseString;
 	NSString *contentname;
-	if([extension isEqual:@"tgz"]) contentname=[[name stringByDeletingPathExtension] stringByAppendingPathExtension:@"tar"];
-	else if([extension isEqual:@"adz"]) contentname=[[name stringByDeletingPathExtension] stringByAppendingPathExtension:@"adf"];
-	else if([extension isEqual:@"cpgz"]) contentname=[[name stringByDeletingPathExtension] stringByAppendingPathExtension:@"cpio"];
-	else contentname=[name stringByDeletingPathExtension];
+	if([extension isEqual:@"tgz"]) contentname=[name.stringByDeletingPathExtension stringByAppendingPathExtension:@"tar"];
+	else if([extension isEqual:@"adz"]) contentname=[name.stringByDeletingPathExtension stringByAppendingPathExtension:@"adf"];
+	else if([extension isEqual:@"cpgz"]) contentname=[name.stringByDeletingPathExtension stringByAppendingPathExtension:@"cpio"];
+	else contentname=name.stringByDeletingPathExtension;
 
 	// TODO: set no filename flag
 	NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 		[self XADPathWithUnseparatedString:contentname],XADFileNameKey,
 		[self XADStringWithString:@"Deflate"],XADCompressionNameKey,
 		@(extraflags),@"GzipExtraFlags",
-		[NSNumber numberWithUnsignedInt:os],@"GzipOS",
+		@(os),@"GzipOS",
 	nil];
 
-	if(time) [dict setObject:[NSDate dateWithTimeIntervalSince1970:time] forKey:XADLastModificationDateKey];
+	if(time) dict[XADLastModificationDateKey] = [NSDate dateWithTimeIntervalSince1970:time];
 
 	if([contentname matchedByPattern:@"\\.(tar|cpio|pax)$" options:REG_ICASE])
 	dict[XADIsArchiveKey] = @YES;
 
-	off_t filesize=[handle fileSize];
+	off_t filesize=handle.fileSize;
 	if(filesize!=CSHandleMaxLength)
 	dict[XADCompressedSizeKey] = @(filesize);
 
@@ -100,7 +100,7 @@
 
 -(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dictionary wantChecksum:(BOOL)checksum
 {
-	CSHandle *handle=[self handle];
+	CSHandle *handle=self.handle;
 	[handle seekToFileOffset:0];
 	return [[[XADGzipHandle alloc] initWithHandle:handle] autorelease];
 }
@@ -119,8 +119,8 @@
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data
 name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 {
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	if(length<5) return NO;
 	if(length>5000) length=5000;
@@ -134,15 +134,15 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 			props[@"GzipSFXOffset"] = @(i);
 			return YES;
 		}
-    }
+	}
 
 	return NO;
 }
 
 -(void)parse
 {
-	off_t offs=[[self properties][@"GzipSFXOffset"] longLongValue];
-	[[self handle] seekToFileOffset:offs];
+	off_t offs=[self.properties[@"GzipSFXOffset"] longLongValue];
+	[self.handle seekToFileOffset:offs];
 
 	[super parse];
 }
@@ -164,10 +164,10 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 -(id)initWithHandle:(CSHandle *)handle
 {
     
-	if((self=[super initWithName:[handle name]]))
+	if((self=[super initWithName:handle.name]))
 	{
 		parent=[handle retain];
-		startoffs=[parent offsetInFile];
+		startoffs=parent.offsetInFile;
 		currhandle=nil;
 	}
 	return self;
@@ -246,7 +246,7 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 
 			bytesread+=actual;
 
-			if([currhandle atEndOfFile]) state=FooterState;
+			if(currhandle.atEndOfFile) state=FooterState;
 		}
 		break;
 
@@ -266,7 +266,7 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 				break;
 			}
 
-			if([parent atEndOfFile]) state=EndState;
+			if(parent.atEndOfFile) state=EndState;
 			else state=HeaderState;
 		}
 		break;
@@ -293,7 +293,7 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 	return checksumscorrect;
 }
 
--(double)estimatedProgress { return [parent estimatedProgress]; } // TODO: better estimation using buffer?
+-(double)estimatedProgress { return parent.estimatedProgress; } // TODO: better estimation using buffer?
 
 @end
 

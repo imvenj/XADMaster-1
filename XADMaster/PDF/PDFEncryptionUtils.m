@@ -8,7 +8,7 @@ NSString *const PDFMD5FinishedException=@"PDFMD5FinishedException";
 
 +(PDFMD5Engine *)engine { return [[[self class] new] autorelease]; }
 
-+(NSData *)digestForData:(NSData *)data { return [self digestForBytes:[data bytes] length:(int)[data length]]; }
++(NSData *)digestForData:(NSData *)data { return [self digestForBytes:data.bytes length:(int)data.length]; }
 
 +(NSData *)digestForBytes:(const void *)bytes length:(int)length
 {
@@ -29,7 +29,7 @@ NSString *const PDFMD5FinishedException=@"PDFMD5FinishedException";
 	return self;
 }
 
--(void)updateWithData:(NSData *)data { [self updateWithBytes:[data bytes] length:[data length]]; }
+-(void)updateWithData:(NSData *)data { [self updateWithBytes:data.bytes length:data.length]; }
 
 -(void)updateWithBytes:(const void *)bytes length:(unsigned long)length
 {
@@ -68,13 +68,13 @@ NSString *const PDFMD5FinishedException=@"PDFMD5FinishedException";
 
 -(id)initWithHandle:(CSHandle *)handle key:(NSData *)keydata
 {
-	if(self=[super initWithName:[handle name]])
+	if(self=[super initWithName:handle.name])
 	{
 		parent=[handle retain];
 		key=[keydata retain];
 
 		iv=[parent copyDataOfLength:16];
-		startoffs=[parent offsetInFile];
+		startoffs=parent.offsetInFile;
 
 		[self setBlockPointer:streambuffer];
 
@@ -127,7 +127,7 @@ NSString *const PDFMD5FinishedException=@"PDFMD5FinishedException";
 	aes_cbc_decrypt(inbuf,streambuffer,16,ivbuffer,&aes);
 #endif
 
-	if([parent atEndOfFile])
+	if(parent.atEndOfFile)
 	{
 		[self endBlockStream];
 		int val=streambuffer[15];

@@ -14,8 +14,8 @@
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	NSInteger length=[data length];
-	const uint8_t *bytes=[data bytes];
+	NSInteger length=data.length;
+	const uint8_t *bytes=data.bytes;
 
 	if(length<134) return NO;
 
@@ -41,7 +41,7 @@
 {
 	[self setIsMacArchive:YES];
 
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
 	[fh skipBytes:8];
 	totalentries=[fh readUInt32BE];
@@ -52,20 +52,20 @@
 	filesarray=[NSMutableArray array];
 	solidoffset=0;
 
-	[self parseDirectoryWithParent:[self XADPath] numberOfEntries:INT_MAX];
+	[self parseDirectoryWithParent:self.XADPath numberOfEntries:INT_MAX];
 
-	NSInteger numdicts=[entries count];
-	for(NSInteger i=0;i<numdicts && [self shouldKeepParsing];i++)
+	NSInteger numdicts=entries.count;
+	for(NSInteger i=0;i<numdicts && self.shouldKeepParsing;i++)
 	[self addEntryWithDictionary:entries[i]];
 }
 
 -(void)parseDirectoryWithParent:(XADPath *)parent numberOfEntries:(int)numentries
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
 	for(int i=0;i<numentries && currentries<totalentries;i++,currentries++)
 	{
-		if(![self shouldKeepParsing]) break;
+		if(!self.shouldKeepParsing) break;
 
 		int namelen=[fh readUInt8];
 		NSData *namedata=[fh readDataOfLength:namelen];
@@ -191,7 +191,7 @@
 
 -(CSHandle *)handleForSolidStreamWithObject:(id)obj wantChecksum:(BOOL)checksum
 {
-	return [[[XADNowCompressHandle alloc] initWithHandle:[self handle] files:obj] autorelease];
+	return [[[XADNowCompressHandle alloc] initWithHandle:self.handle files:obj] autorelease];
 }
 
 -(NSString *)formatName

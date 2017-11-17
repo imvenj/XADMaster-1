@@ -29,6 +29,6 @@ offset:(off_t)offset length:(off_t)length;
 -(NSData *)convertLosslessFormat:(int)format width:(int)width height:(int)height
 alpha:(BOOL)alpha handle:(CSHandle *)handle;
 
--(NSString *)formatName;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *formatName;
 
 @end

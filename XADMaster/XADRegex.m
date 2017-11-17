@@ -27,7 +27,7 @@ static BOOL IsRegexSpecialCharacter(unichar c)
 
 +(NSString *)patternForLiteralString:(NSString *)string
 {
-	long len=[string length];
+	long len=string.length;
 	NSMutableString *escaped=[NSMutableString stringWithCapacity:len];
 
 	for(long i=0;i<len;i++)
@@ -41,7 +41,7 @@ static BOOL IsRegexSpecialCharacter(unichar c)
 
 +(NSString *)patternForGlob:(NSString *)glob
 {
-	long len=[glob length];
+	long len=glob.length;
 	NSMutableString *pattern=[NSMutableString stringWithCapacity:len+2];
 
 	[pattern appendString:@"^"];
@@ -99,7 +99,7 @@ static BOOL IsRegexSpecialCharacter(unichar c)
 		currdata=nil;
 		matches=NULL;
 
-		int err=regcomp(&preg,[pattern UTF8String],options|REG_EXTENDED);
+		int err=regcomp(&preg,pattern.UTF8String,options|REG_EXTENDED);
 		if(err)
 		{
 			char errbuf[256];
@@ -126,7 +126,7 @@ static BOOL IsRegexSpecialCharacter(unichar c)
 
 -(void)beginMatchingString:(NSString *)string { [self beginMatchingData:[string dataUsingEncoding:NSUTF8StringEncoding]]; }
 
--(void)beginMatchingData:(NSData *)data { [self beginMatchingData:data range:NSMakeRange(0,[data length])]; }
+-(void)beginMatchingData:(NSData *)data { [self beginMatchingData:data range:NSMakeRange(0,data.length)]; }
 
 -(void)beginMatchingData:(NSData *)data range:(NSRange)range
 {
@@ -141,7 +141,7 @@ static BOOL IsRegexSpecialCharacter(unichar c)
 {
 	matches[0].rm_so=matchrange.location;
 	matches[0].rm_eo=matchrange.location+matchrange.length;
-	if(regexec(&preg,[currdata bytes],preg.re_nsub+1,matches,REG_STARTEND)==0)
+	if(regexec(&preg,currdata.bytes,preg.re_nsub+1,matches,REG_STARTEND)==0)
 	{
 		matchrange.length-=matches[0].rm_eo-matchrange.location;
 		matchrange.location=(long)matches[0].rm_eo;
@@ -154,8 +154,8 @@ static BOOL IsRegexSpecialCharacter(unichar c)
 -(NSString *)stringForMatch:(int)n
 {
 	if(n>preg.re_nsub||n<0) [NSException raise:NSRangeException format:@"Index %d out of range for regex \"%@\"",n,self];
- 	if(matches[n].rm_so==-1&&matches[n].rm_eo==-1) return nil;
-	return [[NSString alloc] initWithBytes:[currdata bytes]+matches[n].rm_so
+	if(matches[n].rm_so==-1&&matches[n].rm_eo==-1) return nil;
+	return [[NSString alloc] initWithBytes:currdata.bytes+matches[n].rm_so
 									length:(long)(matches[n].rm_eo-matches[n].rm_so) encoding:NSUTF8StringEncoding];
 }
 
@@ -176,7 +176,7 @@ static BOOL IsRegexSpecialCharacter(unichar c)
 -(BOOL)matchesString:(NSString *)string
 {
 	[self beginMatchingString:string];
-	BOOL res=[self matchNext];
+	BOOL res=self.matchNext;
 	[self finishMatching];
 	return res;
 }
@@ -185,7 +185,7 @@ static BOOL IsRegexSpecialCharacter(unichar c)
 {
 	[self beginMatchingString:string];
 	NSString *res=nil;
-	if([self matchNext]) res=[self stringForMatch:0];
+	if(self.matchNext) res=[self stringForMatch:0];
 	[self finishMatching];
 	return res;
 }
@@ -194,7 +194,7 @@ static BOOL IsRegexSpecialCharacter(unichar c)
 {
 	[self beginMatchingString:string];
 	NSArray *res=nil;
-	if([self matchNext]) res=[self allMatches];
+	if(self.matchNext) res=self.allMatches;
 	[self finishMatching];
 	return res;
 }
@@ -203,7 +203,7 @@ static BOOL IsRegexSpecialCharacter(unichar c)
 {
 	[self beginMatchingString:string];
 	NSMutableArray *array=[NSMutableArray array];
-	while([self matchNext]) [array addObject:[self stringForMatch:0]];
+	while(self.matchNext) [array addObject:[self stringForMatch:0]];
 	[self finishMatching];
 	return [NSArray arrayWithArray:array];
 }
@@ -212,7 +212,7 @@ static BOOL IsRegexSpecialCharacter(unichar c)
 {
 	[self beginMatchingString:string];
 	NSMutableArray *array=[NSMutableArray array];
-	while([self matchNext]) [array addObject:[self allMatches]];
+	while(self.matchNext) [array addObject:self.allMatches];
 	[self finishMatching];
 	return [NSArray arrayWithArray:array];
 }
@@ -223,14 +223,14 @@ static BOOL IsRegexSpecialCharacter(unichar c)
 	NSMutableArray *array=[NSMutableArray array];
 
 	regoff_t prevstart=0;
-	const char *bytes=[currdata bytes];
-	while([self matchNext])
+	const char *bytes=currdata.bytes;
+	while(self.matchNext)
 	{
 		[array addObject:[[NSString alloc] initWithBytes:bytes+prevstart length:(long)(matches[0].rm_so-prevstart)
 												encoding:NSUTF8StringEncoding]];
 		prevstart=matches[0].rm_eo;
 	}
-	[array addObject:[[NSString alloc] initWithBytes:bytes+prevstart length:(long)([currdata length]-prevstart)
+	[array addObject:[[NSString alloc] initWithBytes:bytes+prevstart length:(long)(currdata.length-prevstart)
 											encoding:NSUTF8StringEncoding]];
 
 	[self finishMatching];

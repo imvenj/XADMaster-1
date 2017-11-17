@@ -14,7 +14,7 @@ static NSMutableData *MakeBMPContainer(int width,int height,uint32_t length,int 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
 	if(!name) return NO;
-	if(![[name lastPathComponent] matchedByPattern:@"^arc[0-9]*\\.nsa$" options:REG_ICASE]) return NO;
+	if(![name.lastPathComponent matchedByPattern:@"^arc[0-9]*\\.nsa$" options:REG_ICASE]) return NO;
 
 	//const uint8_t *bytes=[data bytes];
 	//int length=[data length];
@@ -24,14 +24,14 @@ static NSMutableData *MakeBMPContainer(int width,int height,uint32_t length,int 
 
 -(void)parse
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
 	int numfiles=[fh readUInt16BE];
 	if(numfiles==0) numfiles=[fh readUInt16BE];
 
 	uint32_t offset=[fh readUInt32BE];
 
-	for(int i=0;i<numfiles && [self shouldKeepParsing];i++)
+	for(int i=0;i<numfiles && self.shouldKeepParsing;i++)
 	{
 		NSMutableData *namedata=[NSMutableData data];
 		uint8_t c;
@@ -44,10 +44,10 @@ static NSMutableData *MakeBMPContainer(int width,int height,uint32_t length,int 
 
 		NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 			[self XADPathWithData:namedata separators:XADWindowsPathSeparator],XADFileNameKey,
-			[NSNumber numberWithUnsignedLong:filesize],XADFileSizeKey,
-			[NSNumber numberWithUnsignedLong:datalen],XADCompressedSizeKey,
-			[NSNumber numberWithUnsignedLong:datalen],XADDataLengthKey,
-			[NSNumber numberWithUnsignedLong:dataoffs+offset],XADDataOffsetKey,
+			@(filesize),XADFileSizeKey,
+			@(datalen),XADCompressedSizeKey,
+			@(datalen),XADDataLengthKey,
+			@(dataoffs+offset),XADDataOffsetKey,
 			@(method),@"NSAMethod",
 		nil];
 
@@ -137,10 +137,10 @@ static NSMutableData *DecodeSPB(CSHandle *fh,uint32_t length)
 	int bytesperrow;
 	NSMutableData *data=MakeBMPContainer(width,height,length,&bytesperrow);
 
-	uint8_t *bytes=[data mutableBytes];
+	uint8_t *bytes=data.mutableBytes;
 	uint8_t *pixels=&bytes[54];
 
-	CSInputBuffer *input=CSInputBufferAlloc(fh,(int)[fh fileSize]);
+	CSInputBuffer *input=CSInputBufferAlloc(fh,(int)fh.fileSize);
 
 	@try
 	{
@@ -208,7 +208,7 @@ static NSMutableData *MakeBMPContainer(int width,int height,uint32_t length,int 
 	int bmpsize=54+bytesperrow*height;
 	if(length>bmpsize) bmpsize=length;
 	NSMutableData *data=[NSMutableData dataWithLength:bmpsize];
-	uint8_t *bytes=[data mutableBytes];
+	uint8_t *bytes=data.mutableBytes;
 
 	bytes[0]='B';
 	bytes[1]='M';

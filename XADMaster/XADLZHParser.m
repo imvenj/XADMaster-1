@@ -13,8 +13,8 @@
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	if(length<7) return NO;
 
@@ -41,13 +41,13 @@
 
 -(void)parseWithSeparateMacForks
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
 	int guessedos=0;
 
-	while([self shouldKeepParsing] && ![fh atEndOfFile])
+	while(self.shouldKeepParsing && !fh.atEndOfFile)
 	{
-		off_t start=[fh offsetInFile];
+		off_t start=fh.offsetInFile;
 
 		uint8_t b1=[fh readUInt8];
 		if(b1==0) break;
@@ -168,7 +168,7 @@
 		{
 			if(!guessedos)
 			{
-				NSString *name=[self filename];
+				NSString *name=self.filename;
 
 				if([name matchedByPattern:@"\\.(lha|run)$"
 				options:REG_ICASE]) guessedos='A';
@@ -234,7 +234,7 @@
 		if(directorydata)
 		{
 			path=[self XADPathWithData:directorydata separators:"\xff"];
-			if(filenamedata&&[filenamedata length])
+			if(filenamedata&&filenamedata.length)
 			path=[path pathByAppendingXADStringComponent:[self XADStringWithData:filenamedata]];
 		}
 		else if(filenamedata)
@@ -252,8 +252,8 @@
 
 -(void)parseExtendedForDictionary:(NSMutableDictionary *)dict size:(int)size
 {
-	CSHandle *fh=[self handle];
-	off_t nextpos=[fh offsetInFile]+size;
+	CSHandle *fh=self.handle;
+	off_t nextpos=fh.offsetInFile+size;
 
 	switch([fh readUInt8])
 	{
@@ -271,7 +271,7 @@
 		break;
 
 		case 0x40:
-			dict[XADDOSFileAttributesKey] = [NSNumber numberWithInt:[fh readUInt16LE]];
+			dict[XADDOSFileAttributesKey] = @([fh readUInt16LE]);
 		break;
 
 		case 0x41:
@@ -290,12 +290,12 @@
 		break;
 
 		case 0x50:
-			dict[XADPosixPermissionsKey] = [NSNumber numberWithInt:[fh readUInt16LE]];
+			dict[XADPosixPermissionsKey] = @([fh readUInt16LE]);
 		break;
 
 		case 0x51:
-			dict[XADPosixGroupKey] = [NSNumber numberWithInt:[fh readUInt16LE]];
-			dict[XADPosixUserKey] = [NSNumber numberWithInt:[fh readUInt16LE]];
+			dict[XADPosixGroupKey] = @([fh readUInt16LE]);
+			dict[XADPosixUserKey] = @([fh readUInt16LE]);
 		break;
 
 		case 0x52:
@@ -311,10 +311,10 @@
 		break;
 
 		case 0x7f:
-			dict[XADDOSFileAttributesKey] = [NSNumber numberWithInt:[fh readUInt16LE]];
-			dict[XADPosixPermissionsKey] = [NSNumber numberWithInt:[fh readUInt16LE]];
-			dict[XADPosixGroupKey] = [NSNumber numberWithInt:[fh readUInt16LE]];
-			dict[XADPosixUserKey] = [NSNumber numberWithInt:[fh readUInt16LE]];
+			dict[XADDOSFileAttributesKey] = @([fh readUInt16LE]);
+			dict[XADPosixPermissionsKey] = @([fh readUInt16LE]);
+			dict[XADPosixGroupKey] = @([fh readUInt16LE]);
+			dict[XADPosixUserKey] = @([fh readUInt16LE]);
 			dict[XADCreationDateKey] = [NSDate dateWithTimeIntervalSince1970:[fh readUInt32LE]];
 			dict[XADLastModificationDateKey] = [NSDate dateWithTimeIntervalSince1970:[fh readUInt32LE]];
 		break;
@@ -326,9 +326,9 @@
 		// case 0xc8: // compressed comment, -lh5- 65536
 
 		case 0xff:
-			dict[XADPosixPermissionsKey] = [NSNumber numberWithInt:[fh readUInt32LE]];
-			dict[XADPosixGroupKey] = [NSNumber numberWithInt:[fh readUInt32LE]];
-			dict[XADPosixUserKey] = [NSNumber numberWithInt:[fh readUInt32LE]];
+			dict[XADPosixPermissionsKey] = @([fh readUInt32LE]);
+			dict[XADPosixGroupKey] = @([fh readUInt32LE]);
+			dict[XADPosixUserKey] = @([fh readUInt32LE]);
 			dict[XADCreationDateKey] = [NSDate dateWithTimeIntervalSince1970:[fh readUInt32LE]];
 			dict[XADLastModificationDateKey] = [NSDate dateWithTimeIntervalSince1970:[fh readUInt32LE]];
 		break;

@@ -10,7 +10,7 @@ startPosition:(off_t)startpos length:(int)length
 	//NSLog(@"%010qx",[[program programCode] fingerprint]);
 
 	Class class;
-	switch([[program programCode] fingerprint])
+	switch(program.programCode.fingerprint)
 	{
 		case 0x1d0e06077d: class=[XADRAR30DeltaFilter class]; break;
 		case 0xd8bc85e701: class=[XADRAR30AudioFilter class]; break;
@@ -157,7 +157,7 @@ startPosition:(off_t)startpos length:(int)length
 			{
 				if(address+currpos>=0) XADRARVirtualMachineWrite32(vm,i+1,address+filesize);
 			}
-            else
+			else
 			{
 				if(address<filesize) XADRARVirtualMachineWrite32(vm,i+1,address-currpos);
 			}
@@ -194,7 +194,7 @@ startPosition:(off_t)startpos length:(int)length
 			{
 				if(address+currpos>=0) XADRARVirtualMachineWrite32(vm,i+1,address+filesize);
 			}
-            else
+			else
 			{
 				if(address<filesize) XADRARVirtualMachineWrite32(vm,i+1,address-currpos);
 			}

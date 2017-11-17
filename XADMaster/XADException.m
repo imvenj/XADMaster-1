@@ -34,10 +34,10 @@ NSString *const XADErrorDomain=@"de.dstoecker.xadmaster.error";
 	if([exception isKindOfClass:[NSException class]])
 	{
 		NSException *e=exception;
-		NSString *name=[e name];
+		NSString *name=e.name;
 		if([name isEqual:XADExceptionName])
 		{
-			return [[e userInfo][@"XADError"] intValue];
+			return [e.userInfo[@"XADError"] intValue];
 		}
 		else if([name isEqual:CSCannotOpenFileException]) return XADErrorOpenFile;
 		else if([name isEqual:CSFileErrorException]) return XADErrorUnknown; // TODO: use ErrNo in userInfo to figure out better error

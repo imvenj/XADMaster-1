@@ -21,7 +21,7 @@
 	if([encoding isKindOfClass:[NSNumber class]])
 	{
 		// If the encodingname is actually an NSNumber, just unpack it and convert.
-		return [(NSNumber *)encoding longValue];
+		return ((NSNumber *)encoding).longValue;
 	}
 	else
 	{
@@ -38,7 +38,7 @@
 
 +(BOOL)canDecodeData:(NSData *)data encodingName:(NSString *)encoding
 {
-	return [self canDecodeBytes:[data bytes] length:[data length] encodingName:encoding];
+	return [self canDecodeBytes:data.bytes length:data.length encodingName:encoding];
 }
 
 +(BOOL)canDecodeBytes:(const void *)bytes length:(size_t)length encodingName:(NSString *)encoding
@@ -52,7 +52,7 @@
 
 +(NSString *)stringForData:(NSData *)data encodingName:(NSString *)encoding
 {
-	return [self stringForBytes:[data bytes] length:[data length] encodingName:encoding];
+	return [self stringForBytes:data.bytes length:data.length encodingName:encoding];
 }
 
 +(NSString *)stringForBytes:(const void *)bytes length:(size_t)length encodingName:(NSString *)encoding
@@ -65,7 +65,7 @@
 
 +(NSData *)dataForString:(NSString *)string encodingName:(NSString *)encoding
 {
-	NSInteger numchars=[string length];
+	NSInteger numchars=string.length;
 
 	CFIndex numbytes;
 	if(CFStringGetBytes((CFStringRef)string,CFRangeMake(0,numchars),

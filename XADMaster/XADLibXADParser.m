@@ -26,18 +26,18 @@ struct xadMasterBaseP *xadOpenLibrary(xadINT32 version);
 	if(!xmb) xmb=xadOpenLibrary(12);
 
 	// Kludge to recognize ADF disk images, since the filesystem parsers don't provide recognition functions
-	NSString *ext=[[name pathExtension] lowercaseString];
+	NSString *ext=name.pathExtension.lowercaseString;
 	if([ext isEqual:@"adf"]) return YES;
 
 	struct XADInHookData indata;
 	indata.fh=handle;
-	indata.name=[name UTF8String];
+	indata.name=name.UTF8String;
 
 	struct Hook inhook;
 	inhook.h_Entry=InFunc;
 	inhook.h_Data=(void *)&indata;
 
-	if(xadRecogFile(xmb,[data length],[data bytes],
+	if(xadRecogFile(xmb,data.length,data.bytes,
 		XAD_INHOOK,&inhook,
 	TAG_DONE)) return YES;
 
@@ -66,7 +66,7 @@ struct xadMasterBaseP *xadOpenLibrary(xadINT32 version);
 
 -(void)parse
 {
-	namedata=[[[self name] dataUsingEncoding:NSUTF8StringEncoding] mutableCopy];
+	namedata=[[self.name dataUsingEncoding:NSUTF8StringEncoding] mutableCopy];
 	[namedata increaseLengthBy:1];
 
 	if(!(archive=xadAllocObjectA(xmb,XADOBJ_ARCHIVEINFO,NULL)))
@@ -74,8 +74,8 @@ struct xadMasterBaseP *xadOpenLibrary(xadINT32 version);
 		[XADException raiseOutOfMemoryException];
 	}
 
-	indata.fh=[self handle];
-	indata.name=[namedata bytes];
+	indata.fh=self.handle;
+	indata.name=namedata.bytes;
 	inhook.h_Entry=InFunc;
 	inhook.h_Data=(void *)&indata;
 
@@ -119,7 +119,7 @@ struct xadMasterBaseP *xadOpenLibrary(xadINT32 version);
 
 		for(int i=0;i<numfilesadded&&fileinfo;i++) fileinfo=fileinfo->xfi_Next;
 
-		while(fileinfo&&[self shouldKeepParsing])
+		while(fileinfo&&self.shouldKeepParsing)
 		{
 			[self addEntryWithDictionary:[self dictionaryForFileInfo:fileinfo]];
 			fileinfo=fileinfo->xfi_Next;
@@ -129,7 +129,7 @@ struct xadMasterBaseP *xadOpenLibrary(xadINT32 version);
 
 		for(int i=0;i<numdisksadded&&diskinfo;i++) diskinfo=diskinfo->xdi_Next;
 
-		while(diskinfo&&[self shouldKeepParsing])
+		while(diskinfo&&self.shouldKeepParsing)
 		{
 			[self addEntryWithDictionary:[self dictionaryForDiskInfo:diskinfo]];
 			diskinfo=diskinfo->xdi_Next;
@@ -169,7 +169,7 @@ struct xadMasterBaseP *xadOpenLibrary(xadINT32 version);
 			}
 		}
 	}
-	return [self shouldKeepParsing];
+	return self.shouldKeepParsing;
 }
 
 -(NSMutableDictionary *)dictionaryForFileInfo:(struct xadFileInfo *)info
@@ -195,7 +195,7 @@ struct xadMasterBaseP *xadOpenLibrary(xadINT32 version);
 	// TODO: set no filename flag
 
 	if(info->xfi_Flags&XADFIF_UNIXPROTECTION)
-	dict[XADPosixPermissionsKey] = [NSNumber numberWithInt:info->xfi_UnixProtect];
+	dict[XADPosixPermissionsKey] = @(info->xfi_UnixProtect);
 
 	if(info->xfi_Protection)
 	dict[XADAmigaProtectionBitsKey] = @(info->xfi_Protection);
@@ -213,10 +213,10 @@ struct xadMasterBaseP *xadOpenLibrary(xadINT32 version);
 //	[dict setObject:[NSNumber numberWithBool:YES] forKey:XADIsPartialKey];
 
 	if(info->xfi_OwnerUID)
-	dict[XADPosixUserKey] = [NSNumber numberWithInt:info->xfi_OwnerUID];
+	dict[XADPosixUserKey] = @(info->xfi_OwnerUID);
 
 	if(info->xfi_OwnerGID)
-	dict[XADPosixGroupKey] = [NSNumber numberWithInt:info->xfi_OwnerGID];
+	dict[XADPosixGroupKey] = @(info->xfi_OwnerGID);
 
 	if(info->xfi_UserName)
 	dict[XADPosixUserNameKey] = [self XADStringWithCString:(const char *)info->xfi_UserName];
@@ -239,13 +239,13 @@ struct xadMasterBaseP *xadOpenLibrary(xadINT32 version);
 	sectors=(info->xdi_HighCyl-info->xdi_LowCyl+1)*info->xdi_CylSectors;
 	else sectors=info->xdi_TotalSectors;
 
-	NSString *filename=[[self name] stringByDeletingPathExtension];
+	NSString *filename=self.name.stringByDeletingPathExtension;
 	if(numdisksadded>0) filename=[NSString stringWithFormat:@"%@.%d.adf",filename,numdisksadded];
 	else filename=[NSString stringWithFormat:@"%@.adf",filename];
 
 	NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 		[self XADPathWithUnseparatedString:filename],XADFileNameKey,
-		[NSNumber numberWithUnsignedLongLong:sectors*info->xdi_SectorSize],XADFileSizeKey,
+		@(sectors*info->xdi_SectorSize),XADFileSizeKey,
 		[NSValue valueWithPointer:info],@"LibXADDiskInfo",
 	nil];
 
@@ -263,7 +263,7 @@ struct xadMasterBaseP *xadOpenLibrary(xadINT32 version);
 	if(info)
 	{
 		const char *pass=NULL;
-		if(info->xfi_Flags&XADFIF_CRYPTED) pass=[self encodedCStringPassword];
+		if(info->xfi_Flags&XADFIF_CRYPTED) pass=self.encodedCStringPassword;
 
 		if(info->xfi_Flags&XADFIF_NOUNCRUNCHSIZE) data=[NSMutableData data];
 		else data=[NSMutableData dataWithCapacity:(long)info->xfi_Size];
@@ -323,7 +323,7 @@ static xadUINT32 InFunc(struct Hook *hook,xadPTR object,struct xadHookParam *par
 			if([fh respondsToSelector:@selector(handles)])
 			{
 				NSArray *handles=[(id)fh handles];
-				NSInteger count=[handles count];
+				NSInteger count=handles.count;
 
 				archive->xai_MultiVolume=calloc(sizeof(xadSize),count+1);
 
@@ -342,17 +342,17 @@ static xadUINT32 InFunc(struct Hook *hook,xadPTR object,struct xadHookParam *par
 
 		case XADHC_SEEK:
 			[fh skipBytes:param->xhp_CommandData];
-			param->xhp_DataPos=[fh offsetInFile];
+			param->xhp_DataPos=fh.offsetInFile;
 			return XADERR_OK;
 
 		case XADHC_READ:
 			[fh readBytes:(int)param->xhp_BufferSize toBuffer:param->xhp_BufferPtr];
-			param->xhp_DataPos=[fh offsetInFile];
+			param->xhp_DataPos=fh.offsetInFile;
 			return XADERR_OK;
 
 		case XADHC_FULLSIZE:
 		{
-			off_t filesize=[fh fileSize];
+			off_t filesize=fh.fileSize;
 			if(filesize==CSHandleMaxLength) return XADERR_NOTSUPPORTED;
 			param->xhp_CommandData=filesize;
 			return XADERR_OK;
@@ -363,7 +363,7 @@ static xadUINT32 InFunc(struct Hook *hook,xadPTR object,struct xadHookParam *par
 			archive->xai_MultiVolume=NULL;
 			return XADERR_OK;
 
- 		default:
+		 default:
 			return XADERR_NOTSUPPORTED;
 	}
 }
@@ -406,7 +406,7 @@ static xadUINT32 OutFunc(struct Hook *hook,xadPTR object,struct xadHookParam *pa
 			[data appendBytes:param->xhp_BufferPtr length:(long)param->xhp_BufferSize];
 			return XADERR_OK;
 
- 		default:
+		 default:
 			return XADERR_NOTSUPPORTED;
 	}
 }

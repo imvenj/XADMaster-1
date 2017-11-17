@@ -24,7 +24,7 @@ bigEndianCRC:(BOOL)bigendian conditioned:(BOOL)conditioned
 -(id)initWithHandle:(CSHandle *)handle CRCHandle:(CSHandle *)crchandle initialCRC:(uint32_t)initialcrc
 CRCSize:(int)crcbytes bigEndianCRC:(BOOL)bigendian CRCTable:(const uint32_t *)crctable
 {
-	if((self=[super initWithName:[handle name]]))
+	if((self=[super initWithName:handle.name]))
 	{
 		parent=[handle retain];
 		crcparent=[crchandle retain];
@@ -61,8 +61,8 @@ CRCSize:(int)crcbytes bigEndianCRC:(BOOL)bigendian CRCTable:(const uint32_t *)cr
 -(BOOL)isChecksumCorrect
 {
 	if(didtest) return wascorrect;
-	if([parent hasChecksum]&&![parent isChecksumCorrect]) return NO;
-	if(![parent atEndOfFile]) return NO; 
+	if(parent.hasChecksum&&!parent.checksumCorrect) return NO;
+	if(!parent.atEndOfFile) return NO; 
 
 	if(crcparent)
 	{
@@ -82,7 +82,7 @@ CRCSize:(int)crcbytes bigEndianCRC:(BOOL)bigendian CRCTable:(const uint32_t *)cr
 	return wascorrect;
 }
 
--(double)estimatedProgress { return [parent estimatedProgress]; }
+-(double)estimatedProgress { return parent.estimatedProgress; }
 
 @end
 

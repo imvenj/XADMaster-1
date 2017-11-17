@@ -25,8 +25,8 @@
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	return length>=512&&bytes[0]==0xd0&&bytes[1]==0xcf&&bytes[2]==0x11&&bytes[3]==0xe0&&
 	bytes[4]==0xa1&&bytes[5]==0xb1&&bytes[6]==0x1a&&bytes[7]==0xe1&&bytes[28]==0xfe&&bytes[29]==0xff;
@@ -34,7 +34,7 @@
 
 -(void)parse
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
 
 	// Read header
@@ -77,7 +77,7 @@
 		}
 
 		int sector=[fh readUInt32LE];
-		off_t currpos=[fh offsetInFile];
+		off_t currpos=fh.offsetInFile;
 
 		[self seekToSector:sector];
 		for(int j=0;j<idspersec;j++) sectable[i*idspersec+j]=[fh readUInt32LE];
@@ -174,7 +174,7 @@
 				{
 					entry[XADFileSizeKey] = @(size);
 					entry[XADCompressedSizeKey] = @(size);
-					entry[@"CFBFFirstSector"] = [NSNumber numberWithUnsignedLongLong:firstsec];
+					entry[@"CFBFFirstSector"] = @(firstsec);
 				}
 
 				if(created) entry[XADCreationDateKey] = [NSDate XADDateWithWindowsFileTime:created];
@@ -190,7 +190,7 @@
 
 	// Resolve directory structure
 
-	[self processEntry:rootdirectorynode atPath:[self XADPath] entries:entries];
+	[self processEntry:rootdirectorynode atPath:self.XADPath entries:entries];
 }
 
 -(XADString *)decodeFileNameWithBytes:(uint8_t *)bytes length:(int)length
@@ -255,7 +255,7 @@
 -(void)seekToSector:(uint32_t)sector
 {
 	if(sector>=numsectors) [XADException raiseIllegalDataException];
-	[[self handle] seekToFileOffset:(sector+1)*secsize];
+	[self.handle seekToFileOffset:(sector+1)*secsize];
 }
 
 -(uint32_t)nextSectorAfter:(uint32_t)sector
@@ -268,7 +268,7 @@
 
 -(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum
 {
-	CSHandle *handle=[self handle];
+	CSHandle *handle=self.handle;
 	off_t size=[dict[XADFileSizeKey] longLongValue];
 	uint32_t first=[dict[@"CFBFFirstSector"] unsignedIntValue];
 

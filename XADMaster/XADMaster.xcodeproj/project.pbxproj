@@ -2711,7 +2711,7 @@
 		1BC8903B0ED47D76006B47FE /* XADStuffItOldHandles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADStuffItOldHandles.h; sourceTree = "<group>"; };
 		1BC8903C0ED47D76006B47FE /* XADLibXADIOHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADLibXADIOHandle.h; sourceTree = "<group>"; };
 		1BC8903D0ED47D76006B47FE /* CSInputBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSInputBuffer.h; sourceTree = "<group>"; };
-		1BC8903E0ED47D76006B47FE /* XADLibXADIOHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XADLibXADIOHandle.m; sourceTree = "<group>"; };
+		1BC8903E0ED47D76006B47FE /* XADLibXADIOHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XADLibXADIOHandle.m; sourceTree = "<group>"; usesTabs = 1; };
 		1BC8903F0ED47D76006B47FE /* CSInputBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSInputBuffer.m; sourceTree = "<group>"; };
 		1BC890400ED47D76006B47FE /* XADStuffItOldHandles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XADStuffItOldHandles.m; sourceTree = "<group>"; };
 		1BC8931A0ED6F283006B47FE /* XADTest3 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = XADTest3; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3094,7 +3094,7 @@
 			);
 			name = XADMaster;
 			sourceTree = "<group>";
-			usesTabs = 0;
+			usesTabs = 1;
 		};
 		0867D69AFE84028FC02AAC07 /* Frameworks */ = {
 			isa = PBXGroup;
@@ -3187,8 +3187,10 @@
 				1B06D54D0DDA623800D9C000 /* protection.c */,
 				1B06D54E0DDA623800D9C000 /* unix */,
 			);
+			indentWidth = 2;
 			path = libxad;
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 		1B06D4F10DDA623800D9C000 /* clients */ = {
 			isa = PBXGroup;

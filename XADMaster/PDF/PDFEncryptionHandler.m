@@ -9,7 +9,7 @@ NSString *const PDFUnsupportedEncryptionException=@"PDFUnsupportedEncryptionExce
 
 static const char PDFPasswordPadding[32]=
 {
-	0x28,0xBF,0x4E,0x5E,0x4E,0x75,0x8A,0x41,0x64,0x00,0x4E,0x56,0xFF,0xFA,0x01,0x08, 
+	0x28,0xBF,0x4E,0x5E,0x4E,0x75,0x8A,0x41,0x64,0x00,0x4E,0x56,0xFF,0xFA,0x01,0x08,
 	0x2E,0x2E,0x00,0xB6,0xD0,0x68,0x3E,0x80,0x2F,0x0C,0xA9,0xFE,0x64,0x53,0x69,0x7A
 };
 
@@ -37,8 +37,8 @@ static const char PDFPasswordPadding[32]=
 		// TODO: Figure out resolving and encryption
 		NSString *filter=encrypt[@"Filter"];
 		if(![filter isEqual:@"Standard"] ||
-		(version!=1 && version!=2 && version!=4) ||
-		(revision!=2 && revision!=3 && revision!=4))
+		   (version!=1 && version!=2 && version!=4) ||
+		   (revision!=2 && revision!=3 && revision!=4))
 		{
 			[self release];
 			[NSException raise:PDFUnsupportedEncryptionException format:@"PDF encryption filter \"%@\" version %d, revision %d is not supported.",filter,version,revision];
@@ -110,7 +110,7 @@ static const char PDFPasswordPadding[32]=
 	{
 		XADRC4Engine *rc4=[XADRC4Engine engineWithKey:key];
 		NSData *test=[rc4 encryptedData:udata];
-		return [test length]==32&&!memcmp(PDFPasswordPadding,[test bytes],32);
+		return test.length==32&&!memcmp(PDFPasswordPadding,test.bytes,32);
 	}
 	else
 	{
@@ -118,7 +118,7 @@ static const char PDFPasswordPadding[32]=
 		[md5 updateWithBytes:PDFPasswordPadding length:32];
 		[md5 updateWithData:permanentid];
 
-		const unsigned char *keybytes=[key bytes];
+		const unsigned char *keybytes=key.bytes;
 		NSData *data=[md5 digest];
 
 		for(int i=0;i<20;i++)
@@ -130,7 +130,7 @@ static const char PDFPasswordPadding[32]=
 			data=[rc4 encryptedData:data];
 		}
 
-		return !memcmp([data bytes],[udata bytes],16);
+		return !memcmp(data.bytes,udata.bytes,16);
 	}
 }
 
@@ -146,8 +146,8 @@ static const char PDFPasswordPadding[32]=
 	PDFMD5Engine *md5=[PDFMD5Engine engine];
 
 	NSData *passdata=[password dataUsingEncoding:NSISOLatin1StringEncoding];
-	NSInteger passlength=[passdata length];
-	const unsigned char *passbytes=[passdata bytes];
+	NSInteger passlength=passdata.length;
+	const unsigned char *passbytes=passdata.bytes;
 	if(passlength<32)
 	{
 		[md5 updateWithBytes:passbytes length:passlength];
@@ -171,7 +171,7 @@ static const char PDFPasswordPadding[32]=
 	NSData *digest=[md5 digest];
 
 	if(revision>=3)
-	for(int i=0;i<50;i++) digest=[PDFMD5Engine digestForBytes:[digest bytes] length:length];
+		for(int i=0;i<50;i++) digest=[PDFMD5Engine digestForBytes:digest.bytes length:length];
 
 	key=[digest subdataWithRange:NSMakeRange(0,length)];
 	keys[num] = key;
@@ -181,8 +181,8 @@ static const char PDFPasswordPadding[32]=
 
 -(NSData *)keyOfLength:(int)length forReference:(PDFObjectReference *)ref AES:(BOOL)aes
 {
-	int num=[ref number];
-	int gen=[ref generation];
+	int num=ref.number;
+	int gen=ref.generation;
 	unsigned char refbytes[5]={num&0xff,(num>>8)&0xff,(num>>16)&0xff,gen&0xff,(gen>>8)&0xff};
 
 	PDFMD5Engine *md5=[PDFMD5Engine engine];
@@ -205,16 +205,16 @@ static const char PDFPasswordPadding[32]=
 
 -(CSHandle *)decryptStream:(PDFStream *)stream
 {
-	NSString *filter=[[stream dictionary] arrayForKey:@"Filter"][0];
+	NSString *filter=[stream.dictionary arrayForKey:@"Filter"][0];
 	if([filter isEqual:@"Crypt"])
 	{
-		NSDictionary *decodeparms=[[stream dictionary] arrayForKey:@"DecodeParms"][0];
+		NSDictionary *decodeparms=[stream.dictionary arrayForKey:@"DecodeParms"][0];
 		PDFEncryptionAlgorithm *algorithm=algorithms[[decodeparms stringForKey:@"Name" default:@"Identity"]];
-		return [algorithm decryptedHandle:[stream rawHandle] reference:[stream reference]];
+		return [algorithm decryptedHandle:[stream rawHandle] reference:stream.reference];
 	}
 	else
 	{
-		return [streamalgorithm decryptedHandle:[stream rawHandle] reference:[stream reference]];
+		return [streamalgorithm decryptedHandle:[stream rawHandle] reference:stream.reference];
 	}
 }
 

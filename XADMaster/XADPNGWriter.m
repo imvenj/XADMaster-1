@@ -90,10 +90,10 @@ colourType:(int)colourtype
 	uint8_t buf[4];
 
 	// Save start offset.
-	idatstart=[data length];
+	idatstart=data.length;
 
 	// Write dummy length.
- 	CSSetUInt32BE(buf,0);
+	CSSetUInt32BE(buf,0);
 	[data appendBytes:buf length:4];
 
 	// Write chunk type.
@@ -161,10 +161,10 @@ colourType:(int)colourtype
 	streaminited=NO;
 
 	// Get data pointer to start modifications to the header.
-	uint8_t *bytes=[data mutableBytes];
+	uint8_t *bytes=data.mutableBytes;
 
 	// Calculate chunk length and write it to the header.
-	NSInteger length=[data length]-idatstart-8;
+	NSInteger length=data.length-idatstart-8;
 	CSSetUInt32BE(&bytes[idatstart],(int)length);
 
 	// Calculate and write chunk checksum.

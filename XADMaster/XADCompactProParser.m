@@ -11,15 +11,15 @@
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	if(length<8) return NO;
 	if(bytes[0]!=1) return NO;
 
 	uint32_t offset=CSUInt32BE(bytes+4);
 
-	off_t filesize=[handle fileSize];
+	off_t filesize=handle.fileSize;
 	if(filesize==CSHandleMaxLength) return [name matchedByPattern:@"\\.(cpt|sea)" options:REG_ICASE];
 
 	if(offset+7>filesize) return NO;
@@ -68,7 +68,7 @@
 {
 	[self setIsMacArchive:YES];
 
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
 	/*int marker=*/[fh readUInt8];
 	/*int volume=*/[fh readUInt8];
@@ -92,7 +92,7 @@
 	// Since the recognizer has already verified that the metadata is intact, reading
 	// should be safe, so to avoid stream resets, we just collect entries into an array
 	// and send all of them out at once.
-	[self parseDirectoryWithPath:[self XADPath] numberOfEntries:numentries entryArray:entries];
+	[self parseDirectoryWithPath:self.XADPath numberOfEntries:numentries entryArray:entries];
 
 	NSEnumerator *enumerator=[entries objectEnumerator];
 	NSMutableDictionary *dict;
@@ -101,11 +101,11 @@
 
 -(BOOL)parseDirectoryWithPath:(XADPath *)parent numberOfEntries:(int)numentries entryArray:(NSMutableArray *)entries
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
 	while(numentries)
 	{
-		if(![self shouldKeepParsing]) return NO;
+		if(!self.shouldKeepParsing) return NO;
 
 		int namelen=[fh readUInt8];
 		NSData *namedata=[fh readDataOfLength:namelen&0x7f];
@@ -161,11 +161,11 @@
 
 					@YES,XADIsResourceForkKey,
 					@(resourcecomplen),XADDataLengthKey,
-					[NSNumber numberWithLongLong:fileoffs],XADDataOffsetKey,
-					[NSNumber numberWithBool:flags&2?YES:NO],@"CompactProLZH",
+					@(fileoffs),XADDataOffsetKey,
+					[NSNumber numberWithBool:(flags&2)?YES:NO],@"CompactProLZH",
 					@(flags),@"CompactProFlags",
 					@(crc),crckey,
-					[NSNumber numberWithUnsignedInt:volume],@"CompactProVolume",
+					@(volume),@"CompactProVolume",
 				nil];
 
 				[entries addObject:dict];
@@ -188,12 +188,12 @@
 					@(finderflags),XADFinderFlagsKey,
 					[self XADStringWithString:flags&4?@"LZH+RLE":@"RLE"],XADCompressionNameKey,
 
-					[NSNumber numberWithLongLong:fileoffs+resourcecomplen],XADDataOffsetKey,
+					@(fileoffs+resourcecomplen),XADDataOffsetKey,
 					@(datacomplen),XADDataLengthKey,
-					[NSNumber numberWithBool:flags&4?YES:NO],@"CompactProLZH",
+					[NSNumber numberWithBool:(flags&4)?YES:NO],@"CompactProLZH",
 					@(flags),@"CompactProFlags",
 					@(crc),crckey,
-					[NSNumber numberWithUnsignedInt:volume],@"CompactProVolume",
+					@(volume),@"CompactProVolume",
 				nil];
 
 				[entries addObject:dict];
@@ -217,7 +217,7 @@
 
 	NSNumber *crc=dict[@"CompactProCRC32"];
 	if(checksum&&crc)
-	handle=[XADCRCHandle IEEECRC32HandleWithHandle:handle length:size correctCRC:~[crc unsignedIntValue] conditioned:YES];
+	handle=[XADCRCHandle IEEECRC32HandleWithHandle:handle length:size correctCRC:~crc.unsignedIntValue conditioned:YES];
 
 	return handle;
 }

@@ -268,7 +268,7 @@ static int NextArithmeticBitString(ArithmeticDecoder *decoder,ArithmeticModel *m
 
 -(BOOL)isChecksumCorrect
 {
-	return [self atEndOfFile]&&compcrc==~crc;
+	return self.atEndOfFile&&compcrc==~crc;
 }
 
 @end

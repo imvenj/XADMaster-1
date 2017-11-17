@@ -35,7 +35,7 @@ NSString *const CSNotSupportedException=@"CSNotSupportedException";
 {
 	if((self=[super init]))
 	{
-		name=[[other name] stringByAppendingString:@" (copy)"];
+		name=[other.name stringByAppendingString:@" (copy)"];
 
 		bitoffs=other->bitoffs;
 		readbyte=other->readbyte;
@@ -72,7 +72,7 @@ NSString *const CSNotSupportedException=@"CSNotSupportedException";
 
 -(void)skipBytes:(off_t)bytes
 {
-	[self seekToFileOffset:[self offsetInFile]+bytes];
+	[self seekToFileOffset:self.offsetInFile+bytes];
 }
 
 -(int8_t)readInt8;
@@ -127,13 +127,13 @@ CSReadValueImpl(uint32_t,readID,CSUInt32BE)
 {
 	int res=0,done=0;
 
-	if([self offsetInFile]!=bitoffs) readbitsleft=0;
+	if(self.offsetInFile!=bitoffs) readbitsleft=0;
 	while(done<bits)
 	{
 		if(!readbitsleft)
 		{
 			readbyte=[self readUInt8];
-			bitoffs=[self offsetInFile];
+			bitoffs=self.offsetInFile;
 			readbitsleft=8;
 		}
 
@@ -151,13 +151,13 @@ CSReadValueImpl(uint32_t,readID,CSUInt32BE)
 {
 	int res=0,done=0;
 
-	if([self offsetInFile]!=bitoffs) readbitsleft=0;
+	if(self.offsetInFile!=bitoffs) readbitsleft=0;
 	while(done<bits)
 	{
 		if(!readbitsleft)
 		{
 			readbyte=[self readUInt8];
-			bitoffs=[self offsetInFile];
+			bitoffs=self.offsetInFile;
 			readbitsleft=8;
 		}
 
@@ -199,7 +199,7 @@ CSReadValueImpl(uint32_t,readID,CSUInt32BE)
 
 		if(actual==0)
 		{
-			if([data length]==0) [self _raiseEOF];
+			if(data.length==0) [self _raiseEOF];
 			else break;
 		}
 
@@ -208,9 +208,9 @@ CSReadValueImpl(uint32_t,readID,CSUInt32BE)
 		[data appendBytes:b length:1];
 	}
 
-	const char *bytes=[data bytes];
-	long length=[data length];
-	if(length&&bytes[length-1]=='\r') [data setLength:length-1];
+	const char *bytes=data.bytes;
+	long length=data.length;
+	if(length&&bytes[length-1]=='\r') data.length = length-1;
 
 	return [NSData dataWithData:data];
 }
@@ -263,7 +263,7 @@ CSReadValueImpl(uint32_t,readID,CSUInt32BE)
 {
 	NSMutableData *data=[[NSMutableData alloc] initWithLength:length];
 	if(!data) [self _raiseMemory];
-	[self readBytes:length toBuffer:[data mutableBytes]];
+	[self readBytes:length toBuffer:data.mutableBytes];
 	return data;
 }
 
@@ -271,8 +271,8 @@ CSReadValueImpl(uint32_t,readID,CSUInt32BE)
 {
 	NSMutableData *data=[[NSMutableData alloc] initWithLength:length];
 	if(!data) [self _raiseMemory];
-	int actual=[self readAtMost:length toBuffer:[data mutableBytes]];
-	[data setLength:actual];
+	int actual=[self readAtMost:length toBuffer:data.mutableBytes];
+	data.length = actual;
 	return data;
 }
 
@@ -307,7 +307,7 @@ CSReadValueImpl(uint32_t,readID,CSUInt32BE)
 
 -(CSHandle *)subHandleOfLength:(off_t)length
 {
-	return [[CSSubHandle alloc] initWithHandle:[self copy] from:[self offsetInFile] length:length];
+	return [[CSSubHandle alloc] initWithHandle:[self copy] from:self.offsetInFile length:length];
 }
 
 -(CSHandle *)subHandleFrom:(off_t)start length:(off_t)length
@@ -317,7 +317,7 @@ CSReadValueImpl(uint32_t,readID,CSUInt32BE)
 
 -(CSHandle *)subHandleToEndOfFileFrom:(off_t)start
 {
-	off_t size=[self fileSize];
+	off_t size=self.fileSize;
 	if(size==CSHandleMaxLength)
 	{
 		return [[CSSubHandle alloc] initWithHandle:[self copy]
@@ -332,7 +332,7 @@ CSReadValueImpl(uint32_t,readID,CSUInt32BE)
 
 -(CSHandle *)nonCopiedSubHandleOfLength:(off_t)length
 {
-	return [[CSSubHandle alloc] initWithHandle:self from:[self offsetInFile] length:length];
+	return [[CSSubHandle alloc] initWithHandle:self from:self.offsetInFile length:length];
 }
 
 -(CSHandle *)nonCopiedSubHandleFrom:(off_t)start length:(off_t)length
@@ -342,7 +342,7 @@ CSReadValueImpl(uint32_t,readID,CSUInt32BE)
 
 -(CSHandle *)nonCopiedSubHandleToEndOfFileFrom:(off_t)start
 {
-	off_t size=[self fileSize];
+	off_t size=self.fileSize;
 	if(size==CSHandleMaxLength)
 	{
 		return [[CSSubHandle alloc] initWithHandle:self
@@ -421,7 +421,7 @@ CSWriteValueImpl(uint32_t,writeID,CSSetUInt32BE)
 
 -(void)writeData:(NSData *)data
 {
-	[self writeBytes:(int)[data length] fromBuffer:[data bytes]];
+	[self writeBytes:(int)data.length fromBuffer:data.bytes];
 }
 
 
@@ -460,7 +460,7 @@ CSWriteValueImpl(uint32_t,writeID,CSSetUInt32BE)
 -(NSString *)description
 {
 	return [NSString stringWithFormat:@"%@ for \"%@\", position %qu",
-	[self class],name,[self offsetInFile]];
+	[self class],name,self.offsetInFile];
 }
 
 

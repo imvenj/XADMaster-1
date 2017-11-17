@@ -54,7 +54,7 @@ uint32_t CSInputNextRARVMNumber(CSInputBuffer *input)
 
 -(void)readMemoryAtAddress:(uint32_t)address length:(NSInteger)length toMutableData:(NSMutableData *)data
 {
-	[self readMemoryAtAddress:address length:length toBuffer:[data mutableBytes]];
+	[self readMemoryAtAddress:address length:length toBuffer:data.mutableBytes];
 }
 
 -(void)writeMemoryAtAddress:(uint32_t)address length:(NSInteger)length fromBuffer:(const uint8_t *)buffer
@@ -64,7 +64,7 @@ uint32_t CSInputNextRARVMNumber(CSInputBuffer *input)
 
 -(void)writeMemoryAtAddress:(uint32_t)address length:(NSInteger)length fromData:(NSData *)data
 {
-	[self writeMemoryAtAddress:address length:length fromBuffer:[data bytes]];
+	[self writeMemoryAtAddress:address length:length fromBuffer:data.bytes];
 }
 
 -(uint32_t)readWordAtAddress:(uint32_t)address
@@ -79,7 +79,7 @@ uint32_t CSInputNextRARVMNumber(CSInputBuffer *input)
 
 -(BOOL)executeProgramCode:(XADRARProgramCode *)code
 {
-	return ExecuteRARCode(&vm,[code opcodes],(int)[code numberOfOpcodes]);
+	return ExecuteRARCode(&vm,code.opcodes,(int)code.numberOfOpcodes);
 }
 
 @end
@@ -139,7 +139,7 @@ uint32_t CSInputNextRARVMNumber(CSInputBuffer *input)
 	{
 		int length=CSInputNextRARVMNumber(input)+1;
 		NSMutableData *data=[NSMutableData dataWithLength:length];
-		uint8_t *databytes=[data mutableBytes];
+		uint8_t *databytes=data.mutableBytes;
 
 		for(int i=0;i<length;i++) databytes[i]=CSInputNextBitString(input,8);
 
@@ -150,8 +150,8 @@ uint32_t CSInputNextRARVMNumber(CSInputBuffer *input)
 	while(CSInputBitsLeftInBuffer(input)>=8)
 	{
 		[opcodes increaseLengthBy:sizeof(RAROpcode)];
-		RAROpcode *opcodearray=[self opcodes];
-		NSInteger currinstruction=[self numberOfOpcodes]-1;
+		RAROpcode *opcodearray=self.opcodes;
+		NSInteger currinstruction=self.numberOfOpcodes-1;
 		RAROpcode *opcode=&opcodearray[currinstruction];
 
 		int instruction=CSInputNextBitString(input,4);
@@ -178,17 +178,17 @@ uint32_t CSInputNextRARVMNumber(CSInputBuffer *input)
 			unsigned int addressingmode;
 			uint32_t value = 0;
 			[self parseOperandFromBuffer:input addressingMode:&addressingmode value:&value
-			 byteMode:bytemode isRelativeJump:NO currentInstructionOffset:0];
+			byteMode:bytemode isRelativeJump:NO currentInstructionOffset:0];
 			SetRAROpcodeOperand2(opcode,addressingmode,value);
 		}
 	}
 
 	// Check if program is properly terminated, if not, add a ret opcode.
-	if(!IsProgramTerminated([self opcodes],(int)[self numberOfOpcodes]))
+	if(!IsProgramTerminated(self.opcodes,(int)self.numberOfOpcodes))
 	{
 		[opcodes increaseLengthBy:sizeof(RAROpcode)];
-		RAROpcode *opcodearray=[self opcodes];
-		NSInteger currinstruction=[self numberOfOpcodes]-1;
+		RAROpcode *opcodearray=self.opcodes;
+		NSInteger currinstruction=self.numberOfOpcodes-1;
 		RAROpcode *opcode=&opcodearray[currinstruction];
 
 		SetRAROpcodeInstruction(opcode,RARRetInstruction,false);
@@ -196,7 +196,7 @@ uint32_t CSInputNextRARVMNumber(CSInputBuffer *input)
 
 	CSInputBufferFree(input);
 
-	return PrepareRAROpcodes([self opcodes],(int)[self numberOfOpcodes]);
+	return PrepareRAROpcodes(self.opcodes,(int)self.numberOfOpcodes);
 }
 
 -(void)parseOperandFromBuffer:(CSInputBuffer *)input addressingMode:(unsigned int *)modeptr
@@ -261,14 +261,14 @@ value:(uint32_t *)valueptr byteMode:(BOOL)bytemode isRelativeJump:(BOOL)isrel cu
 	}
 }
 
--(RAROpcode *)opcodes { return [opcodes mutableBytes]; }
+-(RAROpcode *)opcodes { return opcodes.mutableBytes; }
 
--(NSInteger)numberOfOpcodes { return [opcodes length]/sizeof(RAROpcode); }
+-(NSInteger)numberOfOpcodes { return opcodes.length/sizeof(RAROpcode); }
 
 -(NSString *)disassemble
 {
-	RAROpcode *opcodearray=[self opcodes];
-	NSInteger numopcodes=[self numberOfOpcodes];
+	RAROpcode *opcodearray=self.opcodes;
+	NSInteger numopcodes=self.numberOfOpcodes;
 
 	NSMutableString *disassembly=[NSMutableString string];
 
@@ -297,7 +297,7 @@ value:(uint32_t *)valueptr byteMode:(BOOL)bytemode isRelativeJump:(BOOL)isrel cu
 		if(data)
 		{
 			globaldata=[[NSMutableData alloc] initWithData:data];
-			if([globaldata length]<RARProgramSystemGlobalSize) [globaldata setLength:RARProgramSystemGlobalSize];
+			if(globaldata.length<RARProgramSystemGlobalSize) [globaldata setLength:RARProgramSystemGlobalSize];
 		}
 		else globaldata=[[NSMutableData alloc] initWithLength:RARProgramSystemGlobalSize];
 
@@ -330,35 +330,35 @@ value:(uint32_t *)valueptr byteMode:(BOOL)bytemode isRelativeJump:(BOOL)isrel cu
 
 -(void)setGlobalValueAtOffset:(NSInteger)offs toValue:(uint32_t)val
 {
-	if(offs<0||offs+4>[globaldata length]) [NSException raise:NSRangeException format:@"Attempted to write outside global memory"];
+	if(offs<0||offs+4>globaldata.length) [NSException raise:NSRangeException format:@"Attempted to write outside global memory"];
 
-	uint8_t *bytes=[globaldata mutableBytes];
+	uint8_t *bytes=globaldata.mutableBytes;
 	CSSetUInt32LE(&bytes[offs],val);
 }
 
 -(void)backupGlobalData
 {
-	NSMutableData *backup=[programcode globalBackup];
-	if([globaldata length]>RARProgramSystemGlobalSize) [backup setData:globaldata];
-	else [backup setLength:0];
+	NSMutableData *backup=programcode.globalBackup;
+	if(globaldata.length>RARProgramSystemGlobalSize) [backup setData:globaldata];
+	else backup.length = 0;
 }
 
 -(void)restoreGlobalDataIfAvailable
 {
-	NSMutableData *backup=[programcode globalBackup];
-	if([backup length]>RARProgramSystemGlobalSize) [globaldata setData:backup];
+	NSMutableData *backup=programcode.globalBackup;
+	if(backup.length>RARProgramSystemGlobalSize) [globaldata setData:backup];
 }
 
 -(BOOL)executeOnVitualMachine:(XADRARVirtualMachine *)vm
 {
-	NSInteger globallength=[globaldata length];
+	NSInteger globallength=globaldata.length;
 	if(globallength>RARProgramSystemGlobalSize) globallength=RARProgramSystemGlobalSize;
 	[vm writeMemoryAtAddress:RARProgramSystemGlobalAddress length:globallength fromData:globaldata];
 
-	NSData *staticdata=[programcode staticData];
+	NSData *staticdata=programcode.staticData;
 	if(staticdata)
 	{
-		NSInteger staticlength=[staticdata length];
+		NSInteger staticlength=staticdata.length;
 		if(staticlength>RARProgramUserGlobalSize-globallength) staticlength=RARProgramUserGlobalSize-globallength;
 		[vm writeMemoryAtAddress:RARProgramUserGlobalAddress length:staticlength fromData:staticdata];
 	}
@@ -373,9 +373,9 @@ value:(uint32_t *)valueptr byteMode:(BOOL)bytemode isRelativeJump:(BOOL)isrel cu
 	{
 		[vm readMemoryAtAddress:RARProgramSystemGlobalAddress
 		length:RARProgramSystemGlobalSize+newgloballength
-		toMutableData:[globaldata mutableBytes]];
+		toMutableData:globaldata.mutableBytes];
 	}
-	else [globaldata setLength:0];
+	else globaldata.length = 0;
 
 	return YES;
 }

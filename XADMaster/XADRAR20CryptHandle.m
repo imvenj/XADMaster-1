@@ -5,10 +5,10 @@
 
 -(id)initWithHandle:(CSHandle *)handle length:(off_t)length password:(NSData *)passdata
 {
-	if((self=[super initWithName:[handle name] length:length]))
+	if((self=[super initWithName:handle.name length:length]))
 	{
 		parent=[handle retain];
-		startoffs=[handle offsetInFile];
+		startoffs=handle.offsetInFile;
 		password=[passdata retain];
 	}
 	return self;
@@ -70,8 +70,8 @@ static const uint8_t InitSubstTable[256]=
 	key[2]=0x7515a235;
 	key[3]=0xa4e7f123;
 
-	const uint8_t *passbytes=[password bytes];
-	NSInteger passlength=[password length];
+	const uint8_t *passbytes=password.bytes;
+	NSInteger passlength=password.length;
 	if(passlength>127) passlength=127;
 
 	memset(passbuf,0,sizeof(passbuf));

@@ -17,8 +17,8 @@ static NSData *ReadNullTerminatedString(CSHandle *fh);
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	if(length<40) return NO;
 
@@ -34,14 +34,14 @@ static NSData *ReadNullTerminatedString(CSHandle *fh);
 				if(storedcrc==~headcrc) return YES;
 			}
 		}
-    }
+	}
 
 	return NO;
 }
 
 -(void)parse
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
 	int headersize;
 	NSData *header;
@@ -53,14 +53,14 @@ static NSData *ReadNullTerminatedString(CSHandle *fh);
 
 		if(byte==0xea)
 		{
-			off_t pos=[fh offsetInFile];
+			off_t pos=fh.offsetInFile;
 
 			headersize=[fh readUInt16LE];
 			if(headersize>=32 && headersize<=2600)
 			{
 				header=[fh readDataOfLength:headersize];
 				uint32_t crc=[fh readUInt32LE];
-				if(XADCalculateCRC(0xffffffff,[header bytes],headersize,XADCRCTable_edb88320)==~crc)
+				if(XADCalculateCRC(0xffffffff,header.bytes,headersize,XADCRCTable_edb88320)==~crc)
 				break;
 			}
 
@@ -68,7 +68,7 @@ static NSData *ReadNullTerminatedString(CSHandle *fh);
 		}
 	}
 
-	const uint8_t *headerbytes=[header bytes];
+	const uint8_t *headerbytes=header.bytes;
 
 	int firstsize=headerbytes[0];
 	//int version=headerbytes[1];
@@ -100,7 +100,7 @@ static NSData *ReadNullTerminatedString(CSHandle *fh);
 	int extlen=[fh readUInt16LE];
 	if(extlen) [fh skipBytes:extlen+4];
 
-	while([self shouldKeepParsing])
+	while(self.shouldKeepParsing)
 	{
 		if([fh readUInt8]!=0x60||[fh readUInt8]!=0xea) [XADException raiseIllegalDataException];
 
@@ -136,7 +136,7 @@ static NSData *ReadNullTerminatedString(CSHandle *fh);
 		if(flags&0x10) separator=XADUnixPathSeparator;
 		else separator=XADWindowsPathSeparator;
 
-		off_t pos=[fh offsetInFile];
+		off_t pos=fh.offsetInFile;
 
 		NSDate *modificationdate;
 		if(os==2) modificationdate=[NSDate dateWithTimeIntervalSince1970:modification];
@@ -196,7 +196,7 @@ static NSData *ReadNullTerminatedString(CSHandle *fh);
 		}
 		dict[XADCompressionNameKey] = [self XADStringWithString:methodname];
 
-		if([comment length]) dict[XADCommentKey] = [self XADStringWithData:comment];
+		if(comment.length) dict[XADCommentKey] = [self XADStringWithData:comment];
 
 		[self addEntryWithDictionary:dict];
 
@@ -213,11 +213,11 @@ static NSData *ReadNullTerminatedString(CSHandle *fh);
 	uint32_t crc=[dict[@"ARJCRC32"] unsignedIntValue];
 	NSNumber *crypto=dict[XADIsEncryptedKey];
 
-	if(crypto&&[crypto boolValue])
+	if(crypto&&crypto.boolValue)
 	{
-		NSMutableData *passdata=[NSMutableData dataWithData:[self encodedPassword]];
-		uint8_t *passbytes=[passdata mutableBytes];
-		int passlength=(int)[passdata length];
+		NSMutableData *passdata=[NSMutableData dataWithData:self.encodedPassword];
+		uint8_t *passbytes=passdata.mutableBytes;
+		int passlength=(int)passdata.length;
 		int mod=[dict[@"ARJPasswordModifier"] intValue];
 
 		for(int i=0;i<passlength;i++) passbytes[i]+=mod;

@@ -12,7 +12,7 @@ static void ResetTable(int *table,int *reverse);
 
 -(id)initWithRARParser:(XADRARParser *)parent files:(NSArray *)filearray
 {
-	if((self=[super initWithName:[parent filename] windowSize:0x10000]))
+	if((self=[super initWithName:parent.filename windowSize:0x10000]))
 	{
 		parser=parent;
 		files=[filearray retain];
@@ -454,11 +454,11 @@ static void EmitShortMatch(XADRAR15Handle *self,off_t *posptr)
 		XADEmitLZSSMatch(self,offset,length,posptr);
 	}
 	else if(selector==9)
-    {
+	{
 		self->numrepeatedlastmatches++;
 
 		XADEmitLZSSMatch(self,self->lastoffset,self->lastlength,posptr);
-    }
+	}
 	else if(selector<14)
 	{
 		self->numrepeatedlastmatches=0;

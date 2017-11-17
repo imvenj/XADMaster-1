@@ -6,7 +6,7 @@
 
 -(id)initWithRARParser:(XADRARParser *)parent files:(NSArray *)filearray
 {
-	if((self=[super initWithName:[parent filename]]))
+	if((self=[super initWithName:parent.filename]))
 	{
 		parser=parent;
 		files=[filearray copy];
@@ -106,7 +106,7 @@
 		// taking into account that the length may have changed.
 		for(;;)
 		{
-			if([stack count]==0) break;
+			if(stack.count==0) break;
 			XADRAR30Filter *filter=stack[0];
 
 			// Check if this filter applies.
@@ -126,7 +126,7 @@
 
 		// If there are further filters on the stack, set up the filter start marker again
 		// and sanity-check filter ordering.
-		if([stack count])
+		if(stack.count)
 		{
 			XADRAR30Filter *filter=stack[0];
 			filterstart=[filter startPosition];
@@ -279,7 +279,7 @@
 			{
 				if(lastlength==0) continue;
 
-	  			offs=lastoffset;
+				offs=lastoffset;
 				len=lastlength;
 			}
 			else if(symbol<=262)
@@ -520,7 +520,7 @@
 	if(!stack) stack=[NSMutableArray new];
 
 	CSInputBuffer *filterinput=CSInputBufferAllocWithBuffer(bytes,length,0);
-	NSInteger numcodes=[filtercode count];
+	NSInteger numcodes=filtercode.count;
 
 	int num;
 	BOOL isnew=NO;
@@ -592,7 +592,7 @@
 	{
 		code=filtercode[num];
 	}
-  
+
 	// Read data section.
 	NSMutableData *data=nil;
 	if(flags&8)
@@ -602,7 +602,7 @@
 		if(length>RARProgramUserGlobalSize) [XADException raiseIllegalDataException];
 
 		data=[NSMutableData dataWithLength:length+RARProgramSystemGlobalSize];
-		uint8_t *databytes=[data mutableBytes];
+		uint8_t *databytes=data.mutableBytes;
 
 		for(int i=0;i<length;i++) databytes[i+RARProgramSystemGlobalSize]=CSInputNextBitString(filterinput,8);
 	}
@@ -622,7 +622,7 @@
 	[stack addObject:filter];
 
 	// If this is the first filter added to an empty stack, set the filter start marker.
-	if([stack count]==1) filterstart=blockstartpos;
+	if(stack.count==1) filterstart=blockstartpos;
 
 	CSInputBufferFree(filterinput);
 }

@@ -30,15 +30,15 @@ static const NSString *DateFormat=@"Date";
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	return length>=4&&bytes[0]=='x'&&bytes[1]=='a'&&bytes[2]=='r'&&bytes[3]=='!';
 }
 
 -(void)parse
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
 	[fh skipBytes:4];
 	int headsize=[fh readUInt16BE];
@@ -86,16 +86,16 @@ static const NSString *DateFormat=@"Date";
 	//NSLog(@"%@",[[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
 
 	NSXMLParser *xml=[[[NSXMLParser alloc] initWithData:data] autorelease];
-	[xml setDelegate:self];
+	xml.delegate = self;
 	[xml parse];
 
 	// Check for XIP files, the worst file format ever. This is a cpio file
 	// inside a gz file inside a xar, plus a metadata file. The metadata file
 	// is currently ignored.
 	// The XARDisableXIP boolean property can be used to disable this check.
-	NSNumber *disablexip=[self properties][@"XARDisableXIP"];
-	if(!disablexip || ![disablexip boolValue])
-	if([files count]==2)
+	NSNumber *disablexip=self.properties[@"XARDisableXIP"];
+	if(!disablexip || !disablexip.boolValue)
+	if(files.count==2)
 	{
 		NSMutableDictionary *first=files[0];
 		NSMutableDictionary *second=files[1];
@@ -109,7 +109,7 @@ static const NSString *DateFormat=@"Date";
 		{
 			second[XADIsArchiveKey] = @YES;
 			second[@"XARIsXIP"] = @YES;
-			[self finishFile:second parentPath:[self XADPath]];
+			[self finishFile:second parentPath:self.XADPath];
 			return;
 		}
 	}
@@ -118,8 +118,8 @@ static const NSString *DateFormat=@"Date";
 	NSMutableDictionary *file;
 	while((file=[enumerator nextObject]))
 	{
-		if(![self shouldKeepParsing]) break;
-		[self finishFile:file parentPath:[self XADPath]];
+		if(!self.shouldKeepParsing) break;
+		[self finishFile:file parentPath:self.XADPath];
 	}
 }
 
@@ -185,7 +185,7 @@ static const NSString *DateFormat=@"Date";
 
 				if(data)
 				{
-					if(![handle hasChecksum] || [handle isChecksumCorrect])
+					if(!handle.hasChecksum || handle.checksumCorrect)
 					{
 						eadict[name] = data;
 						numeas++;
@@ -212,7 +212,7 @@ static const NSString *DateFormat=@"Date";
 
 	NSString *encodingstyle=file[@"XAREncodingStyle"];
 	NSNumber *isxip=file[@"XARIsXIP"];
-	XADString *compressionname=[self compressionNameForEncodingStyle:encodingstyle isXIP:isxip && [isxip boolValue]];
+	XADString *compressionname=[self compressionNameForEncodingStyle:encodingstyle isXIP:isxip && isxip.boolValue];
 	if(compressionname) file[XADCompressionNameKey] = compressionname;
 
 	[self addEntryWithDictionary:file];
@@ -257,7 +257,7 @@ static const NSString *DateFormat=@"Date";
 	NSString *compressionname=nil;
 
 	if(isxip) compressionname=@"Deflate";
-	else if(!encodingstyle || [encodingstyle length]==0) compressionname=@"None";
+	else if(!encodingstyle || encodingstyle.length==0) compressionname=@"None";
 	else if([encodingstyle isEqual:@"application/octet-stream"]) compressionname=@"None";
 	else if([encodingstyle isEqual:@"application/x-gzip"]) compressionname=@"Deflate";
 	else if([encodingstyle isEqual:@"application/x-bzip2"]) compressionname=@"Bzip2";
@@ -349,9 +349,9 @@ namespaceURI:(NSString *)namespace qualifiedName:(NSString *)qname
 					curreas=nil;
 				}
 
-				if([filestack count])
+				if(filestack.count)
 				{
-					NSMutableDictionary *parent=[filestack lastObject];
+					NSMutableDictionary *parent=filestack.lastObject;
 					[filestack removeLastObject];
 
 					NSMutableArray *filearray=parent[@"Files"];
@@ -446,13 +446,13 @@ destinationDictionary:(NSMutableDictionary *)dest
 	id obj=nil;
 	if(format==StringFormat) obj=string;
 	else if(format==XADStringFormat) obj=[self XADStringWithString:string];
-	else if(format==DecimalFormat) obj=@(strtoll([string UTF8String],NULL,10));
-	else if(format==OctalFormat) obj=@(strtoll([string UTF8String],NULL,8));
+	else if(format==DecimalFormat) obj=@(strtoll(string.UTF8String,NULL,10));
+	else if(format==OctalFormat) obj=@(strtoll(string.UTF8String,NULL,8));
 	else if(format==HexFormat)
 	{
 		NSMutableData *data=[NSMutableData data];
 		uint8_t byte = '\0';
-		NSInteger n=0,length=[string length];
+		NSInteger n=0,length=string.length;
 		for(int i=0;i<length;i++)
 		{
 			unichar c=[string characterAtIndex:i];
@@ -513,10 +513,10 @@ destinationDictionary:(NSMutableDictionary *)dest
 	NSNumber *size=dict[XADFileSizeKey];
 
 	NSNumber *isxip=dict[@"XARIsXIP"];
-	if(isxip && [isxip boolValue])
+	if(isxip && isxip.boolValue)
 	{
-		CSHandle *handle=[[self handle] nonCopiedSubHandleFrom:[offset longLongValue]+heapoffset
-		length:[length longLongValue]];
+		CSHandle *handle=[self.handle nonCopiedSubHandleFrom:offset.longLongValue+heapoffset
+		length:length.longLongValue];
 
 		return [[[XADGzipHandle alloc] initWithHandle:handle] autorelease];
 	}
@@ -530,15 +530,15 @@ destinationDictionary:(NSMutableDictionary *)dest
 -(CSHandle *)handleForEncodingStyle:(NSString *)encodingstyle offset:(NSNumber *)offset
 length:(NSNumber *)length size:(NSNumber *)size checksum:(NSData *)checksum checksumStyle:(NSString *)checksumstyle
 {
-	off_t sizeval=[size longLongValue];
+	off_t sizeval=size.longLongValue;
 
 	CSHandle *handle;
 	if(offset)
 	{
-		handle=[[self handle] nonCopiedSubHandleFrom:[offset longLongValue]+heapoffset
-		length:[length longLongValue]];
+		handle=[self.handle nonCopiedSubHandleFrom:offset.longLongValue+heapoffset
+		length:length.longLongValue];
 
-		if(!encodingstyle||[encodingstyle length]==0); // no encoding style, copy
+		if(!encodingstyle||encodingstyle.length==0); // no encoding style, copy
 		else if([encodingstyle isEqual:@"application/octet-stream"]);  // octe-stream, also copy
 		else if([encodingstyle isEqual:@"application/x-gzip"]) handle=[CSZlibHandle zlibHandleWithHandle:handle length:sizeval];
 		else if([encodingstyle isEqual:@"application/x-bzip2"]) handle=[CSBzip2Handle bzip2HandleWithHandle:handle length:sizeval];
