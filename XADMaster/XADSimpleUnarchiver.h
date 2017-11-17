@@ -63,7 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (NS_NONATOMIC_IOSONLY, copy, nullable) NSString *destination;
 
-@property (NS_NONATOMIC_IOSONLY, copy) NSString *enclosingDirectoryName;
+@property (NS_NONATOMIC_IOSONLY, copy, nullable) NSString *enclosingDirectoryName;
 
 @property (NS_NONATOMIC_IOSONLY) BOOL removesEnclosingDirectoryForSoloItems;
 

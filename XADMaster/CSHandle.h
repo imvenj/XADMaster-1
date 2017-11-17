@@ -18,10 +18,10 @@
 #endif
 
 
-extern NSString *const CSOutOfMemoryException;
-extern NSString *const CSEndOfFileException;
-extern NSString *const CSNotImplementedException;
-extern NSString *const CSNotSupportedException;
+extern NSExceptionName const CSOutOfMemoryException;
+extern NSExceptionName const CSEndOfFileException;
+extern NSExceptionName const CSNotImplementedException;
+extern NSExceptionName const CSNotSupportedException;
 
 
 

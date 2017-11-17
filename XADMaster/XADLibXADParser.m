@@ -34,7 +34,7 @@ struct xadMasterBaseP *xadOpenLibrary(xadINT32 version);
 	indata.name=name.UTF8String;
 
 	struct Hook inhook;
-	inhook.h_Entry=InFunc;
+	inhook.h_Entry=(xadUINT32(*)(struct Hook *,xadPTR,void*))InFunc;
 	inhook.h_Data=(void *)&indata;
 
 	if(xadRecogFile(xmb,data.length,data.bytes,
@@ -76,10 +76,10 @@ struct xadMasterBaseP *xadOpenLibrary(xadINT32 version);
 
 	indata.fh=self.handle;
 	indata.name=namedata.bytes;
-	inhook.h_Entry=InFunc;
+	inhook.h_Entry=(xadUINT32(*)(struct Hook *,xadPTR,void*))InFunc;
 	inhook.h_Data=(void *)&indata;
 
-	progresshook.h_Entry=ProgressFunc;
+	progresshook.h_Entry=(xadUINT32(*)(struct Hook *,xadPTR,void*))ProgressFunc;
 	progresshook.h_Data=(void *)self;
 
 	addonbuild=YES;
@@ -269,7 +269,7 @@ struct xadMasterBaseP *xadOpenLibrary(xadINT32 version);
 		else data=[NSMutableData dataWithCapacity:(long)info->xfi_Size];
 
 		struct Hook outhook;
-		outhook.h_Entry=OutFunc;
+		outhook.h_Entry=(xadUINT32(*)(struct Hook *,xadPTR,void*))OutFunc;
 		outhook.h_Data=(void *)data;
 
 		err=xadFileUnArc(xmb,archive,
@@ -285,7 +285,7 @@ struct xadMasterBaseP *xadOpenLibrary(xadINT32 version);
 		data=[NSMutableData dataWithCapacity:[dict[XADFileSizeKey] unsignedIntValue]];
 
 		struct Hook outhook;
-		outhook.h_Entry=OutFunc;
+		outhook.h_Entry=(xadUINT32(*)(struct Hook *,xadPTR,void*))OutFunc;
 		outhook.h_Data=(void *)data;
 
 		err=xadDiskUnArc(xmb,archive,

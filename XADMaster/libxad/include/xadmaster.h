@@ -87,7 +87,7 @@ typedef const struct TagItem * xadTAGPTR;
 /*! a standard callback system */
 struct Hook {
   /* h_MinNode, used for hook linking on Amiga, is not needed by XAD */
-  xadUINT32 (*h_Entry)();    /*!< entry point of callback */
+  xadUINT32 (*h_Entry)(struct Hook *,xadPTR ,void*);    /*!< entry point of callback */
   /* h_SubEntry, used when h_Entry on Amiga is an asm stub, is not needed */
   xadPTR *h_Data;            /*!< data parameter always passed to callback */
 };
