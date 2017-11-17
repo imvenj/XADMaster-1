@@ -72,7 +72,7 @@ NSString *const XADErrorDomain=@"de.dstoecker.xadmaster.error";
 			}
             return [NSError errorWithDomain:XADErrorDomain code:XADErrorUnknown userInfo:usrInfo];
         } else if([name isEqual:CSOutOfMemoryException]) {
-            return [NSError errorWithDomain:XADErrorDomain code:XADErrorOutOfMemory userInfo:@{NSLocalizedFailureReasonErrorKey: e.reason}];
+            return [NSError errorWithDomain:XADErrorDomain code:XADErrorOutOfMemory userInfo:usrInfo];
         } else if([name isEqual:CSEndOfFileException]) {
             return [NSError errorWithDomain:XADErrorDomain code:XADErrorInput userInfo:usrInfo];
         } else if([name isEqual:CSNotImplementedException]) {

@@ -129,7 +129,7 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 	NSNumber *offs;
 
 	offs=self.properties[@"NSISOlderOffset"];
-	if(offs)
+	if(offs != nil)
 	{
 		[fh seekToFileOffset:offs.longLongValue];
 		[self parseOlderFormat];
@@ -137,7 +137,7 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 	}
 
 	offs=self.properties[@"NSISOldOffset"];
-	if(offs)
+	if(offs != nil)
 	{
 		[fh seekToFileOffset:offs.longLongValue];
 		[self parseOldFormat];
@@ -145,7 +145,7 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 	}
 
 	offs=self.properties[@"NSISNewOffset"];
-	if(offs)
+	if(offs != nil)
 	{
 		[fh seekToFileOffset:offs.longLongValue];
 		[self parseNewFormat];
@@ -439,7 +439,7 @@ newDateTimeOrder:(BOOL)neworder
 	for(int i=startoffs;i<endoffs&&i+24<=length;i+=4*stride)
 	{
 		int opcode=CSUInt32LE(bytes+i);
-		uint32_t args[6];
+		uint32_t args[6] = {0};
 		for(int j=1;j<stride;j++) args[j-1]=CSUInt32LE(bytes+i+j*4);
 
 		if(opcode==extractopcode)
@@ -463,7 +463,7 @@ newDateTimeOrder:(BOOL)neworder
 
 			if(ignoreoverwrite || overwrite<4)
 			if(filename<stringendoffs-stringoffs)
-			if(block)
+			if(block != nil)
 			{
 				uint32_t len=block.unsignedIntValue;
 

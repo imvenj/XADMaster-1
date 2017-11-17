@@ -3,9 +3,21 @@
 #import "PDFStream.h"
 #import "PDFEncryptionHandler.h"
 
-extern NSString *const PDFWrongMagicException;
-extern NSString *const PDFInvalidFormatException;
-extern NSString *const PDFParserException;
+#ifndef CLANG_ANALYZER_NORETURN
+#ifdef __clang__
+#if __has_feature(attribute_analyzer_noreturn)
+#define CLANG_ANALYZER_NORETURN __attribute__((analyzer_noreturn))
+#else
+#define CLANG_ANALYZER_NORETURN
+#endif
+#else
+#define CLANG_ANALYZER_NORETURN
+#endif
+#endif
+
+extern NSExceptionName const PDFWrongMagicException;
+extern NSExceptionName const PDFInvalidFormatException;
+extern NSExceptionName const PDFParserException;
 
 @interface PDFParser:NSObject
 {
@@ -78,7 +90,7 @@ extern NSString *const PDFParserException;
 
 -(void)resolveIndirectObjects;
 
--(void)_raiseParserException:(NSString *)error;
+-(void)_raiseParserException:(NSString *)error CLANG_ANALYZER_NORETURN;
 
 @end
 

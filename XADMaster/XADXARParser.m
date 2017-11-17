@@ -94,7 +94,7 @@ static const NSString *DateFormat=@"Date";
 	// is currently ignored.
 	// The XARDisableXIP boolean property can be used to disable this check.
 	NSNumber *disablexip=self.properties[@"XARDisableXIP"];
-	if(!disablexip || !disablexip.boolValue)
+	if(disablexip == nil || !disablexip.boolValue)
 	if(files.count==2)
 	{
 		NSMutableDictionary *first=files[0];
@@ -205,7 +205,7 @@ static const NSString *DateFormat=@"Date";
 	}
 
 	NSNumber *datalen=file[XADDataLengthKey];
-	if(datalen) file[XADCompressedSizeKey] = datalen;
+	if(datalen != nil) file[XADCompressedSizeKey] = datalen;
 	else file[XADCompressedSizeKey] = @0;
 
 	if(!file[XADFileSizeKey]) file[XADFileSizeKey] = @0;
@@ -228,10 +228,10 @@ static const NSString *DateFormat=@"Date";
 		NSString *checksumstyle=resfork[@"ChecksumStyle"];
 		NSString *encodingstyle=resfork[@"EncodingStyle"];
 
-		if(size) resfile[XADFileSizeKey] = size;
-		if(offset) resfile[XADDataOffsetKey] = offset;
-		if(length) resfile[XADDataLengthKey] = length;
-		if(length) resfile[XADCompressedSizeKey] = length;
+		if(size != nil) resfile[XADFileSizeKey] = size;
+		if(offset != nil) resfile[XADDataOffsetKey] = offset;
+		if(length != nil) resfile[XADDataLengthKey] = length;
+		if(length != nil) resfile[XADCompressedSizeKey] = length;
 		if(checksum) resfile[@"XARChecksum"] = checksum;
 		if(checksumstyle) resfile[@"XARChecksumStyle"] = checksumstyle;
 		if(encodingstyle) resfile[@"XAREncodingStyle"] = encodingstyle;
@@ -533,7 +533,7 @@ length:(NSNumber *)length size:(NSNumber *)size checksum:(NSData *)checksum chec
 	off_t sizeval=size.longLongValue;
 
 	CSHandle *handle;
-	if(offset)
+	if(offset != nil)
 	{
 		handle=[self.handle nonCopiedSubHandleFrom:offset.longLongValue+heapoffset
 		length:length.longLongValue];

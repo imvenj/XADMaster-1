@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (NS_NONATOMIC_IOSONLY, weak, nullable) id<XADUnarchiverDelegate> delegate;
 
-@property (NS_NONATOMIC_IOSONLY, copy) NSString *destination;
+@property (NS_NONATOMIC_IOSONLY, copy, nullable) NSString *destination;
 
 @property (NS_NONATOMIC_IOSONLY) XADForkStyle macResourceForkStyle;
 

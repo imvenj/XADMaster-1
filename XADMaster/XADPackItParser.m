@@ -201,7 +201,7 @@
 	CSHandle *handle=[self.handle nonCopiedSubHandleFrom:offs length:len];
 
 	NSNumber *uncomplennum=obj[@"UncompressedLength"];
-	if(uncomplennum)
+	if(uncomplennum != nil)
 	{
 		off_t uncomplen=uncomplennum.longLongValue;
 		int crypto=[obj[@"Crypto"] intValue];

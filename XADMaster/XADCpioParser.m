@@ -186,7 +186,7 @@
 	if(checksum)
 	{
 		NSNumber *check=dict[@"CpioChecksum"];
-		if(check) handle=[[[XADChecksumHandle alloc] initWithHandle:handle
+		if(check != nil) handle=[[[XADChecksumHandle alloc] initWithHandle:handle
 		length:[dict[XADDataLengthKey] longLongValue]
 		correctChecksum:check.intValue mask:0xffffffff] autorelease];
 	}

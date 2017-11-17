@@ -505,7 +505,7 @@ offset:(off_t)offset length:(off_t)length
 		length:lengthnum.longLongValue];
 
 		NSNumber *formatnum=dict[@"SWFLosslessFormat"];
-		if(formatnum)
+		if(formatnum != nil)
 		{
 			return [CSMemoryHandle memoryHandleForReadingData:
 			[self convertLosslessFormat:formatnum.intValue
@@ -518,7 +518,7 @@ offset:(off_t)offset length:(off_t)length
 
 	CSHandle *datahandle=nil;
 	NSNumber *indexnum=dict[@"SWFDataIndex"];
-	if(indexnum)
+	if(indexnum != nil)
 	{
 		datahandle=[CSMemoryHandle memoryHandleForReadingData:
 		dataobjects[indexnum.intValue]];

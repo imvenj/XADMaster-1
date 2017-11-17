@@ -8,6 +8,7 @@
 
 import Foundation
 import XADMaster.ArchiveParser
+import XADMaster.Exception
 
 extension XADError: Error {
 	public var _domain: String {

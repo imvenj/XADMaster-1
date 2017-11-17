@@ -182,6 +182,7 @@ static NSData *ReadNullTerminatedString(CSHandle *fh);
 			case 9: osname=@"VAX VMS"; break;
 			case 10: osname=@"Windows 95"; break;
 			case 11: osname=@"Win32"; break;
+			default: osname=@"Unknown"; break;
 		}
 		dict[@"ARJOSName"] = [self XADStringWithString:osname];
 
@@ -193,6 +194,7 @@ static NSData *ReadNullTerminatedString(CSHandle *fh);
 			case 2: methodname=@"Medium"; break;
 			case 3: methodname=@"Fast"; break;
 			case 4: methodname=@"Fastest"; break;
+			default: methodname=@"Unknown"; break;
 		}
 		dict[XADCompressionNameKey] = [self XADStringWithString:methodname];
 

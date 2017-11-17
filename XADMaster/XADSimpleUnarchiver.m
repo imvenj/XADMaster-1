@@ -652,7 +652,9 @@
 
 -(void)archiveParserNeedsPassword:(XADArchiveParser *)parser
 {
-	[delegate simpleUnarchiverNeedsPassword:self];
+	if ([delegate respondsToSelector:@selector(simpleUnarchiverNeedsPassword:)]) {
+		[delegate simpleUnarchiverNeedsPassword:self];
+	}
 }
 
 -(void)archiveParser:(XADArchiveParser *)parser findsFileInterestingForReason:(NSString *)reason;
@@ -662,7 +664,9 @@
 
 -(void)unarchiverNeedsPassword:(XADUnarchiver *)unarchiver
 {
-	[delegate simpleUnarchiverNeedsPassword:self];
+	if ([delegate respondsToSelector:@selector(simpleUnarchiverNeedsPassword:)]) {
+		[delegate simpleUnarchiverNeedsPassword:self];
+	}
 }
 
 -(BOOL)unarchiver:(XADUnarchiver *)currunarchiver shouldExtractEntryWithDictionary:(NSDictionary *)dict suggestedPath:(NSString **)pathptr
@@ -675,7 +679,11 @@
 	NSString *encodingname=nil;
 	if(delegate && !xadpath.encodingIsKnown)
 	{
-		encodingname=[delegate simpleUnarchiver:self encodingNameForXADString:xadpath];
+		if ([delegate respondsToSelector:@selector(simpleUnarchiver:encodingNameForXADString:)]) {
+			encodingname=[delegate simpleUnarchiver:self encodingNameForXADString:xadpath];
+		} else {
+			encodingname=xadpath.encodingName;
+		}
 		if(!encodingname) return NO;
 	}
 
@@ -761,7 +769,9 @@
 	*pathptr=path;
 
 	// If we have a delegate, ask it if we should extract.
-	if(delegate) return [delegate simpleUnarchiver:self shouldExtractEntryWithDictionary:dict to:path];
+	if(delegate && [delegate respondsToSelector:@selector(simpleUnarchiver:shouldExtractEntryWithDictionary:to:)]) {
+		return [delegate simpleUnarchiver:self shouldExtractEntryWithDictionary:dict to:path];
+	}
 
 	// Otherwise, just extract.
 	return YES;
@@ -778,7 +788,9 @@
 		if(resnum && resnum.boolValue) [resourceforks addObject:path];
 	}
 
-	[delegate simpleUnarchiver:self willExtractEntryWithDictionary:dict to:path];
+	if ([delegate respondsToSelector:@selector(simpleUnarchiver:willExtractEntryWithDictionary:to:)]) {
+		[delegate simpleUnarchiver:self willExtractEntryWithDictionary:dict to:path];
+	}
 }
 
 -(void)unarchiver:(XADUnarchiver *)unarchiver didExtractEntryWithDictionary:(NSDictionary *)dict to:(NSString *)path error:(XADError)error
@@ -787,7 +799,9 @@
 	
 	if(propagatemetadata && metadata) [XADPlatform writeCloneableMetadata:metadata toPath:path];
 	
-	[delegate simpleUnarchiver:self didExtractEntryWithDictionary:dict to:path error:error];
+	if ([delegate respondsToSelector:@selector(simpleUnarchiver:didExtractEntryWithDictionary:to:error:)]) {
+		[delegate simpleUnarchiver:self didExtractEntryWithDictionary:dict to:path error:error];
+	}
 }
 
 -(BOOL)unarchiver:(XADUnarchiver *)unarchiver shouldCreateDirectory:(NSString *)directory
@@ -808,7 +822,12 @@
 {
 	if(!delegate) return nil;
 
-	NSString *encodingname=[delegate simpleUnarchiver:self encodingNameForXADString:link];
+	NSString *encodingname;
+	if ([delegate respondsToSelector:@selector(simpleUnarchiver:encodingNameForXADString:)]) {
+		encodingname=[delegate simpleUnarchiver:self encodingNameForXADString:link];
+	} else {
+		encodingname=link.encodingName;
+	}
 	if(!encodingname) return nil;
 
 	return [link stringWithEncodingName:encodingname];
@@ -832,15 +851,19 @@ fileFraction:(double)fileratio estimatedTotalFraction:(double)totalratio
 	{
 		// If the total size is known, report exact progress.
 		off_t fileprogress=fileratio*currsize;
-		[delegate simpleUnarchiver:self extractionProgressForEntryWithDictionary:dict
-		fileProgress:fileprogress of:currsize
-		totalProgress:totalprogress+fileprogress of:totalsize];
+		if ([delegate respondsToSelector:@selector(simpleUnarchiver:extractionProgressForEntryWithDictionary:fileProgress:of:totalProgress:of:)]) {
+			[delegate simpleUnarchiver:self extractionProgressForEntryWithDictionary:dict
+						  fileProgress:fileprogress of:currsize
+						 totalProgress:totalprogress+fileprogress of:totalsize];
+		}
 	}
 	else
 	{
 		// If the total size is not known, report estimated progress.
-		[delegate simpleUnarchiver:self estimatedExtractionProgressForEntryWithDictionary:dict
-		fileProgress:fileratio totalProgress:totalratio];
+		if ([delegate respondsToSelector:@selector(simpleUnarchiver:estimatedExtractionProgressForEntryWithDictionary:fileProgress:totalProgress:)]) {
+			[delegate simpleUnarchiver:self estimatedExtractionProgressForEntryWithDictionary:dict
+						  fileProgress:fileratio totalProgress:totalratio];
+		}
 	}
 }
 
@@ -851,7 +874,7 @@ fileFraction:(double)fileratio estimatedTotalFraction:(double)totalratio
 
 -(BOOL)_shouldStop
 {
-	if(!delegate) return NO;
+	if(!(delegate && [delegate respondsToSelector:@selector(extractionShouldStopForSimpleUnarchiver:)])) return NO;
 	if(shouldstop) return YES;
 
 	return shouldstop=[delegate extractionShouldStopForSimpleUnarchiver:self];
@@ -919,12 +942,17 @@ fileFraction:(double)fileratio estimatedTotalFraction:(double)totalratio
 		else if(delegate)
 		{
 			// If we have a delegate, ask it.
-			if(deferred) return [delegate simpleUnarchiver:self
-			deferredReplacementPathForOriginalPath:path
-			suggestedPath:unique];
-			else return [delegate simpleUnarchiver:self
+			if (deferred && [delegate respondsToSelector:@selector(simpleUnarchiver:deferredReplacementPathForOriginalPath:suggestedPath:)]) {
+				return [delegate simpleUnarchiver:self
+		   deferredReplacementPathForOriginalPath:path
+									suggestedPath:unique];
+			} else if ([delegate respondsToSelector:@selector(simpleUnarchiver:replacementPathForEntryWithDictionary:originalPath:suggestedPath:)]) {
+				return [delegate simpleUnarchiver:self
 			replacementPathForEntryWithDictionary:dict
-			originalPath:path suggestedPath:unique];
+									 originalPath:path suggestedPath:unique];
+			} else {
+				return nil;
+			}
 		}
 		else
 		{
@@ -1000,34 +1028,5 @@ fileFraction:(double)fileratio estimatedTotalFraction:(double)totalratio
 
 	return dest;
 }
-
-@end
-
-
-
-@implementation NSObject (XADSimpleUnarchiverDelegate)
-
--(void)simpleUnarchiverNeedsPassword:(XADSimpleUnarchiver *)unarchiver {}
-
--(NSString *)simpleUnarchiver:(XADSimpleUnarchiver *)unarchiver encodingNameForXADString:(id <XADString>)string; { return string.encodingName; }
-
--(BOOL)simpleUnarchiver:(XADSimpleUnarchiver *)unarchiver shouldExtractEntryWithDictionary:(NSDictionary *)dict to:(NSString *)path { return YES; }
--(void)simpleUnarchiver:(XADSimpleUnarchiver *)unarchiver willExtractEntryWithDictionary:(NSDictionary *)dict to:(NSString *)path {}
--(void)simpleUnarchiver:(XADSimpleUnarchiver *)unarchiver didExtractEntryWithDictionary:(NSDictionary *)dict to:(NSString *)path error:(XADError)error {}
-
--(NSString *)simpleUnarchiver:(XADSimpleUnarchiver *)unarchiver replacementPathForEntryWithDictionary:(NSDictionary *)dict
-originalPath:(NSString *)path suggestedPath:(NSString *)unique { return nil; }
--(NSString *)simpleUnarchiver:(XADSimpleUnarchiver *)unarchiver deferredReplacementPathForOriginalPath:(NSString *)path
-suggestedPath:(NSString *)unique { return nil; }
-
--(BOOL)extractionShouldStopForSimpleUnarchiver:(XADSimpleUnarchiver *)unarchiver { return NO; }
-
--(void)simpleUnarchiver:(XADSimpleUnarchiver *)unarchiver
-extractionProgressForEntryWithDictionary:(NSDictionary *)dict
-fileProgress:(off_t)fileprogress of:(off_t)filesize
-totalProgress:(off_t)totalprogress of:(off_t)totalsize {}
--(void)simpleUnarchiver:(XADSimpleUnarchiver *)unarchiver
-estimatedExtractionProgressForEntryWithDictionary:(NSDictionary *)dict
-fileProgress:(double)fileprogress totalProgress:(double)totalprogress {}
 
 @end

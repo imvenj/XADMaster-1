@@ -74,7 +74,7 @@
 	NSNumber *size=dictionary[XADFileSizeKey];
 	[handle seekToFileOffset:13];
 
-	if(size) return [[[XADLZMAHandle alloc] initWithHandle:handle length:size.unsignedLongLongValue
+	if(size != nil) return [[[XADLZMAHandle alloc] initWithHandle:handle length:size.unsignedLongLongValue
 	propertyData:dictionary[@"LZMAProperties"]] autorelease];
 	else return [[[XADLZMAHandle alloc] initWithHandle:handle
 	propertyData:dictionary[@"LZMAProperties"]] autorelease];

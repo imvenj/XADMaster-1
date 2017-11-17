@@ -16,6 +16,9 @@ void InitializeRangeCoder(CarrylessRangeCoder *self,CSInputBuffer *input,BOOL us
 
 uint32_t RangeCoderCurrentCount(CarrylessRangeCoder *self,uint32_t scale)
 {
+	if (scale == 0) {
+		return self->code - self->low;
+	}
 	self->range/=scale;
 	return (self->code-self->low)/self->range;
 }

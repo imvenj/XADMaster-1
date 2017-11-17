@@ -1193,7 +1193,7 @@ name:(NSString *)name { return nil; }
 
 -(void)parse {}
 -(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum { return nil; }
--(NSString *)formatName { return nil; } // TODO: combine names for nested archives
+-(NSString *)formatName { return @""; } // TODO: combine names for nested archives
 
 -(CSHandle *)handleForSolidStreamWithObject:(id)obj wantChecksum:(BOOL)checksum { return nil; }
 

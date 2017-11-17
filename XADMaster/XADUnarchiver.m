@@ -473,7 +473,7 @@ resourceForkDictionary:(NSDictionary *)forkdict wantChecksum:(BOOL)checksum erro
 
 	off_t ressize=0;
 	NSNumber *sizenum=dict[XADFileSizeKey];
-	if(sizenum) ressize=sizenum.longLongValue;
+	if(sizenum!=nil) ressize=sizenum.longLongValue;
 
 	NSDictionary *extattrs=[parser extendedAttributesForDictionary:dict];
 
@@ -577,7 +577,7 @@ outputTarget:(id)target selector:(SEL)selector argument:(id)argument
 		// Try to find the size of this entry.
 		NSNumber *sizenum=dict[XADFileSizeKey];
 		off_t size=0;
-		if(sizenum)
+		if(sizenum != nil)
 		{
 			size=sizenum.longLongValue;
 
@@ -620,7 +620,7 @@ outputTarget:(id)target selector:(SEL)selector argument:(id)argument
 				updatetime=currtime;
 
 				double progress;
-				if(sizenum) progress=(double)done/(double)size;
+				if(sizenum != nil) progress=(double)done/(double)size;
 				else progress=srchandle.estimatedProgress;
 
 				[delegate unarchiver:self extractionProgressForEntryWithDictionary:dict

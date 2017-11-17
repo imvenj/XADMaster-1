@@ -65,15 +65,15 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 -(nullable NSArray *)imageDecodeArray;
 
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL hasMultipleFilters;
--(NSString *)finalFilter;
+-(nullable NSString *)finalFilter;
 
 -(CSHandle *)rawHandle;
 -(CSHandle *)handle;
 -(CSHandle *)JPEGHandle;
 -(CSHandle *)handleExcludingLast:(BOOL)excludelast;
--(CSHandle *)handleExcludingLast:(BOOL)excludelast decrypted:(BOOL)decrypted;
--(CSHandle *)handleForFilterName:(NSString *)filtername decodeParms:(NSDictionary *)decodeparms parentHandle:(CSHandle *)parent;
--(CSHandle *)predictorHandleForDecodeParms:(NSDictionary *)decodeparms parentHandle:(CSHandle *)parent;
+-(nullable CSHandle *)handleExcludingLast:(BOOL)excludelast decrypted:(BOOL)decrypted;
+-(nullable CSHandle *)handleForFilterName:(NSString *)filtername decodeParms:(NSDictionary *)decodeparms parentHandle:(CSHandle *)parent;
+-(nullable CSHandle *)predictorHandleForDecodeParms:(NSDictionary *)decodeparms parentHandle:(CSHandle *)parent;
 
 @end
 

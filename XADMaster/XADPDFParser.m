@@ -112,7 +112,7 @@ static NSData *CreateNewJPEGHeaderWithColourProfile(NSData *fileheader,NSData *p
 		NSNumber *page=order[ref];
 
 		NSString *name;
-		if(page) name=[NSString stringWithFormat:@"Page %@, object %d",page,ref.number];
+		if(page != nil) name=[NSString stringWithFormat:@"Page %@, object %d",page,ref.number];
 		else name=[NSString stringWithFormat:@"Object %d",ref.number];
 
 		NSString *imgname=image.dictionary[@"Name"];
@@ -408,7 +408,7 @@ static NSData *CreateNewJPEGHeaderWithColourProfile(NSData *fileheader,NSData *p
 		if(!handle) return nil;
 
 		NSNumber *length=dict[@"PDFTIFFDataLength"];
-		if(length) handle=[handle nonCopiedSubHandleOfLength:length.longLongValue];
+		if(length != nil) handle=[handle nonCopiedSubHandleOfLength:length.longLongValue];
 
 		NSData *header=dict[@"PDFTIFFHeader"];
 		if(!header) return nil;
@@ -444,9 +444,9 @@ static int SortPages(id first,id second,void *context)
 	NSDictionary *order=(NSDictionary *)context;
 	NSNumber *firstpage=order[[first reference]];
 	NSNumber *secondpage=order[[second reference]];
-	if(!firstpage&&!secondpage) return 0;
-	else if(!firstpage) return 1;
-	else if(!secondpage) return -1;
+	if(firstpage == nil && secondpage == nil) return 0;
+	else if(firstpage == nil) return 1;
+	else if(secondpage == nil) return -1;
 	else return [firstpage compare:secondpage];
 }
 
@@ -535,7 +535,7 @@ static NSData *CreateTIFFHeaderWithEntries(NSArray *entries)
 		if(count.intValue==1)
 		{
 			NSNumber *value=entry[@"Value"];
-			if(value) [header writeUInt32LE:value.unsignedIntValue];
+			if(value != nil) [header writeUInt32LE:value.unsignedIntValue];
 			else [header writeUInt32LE:imagestart];
 		}
 		else

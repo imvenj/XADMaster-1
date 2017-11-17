@@ -491,7 +491,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 -(CSHandle *)predictorHandleForDecodeParms:(NSDictionary *)decodeparms parentHandle:(CSHandle *)parent
 {
 	NSNumber *predictor=decodeparms[@"Predictor"];
-	if(!predictor) return parent;
+	if(predictor == nil) return parent;
 
 	int pred=predictor.intValue;
 	if(pred==1) return parent;
@@ -500,9 +500,9 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 	NSNumber *colors=decodeparms[@"Colors"];
 	NSNumber *bitspercomponent=decodeparms[@"BitsPerComponent"];
 
-	int cols=columns?columns.intValue:1;
-	int comps=colors?colors.intValue:1;
-	int bpc=bitspercomponent?bitspercomponent.intValue:8;
+	int cols=columns != nil ?columns.intValue:1;
+	int comps=colors != nil ?colors.intValue:1;
+	int bpc=bitspercomponent != nil ?bitspercomponent.intValue:8;
 
 	if(pred==2) return [[[PDFTIFFPredictorHandle alloc] initWithHandle:parent columns:cols components:comps bitsPerComponent:bpc] autorelease];
 	else if(pred>=10&&pred<=15) return [[[PDFPNGPredictorHandle alloc] initWithHandle:parent columns:cols components:comps bitsPerComponent:bpc] autorelease];

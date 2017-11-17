@@ -71,6 +71,7 @@ static void BuildCodeFromTree(XADPrefixCode *code,int *tree,int node,int numnode
 	if(numnodes>0x274) [XADException raiseDecrunchException];
 
 	int nodes[numnodes];
+	memset(nodes, 0, numnodes * sizeof(int));
 	for(int i=0;i<numnodes;i++) nodes[i]=CSInputNextBitStringLE(input,codelength);
 
 	[maincode release];

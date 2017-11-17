@@ -137,7 +137,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 			parser=[XADArchiveParser archiveParserForHandle:handle name:[otherarchive nameOfEntry:n]];
 			if(parser)
 			{
-                XADError tmpErr;
+                XADError tmpErr = XADErrorNone;
                 if([self _parseWithErrorPointer:&tmpErr]) return self;
                 if (error) {
                     *error = [NSError errorWithDomain:XADErrorDomain code:tmpErr userInfo:nil];
@@ -238,7 +238,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 													   archiveParser:otherarchive->parser wantChecksum:YES nserror:error];
 		if(parser)
 		{
-            XADError tmpErr;
+            XADError tmpErr = XADErrorNone;
 			if([self _parseWithErrorPointer:&tmpErr])
 			{
 				if(!immediatefailed)
@@ -1297,7 +1297,7 @@ fileFraction:(double)fileprogress estimatedTotalFraction:(double)totalprogress
 		parser=[XADArchiveParser archiveParserForHandle:[CSMemoryHandle memoryHandleForReadingData:data] name:@""];
 		if(parser)
 		{
-			XADError tmpErr;
+			XADError tmpErr = XADErrorNone;
 			if([self _parseWithErrorPointer:&tmpErr]) return self;
 			if (error) {
 				*error = [NSError errorWithDomain:XADErrorDomain code:tmpErr userInfo:nil];

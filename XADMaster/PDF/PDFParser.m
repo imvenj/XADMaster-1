@@ -325,7 +325,7 @@ static BOOL IsDelimiter(uint8_t c);
 	else
 	{
 		NSNumber *size=dict[@"Size"];
-		if(!size) [self _raiseParserException:@"Error parsing xref stream"];
+		if(size == nil) [self _raiseParserException:@"Error parsing xref stream"];
 		if(![size isKindOfClass:[NSNumber class]]) [self _raiseParserException:@"Error parsing xref stream"];
 
 		index=@[@0,size];
@@ -530,11 +530,11 @@ static BOOL IsDelimiter(uint8_t c);
 	NSDictionary *dict=stream.dictionary;
 
 	NSNumber *n=dict[@"N"];
-	if(!n) [self _raiseParserException:@"Error decoding compressed object stream"];
+	if(n==nil) [self _raiseParserException:@"Error decoding compressed object stream"];
 	if(![n isKindOfClass:[NSNumber class]]) [self _raiseParserException:@"Error decoding compressed object stream"];
 
 	NSNumber *first=dict[@"First"];
-	if(!first) [self _raiseParserException:@"Error decoding compressed object stream"];
+	if(first==nil) [self _raiseParserException:@"Error decoding compressed object stream"];
 	if(![first isKindOfClass:[NSNumber class]]) [self _raiseParserException:@"Error decoding compressed object stream"];
 
 	CSHandle *handle=[stream handle];
