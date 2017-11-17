@@ -137,7 +137,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 
 -(NSData *)imagePaletteData
 {
-	id colourspace=dict[@"ColorSpace"];
+	NSArray *colourspace=dict[@"ColorSpace"];
 	if(!colourspace) return nil;
 
 	if(![colourspace isKindOfClass:[NSArray class]]) return nil;
@@ -170,7 +170,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 
 -(id)_paletteColourSpaceObject
 {
-	id colourspace=dict[@"ColorSpace"];
+	NSArray *colourspace=dict[@"ColorSpace"];
 	if(!colourspace) return nil;
 
 	if(![colourspace isKindOfClass:[NSArray class]]) return nil;
@@ -353,7 +353,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 
 -(NSString *)imageSeparationName
 {
-	id colourspace=dict[@"ColorSpace"];
+	NSArray *colourspace=dict[@"ColorSpace"];
 	if(!colourspace) return nil;
 
 	if(![colourspace isKindOfClass:[NSArray class]]) return nil;
@@ -369,7 +369,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 
 -(NSArray *)imageDecodeArray
 {
-	id decode=dict[@"Decode"];
+	NSArray *decode=dict[@"Decode"];
 	if(!decode) return nil;
 
 	if(![decode isKindOfClass:[NSArray class]]) return nil;
@@ -384,7 +384,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 
 -(BOOL)hasMultipleFilters
 {
-	id filter=dict[@"Filter"];
+	NSArray *filter=dict[@"Filter"];
 
 	if(!filter) return NO;
 	else if([filter isKindOfClass:[NSArray class]]) return [filter count]>1;
