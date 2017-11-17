@@ -35,8 +35,9 @@ NSString *const CSFileErrorException=@"CSFileErrorException";
 	FILE *fileh=fopen(path.fileSystemRepresentation,modes.UTF8String);
 	#endif
 
-	if(!fileh) [NSException raise:CSCannotOpenFileException
-	format:@"Error attempting to open file \"%@\" in mode \"%@\" (%d).",path,modes, (int)errno];
+	if(!fileh) [[NSException exceptionWithName:CSCannotOpenFileException
+										reason: [NSString stringWithFormat:@"Error attempting to open file \"%@\" in mode \"%@\" (%d).",path,modes, (int)errno]
+									  userInfo:@{NSUnderlyingErrorKey: [NSError errorWithDomain:NSPOSIXErrorDomain code:errno userInfo:nil]}] raise];
 
 	CSFileHandle *handle=[[CSFileHandle alloc] initWithFilePointer:fileh closeOnDealloc:YES name:path];
 	if(handle) return handle;

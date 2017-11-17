@@ -58,26 +58,31 @@ NSString *const XADErrorDomain=@"de.dstoecker.xadmaster.error";
     {
         NSException *e=exception;
         NSString *name=[e name];
+		NSMutableDictionary *usrInfo = [NSMutableDictionary dictionaryWithDictionary:e.userInfo ?: @{}];
+		usrInfo[NSLocalizedFailureReasonErrorKey] = e.reason;
         if([name isEqual:XADExceptionName]) {
             XADError errVal = [[e userInfo][@"XADError"] intValue];
-            return [NSError errorWithDomain:XADErrorDomain code:errVal userInfo:@{NSLocalizedFailureReasonErrorKey: e.reason}];
+            return [NSError errorWithDomain:XADErrorDomain code:errVal userInfo:usrInfo];
         } else if([name isEqual:CSCannotOpenFileException]) {
-            return [NSError errorWithDomain:XADErrorDomain code:XADErrorOpenFile userInfo:@{NSLocalizedFailureReasonErrorKey: e.reason}];
+            return [NSError errorWithDomain:XADErrorDomain code:XADErrorOpenFile userInfo:usrInfo];
         } else if([name isEqual:CSFileErrorException]) {
-            int errNo = [[e userInfo][@"ErrNo"] intValue];
-            return [NSError errorWithDomain:NSPOSIXErrorDomain code:errNo userInfo:@{NSLocalizedFailureReasonErrorKey: e.reason}];
+			if (usrInfo && [usrInfo objectForKey:@"ErrNo"]) {
+				int errNo = [usrInfo[@"ErrNo"] intValue];
+				return [NSError errorWithDomain:NSPOSIXErrorDomain code:errNo userInfo:usrInfo];
+			}
+            return [NSError errorWithDomain:XADErrorDomain code:XADErrorUnknown userInfo:usrInfo];
         } else if([name isEqual:CSOutOfMemoryException]) {
             return [NSError errorWithDomain:XADErrorDomain code:XADErrorOutOfMemory userInfo:@{NSLocalizedFailureReasonErrorKey: e.reason}];
         } else if([name isEqual:CSEndOfFileException]) {
-            return [NSError errorWithDomain:XADErrorDomain code:XADErrorInput userInfo:@{NSLocalizedFailureReasonErrorKey: e.reason}];
+            return [NSError errorWithDomain:XADErrorDomain code:XADErrorInput userInfo:usrInfo];
         } else if([name isEqual:CSNotImplementedException]) {
-            return [NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:@{NSLocalizedFailureReasonErrorKey: e.reason}];
+            return [NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:usrInfo];
         } else if([name isEqual:CSNotSupportedException]) {
-            return [NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:@{NSLocalizedFailureReasonErrorKey: e.reason}];
+            return [NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:usrInfo];
         } else if([name isEqual:CSZlibException]) {
-            return [NSError errorWithDomain:XADErrorDomain code:XADErrorDecrunch userInfo:@{NSLocalizedFailureReasonErrorKey: e.reason}];
+            return [NSError errorWithDomain:XADErrorDomain code:XADErrorDecrunch userInfo:usrInfo];
         } else if([name isEqual:CSBzip2Exception]) {
-            return [NSError errorWithDomain:XADErrorDomain code:XADErrorDecrunch userInfo:@{NSLocalizedFailureReasonErrorKey: e.reason}];
+            return [NSError errorWithDomain:XADErrorDomain code:XADErrorDecrunch userInfo:usrInfo];
         }
     }
     

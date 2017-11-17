@@ -202,18 +202,18 @@ regex:(XADRegex *)regex firstFileExtension:(nullable NSString *)firstext;
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) XADPath *XADPath;
 -(XADPath *)XADPathWithString:(NSString *)string;
 -(XADPath *)XADPathWithUnseparatedString:(NSString *)string;
--(XADPath *)XADPathWithData:(NSData *)data separators:(const char *)separators;
--(XADPath *)XADPathWithData:(NSData *)data encodingName:(XADStringEncodingName)encoding separators:(const char *)separators;
--(XADPath *)XADPathWithBytes:(const void *)bytes length:(NSInteger)length separators:(const char *)separators;
--(XADPath *)XADPathWithBytes:(const void *)bytes length:(NSInteger)length encodingName:(XADStringEncodingName)encoding separators:(const char *)separators;
--(XADPath *)XADPathWithCString:(const char *)cstring separators:(const char *)separators;
--(XADPath *)XADPathWithCString:(const char *)cstring encodingName:(XADStringEncodingName)encoding separators:(const char *)separators;
+-(XADPath *)XADPathWithData:(NSData *)data separators:(XADPathSeparator)separators;
+-(XADPath *)XADPathWithData:(NSData *)data encodingName:(XADStringEncodingName)encoding separators:(XADPathSeparator)separators;
+-(XADPath *)XADPathWithBytes:(const void *)bytes length:(NSInteger)length separators:(XADPathSeparator)separators;
+-(XADPath *)XADPathWithBytes:(const void *)bytes length:(NSInteger)length encodingName:(XADStringEncodingName)encoding separators:(XADPathSeparator)separators;
+-(XADPath *)XADPathWithCString:(const char *)cstring separators:(XADPathSeparator)separators;
+-(XADPath *)XADPathWithCString:(const char *)cstring encodingName:(XADStringEncodingName)encoding separators:(XADPathSeparator)separators;
 
 @property (NS_NONATOMIC_IOSONLY, readonly, copy, nullable) NSData *encodedPassword;
 @property (NS_NONATOMIC_IOSONLY, readonly, nullable) const char *encodedCStringPassword;
 
 -(void)reportInterestingFileWithReason:(NSString *)reason,... NS_FORMAT_FUNCTION(1,2);
--(void)reportInterestingFileWithReason:(NSString *)reason format:(va_list)args;
+-(void)reportInterestingFileWithReason:(NSString *)reason format:(va_list)args NS_FORMAT_FUNCTION(1,0);
 
 
 
@@ -246,6 +246,8 @@ name:(NSString *)name;
 
 //! Exception-free wrapper for subclass method.
 -(nullable CSHandle *)handleForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict wantChecksum:(BOOL)checksum error:(nullable XADError *)errorptr NS_REFINED_FOR_SWIFT;
+//! Exception-free wrapper for subclass method.
+-(nullable CSHandle *)handleForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict wantChecksum:(BOOL)checksum nserror:(NSError *__autoreleasing __nullable*__nullable)errorptr ;
 
 @end
 

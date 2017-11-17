@@ -18,6 +18,11 @@ extension XADError: Error {
 		return Int(rawValue)
 	}
 }
+extension XADPath {
+	open func sanitizedPathString(withEncoding encoding: String.Encoding) -> String {
+		return __sanitizedPathString(withEncoding: encoding.rawValue)
+	}
+}
 
 extension XADError: CustomStringConvertible {
 	public var description: String {
@@ -59,14 +64,12 @@ extension XADArchiveParser {
 		}
 	}
 	
-	/// Exception-free wrapper for subclass method
-	@nonobjc open func handleForEntry(with dict: [XADArchiveKeys : Any], wantChecksum checksum: Bool) throws -> XADHandle {
-		var err = XADError.none
-		guard let newHandle = __handleForEntry(with: dict, wantChecksum: checksum, error: &err) else {
-			throw err
+	open func reportInterestingFile(withReason reason: String, _ args: [CVarArg]) {
+		withVaList(args) { (valist) -> Void in
+			reportInterestingFile(withReason: reason, format: valist)
 		}
-		return newHandle
 	}
+
 	
 	@available(*, deprecated, renamed: "testChecksum()")
 	@nonobjc open func testChecksumWithoutExceptions() throws {

@@ -9,10 +9,10 @@ typedef NS_ENUM(int, XADForkStyle) {
 	XADForkStyleVisibleAppleDouble = 3,
 	XADForkStyleHFVExplorerAppleDouble = 4,
 	
-#ifdef __APPLE__
+#if defined(__APPLE__) && TARGET_OS_OSX
 	XADForkStyleDefault = XADForkStyleMacOSX,
 #else
-	XADForkStyleDefault = XADVisibleAppleDoubleForkStyle,
+	XADForkStyleDefault = XADForkStyleVisibleAppleDouble,
 #endif
 };
 

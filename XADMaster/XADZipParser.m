@@ -819,7 +819,7 @@ isLastEntry:(BOOL)islastentry
 		const uint8_t *namebytes=namedata.bytes;
 		NSInteger namelength=namedata.length;
 
-		char *separators;
+		XADPathSeparator separators;
 		if(system==0)
 		{
 			// Kludge: IZArc claims to be MS-DOS, and uses DOS path separators.

@@ -1,10 +1,11 @@
 #import <Foundation/Foundation.h>
 #import "XADString.h"
 
-#define XADUnixPathSeparator "/"
-#define XADWindowsPathSeparator "\\"
-#define XADEitherPathSeparator "/\\"
-#define XADNoPathSeparator ""
+typedef const char* XADPathSeparator NS_TYPED_ENUM;
+extern XADPathSeparator XADUnixPathSeparator;
+extern XADPathSeparator XADWindowsPathSeparator;
+extern XADPathSeparator XADEitherPathSeparator;
+extern XADPathSeparator XADNoPathSeparator;
 
 @interface XADPath:NSObject <XADString,NSCopying>
 {
@@ -22,9 +23,9 @@
 +(instancetype)pathWithString:(NSString *)string;
 +(instancetype)pathWithStringComponents:(NSArray<NSString*> *)components;
 +(instancetype)separatedPathWithString:(NSString *)string;
-+(instancetype)decodedPathWithData:(NSData *)bytedata encodingName:(XADStringEncodingName)encoding separators:(const char *)separators;
++(instancetype)decodedPathWithData:(NSData *)bytedata encodingName:(XADStringEncodingName)encoding separators:(XADPathSeparator)separators;
 +(instancetype)analyzedPathWithData:(NSData *)bytedata source:(XADStringSource *)stringsource
-separators:(const char *)pathseparators;
+separators:(XADPathSeparator)pathseparators;
 
 -(instancetype)init NS_DESIGNATED_INITIALIZER;
 -(instancetype)initWithParent:(XADPath *)parentpath NS_DESIGNATED_INITIALIZER;
@@ -84,7 +85,7 @@ separators:(const char *)pathseparators;
 #ifdef __APPLE__
 -(BOOL)canDecodeWithEncoding:(NSStringEncoding)encoding;
 -(NSString *)stringWithEncoding:(NSStringEncoding)encoding;
--(NSString *)sanitizedPathStringWithEncoding:(NSStringEncoding)encoding;
+-(NSString *)sanitizedPathStringWithEncoding:(NSStringEncoding)encoding NS_REFINED_FOR_SWIFT;
 @property (NS_NONATOMIC_IOSONLY, readonly) NSStringEncoding encoding;
 #endif
 
@@ -139,14 +140,14 @@ separators:(const char *)pathseparators;
 {
 	NSData *data;
 	XADStringSource *source;
-	const char *separators;
+	XADPathSeparator separators;
 }
 
 -(instancetype)init UNAVAILABLE_ATTRIBUTE;
 -(instancetype)initWithData:(NSData *)bytedata source:(XADStringSource *)stringsource
-separators:(const char *)pathseparators NS_DESIGNATED_INITIALIZER;
+separators:(XADPathSeparator)pathseparators NS_DESIGNATED_INITIALIZER;
 -(instancetype)initWithData:(NSData *)bytedata source:(XADStringSource *)stringsource
-separators:(const char *)pathseparators parent:(XADPath *)parentpath NS_DESIGNATED_INITIALIZER;
+separators:(XADPathSeparator)pathseparators parent:(XADPath *)parentpath NS_DESIGNATED_INITIALIZER;
 -(instancetype)initWithPath:(XADRawPath *)path parent:(XADPath *)parentpath;
 -(instancetype)initWithParent:(XADPath *)parentpath NS_DESIGNATED_INITIALIZER;
 

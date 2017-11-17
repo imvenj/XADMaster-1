@@ -192,7 +192,7 @@ dataFork:(BOOL)datafork resourceFork:(BOOL)resfork;
 +(null_unspecified NSArray *)volumesForFile:(null_unspecified NSString *)filename DEPRECATED_ATTRIBUTE;
 
 -(int)sizeOfEntry:(int)n DEPRECATED_ATTRIBUTE;
--(void *)xadFileInfoForEntry:(int)n NS_RETURNS_INNER_POINTER DEPRECATED_ATTRIBUTE;
+-(null_unspecified void *)xadFileInfoForEntry:(int)n NS_RETURNS_INNER_POINTER DEPRECATED_ATTRIBUTE;
 -(BOOL)extractEntry:(int)n to:(null_unspecified NSString *)destination overrideWritePermissions:(BOOL)override DEPRECATED_ATTRIBUTE;
 -(BOOL)extractEntry:(int)n to:(null_unspecified NSString *)destination overrideWritePermissions:(BOOL)overrided resourceFork:(BOOL)resfork DEPRECATED_ATTRIBUTE;
 -(void)fixWritePermissions DEPRECATED_ATTRIBUTE;

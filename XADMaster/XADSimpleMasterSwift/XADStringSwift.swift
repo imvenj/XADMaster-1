@@ -24,18 +24,6 @@ extension XADStringProtocol {
 }
 
 extension XADString {
-	@nonobjc open func canDecode(withEncoding encoding: String.Encoding) -> Bool {
-		return __canDecode(withEncoding: encoding.rawValue)
-	}
-	
-	@nonobjc open func string(withEncoding encoding: String.Encoding) -> String? {
-		return __string(withEncoding: encoding.rawValue)
-	}
-	
-	@nonobjc open var encoding: String.Encoding {
-		return String.Encoding(rawValue: __encoding)
-	}
-
 	@nonobjc open class func encodingName(forEncoding encoding: String.Encoding) -> XADStringEncodingName {
 		return __encodingName(forEncoding: encoding.rawValue)
 	}

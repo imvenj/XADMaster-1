@@ -317,11 +317,10 @@ NSString *XADHumanReadableOSType(uint32_t ostype)
 	for(int i=0;i<4;i++)
 	{
 		uint8_t c=(ostype>>(24-i*8))&0xff;
-		if(c>=32&&c<=127) str[i]=c;
+		if(c>=32) str[i]=c;
 		else str[i]='?';
 	}
-	return [NSString stringWithFormat:@"%s (0x%08x)",str,ostype];
-
+	return [[NSString stringWithCString:str encoding:NSMacOSRomanStringEncoding] stringByAppendingFormat:@" (0x%08x)", ostype];
 }
 
 NSString *XADHumanReadableEntryWithDictionary(NSDictionary *dict,XADArchiveParser *parser)

@@ -756,7 +756,7 @@ static NSComparisonResult XADVolumeSort(id entry1,id entry2,void *extptr)
 
 	if(isfirst1&&!isfirst2) return NSOrderedAscending;
 	else if(!isfirst1&&isfirst2) return NSOrderedDescending;
-//    else return [str1 compare:str2 options:NSCaseInsensitiveSearch|NSNumericSearch];
+//	else return [str1 compare:str2 options:NSCaseInsensitiveSearch|NSNumericSearch];
 	else return [str1 compare:str2 options:NSCaseInsensitiveSearch];
 }
 
@@ -1165,7 +1165,7 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext
 	NSString *fullreason=[[NSString alloc] initWithFormat:reason arguments:args];
 	
 	[delegate archiveParser:self findsFileInterestingForReason:[NSString stringWithFormat:
-																@"%@: %@", self.formatName, fullreason]];
+	@"%@: %@", self.formatName, fullreason]];
 
 	[fullreason release];
 }
@@ -1226,60 +1226,149 @@ name:(NSString *)name { return nil; }
 }
 
 #pragma mark - NSError functions
+
 +(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry resourceForkDictionary:(NSDictionary *)forkentry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
 {
-	@try { return [self archiveParserForEntryWithDictionary:entry resourceForkDictionary:forkentry archiveParser:parser wantChecksum:checksum]; }
-	@catch(id exception) { if(errorptr) *errorptr=[XADException parseExceptionReturningNSError:exception]; }
+	@try {
+		return [self archiveParserForEntryWithDictionary:entry resourceForkDictionary:forkentry archiveParser:parser wantChecksum:checksum];
+	} @catch(id exception) {
+		if(errorptr) {
+			*errorptr=[XADException parseExceptionReturningNSError:exception];
+		}
+		return nil;
+	}
+	if (errorptr) {
+		*errorptr = [NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:nil];
+	}
 	return nil;
 }
 
 -(XADString *)linkDestinationForDictionary:(NSDictionary *)dict nserror:(NSError *__autoreleasing __nullable*__nullable)errorptr
 {
-	@try { return [self linkDestinationForDictionary:dict]; }
-	@catch(id exception) { if(errorptr) *errorptr=[XADException parseExceptionReturningNSError:exception]; }
+	@try {
+		return [self linkDestinationForDictionary:dict];
+	} @catch(id exception) {
+		if(errorptr) {
+			*errorptr=[XADException parseExceptionReturningNSError:exception];
+		}
+		return nil;
+	}
+	if (errorptr) {
+		*errorptr = [NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:nil];
+	}
 	return nil;
 }
 
 +(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
 {
-	@try { return [self archiveParserForEntryWithDictionary:entry resourceForkDictionary:nil archiveParser:parser wantChecksum:checksum]; }
-	@catch(id exception) { if(errorptr) *errorptr=[XADException parseExceptionReturningNSError:exception]; }
+	@try {
+		return [self archiveParserForEntryWithDictionary:entry resourceForkDictionary:nil archiveParser:parser wantChecksum:checksum];
+	} @catch(id exception) {
+		if(errorptr) {
+			*errorptr=[XADException parseExceptionReturningNSError:exception];
+		}
+		return nil;
+	}
+	if (errorptr) {
+		*errorptr = [NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:nil];
+	}
 	return nil;
 }
 
 +(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle name:(NSString *)name nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
 {
-	@try { return [self archiveParserForHandle:handle resourceFork:nil name:name]; }
-	@catch(id exception) { if(errorptr) *errorptr=[XADException parseExceptionReturningNSError:exception]; }
+	@try {
+		return [self archiveParserForHandle:handle resourceFork:nil name:name];
+	} @catch(id exception) {
+		if(errorptr) {
+			*errorptr=[XADException parseExceptionReturningNSError:exception];
+		}
+		return nil;
+	}
+	if (errorptr) {
+		*errorptr = [NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:nil];
+	}
 	return nil;
 }
 
 +(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header resourceFork:(XADResourceFork *)fork name:(NSString *)name nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
 {
-	@try { return [self archiveParserForHandle:handle firstBytes:header resourceFork:fork name:name]; }
-	@catch(id exception) { if(errorptr) *errorptr=[XADException parseExceptionReturningNSError:exception]; }
+	@try {
+		return [self archiveParserForHandle:handle firstBytes:header resourceFork:fork name:name];
+	} @catch(id exception) {
+		if(errorptr) {
+			*errorptr=[XADException parseExceptionReturningNSError:exception];
+		}
+		return nil;
+	}
+	if (errorptr) {
+		*errorptr = [NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:nil];
+	}
 	return nil;
 }
 
 +(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header name:(NSString *)name nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
 {
-	@try { return [self archiveParserForHandle:handle firstBytes:header resourceFork:nil name:name]; }
-	@catch(id exception) { if(errorptr) *errorptr=[XADException parseExceptionReturningNSError:exception]; }
+	@try {
+		return [self archiveParserForHandle:handle firstBytes:header resourceFork:nil name:name];
+	} @catch(id exception) {
+		if(errorptr) {
+			*errorptr=[XADException parseExceptionReturningNSError:exception];
+		}
+		return nil;
+	}
+	if (errorptr) {
+		*errorptr = [NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:nil];
+	}
 	return nil;
 }
 
 +(XADArchiveParser *)archiveParserForPath:(NSString *)filename nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
 {
-	@try { return [self archiveParserForPath:filename]; }
-	@catch(id exception) { if(errorptr) *errorptr=[XADException parseExceptionReturningNSError:exception]; }
+	@try {
+		return [self archiveParserForPath:filename];
+	} @catch(id exception) {
+		if(errorptr)
+			*errorptr=[XADException parseExceptionReturningNSError:exception];
+		
+		return nil;
+	}
+	if (errorptr) {
+		*errorptr = [NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:@{NSFilePathErrorKey: filename}];
+	}
 	return nil;
 }
 
 +(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle resourceFork:(XADResourceFork *)fork name:(NSString *)name nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
 {
 	@try { return [self archiveParserForHandle:handle resourceFork:fork name:name]; }
-	@catch(id exception) { if(errorptr) *errorptr=[XADException parseExceptionReturningNSError:exception]; }
+	@catch(id exception) {
+		if(errorptr) {
+			*errorptr=[XADException parseExceptionReturningNSError:exception];
+		}
+		return nil;
+	}
+	if (errorptr) {
+		*errorptr = [NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:nil];
+	}
 	return nil;
+}
+
+-(XADHandle *)handleForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict wantChecksum:(BOOL)checksum nserror:(NSError * _Nullable *)errorptr
+{
+	@try
+	{
+		CSHandle *handle=[self handleForEntryWithDictionary:dict wantChecksum:checksum];
+		if(!handle&&errorptr) *errorptr=[NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:nil];
+		return handle;
+	}
+	@catch(id exception)
+	{
+		if(errorptr) *errorptr=[XADException parseExceptionReturningNSError:exception];
+	}
+	
+	return nil;
+	
 }
 
 #pragma mark -
