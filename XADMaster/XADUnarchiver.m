@@ -238,7 +238,7 @@
 
 	// Report success or failure
 	end:
-	if(delegate)
+	if(delegate && [delegate respondsToSelector:@selector(unarchiver:didExtractEntryWithDictionary:to:error:)])
 	{
 		[delegate unarchiver:self didExtractEntryWithDictionary:dict to:path error:error];
 	}

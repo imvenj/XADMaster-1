@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 	NSMutableSet *resourceforks;
 	id metadata;
 	NSString *unpackdestination,*finaldestination,*overridesoloitem;
-	int numextracted;
+	NSInteger numextracted;
 
 	NSString *toplevelname;
 	BOOL lookslikesolo;
@@ -55,13 +55,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (NS_NONATOMIC_IOSONLY, readonly, strong) XADArchiveParser *innerArchiveParser;
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray<NSString*> *reasonsForInterest;
 
-@property (NS_NONATOMIC_IOSONLY, assign, nullable) id<XADSimpleUnarchiverDelegate> delegate;
+@property (NS_NONATOMIC_IOSONLY, weak, nullable) id<XADSimpleUnarchiverDelegate> delegate;
 
 // TODO: Encoding wrappers?
 
-@property (NS_NONATOMIC_IOSONLY, copy) NSString *password;
+@property (NS_NONATOMIC_IOSONLY, copy, nullable) NSString *password;
 
-@property (NS_NONATOMIC_IOSONLY, copy) NSString *destination;
+@property (NS_NONATOMIC_IOSONLY, copy, nullable) NSString *destination;
 
 @property (NS_NONATOMIC_IOSONLY, copy) NSString *enclosingDirectoryName;
 
@@ -97,7 +97,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (NS_NONATOMIC_IOSONLY, readonly) off_t predictedTotalSize;
 -(off_t)predictedTotalSizeIgnoringUnknownFiles:(BOOL)ignoreunknown;
 
-@property (NS_NONATOMIC_IOSONLY, readonly) int numberOfItemsExtracted;
+@property (NS_NONATOMIC_IOSONLY, readonly) NSInteger numberOfItemsExtracted;
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL wasSoloItem;
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *actualDestination;
 @property (NS_NONATOMIC_IOSONLY, readonly, copy, nullable) NSString *soloItem;
