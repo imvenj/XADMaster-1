@@ -75,9 +75,9 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 
 -(instancetype)initWithFile:(NSString *)file { return [self initWithFile:file delegate:nil error:NULL]; }
 
--(instancetype)initWithFile:(NSString *)file error:(NSError *_Nullable __autoreleasing *_Nullable)error { return [self initWithFile:file delegate:nil error:error]; }
+-(instancetype)initWithFile:(NSString *)file error:(XADError *)error { return [self initWithFile:file delegate:nil error:error]; }
 
--(instancetype)initWithFile:(NSString *)file delegate:(id)del error:(NSError *_Nullable __autoreleasing *_Nullable)error
+-(instancetype)initWithFile:(NSString *)file delegate:(id)del error:(XADError *)error
 {
 	if((self=[self init]))
 	{
@@ -86,11 +86,9 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 		parser=[XADArchiveParser archiveParserForPath:file error:error];
 		if(parser)
 		{
-            XADError tmpErr = 0;
-			if([self _parseWithErrorPointer:&tmpErr]) return self;
-			if(error) *error=[NSError errorWithDomain:XADErrorDomain code:tmpErr userInfo:nil];
+			if([self _parseWithErrorPointer:error]) return self;
 		}
-        else if(error) *error=[NSError errorWithDomain:XADErrorDomain code:XADErrorDataFormat userInfo:nil];
+		else if(error) *error=XADErrorDataFormat;
 	}
 
 	return nil;
@@ -100,9 +98,9 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 
 -(instancetype)initWithData:(NSData *)data { return [self initWithData:data delegate:nil error:NULL]; }
 
--(instancetype)initWithData:(NSData *)data error:(NSError *_Nullable __autoreleasing *_Nullable)error { return [self initWithData:data delegate:nil error:error]; }
+-(instancetype)initWithData:(NSData *)data error:(XADError *)error { return [self initWithData:data delegate:nil error:error]; }
 
--(instancetype)initWithData:(NSData *)data delegate:(id)del error:(NSError *_Nullable __autoreleasing *_Nullable)error
+-(instancetype)initWithData:(NSData *)data delegate:(id)del error:(XADError *)error
 {
 	if((self=[self init]))
 	{
@@ -111,13 +109,9 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 		parser=[XADArchiveParser archiveParserForHandle:[CSMemoryHandle memoryHandleForReadingData:data] name:@""];
 		if(parser)
 		{
-            XADError tmpErr;
-			if([self _parseWithErrorPointer:&tmpErr]) return self;
-            if (error) {
-                *error = [NSError errorWithDomain:XADErrorDomain code:tmpErr userInfo:nil];
-            }
+			if([self _parseWithErrorPointer:error]) return self;
 		}
-        else if(error) *error=[NSError errorWithDomain:XADErrorDomain code:XADErrorDataFormat userInfo:nil];
+		else if(error) *error=XADErrorDataFormat;
 	}
 	return nil;
 }
@@ -126,16 +120,18 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 
 -(instancetype)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n { return [self initWithArchive:otherarchive entry:n delegate:nil error:NULL]; }
 
--(instancetype)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n error:(NSError *_Nullable __autoreleasing *_Nullable)error { return [self initWithArchive:otherarchive entry:n delegate:nil error:error]; }
+-(instancetype)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n error:(XADError *)error { return [self initWithArchive:otherarchive entry:n delegate:nil error:error]; }
 
--(instancetype)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n delegate:(id)del error:(NSError *_Nullable __autoreleasing *_Nullable)error
+-(instancetype)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n nserror:(NSError *_Nullable __autoreleasing *_Nullable)error { return [self initWithArchive:otherarchive entry:n delegate:nil nserror:error]; }
+
+-(instancetype)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n delegate:(id)del nserror:(NSError *_Nullable __autoreleasing *_Nullable)error
 {
 	if((self=[self init]))
 	{
 		parentarchive=otherarchive;
 		delegate=del;
 
-		CSHandle *handle=[otherarchive handleForEntry:n error:error];
+		CSHandle *handle=[otherarchive handleForEntry:n nserror:error];
 		if(handle)
 		{
 			parser=[XADArchiveParser archiveParserForHandle:handle name:[otherarchive nameOfEntry:n]];
@@ -155,14 +151,78 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 }
 
 -(instancetype)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n
-     immediateExtractionTo:(NSString *)destination error:(NSError *_Nullable __autoreleasing *_Nullable)error
+     immediateExtractionTo:(NSString *)destination error:(XADError *)error
 {
 	return [self initWithArchive:otherarchive entry:n immediateExtractionTo:destination
 	subArchives:NO error:error];
 }
 
 -(instancetype)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n
-     immediateExtractionTo:(NSString *)destination subArchives:(BOOL)sub error:(NSError *_Nullable __autoreleasing *_Nullable)error
+     immediateExtractionTo:(NSString *)destination subArchives:(BOOL)sub error:(XADError *)error
+{
+	if((self=[self init]))
+	{
+		parentarchive=otherarchive;
+		immediatedestination=destination;
+		immediatesubarchives=sub;
+		delegate=otherarchive;
+		
+		immediatesize=[otherarchive representativeSizeOfEntry:n];
+		
+		parser=[XADArchiveParser archiveParserForEntryWithDictionary:
+				[otherarchive dataForkParserDictionaryForEntry:n]
+													   archiveParser:otherarchive->parser wantChecksum:YES error:error];
+		if(parser)
+		{
+			if([self _parseWithErrorPointer:error])
+			{
+				if(!immediatefailed)
+				{
+					XADError checksumerror=[parser testChecksumWithoutExceptions];
+					if(checksumerror)
+					{
+						lasterror=checksumerror;
+						if(error) *error=checksumerror;
+						immediatefailed=YES;
+					}
+				}
+				
+				[self updateAttributesForDeferredDirectories];
+				immediatedestination=nil;
+				return self;
+			}
+		}
+		else if(error) *error=XADErrorSubArchive;
+	}
+	
+	return nil;
+}
+
+-(instancetype)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n delegate:(id)del error:(XADError *)error
+{
+	if((self=[self init]))
+	{
+		parentarchive=otherarchive;
+		delegate=del;
+		
+		CSHandle *handle=[otherarchive handleForEntry:n error:error];
+		if(handle)
+		{
+			parser=[XADArchiveParser archiveParserForHandle:handle name:[otherarchive nameOfEntry:n]];
+			if(parser)
+			{
+				if([self _parseWithErrorPointer:error]) return self;
+			}
+			else if(error) *error=XADErrorDataFormat;
+		}
+	}
+	
+	return nil;
+}
+
+
+-(instancetype)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n
+     immediateExtractionTo:(NSString *)destination subArchives:(BOOL)sub nserror:(NSError *_Nullable __autoreleasing *_Nullable)error
 {
 	if((self=[self init]))
 	{
@@ -175,7 +235,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 
 		parser=[XADArchiveParser archiveParserForEntryWithDictionary:
 				[otherarchive dataForkParserDictionaryForEntry:n]
-													   archiveParser:otherarchive->parser wantChecksum:YES error:error];
+													   archiveParser:otherarchive->parser wantChecksum:YES nserror:error];
 		if(parser)
 		{
             XADError tmpErr;
@@ -657,7 +717,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	return [self handleForEntry:n error:NULL];
 }
 
--(CSHandle *)handleForEntry:(NSInteger)n error:(NSError *_Nullable __autoreleasing *_Nullable)error
+-(CSHandle *)handleForEntry:(NSInteger)n error:(XADError *)error
 {
 	NSDictionary *dict=[self dataForkParserDictionaryForEntry:n];
 	if(!dict) return [CSMemoryHandle memoryHandleForReadingData:[NSData data]]; // Special case for files with only a resource fork
@@ -667,7 +727,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	@catch(id e)
 	{
 		lasterror=[XADException parseException:e];
-		if(error) *error=[XADException parseExceptionReturningNSError:e];
+		if(error) *error=lasterror;
 	}
 	return nil;
 }
@@ -677,7 +737,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	return [self resourceHandleForEntry:n error:NULL];
 }
 
--(CSHandle *)resourceHandleForEntry:(NSInteger)n error:(NSError *_Nullable __autoreleasing *_Nullable)error
+-(CSHandle *)resourceHandleForEntry:(NSInteger)n error:(XADError *)error
 {
 	NSDictionary *resdict=[self resourceForkParserDictionaryForEntry:n];
 	if(!resdict) return nil;
@@ -689,7 +749,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	@catch(id e)
 	{
 		lasterror=[XADException parseException:e];
-		if(error) *error=[XADException parseExceptionReturningNSError:e];
+		if(error) *error=lasterror;
 	}
 	return nil;
 }
@@ -869,17 +929,11 @@ dataFork:(BOOL)datafork resourceFork:(BOOL)resfork
 	for(;;)
 	{
 		XADError err;
-		NSError *tmperr;
 		XADArchive *subarchive=[[XADArchive alloc] initWithArchive:self entry:n
-		immediateExtractionTo:path subArchives:YES error:&tmperr];
+		immediateExtractionTo:path subArchives:YES error:&err];
 
 		if(!subarchive)
 		{
-			if ([tmperr.domain isEqualToString:XADErrorDomain]) {
-				err = (XADError)tmperr.code;
-			} else {
-				err = XADErrorUnknown;
-			}
 			lasterror=err;
 		}
 		else
@@ -1174,6 +1228,92 @@ fileFraction:(double)fileprogress estimatedTotalFraction:(double)totalprogress
 
 //-(void)archive:(XADArchive *)arc extractionProgressFiles:(int)files of:(int)total;
 //{}
+
+# pragma mark - NSError functions
+
+-(CSHandle *)resourceHandleForEntry:(NSInteger)n nserror:(NSError *_Nullable __autoreleasing *_Nullable)error
+{
+	NSDictionary *resdict=[self resourceForkParserDictionaryForEntry:n];
+	if(!resdict) return nil;
+	NSNumber *isdir=resdict[XADIsDirectoryKey];
+	if(isdir&&isdir.boolValue) return nil;
+	
+	@try
+	{ return [parser handleForEntryWithDictionary:resdict wantChecksum:YES]; }
+	@catch(id e)
+	{
+		lasterror=[XADException parseException:e];
+		if(error) *error=[XADException parseExceptionReturningNSError:e];
+	}
+	return nil;
+}
+
+-(CSHandle *)handleForEntry:(NSInteger)n nserror:(NSError *_Nullable __autoreleasing *_Nullable)error
+{
+	NSDictionary *dict=[self dataForkParserDictionaryForEntry:n];
+	if(!dict) return [CSMemoryHandle memoryHandleForReadingData:[NSData data]]; // Special case for files with only a resource fork
+	
+	@try
+	{ return [parser handleForEntryWithDictionary:dict wantChecksum:YES]; }
+	@catch(id e)
+	{
+		lasterror=[XADException parseException:e];
+		if(error) *error=[XADException parseExceptionReturningNSError:e];
+	}
+	return nil;
+}
+
+-(instancetype)initWithFile:(NSString *)file nserror:(NSError *_Nullable __autoreleasing *_Nullable)error { return [self initWithFile:file delegate:nil nserror:error]; }
+
+-(instancetype)initWithFile:(NSString *)file delegate:(id)del nserror:(NSError *_Nullable __autoreleasing *_Nullable)error
+{
+	if((self=[self init]))
+	{
+		delegate=del;
+		
+		parser=[XADArchiveParser archiveParserForPath:file nserror:error];
+		if(parser)
+		{
+			XADError tmpErr = 0;
+			if([self _parseWithErrorPointer:&tmpErr]) return self;
+			if(error) *error=[NSError errorWithDomain:XADErrorDomain code:tmpErr userInfo:nil];
+		}
+		else if(error) *error=[NSError errorWithDomain:XADErrorDomain code:XADErrorDataFormat userInfo:nil];
+	}
+	
+	return nil;
+}
+
+
+
+-(instancetype)initWithData:(NSData *)data nserror:(NSError *_Nullable __autoreleasing *_Nullable)error { return [self initWithData:data delegate:nil nserror:error]; }
+
+-(instancetype)initWithData:(NSData *)data delegate:(id)del nserror:(NSError *_Nullable __autoreleasing *_Nullable)error
+{
+	if((self=[self init]))
+	{
+		delegate=del;
+		
+		parser=[XADArchiveParser archiveParserForHandle:[CSMemoryHandle memoryHandleForReadingData:data] name:@""];
+		if(parser)
+		{
+			XADError tmpErr;
+			if([self _parseWithErrorPointer:&tmpErr]) return self;
+			if (error) {
+				*error = [NSError errorWithDomain:XADErrorDomain code:tmpErr userInfo:nil];
+			}
+		}
+		else if(error) *error=[NSError errorWithDomain:XADErrorDomain code:XADErrorDataFormat userInfo:nil];
+	}
+	return nil;
+}
+
+-(instancetype)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n
+		 immediateExtractionTo:(NSString *)destination nserror:(NSError *_Nullable __autoreleasing *_Nullable)error
+{
+	return [self initWithArchive:otherarchive entry:n immediateExtractionTo:destination
+					 subArchives:NO nserror:error];
+}
 
 @end
 

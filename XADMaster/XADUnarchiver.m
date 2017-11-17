@@ -26,9 +26,16 @@
 	return [self unarchiverForPath:path error:NULL];
 }
 
-+(XADUnarchiver *)unarchiverForPath:(NSString *)path error:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
++(XADUnarchiver *)unarchiverForPath:(NSString *)path error:(XADError *)errorptr
 {
 	XADArchiveParser *archiveparser=[XADArchiveParser archiveParserForPath:path error:errorptr];
+	if(!archiveparser) return nil;
+	return [[self alloc] initWithArchiveParser:archiveparser];
+}
+
++(XADUnarchiver *)unarchiverForPath:(NSString *)path nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
+{
+	XADArchiveParser *archiveparser=[XADArchiveParser archiveParserForPath:path nserror:errorptr];
 	if(!archiveparser) return nil;
 	return [[self alloc] initWithArchiveParser:archiveparser];
 }
@@ -325,14 +332,21 @@ static NSComparisonResult SortDirectoriesByDepthAndResource(id entry1,id entry2,
 
 
 -(XADUnarchiver *)unarchiverForEntryWithDictionary:(NSDictionary *)dict
-wantChecksum:(BOOL)checksum error:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
+wantChecksum:(BOOL)checksum nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
 {
 	return [self unarchiverForEntryWithDictionary:dict resourceForkDictionary:nil
-	wantChecksum:checksum error:errorptr];
+	wantChecksum:checksum nserror:errorptr];
 }
 
 -(XADUnarchiver *)unarchiverForEntryWithDictionary:(NSDictionary *)dict
-resourceForkDictionary:(NSDictionary *)forkdict wantChecksum:(BOOL)checksum error:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
+wantChecksum:(BOOL)checksum error:(XADError *)errorptr
+{
+	return [self unarchiverForEntryWithDictionary:dict resourceForkDictionary:nil
+									 wantChecksum:checksum error:errorptr];
+}
+
+-(XADUnarchiver *)unarchiverForEntryWithDictionary:(NSDictionary *)dict
+resourceForkDictionary:(NSDictionary *)forkdict wantChecksum:(BOOL)checksum error:(XADError*)errorptr
 {
 	XADArchiveParser *subparser=[XADArchiveParser
 	archiveParserForEntryWithDictionary:dict
@@ -350,6 +364,24 @@ resourceForkDictionary:(NSDictionary *)forkdict wantChecksum:(BOOL)checksum erro
 	return subunarchiver;
 }
 
+-(XADUnarchiver *)unarchiverForEntryWithDictionary:(NSDictionary *)dict
+							resourceForkDictionary:(NSDictionary *)forkdict wantChecksum:(BOOL)checksum nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
+{
+	XADArchiveParser *subparser=[XADArchiveParser
+								 archiveParserForEntryWithDictionary:dict
+								 resourceForkDictionary:forkdict
+								 archiveParser:parser wantChecksum:checksum nserror:errorptr];
+	if(!subparser) return nil;
+	
+	XADUnarchiver *subunarchiver=[XADUnarchiver unarchiverForArchiveParser:subparser];
+	subunarchiver.delegate = delegate;
+	subunarchiver.destination = destination;
+	subunarchiver.macResourceForkStyle = forkstyle;
+	subunarchiver.preservesPermissions = preservepermissions;
+	subunarchiver.updateInterval = updateinterval;
+	
+	return subunarchiver;
+}
 
 
 
@@ -410,17 +442,11 @@ resourceForkDictionary:(NSDictionary *)forkdict wantChecksum:(BOOL)checksum erro
 
 -(XADError)_extractArchiveEntryWithDictionary:(NSDictionary *)dict to:(NSString *)destpath name:(NSString *)filename
 {
-	XADError error = 0;
-    NSError *nsErr;
+	XADError error;
 	XADUnarchiver *subunarchiver=[self unarchiverForEntryWithDictionary:dict
-	wantChecksum:YES error:&nsErr];
+	wantChecksum:YES error:&error];
 	if(!subunarchiver)
 	{
-        if (nsErr) {
-            if ([nsErr.domain isEqualToString:XADErrorDomain]) {
-                return (int)nsErr.code;
-            }
-        }
 		if(error) return error;
 		else return XADErrorSubArchive;
 	}

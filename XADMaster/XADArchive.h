@@ -89,18 +89,29 @@ extern NSString *const XADFinderFlags;
 
 -(instancetype)init NS_DESIGNATED_INITIALIZER;
 -(nullable instancetype)initWithFile:(NSString *)file NS_SWIFT_UNAVAILABLE("Call throws on failure");
--(nullable instancetype)initWithFile:(NSString *)file error:(NSError *_Nullable __autoreleasing *_Nullable)error;
--(nullable instancetype)initWithFile:(NSString *)file delegate:(nullable id<XADArchiveDelegate>)del error:(NSError *_Nullable __autoreleasing *_Nullable)error;
+-(nullable instancetype)initWithFile:(NSString *)file error:(nullable XADError *)error;
+-(nullable instancetype)initWithFile:(NSString *)file delegate:(nullable id<XADArchiveDelegate>)del error:(nullable XADError *)error;
 -(instancetype)initWithData:(NSData *)data NS_SWIFT_UNAVAILABLE("Call throws on failure");
--(nullable instancetype)initWithData:(NSData *)data error:(NSError *_Nullable __autoreleasing *_Nullable)error;
--(nullable instancetype)initWithData:(NSData *)data delegate:(nullable id<XADArchiveDelegate>)del error:(NSError *_Nullable __autoreleasing *_Nullable)error;
+-(nullable instancetype)initWithData:(NSData *)data error:(nullable XADError *)error;
+-(nullable instancetype)initWithData:(NSData *)data delegate:(nullable id<XADArchiveDelegate>)del error:(nullable XADError *)error;
 -(instancetype)initWithArchive:(XADArchive *)archive entry:(NSInteger)n NS_SWIFT_UNAVAILABLE("Call throws on failure");
--(nullable instancetype)initWithArchive:(XADArchive *)archive entry:(NSInteger)n error:(NSError *_Nullable __autoreleasing *_Nullable)error;
--(nullable instancetype)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n delegate:(nullable id<XADArchiveDelegate>)del error:(NSError *_Nullable __autoreleasing *_Nullable)error;
+-(nullable instancetype)initWithArchive:(XADArchive *)archive entry:(NSInteger)n error:(nullable XADError *)error;
+-(nullable instancetype)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n delegate:(nullable id<XADArchiveDelegate>)del error:(nullable XADError *)error;
 -(nullable instancetype)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n
-     immediateExtractionTo:(NSString *)destination error:(NSError *_Nullable __autoreleasing *_Nullable)error;
+     immediateExtractionTo:(NSString *)destination error:(nullable XADError *)error;
 -(nullable instancetype)initWithArchive:(nullable XADArchive *)otherarchive entry:(NSInteger)n
-     immediateExtractionTo:(NSString *)destination subArchives:(BOOL)sub error:(NSError *_Nullable __autoreleasing *_Nullable)error;
+     immediateExtractionTo:(NSString *)destination subArchives:(BOOL)sub error:(nullable XADError *)error;
+
+-(nullable instancetype)initWithFile:(NSString *)file nserror:(NSError *_Nullable __autoreleasing *_Nullable)error;
+-(nullable instancetype)initWithFile:(NSString *)file delegate:(nullable id<XADArchiveDelegate>)del nserror:(NSError *_Nullable __autoreleasing *_Nullable)error;
+-(nullable instancetype)initWithData:(NSData *)data nserror:(NSError *_Nullable __autoreleasing *_Nullable)error;
+-(nullable instancetype)initWithData:(NSData *)data delegate:(nullable id<XADArchiveDelegate>)del nserror:(NSError *_Nullable __autoreleasing *_Nullable)error;
+-(nullable instancetype)initWithArchive:(XADArchive *)archive entry:(NSInteger)n nserror:(NSError *_Nullable __autoreleasing *_Nullable)error;
+-(nullable instancetype)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n delegate:(nullable id<XADArchiveDelegate>)del nserror:(NSError *_Nullable __autoreleasing *_Nullable)error;
+-(nullable instancetype)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n
+immediateExtractionTo:(NSString *)destination nserror:(NSError *_Nullable __autoreleasing *_Nullable)error;
+-(nullable instancetype)initWithArchive:(nullable XADArchive *)otherarchive entry:(NSInteger)n
+immediateExtractionTo:(NSString *)destination subArchives:(BOOL)sub nserror:(NSError *_Nullable __autoreleasing *_Nullable)error;
 
 -(BOOL)_parseWithErrorPointer:(nullable XADError *)error;
 
@@ -148,9 +159,11 @@ extern NSString *const XADFinderFlags;
 -(NSDictionary<NSFileAttributeKey,id> *)attributesOfEntry:(NSInteger)n;
 -(NSDictionary<NSFileAttributeKey,id> *)attributesOfEntry:(NSInteger)n withResourceFork:(BOOL)resfork;
 -(CSHandle *)handleForEntry:(NSInteger)n NS_SWIFT_UNAVAILABLE("Use error-throwing type instead");
--(nullable CSHandle *)handleForEntry:(NSInteger)n error:(NSError *_Nullable __autoreleasing *_Nullable)error;
+-(nullable CSHandle *)handleForEntry:(NSInteger)n error:(nullable XADError *)error NS_REFINED_FOR_SWIFT;
+-(nullable CSHandle *)handleForEntry:(NSInteger)n nserror:(NSError *_Nullable __autoreleasing *_Nullable)error;
 -(CSHandle *)resourceHandleForEntry:(NSInteger)n NS_SWIFT_UNAVAILABLE("Use error-throwing type instead");
--(nullable CSHandle *)resourceHandleForEntry:(NSInteger)n error:(NSError *_Nullable __autoreleasing *_Nullable)error;
+-(nullable CSHandle *)resourceHandleForEntry:(NSInteger)n error:(nullable XADError *)error NS_REFINED_FOR_SWIFT;
+-(nullable CSHandle *)resourceHandleForEntry:(NSInteger)n nserror:(NSError *_Nullable __autoreleasing *_Nullable)error;
 -(nullable NSData *)contentsOfEntry:(NSInteger)n NS_REFINED_FOR_SWIFT;
 //-(NSData *)resourceContentsOfEntry:(int)n;
 
