@@ -1230,7 +1230,10 @@ name:(NSString *)name { return nil; }
 +(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry resourceForkDictionary:(NSDictionary *)forkentry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
 {
 	@try {
-		return [self archiveParserForEntryWithDictionary:entry resourceForkDictionary:forkentry archiveParser:parser wantChecksum:checksum];
+		XADArchiveParser *tmpParse = [self archiveParserForEntryWithDictionary:entry resourceForkDictionary:forkentry archiveParser:parser wantChecksum:checksum];
+		if (tmpParse) {
+			return tmpParse;
+		}
 	} @catch(id exception) {
 		if(errorptr) {
 			*errorptr=[XADException parseExceptionReturningNSError:exception];
@@ -1246,7 +1249,10 @@ name:(NSString *)name { return nil; }
 -(XADString *)linkDestinationForDictionary:(NSDictionary *)dict nserror:(NSError *__autoreleasing __nullable*__nullable)errorptr
 {
 	@try {
-		return [self linkDestinationForDictionary:dict];
+		XADString *tmpParse = [self linkDestinationForDictionary:dict];
+		if (tmpParse) {
+			return tmpParse;
+		}
 	} @catch(id exception) {
 		if(errorptr) {
 			*errorptr=[XADException parseExceptionReturningNSError:exception];
@@ -1262,7 +1268,10 @@ name:(NSString *)name { return nil; }
 +(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
 {
 	@try {
-		return [self archiveParserForEntryWithDictionary:entry resourceForkDictionary:nil archiveParser:parser wantChecksum:checksum];
+		XADArchiveParser *tmpParse = [self archiveParserForEntryWithDictionary:entry resourceForkDictionary:nil archiveParser:parser wantChecksum:checksum];
+		if (tmpParse) {
+			return tmpParse;
+		}
 	} @catch(id exception) {
 		if(errorptr) {
 			*errorptr=[XADException parseExceptionReturningNSError:exception];
@@ -1278,7 +1287,10 @@ name:(NSString *)name { return nil; }
 +(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle name:(NSString *)name nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
 {
 	@try {
-		return [self archiveParserForHandle:handle resourceFork:nil name:name];
+		XADArchiveParser *tmpParse = [self archiveParserForHandle:handle resourceFork:nil name:name];
+		if (tmpParse) {
+			return tmpParse;
+		}
 	} @catch(id exception) {
 		if(errorptr) {
 			*errorptr=[XADException parseExceptionReturningNSError:exception];
@@ -1294,7 +1306,10 @@ name:(NSString *)name { return nil; }
 +(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header resourceFork:(XADResourceFork *)fork name:(NSString *)name nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
 {
 	@try {
-		return [self archiveParserForHandle:handle firstBytes:header resourceFork:fork name:name];
+		XADArchiveParser *tmpParse = [self archiveParserForHandle:handle firstBytes:header resourceFork:fork name:name];
+		if (tmpParse) {
+			return tmpParse;
+		}
 	} @catch(id exception) {
 		if(errorptr) {
 			*errorptr=[XADException parseExceptionReturningNSError:exception];
@@ -1310,7 +1325,10 @@ name:(NSString *)name { return nil; }
 +(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header name:(NSString *)name nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
 {
 	@try {
-		return [self archiveParserForHandle:handle firstBytes:header resourceFork:nil name:name];
+		XADArchiveParser *tmpParse = [self archiveParserForHandle:handle firstBytes:header resourceFork:nil name:name];
+		if (tmpParse) {
+			return tmpParse;
+		}
 	} @catch(id exception) {
 		if(errorptr) {
 			*errorptr=[XADException parseExceptionReturningNSError:exception];
@@ -1326,7 +1344,10 @@ name:(NSString *)name { return nil; }
 +(XADArchiveParser *)archiveParserForPath:(NSString *)filename nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
 {
 	@try {
-		return [self archiveParserForPath:filename];
+		XADArchiveParser *tmpParse = [self archiveParserForPath:filename];
+		if (tmpParse) {
+			return tmpParse;
+		}
 	} @catch(id exception) {
 		if(errorptr)
 			*errorptr=[XADException parseExceptionReturningNSError:exception];
