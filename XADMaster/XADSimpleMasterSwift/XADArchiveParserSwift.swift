@@ -19,17 +19,22 @@ extension XADError: Error {
 	}
 }
 
-extension XADArchiveParser {
-	@nonobjc open func linkDestination(for dict: [XADArchiveKeys : Any]) throws -> XADString {
-		var err = XADError.none
-		guard let linkDest = __linkDestination(for: dict, error: &err) else {
-			throw err
+extension XADError: CustomStringConvertible {
+	public var description: String {
+		if let errDesc = XADDescribeError(self) {
+			return errDesc
 		}
-		return linkDest
+		if self == .none {
+			return "No Error"
+		}
+		return "Unknown error \(rawValue)"
 	}
-	
+}
+
+extension XADArchiveParser {
 	/// - returns: `true` if the checksum is valid,
 	/// `false` otherwise.
+	/// Throws if there was a failure.
 	@nonobjc open func testChecksum() throws -> Bool {
 		let err = __testChecksumWithoutExceptions()
 		switch err {
@@ -75,5 +80,4 @@ extension XADArchiveParser {
 	@nonobjc open func parseWithoutExceptions() throws {
 		try parse()
 	}
-	
 }

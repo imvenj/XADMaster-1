@@ -45,6 +45,16 @@ extension XADString {
 	}
 }
 
+extension XADStringEncodingName {
+	public init(forEncoding encoding: String.Encoding) {
+		self = XADString.encodingName(forEncoding: encoding)
+	}
+	
+	public var encoding: String.Encoding {
+		return XADString.encoding(forEncodingName: self)
+	}
+}
+
 // We can't have this conform to ExpressibleByStringLiteral because 
 // 1. It can't be placed in the defining block because the defining block is Objective-C
 // 2. The class can't be marked as final because it is an Objective-C class.

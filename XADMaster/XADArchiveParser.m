@@ -643,6 +643,13 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 	return nil;
 }
 
+-(XADString *)linkDestinationForDictionary:(NSDictionary *)dict nserror:(NSError *__autoreleasing __nullable*__nullable)errorptr
+{
+	@try { return [self linkDestinationForDictionary:dict]; }
+	@catch(id exception) { if(errorptr) *errorptr=[XADException parseExceptionReturningNSError:exception]; }
+	return nil;
+}
+
 -(NSDictionary *)extendedAttributesForDictionary:(NSDictionary *)dict
 {
 	NSDictionary *originalattrs=dict[XADExtendedAttributesKey];
