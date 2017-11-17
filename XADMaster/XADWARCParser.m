@@ -7,8 +7,8 @@
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	if(length<10) return NO;
 	return memcmp(bytes,"WARC/1.0\r\n",10)==0;
@@ -16,7 +16,7 @@
 
 -(void)parse
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
 	NSMutableArray *recordarray=[NSMutableArray array];
 	NSMutableDictionary *records=[NSMutableDictionary dictionary];
@@ -25,7 +25,7 @@
 	// for application/http records.
 
 	NSMutableDictionary *lastrecord=nil;
-	while(![fh atEndOfFile])
+	while(!fh.atEndOfFile)
 	{
 		NSAutoreleasePool *pool=[NSAutoreleasePool new];
 
@@ -36,7 +36,7 @@
 			// record and correct the previously recorded record.
 			BOOL found=[fh scanForByteString:(const uint8_t *)"\r\n\r\nWARC/1.0\r\n" length:14];
 
-			off_t realendofrecord=[fh offsetInFile];
+			off_t realendofrecord=fh.offsetInFile;
 			lastrecord[@"EndOfRecord"] = @(realendofrecord);
 
 			if(!found) break;
@@ -47,7 +47,7 @@
 		NSMutableDictionary *record=[self parseHTTPHeadersWithHandle:fh];
 		lastrecord=record;
 
-		off_t contentstart=[fh offsetInFile];
+		off_t contentstart=fh.offsetInFile;
 
 		NSString *recordid=record[@"WARC-Record-ID"];
 		NSString *contentlength=record[@"Content-Length"];
@@ -66,7 +66,7 @@
 		if([contenttype hasPrefix:@"application/http"])
 		{
 			NSArray *headers=[self readHTTPHeadersWithHandle:fh];
-			off_t bodystart=[fh offsetInFile];
+			off_t bodystart=fh.offsetInFile;
 
 			record[@"HTTPHeaders"] = headers;
 			record[@"HTTPBodyStart"] = @(bodystart);
@@ -104,14 +104,14 @@
 			{
 				NSMutableDictionary *dir=root;
 
-				NSUInteger count=[components count];
+				NSUInteger count=components.count;
 				for(NSUInteger i=0;i<count-1;i++)
 				{
 					NSString *component=components[i];
 					dir=[self insertDirectory:component inDirectory:dir];
 				}
 
-				[self insertFile:[components lastObject] record:record inDirectory:dir];
+				[self insertFile:components.lastObject record:record inDirectory:dir];
 
 				[filerecords addObject:record];
 			}
@@ -120,10 +120,10 @@
 	}
 
 	// Walk the finished directory tree to generate XADPaths for all files.
-	[self buildXADPathsForFilesInDirectory:root parentPath:[self XADPath]];
+	[self buildXADPathsForFilesInDirectory:root parentPath:self.XADPath];
 
 	// Iterate over the files, finding and loading the request
-	// records and emit archive entries. 
+	// records and emit archive entries.
 
 	enumerator=[filerecords objectEnumerator];
 	while((record=[enumerator nextObject]))
@@ -134,7 +134,7 @@
 		NSArray *responseheaders=record[@"HTTPHeaders"];
 		XADPath *path=record[@"XADPath"];
 
-		NSNumber *lengthnum=@([endnum longLongValue]-[startnum longLongValue]);
+		NSNumber *lengthnum=@(endnum.longLongValue-startnum.longLongValue);
 
 		NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 			path,XADFileNameKey,
@@ -155,8 +155,8 @@
 
 			NSNumber *requeststartnum=request[@"HTTPBodyStart"];
 			NSNumber *requestlengthnum=request[@"HTTPBodyLength"];
-			off_t start=[requeststartnum longLongValue];
-			off_t length=[requestlengthnum longLongValue];
+			off_t start=requeststartnum.longLongValue;
+			off_t length=requestlengthnum.longLongValue;
 
 			if(length)
 			{
@@ -184,7 +184,7 @@
 	for(;;)
 	{
 		NSString *line=[handle readLineWithEncoding:NSUTF8StringEncoding];
-		if([line length]==0) return headers;
+		if(line.length==0) return headers;
 
 		NSArray *matches=[line substringsCapturedByPattern:@"^([^:]+):[ \t]+(.*)$"];
 		if(matches)
@@ -203,7 +203,7 @@
 	for(;;)
 	{
 		NSString *line=[handle readLineWithEncoding:NSUTF8StringEncoding];
-		if([line length]==0) return headers;
+		if(line.length==0) return headers;
 		[headers addObject:line];
 	}
 }
@@ -218,12 +218,12 @@
 	NSString *host=matches[1];
 	NSString *path=matches[2];
 
-	if([path length]==0) return @[host];
+	if(path.length==0) return @[host];
 
-	NSMutableArray *components=[[[path pathComponents] mutableCopy] autorelease];
+	NSMutableArray *components=[[path.pathComponents mutableCopy] autorelease];
 	components[0] = host;
 
-	if([[components lastObject] isEqual:@"/"]) [components removeLastObject];
+	if([components.lastObject isEqual:@"/"]) [components removeLastObject];
 
 	// TODO: Better processing of the path, handling escapes and such.
 

@@ -16,7 +16,7 @@ static void WordAlign(uint8_t *start,uint8_t **curr);
 
 -(id)initWithHandle:(CSHandle *)handle files:(NSMutableArray *)filesarray
 {
-	if((self=[super initWithName:[handle name]]))
+	if((self=[super initWithName:handle.name]))
 	{
 		parent=[handle retain];
 
@@ -120,7 +120,7 @@ firstOffset:(uint32_t)firstoffset delta:(int32_t)delta
 
 -(BOOL)readNextFileHeader
 {
-	if(nextfile>=[files count]) return NO;
+	if(nextfile>=files.count) return NO;
 
 	uint32_t headeroffset=[files[nextfile] unsignedIntValue];
 	[parent seekToFileOffset:headeroffset];
@@ -145,7 +145,7 @@ firstOffset:(uint32_t)firstoffset delta:(int32_t)delta
 	else
 	{
 		// Try the easy way. Calculate the number of entries that fit in the
-		// header, and try parsing. If the checksum does not match or an 
+		// header, and try parsing. If the checksum does not match or an
 		// exception is thrown, try estimating instead.
 		BOOL success;
 		@try {

@@ -331,10 +331,10 @@ static uint32_t ReverseN(uint32_t val,int length)
 
 -(void)_popNode
 {
-	if(![stack count]) return; // the final pop will underflow the stack otherwise
-	NSNumber *num=[stack lastObject];
+	if(!stack.count) return; // the final pop will underflow the stack otherwise
+	NSNumber *num=stack.lastObject;
 	[stack removeLastObject];
-	currnode=[num intValue];
+	currnode=num.intValue;
 }
 
 static void MakeTable(XADPrefixCode *code,int node,XADCodeTableEntry *table,int depth,int maxdepth)

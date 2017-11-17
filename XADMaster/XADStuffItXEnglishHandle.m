@@ -23,7 +23,7 @@ extern uint8_t StuffItXEnglishDictionary[];
 
 		NSData *dictionarywords=[ppmd copyDataOfLength:UncompressedSize];
 
-		const uint8_t *dictbytes=[dictionarywords bytes];
+		const uint8_t *dictbytes=dictionarywords.bytes;
 
 		if((XADCalculateCRC(0xffffffff,dictbytes,UncompressedSize,
 		XADCRCTable_edb88320)^0xffffffff)!=0xfb1dcfd5) [XADException raiseUnknownException];

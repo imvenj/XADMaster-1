@@ -14,15 +14,15 @@ static ISzAlloc allocator={Alloc,Free};
 
 -(id)initWithHandle:(CSHandle *)handle length:(off_t)length propertyData:(NSData *)propertydata
 {
-	if((self=[super initWithName:[handle name] length:length]))
+	if((self=[super initWithName:handle.name length:length]))
 	{
 		parent=[handle retain];
-		startoffs=[parent offsetInFile];
+		startoffs=parent.offsetInFile;
 		seekback=NO;
 
 		Lzma2Dec_Construct(&lzma);
-		if([propertydata length]>=1)
-		if(Lzma2Dec_Allocate(&lzma,((uint8_t *)[propertydata bytes])[0],&allocator)==SZ_OK)
+		if(propertydata.length>=1)
+		if(Lzma2Dec_Allocate(&lzma,((uint8_t *)propertydata.bytes)[0],&allocator)==SZ_OK)
 		{
 			return self;
 		}

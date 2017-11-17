@@ -41,8 +41,8 @@ static void CalculateSillyTable(int *table,int param)
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	return length>=8&&bytes[0]=='A'&&bytes[1]=='L'&&bytes[2]=='Z'&&bytes[3]==1&&bytes[7]==0;
 }
@@ -64,23 +64,23 @@ static void CalculateSillyTable(int *table,int param)
 
 -(void)parse
 {
-	XADSkipHandle *fh=[self skipHandle];
+	XADSkipHandle *fh=self.skipHandle;
 
-	NSArray *volumes=[self volumes];
+	NSArray *volumes=self.volumes;
 	if(volumes)
 	{
-		NSInteger count=[volumes count];
+		NSInteger count=volumes.count;
 		off_t offs=0;
 		for(NSInteger i=0;i<count-1;i++)
 		{
-			offs+=[(CSHandle *)volumes[i] fileSize];
+			offs+=((CSHandle *)volumes[i]).fileSize;
 			[fh addSkipFrom:offs-16 to:offs+8];
 		}
 	}
 
 	[fh skipBytes:8];
 
-	while([self shouldKeepParsing])
+	while(self.shouldKeepParsing)
 	{
 		uint32_t signature=[fh readID];
 
@@ -134,9 +134,9 @@ static void CalculateSillyTable(int *table,int param)
 			NSData *namedata=[fh readDataOfLength:namelen];
 			dict[XADFileNameKey] = [self XADPathWithData:namedata separators:XADEitherPathSeparator];
 
-			dict[XADSkipOffsetKey] = @([fh offsetInFile]);
+			dict[XADSkipOffsetKey] = @(fh.offsetInFile);
 
-			off_t pos=[fh offsetInFile];
+			off_t pos=fh.offsetInFile;
 			[self addEntryWithDictionary:dict];
 			[fh seekToFileOffset:pos+compsize];
 		}

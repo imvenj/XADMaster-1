@@ -11,8 +11,8 @@ static NSData *ConvertTiledIconToPNG(uint8_t *tiledata,uint16_t *palette);
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	if(length<0x200) return NO;
 	if(bytes[0x12]!=0) return NO;
@@ -27,7 +27,7 @@ static NSData *ConvertTiledIconToPNG(uint8_t *tiledata,uint16_t *palette);
 
 -(void)parse
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
 	NSData *gametitle=[fh readDataOfLength:12];
 	NSData *gamecode=[fh readDataOfLength:4];
@@ -57,19 +57,19 @@ static NSData *ConvertTiledIconToPNG(uint8_t *tiledata,uint16_t *palette);
 	properties[@"NDSMakerCode"] = makercode;
 
 	BOOL homebrew;
-	const uint8_t *makerbytes=[makercode bytes];
+	const uint8_t *makerbytes=makercode.bytes;
 	if(makerbytes[0]==0&&makerbytes[1]==0) homebrew=YES;
 	else homebrew=NO;
 
 	BOOL unnamed;
-	const uint8_t *titlebytes=[gametitle bytes];
+	const uint8_t *titlebytes=gametitle.bytes;
 	if(titlebytes[0]==0||(titlebytes[0]=='.'&&titlebytes[1]==0)) unnamed=YES;
 	else unnamed=NO;
 
 	XADPath *basepath;
 	if(unnamed)
 	{
-		NSString *basename=[[self name] stringByDeletingPathExtension];
+		NSString *basename=self.name.stringByDeletingPathExtension;
 		if(homebrew) basename=[NSString stringWithFormat:@"%@ (Homebrew)",basename];
 		else basename=[NSString stringWithFormat:@"%@ (%@ by %@)",basename,
 		[[[NSString alloc] initWithData:gamecode encoding:NSISOLatin1StringEncoding] autorelease],
@@ -84,7 +84,7 @@ static NSData *ConvertTiledIconToPNG(uint8_t *tiledata,uint16_t *palette);
 		{
 			if(!titlebytes[i])
 			{
-				[basename setLength:i];
+				basename.length = i;
 				break;
 			}
 		}
@@ -117,7 +117,7 @@ static NSData *ConvertTiledIconToPNG(uint8_t *tiledata,uint16_t *palette);
 		NSData *pngdata=ConvertTiledIconToPNG(tiledata,palette);
 		[self addEntryWithDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 			[basepath pathByAppendingXADStringComponent:[self XADStringWithString:@"Icon.png"]],XADFileNameKey,
-			@([pngdata length]),XADFileSizeKey,
+			@(pngdata.length),XADFileSizeKey,
 			@0x210UL,XADCompressedSizeKey,
 			pngdata,@"NDSData",
 		nil]];
@@ -146,7 +146,7 @@ static NSData *ConvertTiledIconToPNG(uint8_t *tiledata,uint16_t *palette);
 
 			[self addEntryWithDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 				[basepath pathByAppendingXADStringComponent:[self XADStringWithString:filenames[i]]],XADFileNameKey,
-				@([data length]),XADFileSizeKey,
+				@(data.length),XADFileSizeKey,
 				@0x100UL,XADCompressedSizeKey,
 				data,@"NDSData",
 			nil]];
@@ -156,39 +156,39 @@ static NSData *ConvertTiledIconToPNG(uint8_t *tiledata,uint16_t *palette);
 	[self addEntryWithDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 		[basepath pathByAppendingXADStringComponent:[self XADStringWithString:
 		[NSString stringWithFormat:@"ARM9-%08x-%08x.bin",arm9_addr,arm9_entry]]],XADFileNameKey,
-		[NSNumber numberWithUnsignedLong:arm9_size],XADFileSizeKey,
-		[NSNumber numberWithUnsignedLong:arm9_size],XADCompressedSizeKey,
-		[NSNumber numberWithUnsignedLong:arm9_size],XADDataLengthKey,
-		[NSNumber numberWithUnsignedLong:arm9_offs],XADDataOffsetKey,
+		@(arm9_size),XADFileSizeKey,
+		@(arm9_size),XADCompressedSizeKey,
+		@(arm9_size),XADDataLengthKey,
+		@(arm9_offs),XADDataOffsetKey,
 	nil]];
 
 	[self addEntryWithDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 		[basepath pathByAppendingXADStringComponent:[self XADStringWithString:
 		[NSString stringWithFormat:@"ARM7-%08x-%08x.bin",arm7_addr,arm7_entry]]],XADFileNameKey,
-		[NSNumber numberWithUnsignedLong:arm7_size],XADFileSizeKey,
-		[NSNumber numberWithUnsignedLong:arm7_size],XADCompressedSizeKey,
-		[NSNumber numberWithUnsignedLong:arm7_size],XADDataLengthKey,
-		[NSNumber numberWithUnsignedLong:arm7_offs],XADDataOffsetKey,
+		@(arm7_size),XADFileSizeKey,
+		@(arm7_size),XADCompressedSizeKey,
+		@(arm7_size),XADDataLengthKey,
+		@(arm7_offs),XADDataOffsetKey,
 	nil]];
 
 	if(arm9_overlay_size)
 	[self addEntryWithDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 		[basepath pathByAppendingXADStringComponent:[self XADStringWithString:
 		[NSString stringWithFormat:@"ARM9-%08x.ovt",arm9_addr]]],XADFileNameKey,
-		[NSNumber numberWithUnsignedLong:arm9_overlay_size],XADFileSizeKey,
-		[NSNumber numberWithUnsignedLong:arm9_overlay_size],XADCompressedSizeKey,
-		[NSNumber numberWithUnsignedLong:arm9_overlay_size],XADDataLengthKey,
-		[NSNumber numberWithUnsignedLong:arm9_overlay_offs],XADDataOffsetKey,
+		@(arm9_overlay_size),XADFileSizeKey,
+		@(arm9_overlay_size),XADCompressedSizeKey,
+		@(arm9_overlay_size),XADDataLengthKey,
+		@(arm9_overlay_offs),XADDataOffsetKey,
 	nil]];
 
 	if(arm7_overlay_size)
 	[self addEntryWithDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 		[basepath pathByAppendingXADStringComponent:[self XADStringWithString:
 		[NSString stringWithFormat:@"ARM7-%08x.ovt",arm7_addr]]],XADFileNameKey,
-		[NSNumber numberWithUnsignedLong:arm7_overlay_size],XADFileSizeKey,
-		[NSNumber numberWithUnsignedLong:arm7_overlay_size],XADCompressedSizeKey,
-		[NSNumber numberWithUnsignedLong:arm7_overlay_size],XADDataLengthKey,
-		[NSNumber numberWithUnsignedLong:arm7_overlay_offs],XADDataOffsetKey,
+		@(arm7_overlay_size),XADFileSizeKey,
+		@(arm7_overlay_size),XADCompressedSizeKey,
+		@(arm7_overlay_size),XADDataLengthKey,
+		@(arm7_overlay_offs),XADDataOffsetKey,
 	nil]];
 
 	if(fnt_offs&&fnt_size&&fat_offs&&fat_size)
@@ -235,7 +235,7 @@ static NSData *ConvertTiledIconToPNG(uint8_t *tiledata,uint16_t *palette);
 				{
 					if(currid<fat_size/8)
 					{
-						off_t pos=[fh offsetInFile];
+						off_t pos=fh.offsetInFile;
 
 						[fh seekToFileOffset:fat_offs+8*currid];
 						uint32_t start=[fh readUInt32LE];
@@ -243,10 +243,10 @@ static NSData *ConvertTiledIconToPNG(uint8_t *tiledata,uint16_t *palette);
 
 						[self addEntryWithDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 							path,XADFileNameKey,
-							[NSNumber numberWithUnsignedLong:end-start],XADFileSizeKey,
-							[NSNumber numberWithUnsignedLong:end-start],XADCompressedSizeKey,
-							[NSNumber numberWithUnsignedLong:end-start],XADDataLengthKey,
-							[NSNumber numberWithUnsignedLong:start],XADDataOffsetKey,
+							@(end-start),XADFileSizeKey,
+							@(end-start),XADCompressedSizeKey,
+							@(end-start),XADDataLengthKey,
+							@(start),XADDataOffsetKey,
 							@(currid),@"NDSFileID",
 						nil]];
 						

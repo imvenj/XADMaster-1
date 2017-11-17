@@ -202,7 +202,7 @@ static NSComparisonResult OrderKeys(id first,id second,void *context);
 		@702,XADDiskLabelKey,
 		nil];
 
-	return [[dict allKeys] sortedArrayUsingFunction:OrderKeys context:ordering];
+	return [dict.allKeys sortedArrayUsingFunction:OrderKeys context:ordering];
 }
 
 static NSComparisonResult OrderKeys(id first,id second,void *context)
@@ -273,7 +273,7 @@ static NSString *DottedNumber(uint64_t size)
 	NSNumberFormatter *formatter=[[NSNumberFormatter new] autorelease];
 	formatter.formatterBehavior=NSNumberFormatterBehavior10_4;
 	formatter.numberStyle=NSNumberFormatterDecimalStyle;
-	return [formatter stringFromNumber:[NSNumber numberWithLongLong:size]];
+	return [formatter stringFromNumber:@(size)];
 }
 
 NSString *XADHumanReadableBoolean(uint64_t boolean)
@@ -366,9 +366,9 @@ NSString *XADHumanReadableDate(NSDate *date)
 {
 	#ifndef __COCOTRON__
 	NSDateFormatter *formatter=[[NSDateFormatter new] autorelease];
-	[formatter setFormatterBehavior:NSDateFormatterBehavior10_4];
-	[formatter setDateStyle:NSDateFormatterFullStyle];
-	[formatter setTimeStyle:NSDateFormatterMediumStyle];
+	formatter.formatterBehavior = NSDateFormatterBehavior10_4;
+	formatter.dateStyle = NSDateFormatterFullStyle;
+	formatter.timeStyle = NSDateFormatterMediumStyle;
 	return [formatter stringForObjectValue:date];
 	#else
 	return [date description];
@@ -379,8 +379,8 @@ NSString *XADHumanReadableData(NSData *data)
 {
 	NSMutableString *string=[NSMutableString string];
 
-	NSInteger length=[data length];
-	const uint8_t *bytes=[data bytes];
+	NSInteger length=data.length;
+	const uint8_t *bytes=data.bytes;
 
 	[string appendFormat:
 	NSLocalizedString(@"%llu bytes (",@"Format string for raw data objects"),
@@ -400,7 +400,7 @@ NSString *XADHumanReadableData(NSData *data)
 
 NSString *XADHumanReadableArray(NSArray *array)
 {
-	NSInteger count=[array count];
+	NSInteger count=array.count;
 	NSMutableArray *labels=[NSMutableArray array];
 	NSMutableArray *values=[NSMutableArray array];
 
@@ -416,7 +416,7 @@ NSString *XADHumanReadableArray(NSArray *array)
 
 NSString *XADHumanReadableDictionary(NSDictionary *dict)
 {
-	NSArray *keys=[[dict allKeys] sortedArrayUsingSelector:@selector(compare:)];
+	NSArray *keys=[dict.allKeys sortedArrayUsingSelector:@selector(compare:)];
 	NSMutableArray *labels=[NSMutableArray array];
 	NSMutableArray *values=[NSMutableArray array];
 
@@ -435,11 +435,11 @@ NSString *XADHumanReadableDictionary(NSDictionary *dict)
 NSString *XADHumanReadableList(NSArray *labels,NSArray *values)
 {
 	NSInteger maxlen=0;
-	NSInteger count=[labels count];
+	NSInteger count=labels.count;
 	for(NSInteger i=0;i<count;i++)
 	{
 		NSString *label=labels[i];
-		NSInteger len=[label length];
+		NSInteger len=label.length;
 
 		if(len>maxlen) maxlen=len;
 	}
@@ -449,7 +449,7 @@ NSString *XADHumanReadableList(NSArray *labels,NSArray *values)
 	{
 		NSString *label=labels[i];
 		NSString *value=values[i];
-		NSInteger len=[label length];
+		NSInteger len=label.length;
 
 		[string appendString:label];
 		[string appendString:@": "];
@@ -469,7 +469,7 @@ NSString *XADIndentTextWithSpaces(NSString *text,NSInteger spaces)
 	if([text rangeOfString:@"\n"].location==NSNotFound) return text;
 
 	NSMutableString *res=[NSMutableString string];
-	NSInteger length=[text length];
+	NSInteger length=text.length;
 	for(NSInteger i=0;i<length;i++)
 	{
 		unichar c=[text characterAtIndex:i];

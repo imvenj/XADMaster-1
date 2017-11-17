@@ -45,7 +45,7 @@
 
 -(id)initWithHandle:(CSHandle *)handle length:(off_t)length bufferSize:(int)buffersize;
 {
-	if((self=[super initWithName:[handle name]]))
+	if((self=[super initWithName:handle.name]))
 	{
 		streampos=0;
 		streamlength=length;

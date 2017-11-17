@@ -14,7 +14,7 @@
 		totallength+=[dict[@"InputLength"] longLongValue];
 	}
 
-	if((self=[super initWithName:[parent filename] length:totallength]))
+	if((self=[super initWithName:parent.filename length:totallength]))
 	{
 		parser=parent;
 		parts=[partarray retain];
@@ -38,7 +38,7 @@
 
 -(int)streamAtMost:(int)num toBuffer:(void *)buffer
 {
-	CSHandle *fh=[parser handle];
+	CSHandle *fh=parser.handle;
 
 	uint8_t *bytebuf=buffer;
 	int total=0;
@@ -67,14 +67,14 @@
 
 -(void)startNextPart
 {
-	if(part>=[parts count]) [XADException raiseInputException];
+	if(part>=parts.count) [XADException raiseInputException];
 	NSDictionary *dict=parts[part];
 	part++;
 
 	off_t offset=[dict[@"Offset"] longLongValue];
 	off_t length=[dict[@"InputLength"] longLongValue];
 
-	[[parser handle] seekToFileOffset:offset];
+	[parser.handle seekToFileOffset:offset];
 	partend+=length;
 
 	crc=0xffffffff;

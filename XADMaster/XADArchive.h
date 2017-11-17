@@ -123,7 +123,7 @@ extern NSString *const XADFinderFlags;
 
 @property (NS_NONATOMIC_IOSONLY, readonly) XADError lastError;
 -(void)clearLastError;
--(nullable NSString *)describeLastError;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString * _Nullable describeLastError;
 -(nullable NSString *)describeError:(XADError)error;
 
 @property (readonly, copy) NSString *description;

@@ -11,22 +11,22 @@
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	return length>=10&&bytes[0]=='L'&&bytes[1]=='Z'&&bytes[2]=='X';
 }
 
 -(void)parse
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
 	[fh skipBytes:10];
 
 	NSMutableArray *solidfiles=[NSMutableArray array];
 	off_t solidsize=0;
 
-	while([self shouldKeepParsing])
+	while(self.shouldKeepParsing)
 	{
 		int attributes;
 		@try { attributes=[fh readUInt16LE]; }
@@ -49,7 +49,7 @@
 		NSData *commentdata=nil;
 		if(commentlen) commentdata=[fh readDataOfLength:commentlen];
 
-		off_t dataoffs=[fh offsetInFile];
+		off_t dataoffs=fh.offsetInFile;
 
 		int day=(date>>27)&31;
 		int month=((date>>23)&15)+1;
@@ -70,8 +70,8 @@
 
 		NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 			[self XADPathWithData:namedata separators:XADUnixPathSeparator],XADFileNameKey,
-			[NSNumber numberWithUnsignedLong:filesize],XADFileSizeKey,
-			[NSNumber numberWithUnsignedLong:filesize],XADSolidLengthKey,
+			@(filesize),XADFileSizeKey,
+			@(filesize),XADSolidLengthKey,
 			@(solidsize),XADSolidOffsetKey,
 			//[NSNumber numberWithUnsignedLong:compsize],XADCompressedSizeKey,
 			dateobj,XADLastModificationDateKey,
@@ -79,7 +79,7 @@
 			@(method),@"LZXMethod",
 			@(flags),@"LZXFlags",
 			@(version),@"LZXVersion",
-			[NSNumber numberWithInt:datacrc],@"LZXCRC32",
+			@(datacrc),@"LZXCRC32",
 		nil];
 
 		NSString *methodname=nil;
@@ -150,7 +150,7 @@
 {
 	CSHandle *handle=[self subHandleFromSolidStreamForEntryWithDictionary:dict];
 
-	if(checksum) handle=[XADCRCHandle IEEECRC32HandleWithHandle:handle length:[handle fileSize]
+	if(checksum) handle=[XADCRCHandle IEEECRC32HandleWithHandle:handle length:handle.fileSize
 	correctCRC:[dict[@"LZXCRC32"] unsignedIntValue] conditioned:YES];
 
 	return handle;

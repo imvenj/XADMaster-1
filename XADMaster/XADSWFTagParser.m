@@ -76,7 +76,7 @@ NSString *const SWFNoMoreTagsException=@"SWFNoMoreTagsException";
 	fps=[fh readUInt16LE];
 	frames=[fh readUInt16LE];
 
-	nexttag=[fh offsetInFile];
+	nexttag=fh.offsetInFile;
 
 	currtag=0;
 	currlen=0;
@@ -103,16 +103,16 @@ NSString *const SWFNoMoreTagsException=@"SWFNoMoreTagsException";
 	currlen=tagval&0x3f;
 	if(currlen==0x3f) currlen=[fh readUInt32LE];
 
-	nexttag=[fh offsetInFile]+currlen;
+	nexttag=fh.offsetInFile+currlen;
 
 	return currtag;
 }
 
--(int)tagBytesLeft { return (int)(nexttag-[fh offsetInFile]); }
+-(int)tagBytesLeft { return (int)(nexttag-fh.offsetInFile); }
 -(double)time { return (double)currframe/((double)fps/256.0); }
 
--(CSHandle *)tagHandle { return [fh subHandleOfLength:[self tagBytesLeft]]; }
--(NSData *)tagContents { return [fh readDataOfLength:[self tagBytesLeft]]; }
+-(CSHandle *)tagHandle { return [fh subHandleOfLength:self.tagBytesLeft]; }
+-(NSData *)tagContents { return [fh readDataOfLength:self.tagBytesLeft]; }
 
 
 
@@ -121,7 +121,7 @@ NSString *const SWFNoMoreTagsException=@"SWFNoMoreTagsException";
 	spriteid=[fh readUInt16LE];
 	subframes=[fh readUInt16LE];
 
-	nextsubtag=[fh offsetInFile];
+	nextsubtag=fh.offsetInFile;
 
 	subtag=0;
 	sublen=0;
@@ -147,12 +147,12 @@ NSString *const SWFNoMoreTagsException=@"SWFNoMoreTagsException";
 	sublen=tagval&0x3f;
 	if(sublen==0x3f) sublen=[fh readUInt32LE];
 
-	nextsubtag=[fh offsetInFile]+sublen;
+	nextsubtag=fh.offsetInFile+sublen;
 
 	return subtag;
 }
 
--(int)subTagBytesLeft { return (int)(nextsubtag-[fh offsetInFile]); }
+-(int)subTagBytesLeft { return (int)(nextsubtag-fh.offsetInFile); }
 -(double)subTime { return (double)subframe/((double)fps/256.0); }
 
 @end

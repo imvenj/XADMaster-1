@@ -10,7 +10,7 @@
 
 -(id)initWithHandle:(CSHandle *)handle from:(off_t)from length:(off_t)length
 {
-	if((self=[super initWithName:[NSString stringWithFormat:@"%@ (Subrange from %qd, length %qd)",[handle name],from,length]]))
+	if((self=[super initWithName:[NSString stringWithFormat:@"%@ (Subrange from %qd, length %qd)",handle.name,from,length]]))
 	{
 		parent=handle;
 		start=from;
@@ -45,12 +45,12 @@
 
 -(off_t)offsetInFile
 {
-	return [parent offsetInFile]-start;
+	return parent.offsetInFile-start;
 }
 
 -(BOOL)atEndOfFile
 {
-	return [parent offsetInFile]==end||[parent atEndOfFile];
+	return parent.offsetInFile==end||parent.atEndOfFile;
 }
 
 -(void)seekToFileOffset:(off_t)offs
@@ -75,7 +75,7 @@
 
 -(int)readAtMost:(int)num toBuffer:(void *)buffer
 {
-	off_t curr=[parent offsetInFile];
+	off_t curr=parent.offsetInFile;
 	if(curr+num>end) num=(int)(end-curr);
 	if(num<=0) return 0;
 	else return [parent readAtMost:num toBuffer:buffer];

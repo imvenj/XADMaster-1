@@ -20,7 +20,7 @@
 	uint8_t byte;
 	while((byte=[fh readUInt8])) [data appendBytes:&byte length:1];
 
-	off_t dataoffset=[fh offsetInFile];
+	off_t dataoffset=fh.offsetInFile;
 
 	NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 		[parser XADPathWithData:data separators:XADNoPathSeparator],XADFileNameKey,
@@ -73,8 +73,8 @@
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	if(length<5) return NO;
 
@@ -95,15 +95,15 @@
 
 -(void)parse
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
 	NSMutableDictionary *dict=[XADSqueezeParser parseWithHandle:fh
-	endOffset:[fh fileSize] parser:self];
+	endOffset:fh.fileSize parser:self];
 
 	XADPath *filename=dict[XADFileNameKey];
-	NSData *namedata=[filename data];
-	const char *bytes=[namedata bytes];
-	NSInteger length=[namedata length];
+	NSData *namedata=filename.data;
+	const char *bytes=namedata.bytes;
+	NSInteger length=namedata.length;
 
 	if(length>4)
 	if(bytes[length-4]=='.')

@@ -6,12 +6,12 @@
 -(id)initWithHandle:(CSHandle *)handle length:(off_t)length password:(NSData *)passdata keyLength:(int)keylength
 {
 	off_t actuallength=length-keylength/2-12;
-	if((self=[super initWithName:[handle name] length:actuallength]))
+	if((self=[super initWithName:handle.name length:actuallength]))
 	{
 		parent=[handle retain];
 		password=[passdata retain];
 		keybytes=keylength;
-		startoffs=[handle offsetInFile];
+		startoffs=handle.offsetInFile;
 
 		hmac_done=hmac_correct=NO;
 	}
@@ -39,10 +39,10 @@ static void DeriveKey(NSData *password,NSData *salt,int iterations,uint8_t *keyb
 		uint8_t buffer[20];
 
 		HMAC_SHA1_Init(&hmac);
-		HMAC_SHA1_UpdateKey(&hmac,[password bytes],(int)[password length]);
+		HMAC_SHA1_UpdateKey(&hmac,password.bytes,(int)password.length);
 		HMAC_SHA1_EndKey(&hmac);
 		HMAC_SHA1_StartMessage(&hmac);
-		HMAC_SHA1_UpdateMessage(&hmac,[salt bytes],(int)[salt length]);
+		HMAC_SHA1_UpdateMessage(&hmac,salt.bytes,(int)salt.length);
 		HMAC_SHA1_UpdateMessage(&hmac,counter,4);
 		HMAC_SHA1_EndMessage(buffer,&hmac);
 
@@ -53,7 +53,7 @@ static void DeriveKey(NSData *password,NSData *salt,int iterations,uint8_t *keyb
 		for(int j=1;j<iterations;j++)
 		{
 			HMAC_SHA1_Init(&hmac);
-			HMAC_SHA1_UpdateKey(&hmac,[password bytes],(int)[password length]);
+			HMAC_SHA1_UpdateKey(&hmac,password.bytes,(int)password.length);
 			HMAC_SHA1_EndKey(&hmac);
 			HMAC_SHA1_StartMessage(&hmac);
 			HMAC_SHA1_UpdateMessage(&hmac,buffer,20);

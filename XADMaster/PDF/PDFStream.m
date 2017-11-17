@@ -46,7 +46,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 
 -(BOOL)isJPEGImage
 {
-	return [[self finalFilter] isEqual:@"DCTDecode"]&&[self imageBitsPerComponent]==8;
+	return [[self finalFilter] isEqual:@"DCTDecode"]&&self.imageBitsPerComponent==8;
 }
 
 -(BOOL)isJPEG2000Image
@@ -137,15 +137,15 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 
 -(NSData *)imagePaletteData
 {
-	id colourspace=dict[@"ColorSpace"];
+	NSArray *colourspace=dict[@"ColorSpace"];
 	if(!colourspace) return nil;
 
 	if(![colourspace isKindOfClass:[NSArray class]]) return nil;
 	if([colourspace count]!=4) return nil;
 	if(![colourspace[0] isEqual:@"Indexed"]) return nil;
 
-	NSInteger numcomponents=[self numberOfImagePaletteComponents];
-	NSInteger numcolours=[self numberOfImagePaletteColours];
+	NSInteger numcomponents=self.numberOfImagePaletteComponents;
+	NSInteger numcolours=self.numberOfImagePaletteColours;
 
 	id palette=colourspace[3];
 
@@ -158,7 +158,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 	else if([palette isKindOfClass:[PDFString class]])
 	{
 		data=[palette data];
-		if([data length]<numcomponents*numcolours) return nil;
+		if(data.length<numcomponents*numcolours) return nil;
 	}
 	else
 	{
@@ -170,7 +170,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 
 -(id)_paletteColourSpaceObject
 {
-	id colourspace=dict[@"ColorSpace"];
+	NSArray *colourspace=dict[@"ColorSpace"];
 	if(!colourspace) return nil;
 
 	if(![colourspace isKindOfClass:[NSArray class]]) return nil;
@@ -204,14 +204,14 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 			PDFStream *def=colourspace[1];
 			if(![def isKindOfClass:[PDFStream class]]) return PDFUnsupportedImageType;
 
-			NSString *alternate=[def dictionary][@"Alternate"];
+			NSString *alternate=def.dictionary[@"Alternate"];
 			if(alternate)
 			{
 				name=alternate;
 			}
 			else
 			{
-				int n=[[def dictionary] intValueForKey:@"N" default:0];
+				int n=[def.dictionary intValueForKey:@"N" default:0];
 				switch(n)
 				{
 					case 1: return PDFGrayImageType;
@@ -257,7 +257,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 			PDFStream *def=colourspace[1];
 			if(![def isKindOfClass:[PDFStream class]]) return 0;
 
-			return [[def dictionary] intValueForKey:@"N" default:0];
+			return [def.dictionary intValueForKey:@"N" default:0];
 		}
 	}
 	else
@@ -353,7 +353,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 
 -(NSString *)imageSeparationName
 {
-	id colourspace=dict[@"ColorSpace"];
+	NSArray *colourspace=dict[@"ColorSpace"];
 	if(!colourspace) return nil;
 
 	if(![colourspace isKindOfClass:[NSArray class]]) return nil;
@@ -369,12 +369,12 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 
 -(NSArray *)imageDecodeArray
 {
-	id decode=dict[@"Decode"];
+	NSArray *decode=dict[@"Decode"];
 	if(!decode) return nil;
 
 	if(![decode isKindOfClass:[NSArray class]]) return nil;
 
-	NSInteger n=[self numberOfImageComponents];
+	NSInteger n=self.numberOfImageComponents;
 	if([decode count]!=n*2) return nil;
 
 	return decode;
@@ -384,7 +384,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 
 -(BOOL)hasMultipleFilters
 {
-	id filter=dict[@"Filter"];
+	NSArray *filter=dict[@"Filter"];
 
 	if(!filter) return NO;
 	else if([filter isKindOfClass:[NSArray class]]) return [filter count]>1;
@@ -436,7 +436,7 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 
 	if(filter)
 	{
-		NSInteger count=[filter count];
+		NSInteger count=filter.count;
 		if(excludelast) count--;
 
 		for(int i=0;i<count;i++)
@@ -493,16 +493,16 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 	NSNumber *predictor=decodeparms[@"Predictor"];
 	if(!predictor) return parent;
 
-	int pred=[predictor intValue];
+	int pred=predictor.intValue;
 	if(pred==1) return parent;
 
 	NSNumber *columns=decodeparms[@"Columns"];
 	NSNumber *colors=decodeparms[@"Colors"];
 	NSNumber *bitspercomponent=decodeparms[@"BitsPerComponent"];
 
-	int cols=columns?[columns intValue]:1;
-	int comps=colors?[colors intValue]:1;
-	int bpc=bitspercomponent?[bitspercomponent intValue]:8;
+	int cols=columns?columns.intValue:1;
+	int comps=colors?colors.intValue:1;
+	int bpc=bitspercomponent?bitspercomponent.intValue:8;
 
 	if(pred==2) return [[[PDFTIFFPredictorHandle alloc] initWithHandle:parent columns:cols components:comps bitsPerComponent:bpc] autorelease];
 	else if(pred>=10&&pred<=15) return [[[PDFPNGPredictorHandle alloc] initWithHandle:parent columns:cols components:comps bitsPerComponent:bpc] autorelease];

@@ -10,8 +10,8 @@
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name;
 {
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	if(length<16) return NO;
 
@@ -22,7 +22,7 @@
 
 -(void)parse
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
 	uint32_t signature=[fh readID];
 
@@ -68,7 +68,7 @@
 		// TODO: Should this really be XADEitherPathSeparator?
 		[self XADPathWithData:filename separators:XADEitherPathSeparator],XADFileNameKey,
 		[self XADStringWithString:[NSString stringWithFormat:@"PPMd Variant %c",variant]],XADCompressionNameKey,
-		@([fh offsetInFile]),XADDataOffsetKey,
+		@(fh.offsetInFile),XADDataOffsetKey,
 		@(maxorder),@"PPMdMaxOrder",
 		@(variant),@"PPMdVariant",
 		@(suballocsize),@"PPMdSubAllocSize",
@@ -80,17 +80,17 @@
 	if(date&0xc000) // assume that the next highest bit is always set in unix dates and never in DOS (true until 2011)
 	{
 		dict[XADLastModificationDateKey] = [NSDate dateWithTimeIntervalSince1970:(date<<16)|time];
-		dict[XADPosixPermissionsKey] = [NSNumber numberWithInt:attrib];
+		dict[XADPosixPermissionsKey] = @(attrib);
 	}
 	else
 	{
 		dict[XADLastModificationDateKey] = [NSDate XADDateWithMSDOSDateTime:(date<<16)|time];
-		dict[XADWindowsFileAttributesKey] = [NSNumber numberWithInt:attrib];
+		dict[XADWindowsFileAttributesKey] = @(attrib);
 	}
 
-	off_t filesize=[fh fileSize];
+	off_t filesize=fh.fileSize;
 	if(filesize!=CSHandleMaxLength)
-	dict[XADCompressedSizeKey] = [NSNumber numberWithUnsignedLongLong:filesize-16-namelen];
+	dict[XADCompressedSizeKey] = @(filesize-16-namelen);
 
 	[self addEntryWithDictionary:dict];
 }

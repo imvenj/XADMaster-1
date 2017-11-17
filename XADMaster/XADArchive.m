@@ -32,7 +32,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 {
 	XADArchive *archive=[self archiveForFile:filename];
 
-	while([archive numberOfEntries]==1)
+	while(archive.numberOfEntries==1)
 	{
 		XADArchive *subarchive=[[XADArchive alloc] initWithArchive:archive entry:0];
 		if(subarchive) archive=subarchive;
@@ -69,7 +69,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 		dataentries=[[NSMutableArray alloc] init];
 		resourceentries=[[NSMutableArray alloc] init];
 		namedict=nil;
- 	}
+	 }
 	return self;
 }
 
@@ -212,8 +212,8 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 {
 	unarchiver=[[XADUnarchiver alloc] initWithArchiveParser:parser];
 
-	[parser setDelegate:self];
-	[unarchiver setDelegate:self];
+	parser.delegate = self;
+	unarchiver.delegate = self;
 
 	namedict=[[NSMutableDictionary alloc] init];
 
@@ -228,7 +228,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 
 	namedict=nil;
 
-	return lasterror==XADErrorNone||[dataentries count]!=0;
+	return lasterror==XADErrorNone||dataentries.count!=0;
 }
 
 -(void)archiveParser:(XADArchiveParser *)parser foundEntryWithDictionary:(NSDictionary *)dict
@@ -236,14 +236,14 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	if(immediatefailed) return; // ignore anything after a failure
 
 	NSNumber *resnum=dict[XADIsResourceForkKey];
-	BOOL isres=resnum&&[resnum boolValue];
+	BOOL isres=resnum&&resnum.boolValue;
 
 	XADPath *name=dict[XADFileNameKey];
 
 	NSNumber *index=namedict[name];
 	if(index != nil) // Try to update an existing entry
 	{
-		int n=[index intValue];
+		int n=index.intValue;
 		if(isres) // Adding a resource fork to an earlier data fork
 		{
 			if(resourceentries[n]==[NSNull null])
@@ -309,11 +309,11 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 		[resourceentries addObject:[NSNull null]];
 	}
 
-	namedict[name] = @([dataentries count]-1);
+	namedict[name] = @(dataentries.count-1);
 
 	if(immediatedestination)
 	{
-		NSInteger n=[dataentries count]-1;
+		NSInteger n=dataentries.count-1;
 		if(immediatesubarchives&&[self entryIsArchive:n])
 		{
 			// Try to extract as archive, if the format is unknown, extract as regular file
@@ -355,37 +355,37 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 
 -(NSString *)filename
 {
-	return [parser filename];
+	return parser.filename;
 }
 
 -(NSArray *)allFilenames
 {
-	return [parser allFilenames];
+	return parser.allFilenames;
 }
 
 -(NSString *)formatName
 {
-	if(parentarchive) return [NSString stringWithFormat:@"%@ in %@",[parser formatName],[parentarchive formatName]];
-	else return [parser formatName];
+	if(parentarchive) return [NSString stringWithFormat:@"%@ in %@",parser.formatName,parentarchive.formatName];
+	else return parser.formatName;
 }
 
--(BOOL)isEncrypted { return [parser isEncrypted]; }
+-(BOOL)isEncrypted { return parser.encrypted; }
 
 -(BOOL)isSolid
 {
-	NSNumber *issolid=[parser properties][XADIsSolidKey];
+	NSNumber *issolid=parser.properties[XADIsSolidKey];
 	if(issolid == nil) return NO;
-	return [issolid boolValue];
+	return issolid.boolValue;
 }
 
 -(BOOL)isCorrupted
 {
-	NSNumber *iscorrupted=[parser properties][XADIsCorruptedKey];
+	NSNumber *iscorrupted=parser.properties[XADIsCorruptedKey];
 	if(iscorrupted == nil) return NO;
-	return [iscorrupted boolValue];
+	return iscorrupted.boolValue;
 }
 
--(NSInteger)numberOfEntries { return [dataentries count]; }
+-(NSInteger)numberOfEntries { return dataentries.count; }
 
 -(NSString *)commonTopDirectory
 {
@@ -399,7 +399,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 
 	NSString *dirprefix=[directory stringByAppendingString:@"/"];
 
-	NSInteger numentries=[self numberOfEntries];
+	NSInteger numentries=self.numberOfEntries;
 	for(int i=1;i<numentries;i++)
 	if(![[self nameOfEntry:i] hasPrefix:dirprefix]) return nil;
 
@@ -408,20 +408,20 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 
 -(NSString *)comment
 {
-	return [parser properties][XADCommentKey];
+	return parser.properties[XADCommentKey];
 }
 
 
 
--(NSString *)password { return [parser password]; }
+-(NSString *)password { return parser.password; }
 
--(void)setPassword:(NSString *)newpassword { [parser setPassword:newpassword]; }
+-(void)setPassword:(NSString *)newpassword { parser.password = newpassword; }
 
 
 
--(NSStringEncoding)nameEncoding { return [[parser stringSource] encoding]; }
+-(NSStringEncoding)nameEncoding { return parser.stringSource.encoding; }
 
--(void)setNameEncoding:(NSStringEncoding)encoding { [[parser stringSource] setFixedEncoding:encoding]; }
+-(void)setNameEncoding:(NSStringEncoding)encoding { parser.stringSource.fixedEncoding = encoding; }
 
 
 
@@ -438,7 +438,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 
 -(NSString *)description
 {
-	return [NSString stringWithFormat:@"XADArchive: %@ (%@, %ld entries)",[self filename],[self formatName],(long)[self numberOfEntries]];
+	return [NSString stringWithFormat:@"XADArchive: %@ (%@, %ld entries)",self.filename,self.formatName,(long)self.numberOfEntries];
 }
 
 
@@ -489,15 +489,15 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	XADPath *xadname=dict[XADFileNameKey];
 	if(!xadname) return nil;
 
-	if(![xadname encodingIsKnown]&&delegate)
+	if(!xadname.encodingIsKnown&&delegate)
 	{
-		NSStringEncoding encoding=[delegate archive:self encodingForData:[xadname data]
-		guess:[xadname encoding] confidence:[xadname confidence]];
+		NSStringEncoding encoding=[delegate archive:self encodingForData:xadname.data
+		guess:xadname.encoding confidence:xadname.confidence];
 		return [xadname sanitizedPathStringWithEncoding:encoding];
 	}
 	else
 	{
-		return [xadname sanitizedPathString];
+		return xadname.sanitizedPathString;
 	}
 }
 
@@ -513,7 +513,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	if(!dict) return 0; // Special case for resource forks without data forks
 	NSNumber *size=dict[XADFileSizeKey];
 	if(size == nil) return CSHandleMaxLength;
-	return [size longLongValue];
+	return size.longLongValue;
 }
 
 -(off_t)compressedSizeOfEntry:(NSInteger)n
@@ -522,7 +522,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	if(!dict) return 0; // Special case for resource forks without data forks
 	NSNumber *size=dict[XADCompressedSizeKey];
 	if(size == nil) return CSHandleMaxLength;
-	return [size longLongValue];
+	return size.longLongValue;
 }
 
 -(off_t)representativeSizeOfEntry:(NSInteger)n
@@ -532,7 +532,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	NSNumber *size=dict[XADFileSizeKey];
 	if(size == nil) size=dict[XADCompressedSizeKey];
 	if(size == nil) return 1000;
-	return [size longLongValue];
+	return size.longLongValue;
 }
 
 -(BOOL)entryIsDirectory:(NSInteger)n
@@ -540,7 +540,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	NSDictionary *dict=[self combinedParserDictionaryForEntry:n];
 	NSNumber *isdir=dict[XADIsDirectoryKey];
 
-	return isdir&&[isdir boolValue];
+	return isdir&&isdir.boolValue;
 }
 
 -(BOOL)entryIsLink:(NSInteger)n
@@ -548,7 +548,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	NSDictionary *dict=[self dataForkParserDictionaryForEntry:n];
 	NSNumber *islink=dict[XADIsLinkKey];
 
-	return islink&&[islink boolValue];
+	return islink&&islink.boolValue;
 }
 
 -(BOOL)entryIsEncrypted:(NSInteger)n
@@ -556,7 +556,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	NSDictionary *dict=[self dataForkParserDictionaryForEntry:n];
 	NSNumber *isenc=dict[XADIsEncryptedKey];
 
-	return isenc&&[isenc boolValue];
+	return isenc&&isenc.boolValue;
 }
 
 -(BOOL)entryIsArchive:(NSInteger)n
@@ -564,7 +564,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	NSDictionary *dict=[self dataForkParserDictionaryForEntry:n];
 	NSNumber *isarc=dict[XADIsArchiveKey];
 
-	return isarc&&[isarc boolValue];
+	return isarc&&isarc.boolValue;
 }
 
 -(BOOL)entryHasResourceFork:(NSInteger)n
@@ -574,7 +574,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	NSNumber *num=resdict[XADFileSizeKey];
 	if(num == nil) return NO;
 
-	return [num intValue]!=0;
+	return num.intValue!=0;
 }
 
 -(NSString *)commentForEntry:(NSInteger)n
@@ -610,14 +610,14 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	XADString *user=dict[XADPosixUserNameKey];
 	if(user)
 	{
-		NSString *username=[user string];
+		NSString *username=user.string;
 		if(username) attrs[NSFileOwnerAccountName] = username;
 	}
 
 	XADString *group=dict[XADPosixGroupNameKey];
 	if(group)
 	{
-		NSString *groupname=[group string];
+		NSString *groupname=group.string;
 		if(groupname) attrs[NSFileGroupOwnerAccountName] = groupname;
 	}
 
@@ -633,7 +633,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 					CSHandle *handle=[parser handleForEntryWithDictionary:resdict wantChecksum:YES];
 					if(!handle) [XADException raiseDecrunchException];
 					NSData *forkdata=[handle remainingFileContents];
-					if([handle hasChecksum]&&![handle isChecksumCorrect]) [XADException raiseChecksumException];
+					if(handle.hasChecksum&&!handle.checksumCorrect) [XADException raiseChecksumException];
 
 					attrs[XADResourceDataKey] = forkdata;
 					break;
@@ -682,7 +682,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	NSDictionary *resdict=[self resourceForkParserDictionaryForEntry:n];
 	if(!resdict) return nil;
 	NSNumber *isdir=resdict[XADIsDirectoryKey];
-	if(isdir&&[isdir boolValue]) return nil;
+	if(isdir&&isdir.boolValue) return nil;
 
 	@try
 	{ return [parser handleForEntryWithDictionary:resdict wantChecksum:YES]; }
@@ -704,7 +704,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 		CSHandle *handle=[parser handleForEntryWithDictionary:dict wantChecksum:YES];
 		if(!handle) [XADException raiseDecrunchException];
 		NSData *data=[handle remainingFileContents];
-		if([handle hasChecksum]&&![handle isChecksumCorrect]) [XADException raiseChecksumException];
+		if(handle.hasChecksum&&!handle.checksumCorrect) [XADException raiseChecksumException];
 
 		return data;
 	}
@@ -722,12 +722,12 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 
 -(BOOL)extractTo:(NSString *)destination
 {
-	return [self extractEntries:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,[self numberOfEntries])] to:destination subArchives:NO];
+	return [self extractEntries:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,self.numberOfEntries)] to:destination subArchives:NO];
 }
 
 -(BOOL)extractTo:(NSString *)destination subArchives:(BOOL)sub
 {
-	return [self extractEntries:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,[self numberOfEntries])] to:destination subArchives:sub];
+	return [self extractEntries:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,self.numberOfEntries)] to:destination subArchives:sub];
 }
 
 -(BOOL)extractEntries:(NSIndexSet *)entryset to:(NSString *)destination
@@ -740,14 +740,14 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	extractsize=0;
 	totalsize=0;
 
-	for(NSUInteger i=[entryset firstIndex];i!=NSNotFound;i=[entryset indexGreaterThanIndex:i])
+	for(NSUInteger i=entryset.firstIndex;i!=NSNotFound;i=[entryset indexGreaterThanIndex:i])
 	totalsize+=[self representativeSizeOfEntry:i];
 
-	NSInteger numentries=[entryset count];
+	NSInteger numentries=entryset.count;
 	[delegate archive:self extractionProgressFiles:0 of:numentries];
 	[delegate archive:self extractionProgressBytes:0 of:totalsize];
 
-	for(NSUInteger i=[entryset firstIndex];i!=NSNotFound;i=[entryset indexGreaterThanIndex:i])
+	for(NSUInteger i=entryset.firstIndex;i!=NSNotFound;i=[entryset indexGreaterThanIndex:i])
 	{
 		BOOL res;
 
@@ -818,7 +818,7 @@ dataFork:(BOOL)datafork resourceFork:(BOOL)resfork
 		}
 	}
 
-	if(![name length]) return YES; // Silently ignore unnamed files (or more likely, directories).
+	if(!name.length) return YES; // Silently ignore unnamed files (or more likely, directories).
 
 	NSString *destfile=[destination stringByAppendingPathComponent:name];
 	while(![self _extractEntry:n as:destfile deferDirectories:defer dataFork:datafork resourceFork:resfork])
@@ -842,7 +842,7 @@ dataFork:(BOOL)datafork resourceFork:(BOOL)resfork
 - (BOOL)extractContentsOfEntry:(NSInteger)n toPath:(NSString *)destination
 {
 	[delegate archive:self extractionOfEntryWillStart:n];
-	
+
 	while(![self _extractEntry:n as:destination deferDirectories:NO dataFork:YES resourceFork:YES])
 	{
 		if(lasterror==XADErrorBreak) return NO;
@@ -855,16 +855,16 @@ dataFork:(BOOL)datafork resourceFork:(BOOL)resfork
 		}
 		else return NO;
 	}
-	
+
 	[delegate archive:self extractionOfEntryDidSucceed:n];
-	
+
 	return YES;
 }
 
 -(BOOL)extractArchiveEntry:(NSInteger)n to:(NSString *)destination
 {
 	NSString *path=[destination stringByAppendingPathComponent:
-	[[self nameOfEntry:n] stringByDeletingLastPathComponent]];
+	[self nameOfEntry:n].stringByDeletingLastPathComponent];
 
 	for(;;)
 	{
@@ -884,11 +884,11 @@ dataFork:(BOOL)datafork resourceFork:(BOOL)resfork
 		}
 		else
 		{
-			err=[subarchive lastError];
+			err=subarchive.lastError;
 			if(err) lasterror=err;
 		}
 
-		BOOL res=subarchive&&![subarchive immediateExtractionFailed];
+		BOOL res=subarchive&&!subarchive.immediateExtractionFailed;
 
 		if(res) return YES;
 		else if(err==XADErrorBreak||err==XADErrorDataFormat) return NO;
@@ -910,7 +910,7 @@ dataFork:(BOOL)datafork resourceFork:(BOOL)resfork
 {
 	for(;;)
 	{
-		XADError error=[unarchiver _ensureDirectoryExists:[destfile stringByDeletingLastPathComponent]];
+		XADError error=[unarchiver _ensureDirectoryExists:destfile.stringByDeletingLastPathComponent];
 
 		if(error==XADErrorNone)
 		{
@@ -937,7 +937,7 @@ dataFork:(BOOL)datafork resourceFork:(BOOL)resfork
 	BOOL isdir=[self entryIsDirectory:n];
 
 	if(delegate)
-	while(lstat([destfile fileSystemRepresentation],&st)==0)
+	while(lstat(destfile.fileSystemRepresentation,&st)==0)
 	{
 		BOOL dir=(st.st_mode&S_IFMT)==S_IFDIR;
 		NSString *newname=nil;
@@ -952,7 +952,7 @@ dataFork:(BOOL)datafork resourceFork:(BOOL)resfork
 
 		if(action==XADActionOverwrite&&!dir) break;
 		else if(action==XADActionSkip) return YES;
-		else if(action==XADActionRename) destfile=[[destfile stringByDeletingLastPathComponent] stringByAppendingPathComponent:newname];
+		else if(action==XADActionRename) destfile=[destfile.stringByDeletingLastPathComponent stringByAppendingPathComponent:newname];
 		else if(action!=XADActionRetry)
 		{
 			lasterror=XADErrorBreak;
@@ -1018,14 +1018,14 @@ fileFraction:(double)fileprogress estimatedTotalFraction:(double)totalprogress
 -(NSString *)unarchiver:(XADUnarchiver *)unarchiver destinationForLink:(XADString *)link from:(NSString *)path
 {
 	NSString *linkstring;
-	if(![link encodingIsKnown]&&delegate)
+	if(!link.encodingIsKnown&&delegate)
 	{
 		// TODO: should there be a better way to deal with encodings?
-		NSStringEncoding encoding=[delegate archive:self encodingForData:[link data]
-		guess:[link encoding] confidence:[link confidence]];
+		NSStringEncoding encoding=[delegate archive:self encodingForData:link.data
+		guess:link.encoding confidence:link.confidence];
 		linkstring=[link stringWithEncoding:encoding];
 	}
-	else linkstring=[link string];
+	else linkstring=link.string;
 
 	return linkstring;
 }
@@ -1050,7 +1050,7 @@ fileFraction:(double)fileprogress estimatedTotalFraction:(double)totalprogress
 	if(!dict) return 0; // Special case for resource forks without data forks
 	NSNumber *size=dict[XADFileSizeKey];
 	if(size == nil) return INT_MAX;
-	return [size intValue];
+	return size.intValue;
 }
 
 // Ugly hack to support old versions of Xee.
@@ -1098,21 +1098,21 @@ fileFraction:(double)fileprogress estimatedTotalFraction:(double)totalprogress
 	NSNumber *size=dict[XADFileSizeKey];
 
 	NSMutableData *data=[NSMutableData dataWithLength:sizeof(struct xadFileInfo)];
-	struct xadFileInfo *fi=[data mutableBytes];
+	struct xadFileInfo *fi=data.mutableBytes;
 
 	if(mod)
 	{
 		NSDateComponents* cal = [[NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian] componentsInTimeZone:[NSTimeZone defaultTimeZone] fromDate:mod];
-		fi->xfi_Date.xd_Year=(int)[cal year];
-		fi->xfi_Date.xd_Month=[cal month];
-		fi->xfi_Date.xd_Day=[cal day];
-		fi->xfi_Date.xd_Hour=[cal hour];
-		fi->xfi_Date.xd_Minute=[cal minute];
-		fi->xfi_Date.xd_Second=[cal second];
+		fi->xfi_Date.xd_Year=(int)cal.year;
+		fi->xfi_Date.xd_Month=cal.month;
+		fi->xfi_Date.xd_Day=cal.day;
+		fi->xfi_Date.xd_Hour=cal.hour;
+		fi->xfi_Date.xd_Minute=cal.minute;
+		fi->xfi_Date.xd_Second=cal.second;
 	}
 	else fi->xfi_Flags|=1<<6;
 
-	if(size != nil) fi->xfi_Size=[size longLongValue];
+	if(size != nil) fi->xfi_Size=size.longLongValue;
 	else fi->xfi_Size=0;
 
 	return fi;
@@ -1214,7 +1214,7 @@ fileFraction:(double)fileprogress estimatedTotalFraction:(double)totalprogress
 	// Default implementation calls old method
 	NSMutableData *terminateddata=[[NSMutableData alloc] initWithData:data];
 	[terminateddata increaseLengthBy:1]; // append a 0 byte
-	NSStringEncoding enc=[self archive:archive encodingForName:[terminateddata bytes] guess:guess confidence:confidence];
+	NSStringEncoding enc=[self archive:archive encodingForName:terminateddata.bytes guess:guess confidence:confidence];
 	return enc;
 }
 
@@ -1222,7 +1222,7 @@ fileFraction:(double)fileprogress estimatedTotalFraction:(double)totalprogress
 {
 	// Default implementation calls old method
 	NSMutableData *terminateddata=[[NSMutableData alloc] initWithData:data];
-	XADAction action=[self archive:archive nameDecodingDidFailForEntry:n bytes:[terminateddata bytes]];
+	XADAction action=[self archive:archive nameDecodingDidFailForEntry:n bytes:terminateddata.bytes];
 	return action;
 }
 

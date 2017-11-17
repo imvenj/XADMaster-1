@@ -32,7 +32,7 @@ NSString *const CSFileErrorException=@"CSFileErrorException";
 	FILE *fileh=_wfopen((const wchar_t *)[path fileSystemRepresentation],
 	(const wchar_t *)[modes cStringUsingEncoding:NSUnicodeStringEncoding]);
 	#else // Cocoa or GNUstep under Linux
-	FILE *fileh=fopen([path fileSystemRepresentation],[modes UTF8String]);
+	FILE *fileh=fopen(path.fileSystemRepresentation,modes.UTF8String);
 	#endif
 
 	if(!fileh) [NSException raise:CSCannotOpenFileException
@@ -52,7 +52,7 @@ NSString *const CSFileErrorException=@"CSFileErrorException";
 	if((self=[super initWithName:descname]))
 	{
 		fh=file;
- 		close=closeondealloc;
+		close=closeondealloc;
 		multilock=nil;
 		parent=nil;
 	}
@@ -64,7 +64,7 @@ NSString *const CSFileErrorException=@"CSFileErrorException";
 	if((self=[super initAsCopyOf:other]))
 	{
 		fh=other->fh;
- 		close=NO;
+		close=NO;
 		parent=other;
 
 		if(!other->multilock) [other _setMultiMode];
@@ -112,7 +112,7 @@ NSString *const CSFileErrorException=@"CSFileErrorException";
 
 -(BOOL)atEndOfFile
 {
-	return [self offsetInFile]==[self fileSize];
+	return self.offsetInFile==self.fileSize;
 /*	if(multi) return pos==[self fileSize];
 	else return feof(fh);*/ // feof() only returns true after trying to read past the end
 }

@@ -4,7 +4,7 @@
 
 -(id)initWithHandle:(CSHandle *)handle length:(off_t)length correctChecksum:(int)correct mask:(int)mask
 {
-	if((self=[super initWithName:[handle name] length:length]))
+	if((self=[super initWithName:handle.name length:length]))
 	{
 		parent=[handle retain];
 		correctchecksum=correct;
@@ -42,7 +42,7 @@
 	return (checksum&summask)==(correctchecksum&summask);
 }
 
--(double)estimatedProgress { return [parent estimatedProgress]; }
+-(double)estimatedProgress { return parent.estimatedProgress; }
 
 @end
 

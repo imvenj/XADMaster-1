@@ -39,7 +39,7 @@
 
 -(void)parseFromHandle:(CSHandle *)handle
 {
-	off_t pos=[handle offsetInFile];
+	off_t pos=handle.offsetInFile;
 
 	off_t dataoffset=[handle readUInt32BE];
 	off_t mapoffset=[handle readUInt32BE];
@@ -71,9 +71,9 @@
 -(NSMutableDictionary *)_parseResourceDataFromHandle:(CSHandle *)handle
 {
 	NSMutableDictionary *dict=[NSMutableDictionary dictionary];
-	while(![handle atEndOfFile])
+	while(!handle.atEndOfFile)
 	{
-		NSNumber *key=@([handle offsetInFile]);
+		NSNumber *key=@(handle.offsetInFile);
 		uint32_t length=[handle readUInt32BE];
 		NSData *data=[handle readDataOfLength:length];
 		dict[key] = data;
@@ -120,7 +120,7 @@
 			if(nameoffset != nil)
 			{
 				// untested
-				[handle seekToFileOffset:namelistoffset+[nameoffset intValue]];
+				[handle seekToFileOffset:namelistoffset+nameoffset.intValue];
 				int length=[handle readUInt8];
 				NSData *namedata=[handle readDataOfLength:length];
 				resource[@"NameData"] = namedata;

@@ -18,8 +18,8 @@
 	uint8_t byte;
 	while((byte=[fh readUInt8])) [data appendBytes:&byte length:1];
 
-	const char *bytes=[data bytes];
-	NSInteger length=[data length];
+	const char *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	NSData *namepart=data;
 	NSData *comment=nil;
@@ -60,13 +60,13 @@
 		else compname=@"LZHUF 2.0";
 	}
 
-	off_t dataoffset=[fh offsetInFile];
+	off_t dataoffset=fh.offsetInFile;
 
 	NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 		[parser XADPathWithData:namepart separators:XADNoPathSeparator],XADFileNameKey,
 		[parser XADStringWithString:compname],XADCompressionNameKey,
 		@(end-dataoffset-2),XADCompressedSizeKey,
-		[NSNumber numberWithUnsignedLongLong:dataoffset],XADDataOffsetKey,
+		@(dataoffset),XADDataOffsetKey,
 		@(end-dataoffset),XADDataLengthKey,
 		@(type),@"CrunchType",
 		@(version1),@"CrunchReferenceRevision",
@@ -100,8 +100,8 @@
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	if(length<9) return NO;
 
@@ -125,15 +125,15 @@
 
 -(void)parse
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
 	NSMutableDictionary *dict=[XADCrunchParser parseWithHandle:fh
-	endOffset:[fh fileSize] parser:self];
+	endOffset:fh.fileSize parser:self];
 
 	XADPath *filename=dict[XADFileNameKey];
-	NSData *namedata=[filename data];
-	const char *bytes=[namedata bytes];
-	NSInteger length=[namedata length];
+	NSData *namedata=filename.data;
+	const char *bytes=namedata.bytes;
+	NSInteger length=namedata.length;
 
 	if(length>4)
 	if(bytes[length-4]=='.')

@@ -41,8 +41,8 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	if(length<8) return NO; // TODO: fix to use correct min size
 
@@ -59,9 +59,9 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 	if((matches=[name substringsCapturedByPattern:@"^(.*[^0-9])([0-9]+)(.*)\\.rar$" options:REG_ICASE]))
 	return [self scanForVolumesWithFilename:name
 	regex:[XADRegex regexWithPattern:[NSString stringWithFormat:@"^%@[0-9]{%ld}%@.rar$",
-		[[matches objectAtIndex:1] escapedPattern],
-		(long)[(NSString *)[matches objectAtIndex:2] length],
-		[[matches objectAtIndex:3] escapedPattern]] options:REG_ICASE]
+		[matches[1] escapedPattern],
+		(long)((NSString *)matches[2]).length,
+		[matches[3] escapedPattern]] options:REG_ICASE]
 	];
 
 	return nil;
@@ -90,7 +90,7 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 	// Make sure to clear key cache if password changes.
 //	[keys release];
 //	keys=nil;
-	[super setPassword:newpassword];
+	super.password = newpassword;
 }
 
 -(void)parse
@@ -104,7 +104,7 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 	{
 		if(skipheader)
 		{
-			[[self handle] skipBytes:8];
+			[self.handle skipBytes:8];
 			skipheader=NO;
 		}
 
@@ -125,8 +125,8 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 			{
 				NSMutableDictionary *dict=[self readFileBlockHeader:block];
 
-				XADPath *path1=[currdict objectForKey:XADFileNameKey];
-				XADPath *path2=[dict objectForKey:XADFileNameKey];
+				XADPath *path1=currdict[XADFileNameKey];
+				XADPath *path2=dict[XADFileNameKey];
 
 				if(currdict && (block.flags&0x0008) && [path1 isEqual:path2])
 				{
@@ -140,14 +140,14 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 					{
 						// We had a previous entry, but it did not match. Mark it
 						// as corrupted and get rid of it.
-						[currdict setObject:[NSNumber numberWithBool:YES] forKey:XADIsCorruptedKey];
+						currdict[XADIsCorruptedKey] = @YES;
 						[self addEntryWithDictionary:currdict];
 					}
 
 					if(block.flags&0x0008)
 					{
 						// This is not the first part of a new file. Mark as corrupted.
-						[dict setObject:[NSNumber numberWithBool:YES] forKey:XADIsCorruptedKey];
+						dict[XADIsCorruptedKey] = @YES;
 					}
 
 					// Set this as the current file being collected.
@@ -157,7 +157,7 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 				if(!(block.flags&0x0010))
 				{
 					// This is the last part of a file, so get rid of it.
-					[currdict setObject:currparts forKey:XADSolidObjectKey];
+					currdict[XADSolidObjectKey] = currparts;
 					[self addEntryWithDictionary:currdict];
 
 					currdict=nil;
@@ -185,7 +185,7 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 					//uint32_t extracrc=[handle readUInt32LE];
 				}
 
-				headerkey=[[self encryptionKeyForPassword:[self password]
+				headerkey=[[self encryptionKeyForPassword:self.password
 				salt:salt strength:strength passwordCheck:passcheck] retain];
 
 				[self skipBlock:block];
@@ -196,7 +196,7 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 				uint64_t flags=ReadRAR5VInt(handle);
 				if(flags&0x0001)
 				{
-					[[self currentHandle] seekToEndOfFile];
+					[self.currentHandle seekToEndOfFile];
 					skipheader=YES;
 				}
 				else
@@ -212,7 +212,7 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 		}
 	}
 
-	end:
+end:
 	return;
 }
 
@@ -221,33 +221,33 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 	CSHandle *handle=block.fh;
 
 	NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
-		[NSNumber numberWithLongLong:[self endOfBlockHeader:block]],@"RAR5DataOffset",
-		[NSNumber numberWithLongLong:block.datasize],@"RAR5DataLength",
+		@([self endOfBlockHeader:block]),@"RAR5DataOffset",
+		@(block.datasize),@"RAR5DataLength",
 	nil];
 
 	uint64_t flags=ReadRAR5VInt(handle);
-	[dict setObject:[NSNumber numberWithUnsignedLongLong:flags] forKey:@"RAR5Flags"];
+	dict[@"RAR5Flags"] = @(flags);
 
-	if(flags&0x0001) [dict setObject:[NSNumber numberWithBool:YES] forKey:XADIsDirectoryKey];
+	if(flags&0x0001) dict[XADIsDirectoryKey] = @YES;
 
 	uint64_t uncompsize=ReadRAR5VInt(handle);
 	if(!(flags&0x0008) && !(flags&0x0001))
-	[dict setObject:[NSNumber numberWithUnsignedLongLong:uncompsize] forKey:XADFileSizeKey];
+		dict[XADFileSizeKey] = @(uncompsize);
 
 	uint64_t attributes=ReadRAR5VInt(handle);
-	[dict setObject:[NSNumber numberWithUnsignedLongLong:attributes] forKey:@"RAR5Attributes"];
+	dict[@"RAR5Attributes"] = @(attributes);
 
 	if(flags&0x0002)
 	{
 		uint32_t modification=[handle readUInt32LE];
-		[dict setObject:[NSDate dateWithTimeIntervalSince1970:modification] forKey:XADLastModificationDateKey];
+		dict[XADLastModificationDateKey] = [NSDate dateWithTimeIntervalSince1970:modification];
 	}
 
 	if(flags&0x0004)
 	{
 		uint32_t crc=[handle readUInt32LE];
 		if(!(flags&0x0001))
-		[dict setObject:[NSNumber numberWithUnsignedInt:crc] forKey:@"RAR5CRC32"];
+			dict[@"RAR5CRC32"] = @(crc);
 	}
 
 	uint64_t compinfo=ReadRAR5VInt(handle);
@@ -257,12 +257,12 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 		//BOOL issolid=(compinfo&0x40)>>6;
 		int compmethod=(compinfo&0x380)>>7;
 		int compdictsize=(compinfo&0x3c00)>>10;
-		[dict setObject:[NSNumber numberWithUnsignedLongLong:compinfo] forKey:@"RAR5CompressionInformation"];
-		[dict setObject:[NSNumber numberWithInt:compversion] forKey:@"RAR5CompressionVersion"];
+		dict[@"RAR5CompressionInformation"] = @(compinfo);
+		dict[@"RAR5CompressionVersion"] = @(compversion);
 		//[dict setObject:[NSNumber numberWithBool:issolid] forKey:XADIsSolidKey];
-		[dict setObject:[NSNumber numberWithInt:compmethod] forKey:@"RAR5CompressionMethod"];
-		[dict setObject:[NSNumber numberWithInt:compdictsize] forKey:@"RAR5CompressionDictionarySize"];
-
+		dict[@"RAR5CompressionMethod"] = @(compmethod);
+		dict[@"RAR5CompressionDictionarySize"] = @(compdictsize);
+		
 		NSString *methodname=nil;
 		switch(compmethod)
 		{
@@ -273,22 +273,21 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 			case 4: methodname=[NSString stringWithFormat:@"Good v5.0 (v%d)",compversion]; break;
 			case 5: methodname=[NSString stringWithFormat:@"Best v5.0 (v%d)",compversion]; break;
 		}
-		if(methodname) [dict setObject:[self XADStringWithString:methodname] forKey:XADCompressionNameKey];
+		if(methodname) dict[XADCompressionNameKey] = [self XADStringWithString:methodname];
 	}
 
 	uint64_t os=ReadRAR5VInt(handle);
-	[dict setObject:[NSNumber numberWithUnsignedLongLong:os] forKey:@"RAR5OS"];
+	dict[@"RAR5OS"] = @(os);
 	switch(os)
 	{
-		case 0: [dict setObject:[self XADStringWithString:@"Windows"] forKey:@"RAR5OSName"]; break;
-		case 1: [dict setObject:[self XADStringWithString:@"Unix"] forKey:@"RAR5OSName"]; break;
+		case 0: dict[@"RAR5OSName"] = [self XADStringWithString:@"Windows"]; break;
+		case 1: dict[@"RAR5OSName"] = [self XADStringWithString:@"Unix"]; break;
 	}
 
 	uint64_t namelength=ReadRAR5VInt(handle);
 	NSData *namedata=[handle readDataOfLength:(int)namelength];
 
-	[dict setObject:[self XADPathWithData:namedata encodingName:XADUTF8StringEncodingName separators:XADUnixPathSeparator]
-	forKey:XADFileNameKey];
+	dict[XADFileNameKey] = [self XADPathWithData:namedata encodingName:XADUTF8StringEncodingName separators:XADUnixPathSeparator];
 
 	if(block.extrasize)
 	{
@@ -296,7 +295,7 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 		for(;;)
 		{
 			uint64_t size=ReadRAR5VInt(handle);
-			off_t start=[handle offsetInFile];
+			off_t start=handle.offsetInFile;
 			uint64_t type=ReadRAR5VInt(handle);
 
 			switch(type)
@@ -307,24 +306,24 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 					if(version!=0) [XADException raiseNotSupportedException];
 
 					uint64_t flags=ReadRAR5VInt(handle);
-					[dict setObject:[NSNumber numberWithUnsignedLongLong:flags] forKey:@"RAR5EncryptionFlags"];
+					dict[@"RAR5EncryptionFlags"] = @(flags);
 
 					int strength=[handle readUInt8];
-					[dict setObject:[NSNumber numberWithInt:strength] forKey:@"RAR5EncryptionStrength"];
+					dict[@"RAR5EncryptionStrength"] = @(strength);
 
 					NSData *salt=[handle readDataOfLength:16];
-					[dict setObject:salt forKey:@"RAR5EncryptionSalt"];
+					dict[@"RAR5EncryptionSalt"] = salt;
 
 					NSData *iv=[handle readDataOfLength:16];
-					[dict setObject:iv forKey:@"RAR5EncryptionIV"];
+					dict[@"RAR5EncryptionIV"] = iv;
 
 					if(flags&0x0002)
 					{
 						NSData *passcheck=[handle readDataOfLength:8];
-						[dict setObject:passcheck forKey:@"RAR5EncryptionCheckData"];
+						dict[@"RAR5EncryptionCheckData"] = passcheck;
 
 						uint32_t extracrc=[handle readUInt32LE];
-						[dict setObject:[NSNumber numberWithUnsignedInt:extracrc] forKey:@"RAR5EncryptionExtraCRC"];
+						dict[@"RAR5EncryptionExtraCRC"] = @(extracrc);
 					}
 				}
 				break;
@@ -337,7 +336,7 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 						case 0x00:
 						{
 							NSData *hash=[handle readDataOfLength:32];
-							[dict setObject:hash forKey:@"RAR5BLAKE2spHash"];
+							dict[@"RAR5BLAKE2spHash"] = hash;
 						}
 					}
 				}
@@ -346,20 +345,18 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 				case 0x03: // File time
 				{
 					uint64_t flags=ReadRAR5VInt(handle);
-
+					
 					if(flags&0x0002)
 					{
 						if(flags&0x0001)
 						{
 							uint32_t time=[handle readUInt32LE];
-							[dict setObject:[NSDate dateWithTimeIntervalSince1970:time]
-							forKey:XADLastModificationDateKey];
+							dict[XADLastModificationDateKey] = [NSDate dateWithTimeIntervalSince1970:time];
 						}
 						else
 						{
 							uint64_t time=[handle readUInt64LE];
-							[dict setObject:[NSDate XADDateWithWindowsFileTime:time]
-							forKey:XADLastModificationDateKey];
+							dict[XADLastModificationDateKey] = [NSDate XADDateWithWindowsFileTime:time];
 						}
 					}
 
@@ -368,14 +365,12 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 						if(flags&0x0001)
 						{
 							uint32_t time=[handle readUInt32LE];
-							[dict setObject:[NSDate dateWithTimeIntervalSince1970:time]
-							forKey:XADCreationDateKey];
+							dict[XADCreationDateKey] = [NSDate dateWithTimeIntervalSince1970:time];
 						}
 						else
 						{
 							uint64_t time=[handle readUInt64LE];
-							[dict setObject:[NSDate XADDateWithWindowsFileTime:time]
-							forKey:XADCreationDateKey];
+							dict[XADCreationDateKey] = [NSDate XADDateWithWindowsFileTime:time];
 						}
 					}
 
@@ -384,14 +379,12 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 						if(flags&0x0001)
 						{
 							uint32_t time=[handle readUInt32LE];
-							[dict setObject:[NSDate dateWithTimeIntervalSince1970:time]
-							forKey:XADLastAccessDateKey];
+							dict[XADLastAccessDateKey] = [NSDate dateWithTimeIntervalSince1970:time];
 						}
 						else
 						{
 							uint64_t time=[handle readUInt64LE];
-							[dict setObject:[NSDate XADDateWithWindowsFileTime:time]
-							forKey:XADLastAccessDateKey];
+							dict[XADLastAccessDateKey] = [NSDate XADDateWithWindowsFileTime:time];
 						}
 					}
 				}
@@ -402,41 +395,39 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 					/*uint64_t flags=*/ReadRAR5VInt(handle);
 
 					uint64_t version=ReadRAR5VInt(handle);
-					[dict setObject:[NSNumber numberWithUnsignedLongLong:version] forKey:@"RAR5FileVersion"];
+					dict[@"RAR5FileVersion"] = @(version);
 				}
 				break;
 
 				case 0x05: // Redirection
 				{
 					uint64_t type=ReadRAR5VInt(handle);
-					[dict setObject:[NSNumber numberWithUnsignedLongLong:type] forKey:@"RAR5RedirectionType"];
+					dict[@"RAR5RedirectionType"] = @(type);
 
 					if(type==0x004)
-					[dict setObject:[NSNumber numberWithBool:YES] forKey:XADIsHardLinkKey];
+						dict[XADIsHardLinkKey] = @YES;
 
 					uint64_t flags=ReadRAR5VInt(handle);
-					[dict setObject:[NSNumber numberWithUnsignedLongLong:flags] forKey:@"RAR5RedirectionFlags"];
+					dict[@"RAR5RedirectionFlags"] = @(flags);
 
 					uint64_t namelength=ReadRAR5VInt(handle);
 					NSData *namedata=[handle readDataOfLength:(int)namelength];
 
-					[dict setObject:[self XADStringWithData:namedata encodingName:XADUTF8StringEncodingName]
-					forKey:XADLinkDestinationKey];
+					dict[XADLinkDestinationKey] = [self XADStringWithData:namedata encodingName:XADUTF8StringEncodingName];
 				}
 				break;
 
 				case 0x06: // Unix owner
 				{
 					uint64_t flags=ReadRAR5VInt(handle);
-					[dict setObject:[NSNumber numberWithUnsignedLongLong:flags] forKey:@"RAR5RedirectionFlags"];
+					dict[@"RAR5RedirectionFlags"] = @(flags);
 
 					if(flags&0x0001)
 					{
 						uint64_t namelength=ReadRAR5VInt(handle);
 						NSData *namedata=[handle readDataOfLength:(int)namelength];
 
-						[dict setObject:[self XADStringWithData:namedata]
-						forKey:XADPosixUserNameKey];
+						dict[XADPosixUserNameKey] = [self XADStringWithData:namedata];
 					}
 
 					if(flags&0x0002)
@@ -444,24 +435,21 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 						uint64_t namelength=ReadRAR5VInt(handle);
 						NSData *namedata=[handle readDataOfLength:(int)namelength];
 
-						[dict setObject:[self XADStringWithData:namedata]
-						forKey:XADPosixGroupNameKey];
+						dict[XADPosixGroupNameKey] = [self XADStringWithData:namedata];
 					}
 
 					if(flags&0x0004)
 					{
 						uint64_t num=ReadRAR5VInt(handle);
 
-						[dict setObject:[NSNumber numberWithUnsignedLongLong:num]
-						forKey:XADPosixUserKey];
+						dict[XADPosixUserKey] = @(num);
 					}
 
 					if(flags&0x0008)
 					{
 						uint64_t num=ReadRAR5VInt(handle);
 
-						[dict setObject:[NSNumber numberWithUnsignedLongLong:num]
-						forKey:XADPosixUserKey];
+						dict[XADPosixUserKey] = @(num);
 					}
 				}
 				break;
@@ -479,8 +467,8 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 
 -(RAR5Block)readBlockHeader
 {
-	CSHandle *fh=[self handle];
-	if([fh atEndOfFile]) return ZeroBlock;
+	CSHandle *fh=self.handle;
+	if(fh.atEndOfFile) return ZeroBlock;
 
 	RAR5Block block;
 
@@ -489,7 +477,7 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 	if(headerkey)
 	{
 		NSData *iv=[fh readDataOfLength:16];
-		block.outerstart=[fh offsetInFile];
+		block.outerstart=fh.offsetInFile;
 		fh=[[[XADRARAESHandle alloc] initWithHandle:fh RAR5Key:headerkey IV:iv] autorelease];
 	}
 
@@ -499,7 +487,7 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 	{
 		block.crc=[fh readUInt32LE];
 		block.headersize=ReadRAR5VInt(fh);
-		block.start=[fh offsetInFile];
+		block.start=fh.offsetInFile;
 		block.type=ReadRAR5VInt(fh);
 		block.flags=ReadRAR5VInt(fh);
 
@@ -520,7 +508,7 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 
 -(void)skipBlock:(RAR5Block)block
 {
-	[[self handle] seekToFileOffset:[self endOfBlockHeader:block]];
+	[self.handle seekToFileOffset:[self endOfBlockHeader:block]];
 }
 
 -(off_t)endOfBlockHeader:(RAR5Block)block
@@ -537,19 +525,19 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 
 -(NSData *)encryptionKeyForPassword:(NSString *)passwordstring salt:(NSData *)salt strength:(int)strength passwordCheck:(NSData *)check
 {
-	NSArray *key=[NSArray arrayWithObjects:password,salt,[NSNumber numberWithInt:strength],nil];
-	NSDictionary *crypto=[cryptocache objectForKey:key];
+	NSArray *key=@[password,salt,@(strength)];
+	NSDictionary *crypto=cryptocache[key];
 	if(!crypto)
 	{
 		NSData *passworddata=[passwordstring dataUsingEncoding:NSUTF8StringEncoding];
 
 		uint8_t DK1[32],DK2[32],DK3[32];
-		PBKDF2_3([passworddata bytes],[passworddata length],[salt bytes],[salt length],
-		DK1,DK2,DK3,32,1<<strength,16,16);
+		PBKDF2_3(passworddata.bytes,passworddata.length,salt.bytes,salt.length,
+				 DK1,DK2,DK3,32,1<<strength,16,16);
 
-		if(check && [check length]==8)
+		if(check && check.length==8)
 		{
-			const uint8_t *checkbytes=[check bytes];
+			const uint8_t *checkbytes=check.bytes;
 			for(int i=0;i<8;i++)
 			{
 				if(checkbytes[i]!=(DK3[i]^DK3[i+8]^DK3[i+16]^DK3[i+24]))
@@ -557,16 +545,14 @@ static inline BOOL IsZeroBlock(RAR5Block block) { return block.start==0; }
 			}
 		}
 
-		crypto=[NSDictionary dictionaryWithObjectsAndKeys:
-			[NSData dataWithBytes:DK1 length:32],@"Key",
-			[NSData dataWithBytes:DK2 length:32],@"HashKey",
-			//[NSData dataWithBytes:DK3 length:32],@"PasswordCheck",
-		nil];
+		crypto=@{@"Key": [NSData dataWithBytes:DK1 length:32],
+			@"HashKey": [NSData dataWithBytes:DK2 length:32]};
+		//[NSData dataWithBytes:DK3 length:32],@"PasswordCheck",
 
-		[cryptocache setObject:crypto forKey:key];
+		cryptocache[key] = crypto;
 	}
 
-	return [crypto objectForKey:@"Key"];
+	return crypto[@"Key"];
 }
 
 -(NSString *)formatName

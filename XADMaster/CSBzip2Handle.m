@@ -12,19 +12,19 @@ NSString *const CSBzip2Exception=@"CSBzip2Exception";
 	off_t startoffs;
 	bz_stream bzs;
 	BOOL inited,checksumcorrect;
-	
+
 	uint8_t inbuffer[16*1024];
 }
 @synthesize checksumCorrect = checksumcorrect;
 
 +(CSBzip2Handle *)bzip2HandleWithHandle:(CSHandle *)handle
 {
-	return [[self alloc] initWithHandle:handle length:CSHandleMaxLength name:[handle name]];
+	return [[self alloc] initWithHandle:handle length:CSHandleMaxLength name:handle.name];
 }
 
 +(CSBzip2Handle *)bzip2HandleWithHandle:(CSHandle *)handle length:(off_t)length
 {
-	return [[self alloc] initWithHandle:handle length:length name:[handle name]];
+	return [[self alloc] initWithHandle:handle length:length name:handle.name];
 }
 
 -(id)initWithHandle:(CSHandle *)handle length:(off_t)length name:(NSString *)descname
@@ -32,7 +32,7 @@ NSString *const CSBzip2Exception=@"CSBzip2Exception";
 	if((self=[super initWithName:descname]))
 	{
 		parent=handle;
-		startoffs=[parent offsetInFile];
+		startoffs=parent.offsetInFile;
 		inited=NO;
 		checksumcorrect=YES;
 	}

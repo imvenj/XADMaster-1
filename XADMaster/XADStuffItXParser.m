@@ -57,7 +57,7 @@ static void ReadElement(CSHandle *fh,StuffItXElement *element)
 		if(type==4) element->alglist3_extra=ReadSitxP2(fh);
 	}
 
-	element->dataoffset=[fh offsetInFile];
+	element->dataoffset=fh.offsetInFile;
 	element->actualsize=0;
 }
 
@@ -96,7 +96,7 @@ static void ScanElementData(CSHandle *fh,StuffItXElement *element)
 
 static CSHandle *HandleForElement(XADStuffItXParser *self,StuffItXElement *element,BOOL wantchecksum)
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
 	int64_t compressionalgorithm=element->alglist[0];
 	int64_t checksumalgorithm=element->alglist[1];
@@ -259,8 +259,8 @@ static CSHandle *HandleForElement(XADStuffItXParser *self,StuffItXElement *eleme
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name;
 {
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	if(length<8) return NO;
 
@@ -289,7 +289,7 @@ static CSHandle *HandleForElement(XADStuffItXParser *self,StuffItXElement *eleme
 {
 	[self setIsMacArchive:YES];
 
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
 	[fh skipBytes:7];
 
@@ -306,7 +306,7 @@ static CSHandle *HandleForElement(XADStuffItXParser *self,StuffItXElement *eleme
 	NSMutableDictionary *streamforks=[NSMutableDictionary dictionary];
 	NSMutableSet *forkedset=[NSMutableSet set];
 
-	while([self shouldKeepParsing])
+	while(self.shouldKeepParsing)
 	{
 		StuffItXElement element;
 		ReadElement(fh,&element);
@@ -326,7 +326,7 @@ static CSHandle *HandleForElement(XADStuffItXParser *self,StuffItXElement *eleme
 				int64_t preprocessalgorithm=element.alglist[2];
 
 				ScanElementData(fh,&element);
-				off_t pos=[fh offsetInFile];
+				off_t pos=fh.offsetInFile;
 
 				// Find actual size of stream
 				NSMutableArray *forks=streamforks[@(objid)];
@@ -336,7 +336,7 @@ static CSHandle *HandleForElement(XADStuffItXParser *self,StuffItXElement *eleme
 				{
 					if((id)fork==[NSNull null]) [XADException raiseIllegalDataException];
 					NSNumber *lengthnum=fork[@"Length"];
-					element.actualsize+=[lengthnum longLongValue];
+					element.actualsize+=lengthnum.longLongValue;
 				}
 
 				// Send out all the entries without data streams first
@@ -399,7 +399,7 @@ static CSHandle *HandleForElement(XADStuffItXParser *self,StuffItXElement *eleme
 				off_t offs=0;
 				while((fork=[enumerator nextObject]))
 				{
-					if(![self shouldKeepParsing]) return;
+					if(!self.shouldKeepParsing) return;
 
 					if((id)fork==[NSNull null]) [XADException raiseIllegalDataException];
 
@@ -417,7 +417,7 @@ static CSHandle *HandleForElement(XADStuffItXParser *self,StuffItXElement *eleme
 						NSNumber *offsnum=@(offs);
 
 						off_t currcompsize=0;
-						if(uncompsize) currcompsize=[lengthnum longLongValue]*compsize/uncompsize;
+						if(uncompsize) currcompsize=lengthnum.longLongValue*compsize/uncompsize;
 						NSNumber *currcompsizenum=@(currcompsize);
 
 						NSEnumerator *entryenumerator=[entries objectEnumerator];
@@ -437,13 +437,13 @@ static CSHandle *HandleForElement(XADStuffItXParser *self,StuffItXElement *eleme
 							if(isresfork)
 							dict[XADIsResourceForkKey] = @YES;
 
-							if([entries count]>1)
+							if(entries.count>1)
 							dict[@"StuffItXRepeatedEntries"] = entries;
 
 							[self addEntryWithDictionary:dict];
 						}
 					}
-					offs+=[lengthnum longLongValue];
+					offs+=lengthnum.longLongValue;
 				}
 
 				[fh seekToFileOffset:pos];
@@ -494,7 +494,7 @@ static CSHandle *HandleForElement(XADStuffItXParser *self,StuffItXElement *eleme
 
 				// Insert the fork at the right part of the data stream.
 				// Forks can be specified out of order.
-				NSInteger count=[forks count];
+				NSInteger count=forks.count;
 				if(index==count)
 				{
 					[forks addObject:dict];
@@ -546,7 +546,7 @@ static CSHandle *HandleForElement(XADStuffItXParser *self,StuffItXElement *eleme
 			{
 				ScanElementData(fh,&element);
 				element.actualsize=element.attribs[4];
-				off_t pos=[fh offsetInFile];
+				off_t pos=fh.offsetInFile;
 
 				CSHandle *ch=HandleForElement(self,&element,NO);
 				if(!ch) [XADException raiseNotSupportedException];
@@ -645,7 +645,7 @@ static CSHandle *HandleForElement(XADStuffItXParser *self,StuffItXElement *eleme
 				{
 					NSData *data=ReadSitxData(fh,32);
 
-					if(memcmp([data bytes],"slnkrhap",8)==0)
+					if(memcmp(data.bytes,"slnkrhap",8)==0)
 					{
 						entry[XADIsLinkKey] = @YES;
 					}
@@ -682,7 +682,7 @@ static CSHandle *HandleForElement(XADStuffItXParser *self,StuffItXElement *eleme
 				case 9:
 				{
 					NSData *data=ReadSitxString(fh);
-					if(data&&[data length])
+					if(data&&data.length)
 					entry[XADCommentKey] = [self XADStringWithData:data];
 				}
 				break;
@@ -723,7 +723,7 @@ static CSHandle *HandleForElement(XADStuffItXParser *self,StuffItXElement *eleme
 	// TODO: Should the data be released at some point?
 	NSArray *repeat=dict[@"StuffItXRepeatedEntries"];
 	NSNumber *filesize=dict[XADFileSizeKey];
-	if(repeat && [filesize longLongValue]<0x1000000)
+	if(repeat && filesize.longLongValue<0x1000000)
 	{
 		if(repeat!=repeatedentries)
 		{
@@ -735,8 +735,8 @@ static CSHandle *HandleForElement(XADStuffItXParser *self,StuffItXElement *eleme
 			CSHandle *handle=[self subHandleFromSolidStreamForEntryWithDictionary:dict];
 
 			repeatedentrydata=[[handle remainingFileContents] retain];
-			repeatedentryhaschecksum=[handle hasChecksum];
-			repeatedentryiscorrect=[handle isChecksumCorrect];
+			repeatedentryhaschecksum=handle.hasChecksum;
+			repeatedentryiscorrect=handle.checksumCorrect;
 		}
 
 		return [[[XADStuffItXRepeatedEntryHandle alloc] initWithData:repeatedentrydata

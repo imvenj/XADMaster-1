@@ -9,8 +9,8 @@
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	if(length<6) return NO;
 	if(bytes[0]=='0'&&bytes[1]=='7'&&bytes[2]=='0'&&bytes[3]=='7'&&bytes[4]=='0'&&bytes[5]=='7') return YES;
@@ -24,9 +24,9 @@
 
 -(void)parseWithSeparateMacForks
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
-	while([self shouldKeepParsing])
+	while(self.shouldKeepParsing)
 	{
 		uint8_t magic[2];
 		[fh readBytes:2 toBuffer:magic];
@@ -134,9 +134,9 @@
 		}
 		else { [XADException raiseIllegalDataException]; for(;;); }
 
-		if([namedata length]==10&&memcmp([namedata bytes],"TRAILER!!!",10)==0) break;
+		if(namedata.length==10&&memcmp(namedata.bytes,"TRAILER!!!",10)==0) break;
 
-		off_t pos=[fh offsetInFile];
+		off_t pos=fh.offsetInFile;
 
 		NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 			@(devmajor),@"CpioDevMajor",
@@ -148,9 +148,9 @@
 			@(nlink),@"CpioNlink",
 			[self XADPathWithData:namedata separators:XADUnixPathSeparator],XADFileNameKey,
 			[NSDate dateWithTimeIntervalSince1970:mtime],XADLastModificationDateKey,
-			[NSNumber numberWithLongLong:filesize],XADFileSizeKey,
-			[NSNumber numberWithLongLong:filesize+pad],XADCompressedSizeKey,
-			[NSNumber numberWithLongLong:filesize],XADDataLengthKey,
+			@(filesize),XADFileSizeKey,
+			@(filesize+pad),XADCompressedSizeKey,
+			@(filesize),XADDataLengthKey,
 			@(pos),XADDataOffsetKey,
 		nil];
 
@@ -188,7 +188,7 @@
 		NSNumber *check=dict[@"CpioChecksum"];
 		if(check) handle=[[[XADChecksumHandle alloc] initWithHandle:handle
 		length:[dict[XADDataLengthKey] longLongValue]
-		correctChecksum:[check intValue] mask:0xffffffff] autorelease];
+		correctChecksum:check.intValue mask:0xffffffff] autorelease];
 	}
 
 	return handle;

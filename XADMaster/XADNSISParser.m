@@ -34,10 +34,10 @@ static BOOL IsOlderSignature(const uint8_t *ptr)
 
 static BOOL IsOldSignature(const uint8_t *ptr)
 {
-	static const uint8_t OldSignature[16]={0xef,0xbe,0xad,0xde,0x4e,0x75,0x6c,0x6c,0x53,0x6f,0x66,0x74,0x49,0x6e,0x73,0x74};
-	if(memcmp(ptr+4,OldSignature,16)!=0) return NO;
-	if(CSUInt32LE(ptr)&2) return NO; // uninstaller
-	return YES;
+    static const uint8_t OldSignature[16]={0xef,0xbe,0xad,0xde,0x4e,0x75,0x6c,0x6c,0x53,0x6f,0x66,0x74,0x49,0x6e,0x73,0x74};
+    if(memcmp(ptr+4,OldSignature,16)!=0) return NO;
+    if(CSUInt32LE(ptr)&2) return NO; // uninstaller
+    return YES;
 }
 
 static BOOL IsNewSignature(const uint8_t *ptr)
@@ -78,12 +78,12 @@ static BOOL LooksLikeZlib(uint8_t *sig)
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data
 name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 {
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	for(NSInteger offs=0;offs<length+4+16;offs+=512)
 	{
-		if(IsOlderSignature(bytes+offs)) 
+		if(IsOlderSignature(bytes+offs))
 		{
 			props[@"NSISOlderOffset"] = @(offs);
 			return YES;
@@ -124,30 +124,30 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 
 -(void)parse
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
 	NSNumber *offs;
 
-	offs=[self properties][@"NSISOlderOffset"];
+	offs=self.properties[@"NSISOlderOffset"];
 	if(offs)
 	{
-		[fh seekToFileOffset:[offs longLongValue]];
+		[fh seekToFileOffset:offs.longLongValue];
 		[self parseOlderFormat];
 		return;
 	}
 
-	offs=[self properties][@"NSISOldOffset"];
+	offs=self.properties[@"NSISOldOffset"];
 	if(offs)
 	{
-		[fh seekToFileOffset:[offs longLongValue]];
+		[fh seekToFileOffset:offs.longLongValue];
 		[self parseOldFormat];
 		return;
 	}
 
-	offs=[self properties][@"NSISNewOffset"];
+	offs=self.properties[@"NSISNewOffset"];
 	if(offs)
 	{
-		[fh seekToFileOffset:[offs longLongValue]];
+		[fh seekToFileOffset:offs.longLongValue];
 		[self parseNewFormat];
 		return;
 	}
@@ -156,7 +156,7 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 // Versions 1.1o to 1.2g - opcode 3, stride 7
 -(void)parseOlderFormat
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
 	detectedformat=ZlibFormat;
 	expansiontypes=DollarExpansionType;
@@ -179,7 +179,7 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 		uint32_t complength=headerlength;
 		uint32_t uncomplength=headeroffset;
 
-		base=[fh offsetInFile]+complength;
+		base=fh.offsetInFile+complength;
 
 		CSHandle *hh=[fh nonCopiedSubHandleOfLength:complength];
 		if(uncomplength) hh=[CSZlibHandle zlibHandleWithHandle:hh length:uncomplength];
@@ -210,9 +210,9 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 		// Versions 1.1y to 1.2g
 		//NSLog(@"path 1b");
 
-		CSHandle *fh=[self handle];
+		CSHandle *fh=self.handle;
 
-		base=[fh offsetInFile];
+		base=fh.offsetInFile;
 		NSDictionary *blocks=[self findBlocksWithHandle:[fh nonCopiedSubHandleOfLength:datalength]];
 
 		CSHandle *hh=[self handleForBlockAtOffset:headeroffset length:headerlength];
@@ -222,7 +222,7 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 
 		int stride,phase;
 		int extractopcode=[self findOpcodeWithData:header blocks:blocks
-		startOffset:24 endOffset:stringtable 
+		startOffset:24 endOffset:stringtable
 		stringStartOffset:stringtable stringEndOffset:headerlength
 		opcodePossibilities:(int[]){3} count:1
 		stridePossibilities:(int[]){7} count:1
@@ -240,7 +240,7 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 // Versions 1.30 to 1.59 - opcodes 4, 5, strides 7, 6
 -(void)parseOldFormat
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
 	detectedformat=ZlibFormat;
 	expansiontypes=DollarExpansionType;
@@ -255,7 +255,7 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 	uint32_t datalength=totallength-32;
 	if(flags&1) datalength-=4;
 
-	base=[fh offsetInFile];
+	base=fh.offsetInFile;
 	NSDictionary *blocks=[self findBlocksWithHandle:[fh nonCopiedSubHandleOfLength:datalength]];
 
 	CSHandle *hh=[self handleForBlockAtOffset:headeroffset length:headerlength];
@@ -300,7 +300,7 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 // Versions 1.60 and newer
 -(void)parseNewFormat
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
 	uint32_t flags=[fh readUInt32LE];
 	[fh skipBytes:16];
@@ -314,7 +314,7 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 	uint8_t sig[7];
 	[fh readBytes:sizeof(sig) toBuffer:sig];
 	[fh skipBytes:-(int)sizeof(sig)];
-	off_t pos=[fh offsetInFile];
+	off_t pos=fh.offsetInFile;
 
 	if(LooksLikeLZMA(sig)) [self attemptSolidHandleAtPosition:pos format:LZMAFormat headerLength:headerlength];
 	if(!solidhandle && LooksLikeFilteredLZMA(sig)) [self attemptSolidHandleAtPosition:pos format:FilteredLZMAFormat headerLength:headerlength];
@@ -362,7 +362,7 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 		// Versions 2.0 and newer - header data is in sections
 		//NSLog(@"subpath 2");
 
-		const uint8_t *bytes=[header bytes];
+		const uint8_t *bytes=header.bytes;
 
 		uint32_t entryoffs=CSUInt32LE(&bytes[20]);
 		uint32_t entrynum=CSUInt32LE(&bytes[24]);
@@ -388,7 +388,7 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 		int stringtable=[self findStringTableOffsetInData:header maxOffsets:6];
 		int stride,phase;
 		int extractopcode=[self findOpcodeWithData:header blocks:blocks
-		startOffset:24 endOffset:stringtable 
+		startOffset:24 endOffset:stringtable
 		stringStartOffset:stringtable stringEndOffset:headerlength
 		opcodePossibilities:(int[]){15,17,18,20,21} count:5
 		stridePossibilities:(int[]){6} count:1
@@ -420,7 +420,7 @@ static NSComparisonResult CompareEntryDataOffsets(id first,id second,void *conte
 
 static NSComparisonResult CompareEntryFileNames(id first,id second,void *context)
 {
-	return -[[[first objectForKey:XADFileNameKey] string] compare:[[second objectForKey:XADFileNameKey] string]];
+	return -[[first[XADFileNameKey] string] compare:[second[XADFileNameKey] string]];
 }
 
 -(void)parseOpcodesWithHeader:(NSData *)header blocks:(NSDictionary *)blocks
@@ -430,9 +430,9 @@ startOffset:(int)startoffs endOffset:(int)endoffs stride:(int)stride
 stringStartOffset:(int)stringoffs stringEndOffset:(int)stringendoffs unicode:(BOOL)unicode
 newDateTimeOrder:(BOOL)neworder
 {
-	const uint8_t *bytes=[header bytes];
-	NSInteger length=[header length];
-	XADPath *dir=[self XADPath];
+	const uint8_t *bytes=header.bytes;
+	NSInteger length=header.length;
+	XADPath *dir=self.XADPath;
 	NSMutableArray *files=[NSMutableArray array];
 	NSMutableArray *dirs=[NSMutableArray array];
 
@@ -465,7 +465,7 @@ newDateTimeOrder:(BOOL)neworder
 			if(filename<stringendoffs-stringoffs)
 			if(block)
 			{
-				uint32_t len=[block unsignedIntValue];
+				uint32_t len=block.unsignedIntValue;
 
 				XADPath *path=[dir pathByAppendingPath:[self expandAnyPathWithOffset:filename
 				unicode:unicode header:header stringStartOffset:stringoffs
@@ -473,7 +473,7 @@ newDateTimeOrder:(BOOL)neworder
 
 				NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 					path,XADFileNameKey,
-					[NSNumber numberWithUnsignedInt:len&0x7fffffff],XADCompressedSizeKey,
+					@(len&0x7fffffff),XADCompressedSizeKey,
 					offs,@"NSISDataOffset",
 				nil];
 
@@ -506,8 +506,8 @@ newDateTimeOrder:(BOOL)neworder
 
 				NSMutableDictionary *dict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 					dir,XADFileNameKey,
-					[NSNumber numberWithBool:YES],XADIsDirectoryKey,
-					[NSNumber numberWithUnsignedInt:args[2]],@"NSISDataOffset",
+					@YES,XADIsDirectoryKey,
+					@(args[2]),@"NSISDataOffset",
 				nil];
 				[dirs addObject:dict];
 				continue;
@@ -524,18 +524,18 @@ newDateTimeOrder:(BOOL)neworder
 		}
 	}
 
-	if([files count]==0 && [dirs count]==0) return;
+	if(files.count==0 && dirs.count==0) return;
 
 	[files sortUsingFunction:CompareEntryDataOffsets context:NULL];
 	[dirs sortUsingFunction:CompareEntryFileNames context:NULL];
-  
+
 	// Filter out duplicate directory entries
-	NSMutableDictionary *lastdir=[dirs objectAtIndex:0];
-	for(int i=1;i<[dirs count];i++)
+	NSMutableDictionary *lastdir=dirs[0];
+	for(int i=1;i<dirs.count;i++)
 	{
-		NSMutableDictionary *dict=[dirs objectAtIndex:i];
-		XADPath *dir1=[dict objectForKey:XADFileNameKey];
-		XADPath *dir2=[lastdir objectForKey:XADFileNameKey];
+		NSMutableDictionary *dict=dirs[i];
+		XADPath *dir1=dict[XADFileNameKey];
+		XADPath *dir2=lastdir[XADFileNameKey];
 
 		if([dir1 isEqual:dir2])
 		{
@@ -546,13 +546,13 @@ newDateTimeOrder:(BOOL)neworder
 	}
 
 	// Filter out duplicate entries
-	NSMutableDictionary *lastfile=[files objectAtIndex:0];
-	for(int i=1;i<[files count];i++)
+	NSMutableDictionary *lastfile=files[0];
+	for(int i=1;i<files.count;i++)
 	{
-		NSMutableDictionary *dict=[files objectAtIndex:i];
+		NSMutableDictionary *dict=files[i];
 
-		if([[dict objectForKey:@"NSISDataOffset"] isEqual:[lastfile objectForKey:@"NSISDataOffset"]]
-		&& [[dict objectForKey:XADFileNameKey] isEqual:[lastfile objectForKey:XADFileNameKey]])
+		if([dict[@"NSISDataOffset"] isEqual:lastfile[@"NSISDataOffset"]]
+		&& [dict[XADFileNameKey] isEqual:lastfile[XADFileNameKey]])
 		{
 			[files removeObjectAtIndex:i];
 			i--;
@@ -567,19 +567,19 @@ newDateTimeOrder:(BOOL)neworder
 	NSEnumerator *enumerator=[dirs objectEnumerator];
 	NSMutableDictionary *dict;
 	while((dict=[enumerator nextObject])) [self addEntryWithDictionary:dict];
-  
+
 	enumerator=[files objectEnumerator];
 	while((dict=[enumerator nextObject])) [self addEntryWithDictionary:dict];
 }
 
 -(void)makeEntryArrayStrictlyIncreasing:(NSMutableArray *)array
 {
-	if([array count]<2) return;
+	if(array.count<2) return;
 
 	NSMutableArray *rest=[NSMutableArray array];
 	NSMutableDictionary *last=array[0];
 	NSValue *first=[NSValue valueWithNonretainedObject:last];
-	for(int i=1;i<[array count];i++)
+	for(int i=1;i<array.count;i++)
 	{
 		NSMutableDictionary *dict=array[i];
 
@@ -612,12 +612,12 @@ newDateTimeOrder:(BOOL)neworder
 	@try
 	{
 		uint32_t size=0;
-		while(![fh atEndOfFile])
+		while(!fh.atEndOfFile)
 		{
 			uint32_t blocklen=[fh readUInt32LE];
-			if([fh atEndOfFile]) break; // hit the CRC in a solid file
+			if(fh.atEndOfFile) break; // hit the CRC in a solid file
 			uint32_t reallen=blocklen&0x7fffffff;
-			dict[[NSNumber numberWithInt:size]] = @(blocklen);
+			dict[@(size)] = @(blocklen);
 			[fh skipBytes:reallen];
 			size+=reallen+4;
 		}
@@ -629,8 +629,8 @@ newDateTimeOrder:(BOOL)neworder
 
 -(int)findStringTableOffsetInData:(NSData *)data maxOffsets:(int)maxnumoffsets
 {
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	// Find last location with two zero bytes in a row. The string table shouldn't be anywhere
 	// before this. This should be within 4*6 bytes of the string table, as the last opcode
@@ -689,8 +689,8 @@ foundStride:(int *)strideptr foundPhase:(int *)phaseptr
 	// Heuristic to find the size of entries, and the opcode for extract file entries.
 	// Find candidates for extract opcodes, and measure the distances between them and
 	// which opcodes they have.
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	int maxpossiblestride=possiblestrides[IndexOfLargestEntry(possiblestrides,numpossiblestrides)];
 	int strideopcodecounts[numpossiblestrides][numpossibleopcodes];
@@ -712,7 +712,7 @@ foundStride:(int *)strideptr foundPhase:(int *)phaseptr
 
 			if(overwrite<4)
 			if(filenameoffs<stringendoffs-stringoffs)
-			if(blocks[[NSNumber numberWithInt:dataoffs]])
+			if(blocks[@(dataoffs)])
 			{
 				int pos=i/4;
 				for(int k=0;k<numpossiblestrides;k++)
@@ -753,8 +753,8 @@ foundStride:(int *)strideptr foundPhase:(int *)phaseptr
 	// plenty of zeroes. Check for double zero bytes at the end of the header to recognize
 	// new-style sectioned headers.
 
-	const uint8_t *bytes=[header bytes];
-	NSInteger length=[header length];
+	const uint8_t *bytes=header.bytes;
+	NSInteger length=header.length;
 
 	if(length<32) return NO;
 
@@ -767,8 +767,8 @@ foundStride:(int *)strideptr foundPhase:(int *)phaseptr
 
 -(BOOL)isUnicodeHeader:(NSData *)header stringStartOffset:(int)stringoffs stringEndOffset:(int)stringendoffs
 {
-	const uint8_t *bytes=[header bytes];
-	NSInteger length=[header length];
+	const uint8_t *bytes=header.bytes;
+	NSInteger length=header.length;
 
 	for(int i=stringoffs;i+2<=stringendoffs && i+2<=length;i+=2)
 	{
@@ -790,8 +790,8 @@ stringStartOffset:(int)stringoffs stringEndOffset:(int)stringendoffs currentPath
 -(XADPath *)expandPathWithOffset:(int)offset header:(NSData *)header
 stringStartOffset:(int)stringoffs stringEndOffset:(int)stringendoffs currentPath:(XADPath *)path
 {
-	const uint8_t *headerbytes=[header bytes];
-	NSInteger headerlength=[header length];
+	const uint8_t *headerbytes=header.bytes;
+	NSInteger headerlength=header.length;
 
 	const uint8_t *bytes=&headerbytes[stringoffs+offset];
 	int length=0;
@@ -1062,8 +1062,8 @@ stringStartOffset:(int)stringoffs stringEndOffset:(int)stringendoffs currentPath
 		nil, // _OUTDIR
 	};
 
-	const uint8_t *headerbytes=[header bytes];
-	NSInteger headerlength=[header length];
+	const uint8_t *headerbytes=header.bytes;
+	NSInteger headerlength=header.length;
 
 	const uint8_t *bytes=&headerbytes[stringoffs+offset*2];
 	int length=0;
@@ -1079,7 +1079,7 @@ stringStartOffset:(int)stringoffs stringEndOffset:(int)stringendoffs currentPath
 		if(c==0xe001 && i+1<length)
 		{
 			uint16_t val=CSUInt16LE(&bytes[i*2+2])&0x7fff;
-			if(val<32) 
+			if(val<32)
 			{
 				NSString *exp=strings[val];
 
@@ -1096,7 +1096,7 @@ stringStartOffset:(int)stringoffs stringEndOffset:(int)stringendoffs currentPath
 				[string appendString:exp];
 
 				// Skip leading slashes for empty expansions
-				if(i==0&&length>=3&&[exp length]==0&&CSUInt16LE(&bytes[i*2+4])=='\\') i++;
+				if(i==0&&length>=3&&exp.length==0&&CSUInt16LE(&bytes[i*2+4])=='\\') i++;
 			}
 			else [string appendFormat:@"User variable 0x%x",CSUInt16LE(&bytes[i*2+2])];
 
@@ -1111,7 +1111,7 @@ stringStartOffset:(int)stringoffs stringEndOffset:(int)stringendoffs currentPath
 	}
 
 	NSArray *parts;
-	if([string length]==0) parts=@[];
+	if(string.length==0) parts=@[];
 	else parts=[string componentsSeparatedByString:@"\\"];
 
 	XADPath *path=[XADPath pathWithStringComponents:parts];
@@ -1131,7 +1131,7 @@ stringStartOffset:(int)stringoffs stringEndOffset:(int)stringendoffs currentPath
 {
 	CSHandle *fh;
 	if(solidhandle) fh=solidhandle;
-	else fh=[self handle];
+	else fh=self.handle;
 	[fh seekToFileOffset:offs+base];
 
 	uint32_t blocklen=[fh readUInt32LE];
@@ -1202,7 +1202,7 @@ stringStartOffset:(int)stringoffs stringEndOffset:(int)stringendoffs currentPath
 
 -(void)attemptSolidHandleAtPosition:(off_t)pos format:(int)format headerLength:(uint32_t)headerlength;
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 	[fh seekToFileOffset:pos];
 	@try
 	{

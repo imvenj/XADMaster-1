@@ -91,7 +91,7 @@ static off_t ActualOffsetToSkip(XADSkipHandle *self,off_t pos)
 
 -(instancetype)initWithHandle:(CSHandle *)handle
 {
-	if((self=[super initWithName:[handle name]]))
+	if((self=[super initWithName:handle.name]))
 	{
 		parent=[handle retain];
 		regions=malloc(sizeof(XADSkipRegion));
@@ -156,20 +156,20 @@ static off_t ActualOffsetToSkip(XADSkipHandle *self,off_t pos)
 
 -(off_t)fileSize
 {
-	off_t size=[parent fileSize];
+	off_t size=parent.fileSize;
 	if(size==CSHandleMaxLength) return CSHandleMaxLength;
 	return ActualOffsetToSkip(self,size-1)+1;
 }
 
 -(off_t)offsetInFile
 {
-	off_t offs=[parent offsetInFile];
+	off_t offs=parent.offsetInFile;
 	return ActualOffsetToSkip(self,offs);
 }
 
 -(BOOL)atEndOfFile
 {
-	return [super atEndOfFile];
+	return super.atEndOfFile;
 	// TODO: handle skips at EOF
 }
 
@@ -186,7 +186,7 @@ static off_t ActualOffsetToSkip(XADSkipHandle *self,off_t pos)
 
 -(int)readAtMost:(int)num toBuffer:(void *)buffer
 {
-	off_t pos=[parent offsetInFile];
+	off_t pos=parent.offsetInFile;
 	int index=FindIndexOfRegionContainingActualOffset(self,pos);
 	if(pos>=ActualGapStart(self,index)) [parent seekToFileOffset:pos=ActualStart(self,++index)];
 

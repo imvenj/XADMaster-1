@@ -41,7 +41,7 @@ correctCRC:(uint32_t)correctcrc conditioned:(BOOL)conditioned
 -(id)initWithHandle:(CSHandle *)handle length:(off_t)length initialCRC:(uint32_t)initialcrc
 correctCRC:(uint32_t)correctcrc CRCTable:(const uint32_t *)crctable
 {
-	if((self=[super initWithName:[handle name] length:length]))
+	if((self=[super initWithName:handle.name length:length]))
 	{
 		parent=[handle retain];
 		crc=initcrc=initialcrc;
@@ -74,11 +74,11 @@ correctCRC:(uint32_t)correctcrc CRCTable:(const uint32_t *)crctable
 
 -(BOOL)isChecksumCorrect
 {
-	if([parent hasChecksum]&&![parent isChecksumCorrect]) return NO;
+	if(parent.hasChecksum&&!parent.checksumCorrect) return NO;
 	return crc==compcrc;
 }
 
--(double)estimatedProgress { return [parent estimatedProgress]; }
+-(double)estimatedProgress { return parent.estimatedProgress; }
 
 @end
 

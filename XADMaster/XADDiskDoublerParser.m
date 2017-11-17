@@ -28,8 +28,8 @@
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	NSInteger length=[data length];
-	const uint8_t *bytes=[data bytes];
+	NSInteger length=data.length;
+	const uint8_t *bytes=data.bytes;
 
 	if(length>=84)
 	{
@@ -62,13 +62,13 @@
 {
 	[self setIsMacArchive:YES];
 
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 	uint32_t magic=[fh readID];
 
 	if(magic==0xabcd0054)
 	{
-		NSString *name=[self name];
-		if([[name pathExtension] isEqual:@"dd"]) name=[name stringByDeletingPathExtension];
+		NSString *name=self.name;
+		if([name.pathExtension isEqual:@"dd"]) name=name.stringByDeletingPathExtension;
 		XADPath *xadname=[self XADPathWithUnseparatedString:name];
 		[self parseFileHeaderWithHandle:fh name:xadname];
 	}
@@ -80,14 +80,14 @@
 
 -(void)parseArchive
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 	[fh skipBytes:74];
 
-	XADPath *currdir=[self XADPath];
+	XADPath *currdir=self.XADPath;
 
-	while([self shouldKeepParsing])
+	while(self.shouldKeepParsing)
 	{
-		if([fh atEndOfFile]) break;
+		if(fh.atEndOfFile) break;
 		uint32_t magic=[fh readID];
 
 		if(magic==0xabcd0054)
@@ -122,11 +122,11 @@
 
 		XADPath *name=[currdir pathByAppendingXADStringComponent:[self XADStringWithBytes:namebuf length:namelen]];
 
-		off_t start=[fh offsetInFile];
+		off_t start=fh.offsetInFile;
 
 		if(enddir)
 		{
-			currdir=[currdir pathByDeletingLastPathComponent];
+			currdir=currdir.pathByDeletingLastPathComponent;
 		}
 		else if(isdir)
 		{
@@ -203,15 +203,15 @@
 
 -(void)parseArchive2
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 	[fh skipBytes:58];
 
-	XADPath *currdir=[self XADPath];
+	XADPath *currdir=self.XADPath;
 	int lastdirlevel=0;
 
-	while([self shouldKeepParsing])
+	while(self.shouldKeepParsing)
 	{
-		off_t start=[fh offsetInFile];
+		off_t start=fh.offsetInFile;
 
 		uint32_t magic=[fh readID];
 		if(magic!='DDA2') [XADException raiseIllegalDataException];
@@ -233,7 +233,7 @@
 			continue;
 		}
 
-		for(int i=dirlevel;i<lastdirlevel;i++) currdir=[currdir pathByDeletingLastPathComponent];
+		for(int i=dirlevel;i<lastdirlevel;i++) currdir=currdir.pathByDeletingLastPathComponent;
 		lastdirlevel=dirlevel;
 
 		XADPath *name=[currdir pathByAppendingXADStringComponent:[self XADStringWithBytes:namebuf length:namelen]];
@@ -297,7 +297,7 @@
 	int rsrccrc2=[fh readUInt16BE];
 	[fh skipBytes:2];
 
-	off_t start=[fh offsetInFile];
+	off_t start=fh.offsetInFile;
 
 	if(datasize||!rsrcsize)
 	{
@@ -314,7 +314,7 @@
 
 			@(start),XADDataOffsetKey,
 			@(datacompsize),XADDataLengthKey,
-			[NSNumber numberWithInt:datamethod],@"DiskDoublerMethod",
+			@(datamethod),@"DiskDoublerMethod",
 			@(datacrc),@"DiskDoublerCRC",
 			@(datacrc2),@"DiskDoublerCRC2",
 			@(datadelta),@"DiskDoublerDeltaType",
@@ -339,7 +339,7 @@
 
 			@(start+datacompsize),XADDataOffsetKey,
 			@(rsrccompsize),XADDataLengthKey,
-			[NSNumber numberWithInt:rsrcmethod],@"DiskDoublerMethod",
+			@(rsrcmethod),@"DiskDoublerMethod",
 			@(rsrccrc),@"DiskDoublerCRC",
 			@(rsrccrc2),@"DiskDoublerCRC2",
 			@(rsrcdelta),@"DiskDoublerDeltaType",

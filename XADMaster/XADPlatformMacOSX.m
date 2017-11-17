@@ -32,13 +32,13 @@ struct ResourceOutputArguments
 +(XADError)extractResourceForkEntryWithDictionary:(NSDictionary *)dict
 unarchiver:(XADUnarchiver *)unarchiver toPath:(NSString *)destpath
 {
-	const char *cpath=[destpath fileSystemRepresentation];
+	const char *cpath=destpath.fileSystemRepresentation;
 	int originalpermissions=-1;
 
 	// Open the file for writing, creating it if it doesn't exist.
 	// TODO: Does it need to be opened for writing or is read enough?
 	int fd=open(cpath,O_WRONLY|O_CREAT|O_NOFOLLOW,0666);
-	if(fd==-1) 
+	if(fd==-1)
 	{
 		// If opening the file failed, check if it is a link and skip if it is.
 		struct stat st;
@@ -48,7 +48,7 @@ unarchiver:(XADUnarchiver *)unarchiver toPath:(NSString *)destpath
 		{
 			NSNumber *sizenum=dict[XADFileSizeKey];
 			if(sizenum == nil) return XADErrorNone;
-			else if([sizenum longLongValue]==0) return XADErrorNone;
+			else if(sizenum.longLongValue==0) return XADErrorNone;
 		}
 
 		// Otherwise, try changing permissions.
@@ -75,7 +75,7 @@ unarchiver:(XADUnarchiver *)unarchiver toPath:(NSString *)destpath
 
 +(XADError)outputToResourceFork:(NSValue *)pointerval bytes:(uint8_t *)bytes length:(int)length
 {
-	struct ResourceOutputArguments *args=[pointerval pointerValue];
+	struct ResourceOutputArguments *args=pointerval.pointerValue;
 	if(fsetxattr(args->fd,XATTR_RESOURCEFORK_NAME,bytes,length,
 	args->offset,0)) return XADErrorOutput;
 
@@ -91,7 +91,7 @@ unarchiver:(XADUnarchiver *)unarchiver toPath:(NSString *)destpath
 forEntryWithDictionary:(NSDictionary *)dict parser:(XADArchiveParser *)parser
 preservePermissions:(BOOL)preservepermissions
 {
-	const char *cpath=[path fileSystemRepresentation];
+	const char *cpath=path.fileSystemRepresentation;
 
 	// Read file permissions.
 	struct stat st;
@@ -114,13 +114,13 @@ preservePermissions:(BOOL)preservepermissions
 			char namebytes[namelen+1];
 			[key getCString:namebytes maxLength:sizeof(namebytes) encoding:NSUTF8StringEncoding];
 
-			setxattr(cpath,namebytes,[data bytes],[data length],0,XATTR_NOFOLLOW);
+			setxattr(cpath,namebytes,data.bytes,data.length,0,XATTR_NOFOLLOW);
 		}
 	}
 
 	// Set comment.
 	XADString *comment=dict[XADCommentKey];
-	if(comment) [self setComment:[comment string] forPath:path];
+	if(comment) [self setComment:comment.string forPath:path];
 
 	// Attrlist structures.
 	struct attrlist list={ ATTR_BIT_MAP_COUNT };
@@ -135,19 +135,19 @@ preservePermissions:(BOOL)preservepermissions
 	if(creation)
 	{
 		list.commonattr|=ATTR_CMN_CRTIME;
-		*((struct timespec *)attrptr)=[creation timespecStruct];
+		*((struct timespec *)attrptr)=creation.timespecStruct;
 		attrptr+=sizeof(struct timeval);
 	}
 	if(modification)
 	{
 		list.commonattr|=ATTR_CMN_MODTIME;
-		*((struct timespec *)attrptr)=[modification timespecStruct];
+		*((struct timespec *)attrptr)=modification.timespecStruct;
 		attrptr+=sizeof(struct timeval);
 	}
 	if(access)
 	{
 		list.commonattr|=ATTR_CMN_ACCTIME;
-		*((struct timespec *)attrptr)=[access timespecStruct];
+		*((struct timespec *)attrptr)=access.timespecStruct;
 		attrptr+=sizeof(struct timeval);
 	}
 
@@ -156,7 +156,7 @@ preservePermissions:(BOOL)preservepermissions
 	NSNumber *permissions=dict[XADPosixPermissionsKey];
 	if(permissions != nil)
 	{
-		mode=[permissions unsignedShortValue];
+		mode=permissions.unsignedShortValue;
 		if(!preservepermissions)
 		{
 			mode_t mask=umask(022);
@@ -182,7 +182,7 @@ preservePermissions:(BOOL)preservepermissions
 
 +(void)setComment:(NSString *)comment forPath:(NSString *)path;
 {
-	if(!comment||![comment length]) return;
+	if(!comment||!comment.length) return;
 
 	// Don't bother if we're sandboxed, as Apple refuses to allow
 	// entitlements for this.
@@ -205,7 +205,7 @@ preservePermissions:(BOOL)preservepermissions
 	NSAppleEventDescriptor *commentdesc=[NSAppleEventDescriptor descriptorWithString:comment];
 
 	NSURL *fileURL = [NSURL fileURLWithPath:path];
-	NSString *fileString = [[fileURL absoluteString] retain];
+	NSString *fileString = [fileURL.absoluteString retain];
 	const char *fileCStr = fileString.UTF8String;
 
 	AEDesc filedesc;
@@ -222,7 +222,7 @@ preservePermissions:(BOOL)preservepermissions
 	OSErr err=AEBuildAppleEvent(kAECoreSuite,kAESetData,
 	typeApplSignature,&findersignature,sizeof(findersignature),
 	kAutoGenerateReturnID,kAnyTransactionID,
-	&builtevent,NULL,eventformat,&filedesc,[commentdesc aeDesc]);
+	&builtevent,NULL,eventformat,&filedesc,commentdesc.aeDesc);
 
 	AEDisposeDesc(&filedesc);
 
@@ -240,9 +240,9 @@ preservePermissions:(BOOL)preservepermissions
 +(XADError)createLinkAtPath:(NSString *)path withDestinationPath:(NSString *)link
 {
 	struct stat st;
-	const char *destcstr=[path fileSystemRepresentation];
+	const char *destcstr=path.fileSystemRepresentation;
 	if(lstat(destcstr,&st)==0) unlink(destcstr);
-	if(symlink([link fileSystemRepresentation],destcstr)!=0) return XADErrorLink;
+	if(symlink(link.fileSystemRepresentation,destcstr)!=0) return XADErrorLink;
 
 	return XADErrorNone;
 }
@@ -293,7 +293,7 @@ preservePermissions:(BOOL)preservepermissions
 +(id)readCloneableMetadataFromPath:(NSString *)path
 {
 	NSDictionary *value;
-    if([[NSURL fileURLWithPath:path] getResourceValue:&value forKey:NSURLQuarantinePropertiesKey error:NULL])
+	if([[NSURL fileURLWithPath:path] getResourceValue:&value forKey:NSURLQuarantinePropertiesKey error:NULL])
 	{
 		return value;
 	}
@@ -310,7 +310,7 @@ preservePermissions:(BOOL)preservepermissions
 +(BOOL)copyDateFromPath:(NSString *)src toPath:(NSString *)dest
 {
 	struct stat st;
-	const char *csrc=[src fileSystemRepresentation];
+	const char *csrc=src.fileSystemRepresentation;
 	if(stat(csrc,&st)!=0) return NO;
 
 	struct timeval times[2]={
@@ -318,7 +318,7 @@ preservePermissions:(BOOL)preservepermissions
 		{st.st_mtimespec.tv_sec,(int)(st.st_mtimespec.tv_nsec/1000)},
 	};
 
-	const char *cdest=[dest fileSystemRepresentation];
+	const char *cdest=dest.fileSystemRepresentation;
 	if(utimes(cdest,times)!=0) return NO;
 
 	return YES;
@@ -326,7 +326,7 @@ preservePermissions:(BOOL)preservepermissions
 
 +(BOOL)resetDateAtPath:(NSString *)path
 {
-	const char *cpath=[path fileSystemRepresentation];
+	const char *cpath=path.fileSystemRepresentation;
 	if(utimes(cpath,NULL)!=0) return NO;
 
 	return YES;
@@ -346,7 +346,7 @@ preservePermissions:(BOOL)preservepermissions
 	// for some symbolic links. We need to implement our own.
 
 	struct stat st;
-	if(lstat([path fileSystemRepresentation],&st)!=0) return NO;
+	if(lstat(path.fileSystemRepresentation,&st)!=0) return NO;
 
 	if(isdirptr)
 	{
@@ -361,7 +361,7 @@ preservePermissions:(BOOL)preservepermissions
 {
 	// TODO: ensure this path is actually unique.
 	NSDate *now=[NSDate date];
-	int64_t t=[now timeIntervalSinceReferenceDate]*1000000000;
+	int64_t t=now.timeIntervalSinceReferenceDate*1000000000;
 	pid_t pid=getpid();
 
 	NSString *dirname=[NSString stringWithFormat:@"XADTemp%qd%d",t,pid];
@@ -376,8 +376,8 @@ preservePermissions:(BOOL)preservepermissions
 	[component rangeOfString:@"\000"].location==NSNotFound) return component;
 
 	NSMutableString *newstring=[NSMutableString stringWithString:component];
-	[newstring replaceOccurrencesOfString:@"/" withString:@":" options:0 range:NSMakeRange(0,[newstring length])];
-	[newstring replaceOccurrencesOfString:@"\000" withString:@"_" options:0 range:NSMakeRange(0,[newstring length])];
+	[newstring replaceOccurrencesOfString:@"/" withString:@":" options:0 range:NSMakeRange(0,newstring.length)];
+	[newstring replaceOccurrencesOfString:@"\000" withString:@"_" options:0 range:NSMakeRange(0,newstring.length)];
 	return newstring;
 }
 
@@ -419,7 +419,7 @@ preservePermissions:(BOOL)preservepermissions
 	// TODO: Make an actual CSHandle subclass? Possible but sort of useless.
 	NSMutableData *data=[NSMutableData data];
 
-	const char *cpath=[path fileSystemRepresentation];
+	const char *cpath=path.fileSystemRepresentation;
 	int fd=open(cpath,O_RDONLY);
 	if(fd==-1) return nil;
 

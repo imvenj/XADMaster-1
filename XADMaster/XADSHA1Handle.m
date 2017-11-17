@@ -4,7 +4,7 @@
 
 -(id)initWithHandle:(CSHandle *)handle length:(off_t)length correctDigest:(NSData *)correctdigest;
 {
-	if((self=[super initWithName:[handle name] length:length]))
+	if((self=[super initWithName:handle.name length:length]))
 	{
 		parent=[handle retain];
 		digest=[correctdigest retain];
@@ -36,7 +36,7 @@
 
 -(BOOL)isChecksumCorrect
 {
-	if([digest length]!=20) return NO;
+	if(digest.length!=20) return NO;
 
 	XADSHA1 copy;
 	copy=context;
@@ -44,10 +44,10 @@
 	uint8_t buf[20];
 	XADSHA1_Final(buf,&copy);
 
-	return memcmp([digest bytes],buf,20)==0;
+	return memcmp(digest.bytes,buf,20)==0;
 }
 
--(double)estimatedProgress { return [parent estimatedProgress]; }
+-(double)estimatedProgress { return parent.estimatedProgress; }
 
 @end
 

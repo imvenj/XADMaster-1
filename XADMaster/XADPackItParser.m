@@ -12,8 +12,8 @@
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	NSInteger length=[data length];
-	const uint8_t *bytes=[data bytes];
+	NSInteger length=data.length;
+	const uint8_t *bytes=data.bytes;
 
 	if(length<4) return NO;
 
@@ -27,14 +27,14 @@
 {
 	[self setIsMacArchive:YES];
 
-	CSHandle *handle=[self handle];
+	CSHandle *handle=self.handle;
 
 	for(;;)
 	{
 		uint32_t magic=[handle readID];
 		if(magic=='PEnd') break;
 
-		off_t start=[handle offsetInFile];
+		off_t start=handle.offsetInFile;
 
 		BOOL comp,encrypted;
 		CSHandle *fh;
@@ -60,13 +60,13 @@
 			else if(magic=='PMa5')
 			{
 				src=[[[XADPackItXORHandle alloc] initWithHandle:handle
-				password:[[self password] dataUsingEncoding:NSMacOSRomanStringEncoding]] autorelease];
+				password:[self.password dataUsingEncoding:NSMacOSRomanStringEncoding]] autorelease];
 				encrypted=YES;
 			}
 			else //if(magic=='PMa6')
 			{
 				src=[[[XADPackItDESHandle alloc] initWithHandle:handle
-				password:[[self password] dataUsingEncoding:NSMacOSRomanStringEncoding]] autorelease];
+				password:[self.password dataUsingEncoding:NSMacOSRomanStringEncoding]] autorelease];
 				encrypted=YES;
 			}
 
@@ -106,7 +106,7 @@
 
 			datadesc=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 				@(start+94),@"Offset",
-				[NSNumber numberWithLongLong:datasize+rsrcsize],@"Length",
+				@(datasize+rsrcsize),@"Length",
 				@(crc),@"CRC",
 			nil];
 		}
@@ -138,7 +138,7 @@
 			datadesc=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 				@(start),@"Offset",
 				@(end-start),@"Length",
-				[NSNumber numberWithLongLong:datasize+rsrcsize+94],@"UncompressedLength",
+				@(datasize+rsrcsize+94),@"UncompressedLength",
 				@(crc),@"CRC",
 				@(crypto),@"Crypto",
 			nil];
@@ -198,23 +198,23 @@
 {
 	off_t offs=[obj[@"Offset"] longLongValue];
 	off_t len=[obj[@"Length"] longLongValue];
-	CSHandle *handle=[[self handle] nonCopiedSubHandleFrom:offs length:len];
+	CSHandle *handle=[self.handle nonCopiedSubHandleFrom:offs length:len];
 
 	NSNumber *uncomplennum=obj[@"UncompressedLength"];
 	if(uncomplennum)
 	{
-		off_t uncomplen=[uncomplennum longLongValue];
+		off_t uncomplen=uncomplennum.longLongValue;
 		int crypto=[obj[@"Crypto"] intValue];
 
 		if(crypto==1)
 		{
 			handle=[[[XADPackItXORHandle alloc] initWithHandle:handle length:len
-			password:[[self password] dataUsingEncoding:NSMacOSRomanStringEncoding]] autorelease];
+			password:[self.password dataUsingEncoding:NSMacOSRomanStringEncoding]] autorelease];
 		}
 		else if(crypto==2)
 		{
 			handle=[[[XADPackItDESHandle alloc] initWithHandle:handle length:len
-			password:[[self password] dataUsingEncoding:NSMacOSRomanStringEncoding]] autorelease];
+			password:[self.password dataUsingEncoding:NSMacOSRomanStringEncoding]] autorelease];
 		}
 
 		handle=[[[XADStuffItHuffmanHandle alloc] initWithHandle:handle length:uncomplen] autorelease];
@@ -223,7 +223,7 @@
 
 	if(checksum)
 	{
-		handle=[XADCRCHandle CCITTCRC16HandleWithHandle:handle length:[handle fileSize]
+		handle=[XADCRCHandle CCITTCRC16HandleWithHandle:handle length:handle.fileSize
 		correctCRC:[obj[@"CRC"] intValue] conditioned:NO];
 	}
 
@@ -250,8 +250,8 @@
 {
 	if((self=[super initWithHandle:handle length:length]))
 	{
-		const uint8_t *passbytes=[passdata bytes];
-		NSInteger passlen=[passdata length];
+		const uint8_t *passbytes=passdata.bytes;
+		NSInteger passlen=passdata.length;
 
 		uint8_t passbuf[8];
 
@@ -305,8 +305,8 @@
 {
 	if((self=[super initWithHandle:handle length:length]))
 	{
-		const uint8_t *passbytes=[passdata bytes];
-		NSInteger passlen=[passdata length];
+		const uint8_t *passbytes=passdata.bytes;
+		NSInteger passlen=passdata.length;
 
 		uint8_t key[8];
 		memset(key,0,8);

@@ -57,22 +57,22 @@
 
 
 
--(off_t)fileSize { return [backingdata length]; }
+-(off_t)fileSize { return backingdata.length; }
 
 -(off_t)offsetInFile { return memorypos; }
 
--(BOOL)atEndOfFile { return memorypos==[backingdata length]; }
+-(BOOL)atEndOfFile { return memorypos==backingdata.length; }
 
 
 
 -(void)seekToFileOffset:(off_t)offs
 {
 	if(offs<0) [self _raiseNotSupported:_cmd];
-	if(offs>[backingdata length]) [self _raiseEOF];
+	if(offs>backingdata.length) [self _raiseEOF];
 	memorypos=offs;
 }
 
--(void)seekToEndOfFile { memorypos=[backingdata length]; }
+-(void)seekToEndOfFile { memorypos=backingdata.length; }
 
 //-(void)pushBackByte:(int)byte {}
 
@@ -80,7 +80,7 @@
 {
 	if(!num) return 0;
 
-	unsigned long len=[backingdata length];
+	unsigned long len=backingdata.length;
 	if(memorypos==len) return 0;
 	if(memorypos+num>len) num=(int)(len-memorypos);
 	memcpy(buffer,(uint8_t *)[backingdata bytes]+memorypos,num);
@@ -93,7 +93,7 @@
 	if(![backingdata isKindOfClass:[NSMutableData class]]) [self _raiseNotSupported:_cmd];
 	NSMutableData *mbackingdata=(NSMutableData *)backingdata;
 
-	if(memorypos+num>[mbackingdata length]) [mbackingdata setLength:(long)memorypos+num];
+	if(memorypos+num>mbackingdata.length) mbackingdata.length = (long)memorypos+num;
 	memcpy((uint8_t *)[mbackingdata mutableBytes]+memorypos,buffer,num);
 	memorypos+=num;
 }
@@ -109,7 +109,7 @@
 
 -(NSData *)readDataOfLength:(int)length
 {
-	unsigned long totallen=[backingdata length];
+	unsigned long totallen=backingdata.length;
 	if(memorypos+length>totallen) [self _raiseEOF];
 	NSData *subbackingdata=[backingdata subdataWithRange:NSMakeRange((long)memorypos,length)];
 	memorypos+=length;
@@ -118,7 +118,7 @@
 
 -(NSData *)readDataOfLengthAtMost:(int)length;
 {
-	unsigned long totallen=[backingdata length];
+	unsigned long totallen=backingdata.length;
 	if(memorypos+length>totallen) length=(int)(totallen-memorypos);
 	NSData *subbackingdata=[backingdata subdataWithRange:NSMakeRange((long)memorypos,length)];
 	memorypos+=length;

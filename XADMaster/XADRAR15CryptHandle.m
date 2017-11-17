@@ -24,8 +24,8 @@ static inline uint16_t ror16(uint16_t val,int n) { return (val>>n)|(val<<(16-n))
 
 -(void)resetByteStream
 {
-	NSInteger passlength=[password length];
-	const uint8_t *passbytes=[password bytes];
+	NSInteger passlength=password.length;
+	const uint8_t *passbytes=password.bytes;
 
 	uint32_t crc=XADCalculateCRC(0xffffffff,passbytes,passlength,XADCRCTable_edb88320);
 

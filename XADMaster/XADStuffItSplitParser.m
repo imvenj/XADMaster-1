@@ -10,8 +10,8 @@
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	if(length<100) return NO;
 	if(bytes[0]!=0xb0) return NO;
@@ -26,11 +26,11 @@
 
 +(NSArray *)volumesForHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	const uint8_t *bytes=[data bytes];
+	const uint8_t *bytes=data.bytes;
 
-	NSString *basename=[[name lastPathComponent] stringByDeletingPathExtension];
+	NSString *basename=name.lastPathComponent.stringByDeletingPathExtension;
 
-	NSString *dirname=[name stringByDeletingLastPathComponent];
+	NSString *dirname=name.stringByDeletingLastPathComponent;
 	if(!dirname) dirname=@".";
 
 	NSArray *dircontents=[XADPlatform contentsOfDirectoryAtPath:dirname];
@@ -80,12 +80,12 @@
 
 -(void)parse
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
-	NSArray *handles=[self volumes];
+	NSArray *handles=self.volumes;
 	if(!handles) handles=@[fh];
 
-	XADSkipHandle *sh=[self skipHandle];
+	XADSkipHandle *sh=self.skipHandle;
 	off_t curroffset=0;
 
 	NSEnumerator *enumerator=[handles objectEnumerator];
@@ -93,7 +93,7 @@
 	while((handle=[enumerator nextObject]))
 	{
 		[sh addSkipFrom:curroffset length:100];
-		off_t volumesize=[handle fileSize];
+		off_t volumesize=handle.fileSize;
 		curroffset+=volumesize;
 	}
 
@@ -111,7 +111,7 @@
 	uint32_t datalength=[fh readUInt32BE];
 
 	BOOL isarchive=NO;
-	const uint8_t *namebytes=[namedata bytes];
+	const uint8_t *namebytes=namedata.bytes;
 
 	if(namelength>4)
 	if(namebytes[namelength-4]=='.')

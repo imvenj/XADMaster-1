@@ -42,8 +42,8 @@ static CSHandle *FindHandleForName(NSData *namedata,NSString *dirname,NSArray *d
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	return length>=4&&bytes[0]=='M'&&bytes[1]=='S'&&bytes[2]=='C'&&bytes[3]=='F';
 }
@@ -58,7 +58,7 @@ static CSHandle *FindHandleForName(NSData *namedata,NSString *dirname,NSArray *d
 
 		if(!firsthead.prevvolume && !firsthead.nextvolume) return nil;
 
-		NSString *dirname=[name stringByDeletingLastPathComponent];
+		NSString *dirname=name.stringByDeletingLastPathComponent;
 		if(!dirname) dirname=@".";
 
 		NSArray *dircontents=[XADPlatform contentsOfDirectoryAtPath:dirname];
@@ -73,7 +73,7 @@ static CSHandle *FindHandleForName(NSData *namedata,NSString *dirname,NSArray *d
 			NSAutoreleasePool *pool=[NSAutoreleasePool new];
 
 			CSHandle *fh=FindHandleForName(namedata,dirname,dircontents);
-			[volumes insertObject:[fh name] atIndex:0];
+			[volumes insertObject:fh.name atIndex:0];
 			CABHeader head=ReadCABHeader(fh);
 			if(head.cabindex!=lastindex-1) @throw @"Index mismatch";
 
@@ -93,7 +93,7 @@ static CSHandle *FindHandleForName(NSData *namedata,NSString *dirname,NSArray *d
 			NSAutoreleasePool *pool=[NSAutoreleasePool new];
 
 			CSHandle *fh=FindHandleForName(namedata,dirname,dircontents);
-			[volumes addObject:[fh name]];
+			[volumes addObject:fh.name];
 			CABHeader head=ReadCABHeader(fh);
 			if(head.cabindex!=lastindex+1) @throw @"Index mismatch";
 
@@ -112,9 +112,9 @@ static CSHandle *FindHandleForName(NSData *namedata,NSString *dirname,NSArray *d
 
 -(void)parse
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
-	off_t baseoffs=[fh offsetInFile];
+	off_t baseoffs=fh.offsetInFile;
 
 	NSMutableArray *files=[NSMutableArray array];
 	NSMutableArray *folders=[NSMutableArray array];
@@ -131,7 +131,7 @@ static CSHandle *FindHandleForName(NSData *namedata,NSString *dirname,NSArray *d
 			[fh skipBytes:head.folderextsize];
 
 			XADCABBlockReader *blocks;
-			if(i==0&&[folders count]==1) // Continuing a folder from last volume
+			if(i==0&&folders.count==1) // Continuing a folder from last volume
 			{
 				NSDictionary *folder=folders[0];
 				if(method!=[folder[@"Method"] intValue]) [XADException raiseIllegalDataException];
@@ -203,9 +203,9 @@ static CSHandle *FindHandleForName(NSData *namedata,NSString *dirname,NSArray *d
 			[files addObject:dict];
 		}
 
-		off_t position=[fh offsetInFile];
+		off_t position=fh.offsetInFile;
 
-		while([folders count]>(continuingfolder?1:0))
+		while(folders.count>(continuingfolder?1:0))
 		{
 			NSMutableDictionary *folder=folders[0];
 
@@ -216,9 +216,9 @@ static CSHandle *FindHandleForName(NSData *namedata,NSString *dirname,NSArray *d
 		}
 
 		NSMutableDictionary *continuedfolder=nil;
-		if(continuingfolder) continuedfolder=[folders lastObject];
+		if(continuingfolder) continuedfolder=folders.lastObject;
 
-		while([files count]>0)
+		while(files.count>0)
 		{
 			NSMutableDictionary *file=files[0];
 
@@ -226,8 +226,8 @@ static CSHandle *FindHandleForName(NSData *namedata,NSString *dirname,NSArray *d
 
 			off_t filesize=[file[XADFileSizeKey] longLongValue];
 			XADCABBlockReader *blocks=file[XADSolidObjectKey][@"BlockReader"];
-			off_t streamcompsize=[blocks compressedLength];
-			off_t streamuncompsize=[blocks uncompressedLength];
+			off_t streamcompsize=blocks.compressedLength;
+			off_t streamuncompsize=blocks.uncompressedLength;
 
 			file[XADCompressedSizeKey] = @(filesize*streamcompsize/streamuncompsize);
 
@@ -240,8 +240,8 @@ static CSHandle *FindHandleForName(NSData *namedata,NSString *dirname,NSArray *d
 		if([fh respondsToSelector:@selector(currentHandle)])
 		{
 			[[(id)fh currentHandle] seekToEndOfFile];
-			if([fh atEndOfFile]) break;
-			baseoffs=[fh offsetInFile];
+			if(fh.atEndOfFile) break;
+			baseoffs=fh.offsetInFile;
 		}
 		else break;
 	}
@@ -339,8 +339,8 @@ static int MatchCABSignature(const uint8_t *bytes,int available,off_t offset,voi
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data
 name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 {
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	if(length<20000||bytes[0]!='M'||bytes[1]!='Z') return NO;
 
@@ -360,8 +360,8 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 
 -(void)parse
 {
-	off_t offs=[[self properties][@"CABSFXOffset"] longLongValue];
-	[[self handle] seekToFileOffset:offs];
+	off_t offs=[self.properties[@"CABSFXOffset"] longLongValue];
+	[self.handle seekToFileOffset:offs];
 
 	[super parse];
 }

@@ -42,8 +42,8 @@ static BOOL IsHighSierraPrimaryVolumeDescriptor(const uint8_t *bytes,int length,
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data
 name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 {
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	// Scan for a primary volume descriptor to find the start of the image.
 	for(int i=0x8000;i<length-2048-6;i++)
@@ -108,23 +108,23 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 
 -(void)parse
 {
-	NSDictionary *props=[self properties];
+	NSDictionary *props=self.properties;
 	int blockoffset=[props[@"ISO9660ImageBlockOffset"] intValue];
 	blocksize=[props[@"ISO9660ImageBlockSize"] intValue];
 	ishighsierra=[props[@"ISO9660ImageIsHighSierra"] boolValue];
 
 	if(blocksize!=2048)
 	{
-		fh=[[XADPaddedBlockHandle alloc] initWithHandle:[self handle]
+		fh=[[XADPaddedBlockHandle alloc] initWithHandle:self.handle
 		startOffset:blockoffset logicalBlockSize:2048 physicalBlockSize:blocksize];
 	}
 	else if(blockoffset!=0)
 	{
-		fh=[[[self handle] nonCopiedSubHandleToEndOfFileFrom:blockoffset] retain];
+		fh=[[self.handle nonCopiedSubHandleToEndOfFileFrom:blockoffset] retain];
 	}
 	else
 	{
-		fh=[[self handle] retain];
+		fh=[self.handle retain];
 	}
 
 	if(!ishighsierra)
@@ -185,8 +185,8 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 	{
 		[fh seekToFileOffset:block*2048+8];
 
-		system=[self readStringOfLength:32]; 
-		volume=[self readStringOfLength:32]; 
+		system=[self readStringOfLength:32];
+		volume=[self readStringOfLength:32];
 		[fh skipBytes:8];
 		/*uint32_t volumespacesize=*/[fh readUInt32LE];
 		[fh skipBytes:36];
@@ -209,8 +209,8 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 		rootlength=[fh readUInt32LE];
 		[fh skipBytes:20];
 
-		volumeset=[self readStringOfLength:128]; 
-		publisher=[self readStringOfLength:128]; 
+		volumeset=[self readStringOfLength:128];
+		publisher=[self readStringOfLength:128];
 		datapreparer=[self readStringOfLength:128];
 		application=[self readStringOfLength:128];
 		copyrightfile=[self readStringOfLength:37];
@@ -226,8 +226,8 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 	{
 		[fh seekToFileOffset:block*2048+16];
 
-		system=[self readStringOfLength:32]; 
-		volume=[self readStringOfLength:32]; 
+		system=[self readStringOfLength:32];
+		volume=[self readStringOfLength:32];
 		[fh skipBytes:8];
 		/*uint32_t volumespacesize=*/[fh readUInt32LE];
 		[fh skipBytes:36];
@@ -245,8 +245,8 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 		rootlength=[fh readUInt32LE];
 		[fh skipBytes:20];
 
-		volumeset=[self readStringOfLength:128]; 
-		publisher=[self readStringOfLength:128]; 
+		volumeset=[self readStringOfLength:128];
+		publisher=[self readStringOfLength:128];
 		datapreparer=[self readStringOfLength:128];
 		application=[self readStringOfLength:128];
 		[fh skipBytes:192]; // Not sure what this part is.
@@ -281,10 +281,10 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 	if(expiration) [self setObject:expiration forPropertyKey:@"ISO9660ExpirationDateAndTime"];
 	if(effective) [self setObject:effective forPropertyKey:@"ISO9660EffectiveDateAndTime"];
 
-	[self setObject:[NSNumber numberWithInt:volumesetsize] forPropertyKey:@"ISO9660VolumeSetSize"];
-	[self setObject:[NSNumber numberWithInt:volumesequencenumber] forPropertyKey:@"ISO9660VolumeSequenceNumber"];
+	[self setObject:@(volumesetsize) forPropertyKey:@"ISO9660VolumeSetSize"];
+	[self setObject:@(volumesequencenumber) forPropertyKey:@"ISO9660VolumeSequenceNumber"];
 
-	[self parseDirectoryWithPath:[self XADPath] atBlock:rootblock length:rootlength];
+	[self parseDirectoryWithPath:self.XADPath atBlock:rootblock length:rootlength];
 }
 
 #define TypeID(a,b) (((a)<<8)|(b))
@@ -303,9 +303,9 @@ length:(uint32_t)length
 	int parentlength=[fh readUInt8];
 	[fh skipBytes:parentlength-1];
 
-	while([fh offsetInFile]<extentend)
+	while(fh.offsetInFile<extentend)
 	{
-		off_t startpos=[fh offsetInFile];
+		off_t startpos=fh.offsetInFile;
 
 		int recordlength=[fh readUInt8];
 		off_t endpos=startpos+recordlength;
@@ -376,10 +376,10 @@ length:(uint32_t)length
 			@(length),XADFileSizeKey,
 			@(((length+2047)/2048)*blocksize),XADCompressedSizeKey,
 			@(location),@"ISO9660LocationOfExtent",
-			[NSNumber numberWithUnsignedInt:flags],@"ISO9660FileFlags",
-			[NSNumber numberWithUnsignedInt:unitsize],@"ISO9660FileUnitSize",
-			[NSNumber numberWithUnsignedInt:gapsize],@"ISO9660InterleaveGapSize",
-			[NSNumber numberWithUnsignedInt:volumesequencenumber],@"ISO9660VolumeSequenceNumber",
+			@(flags),@"ISO9660FileFlags",
+			@(unitsize),@"ISO9660FileUnitSize",
+			@(gapsize),@"ISO9660InterleaveGapSize",
+			@(volumesequencenumber),@"ISO9660VolumeSequenceNumber",
 		nil];
 
 		if(flags&0x01) dict[XADIsHiddenKey] = @YES;
@@ -393,7 +393,7 @@ length:(uint32_t)length
 			NSMutableData *linkdata=nil;
 			NSMutableData *commentdata=nil;
 
-			off_t nextoffset=[fh offsetInFile];
+			off_t nextoffset=fh.offsetInFile;
 			int nextlength=systemlength;
 
 			while(nextlength)

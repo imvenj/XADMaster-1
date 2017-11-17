@@ -53,9 +53,9 @@ jumpHandle:(CSHandle *)jumphandle rangeHandle:(CSHandle *)rangehandle length:(of
 		calls=[callhandle retain];
 		jumps=[jumphandle retain];
 		ranges=[rangehandle retain];
-		callstart=[calls offsetInFile];
-		jumpstart=[jumps offsetInFile];
-		rangestart=[ranges offsetInFile];
+		callstart=calls.offsetInFile;
+		jumpstart=jumps.offsetInFile;
+		rangestart=ranges.offsetInFile;
 	}
 	return self;
 }

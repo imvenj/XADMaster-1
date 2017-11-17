@@ -20,8 +20,8 @@ static NSData *StuffItMD5(NSData *data);
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name;
 {
-	const char *bytes=[data bytes];
-	NSInteger length=[data length];
+	const char *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	if(length<100) return NO;
 
@@ -120,9 +120,9 @@ static NSData *StuffItMD5(NSData *data);
 {
 	[self setIsMacArchive:YES];
 
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 
-	off_t base=[fh offsetInFile];
+	off_t base=fh.offsetInFile;
 
 	[fh skipBytes:82];
 	int version=[fh readUInt8];
@@ -191,14 +191,14 @@ static NSData *StuffItMD5(NSData *data);
 
 -(void)parseWithNumberOfTopLevelEntries:(int)numentries
 {
-	CSHandle *fh=[self handle];
+	CSHandle *fh=self.handle;
 	NSMutableDictionary *dirs=[NSMutableDictionary dictionary];
 
 	for(int i=0;i<numentries;i++)
 	{
-		if(![self shouldKeepParsing]) return;
+		if(!self.shouldKeepParsing) return;
 
-		off_t offs=[fh offsetInFile];
+		off_t offs=fh.offsetInFile;
 
 		uint32_t headid=[fh readID];
 		if(headid!=SIT5_ID) [XADException raiseDataFormatException];
@@ -247,7 +247,7 @@ static NSData *StuffItMD5(NSData *data);
 		NSData *namedata=[fh readDataOfLength:namelength];
 
 		XADString *comment=nil;
-		if([fh offsetInFile]<headerend)
+		if(fh.offsetInFile<headerend)
 		{
 			int commentsize=[fh readUInt16BE];
 			[fh skipBytes:2];
@@ -283,10 +283,10 @@ static NSData *StuffItMD5(NSData *data);
 			else if(passlen) [XADException raiseNotSupportedException];
 		}
 
-		off_t datastart=[fh offsetInFile];
+		off_t datastart=fh.offsetInFile;
 
 		XADPath *parent=dirs[@((int)diroffs)];
-		if(!parent) parent=[self XADPath];
+		if(!parent) parent=self.XADPath;
 		XADPath *path=[parent pathByAppendingXADStringComponent:[self XADStringWithData:namedata]];
 
 		if(flags&SIT5FLAGS_DIRECTORY)
@@ -382,7 +382,7 @@ static NSData *StuffItMD5(NSData *data);
 -(NSData *)keyForEntryWithDictionary:(NSDictionary *)dict
 {
 	NSData *entrykey=dict[@"StuffItEntryKey"];
-	NSData *archivekey=StuffItMD5([self encodedPassword]);
+	NSData *archivekey=StuffItMD5(self.encodedPassword);
 
 	// Verify the encryption key
 	NSData *archivehash=properties[@"StuffItPasswordHash"];
@@ -421,8 +421,8 @@ static NSData *StuffItMD5(NSData *data);
 
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data name:(NSString *)name
 {
-	const uint8_t *bytes=[data bytes];
-	NSInteger length=[data length];
+	const uint8_t *bytes=data.bytes;
+	NSInteger length=data.length;
 
 	if(length<4104) return NO;
 
@@ -432,7 +432,7 @@ static NSData *StuffItMD5(NSData *data);
 
 -(void)parse
 {
-	[[self handle] skipBytes:0x1a000];
+	[self.handle skipBytes:0x1a000];
 	[super parse];
 }
 
@@ -446,8 +446,8 @@ static NSData *StuffItMD5(NSData *data)
 
 	MD5_CTX ctx;
 	MD5_Init(&ctx);
-	MD5_Update(&ctx,[data bytes],(int)[data length]);
+	MD5_Update(&ctx,data.bytes,(int)data.length);
 	MD5_Final(buf,&ctx);
-	
+
 	return [NSData dataWithBytes:buf length:SIT5_KEY_LENGTH];
 }
