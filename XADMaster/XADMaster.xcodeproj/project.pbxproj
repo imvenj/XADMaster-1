@@ -1675,6 +1675,12 @@
 		5500A61E1D776FC400321300 /* XADPMArc1Handle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B738C9E17DBC83400481D43 /* XADPMArc1Handle.m */; };
 		5500A61F1D776FC400321300 /* XADLZHOldHandles.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3A64C710150DB600AE25A8 /* XADLZHOldHandles.m */; };
 		5500A6201D776FF700321300 /* XADCompressHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC88D470ED31A46006B47FE /* XADCompressHandle.m */; };
+		551261031FC0120D00C0FCAD /* CSMultiFileHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B8983291CDE00B100D52A2A /* CSMultiFileHandle.m */; };
+		551261041FC0120E00C0FCAD /* CSMultiFileHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B8983291CDE00B100D52A2A /* CSMultiFileHandle.m */; };
+		551261051FC0123100C0FCAD /* XADRAR50Handle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B6B5B861CAF19EC00BFA653 /* XADRAR50Handle.m */; };
+		551261061FC0123100C0FCAD /* XADRAR50Handle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B6B5B861CAF19EC00BFA653 /* XADRAR50Handle.m */; };
+		551261071FC0124300C0FCAD /* CSSegmentedHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B8983321CDE020500D52A2A /* CSSegmentedHandle.m */; };
+		551261081FC0124400C0FCAD /* CSSegmentedHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B8983321CDE020500D52A2A /* CSSegmentedHandle.m */; };
 		551BAC131EB032B500EAF64E /* XADRegex.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B2110700A4452C2005ED2AF /* XADRegex.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		551BAC141EB032B500EAF64E /* XADString.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B06D5B90DDA67E000D9C000 /* XADString.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		551BAC151EB032B500EAF64E /* XADArchiveParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BBAB6760EC26AA6007FE6A2 /* XADArchiveParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -6182,6 +6188,7 @@
 				5500A5781D776ADB00321300 /* XADPPMdParser.m in Sources */,
 				5500A5791D776ADB00321300 /* XADPPMdHandles.m in Sources */,
 				5500A57C1D776ADB00321300 /* XADRC4Handle.m in Sources */,
+				551261081FC0124400C0FCAD /* CSSegmentedHandle.m in Sources */,
 				5500A5841D776ADB00321300 /* NumberParsing.m in Sources */,
 				5500A5851D776ADB00321300 /* XADChecksumHandle.m in Sources */,
 				5500A5881D776ADB00321300 /* XADZipSFXParsers.m in Sources */,
@@ -6191,6 +6198,7 @@
 				5500A58C1D776ADB00321300 /* XADRAR20CryptHandle.m in Sources */,
 				5500A58D1D776ADB00321300 /* XADPath.m in Sources */,
 				5500A58F1D776ADB00321300 /* XADXORHandle.m in Sources */,
+				551261041FC0120E00C0FCAD /* CSMultiFileHandle.m in Sources */,
 				5500A5991D776ADB00321300 /* XADLZMA2Handle.m in Sources */,
 				5500A59A1D776ADB00321300 /* Lzma2Dec.c in Sources */,
 				5500A59B1D776ADB00321300 /* XADDeltaHandle.m in Sources */,
@@ -6215,6 +6223,7 @@
 				5500A5BA1D776ADB00321300 /* XADStringCFString.m in Sources */,
 				5500A5BC1D776ADB00321300 /* XADXORSumHandle.m in Sources */,
 				5500A5CA1D776ADB00321300 /* XADPaddedBlockHandle.m in Sources */,
+				551261061FC0123100C0FCAD /* XADRAR50Handle.m in Sources */,
 				5500A5CB1D776ADB00321300 /* XADWinZipWavPackHandle.m in Sources */,
 				5500A5CC1D776ADB00321300 /* bits.c in Sources */,
 				5500A5CD1D776ADB00321300 /* float.c in Sources */,
@@ -6305,6 +6314,7 @@
 				551BAD181EB032B500EAF64E /* XADStuffItArsenicHandle.m in Sources */,
 				551BAD191EB032B500EAF64E /* CSBlockStreamHandle.m in Sources */,
 				551BAD1A1EB032B500EAF64E /* XADCompactProRLEHandle.m in Sources */,
+				551261031FC0120D00C0FCAD /* CSMultiFileHandle.m in Sources */,
 				551BAD1B1EB032B500EAF64E /* XADCompactProLZHHandle.m in Sources */,
 				551BAD1C1EB032B500EAF64E /* XADLZSSHandle.m in Sources */,
 				551BAD1D1EB032B500EAF64E /* XADStuffIt13Handle.m in Sources */,
@@ -6317,6 +6327,7 @@
 				551BAD241EB032B500EAF64E /* XADBzip2Parser.m in Sources */,
 				551BAD251EB032B500EAF64E /* XADPowerPackerParser.m in Sources */,
 				551BAD261EB032B500EAF64E /* XADSkipHandle.m in Sources */,
+				551261071FC0124300C0FCAD /* CSSegmentedHandle.m in Sources */,
 				551BAD271EB032B500EAF64E /* XADRegex.m in Sources */,
 				551BAD281EB032B500EAF64E /* XAD7ZipParser.m in Sources */,
 				551BAD291EB032B500EAF64E /* XADLZMAHandle.m in Sources */,
@@ -6416,6 +6427,7 @@
 				551BAD871EB032B500EAF64E /* XADARCCrushHandle.m in Sources */,
 				551BAD881EB032B500EAF64E /* XADSqueezeHandle.m in Sources */,
 				551BAD891EB032B500EAF64E /* XADARCCrunchHandle.m in Sources */,
+				551261051FC0123100C0FCAD /* XADRAR50Handle.m in Sources */,
 				551BAD8A1EB032B500EAF64E /* XADARCDistillHandle.m in Sources */,
 				551BAD8B1EB032B500EAF64E /* XADStuffItXX86Handle.m in Sources */,
 				551BAD8C1EB032B500EAF64E /* XADISO9660Parser.m in Sources */,
