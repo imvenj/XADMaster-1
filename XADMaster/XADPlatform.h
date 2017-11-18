@@ -40,6 +40,7 @@ preservePermissions:(BOOL)preservepermissions NS_REFINED_FOR_SWIFT;
 
 // Resource forks
 +(nullable CSHandle *)handleForReadingResourceForkAtPath:(NSString *)path;
++(nullable CSHandle *)handleForReadingResourceForkAtFileURL:(NSURL *)path;
 
 // Time functions.
 +(double)currentTimeInSeconds;

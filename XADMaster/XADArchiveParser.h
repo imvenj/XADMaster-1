@@ -117,6 +117,8 @@ resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name propertiesTo
 +(nullable XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)entry resourceForkDictionary:(nullable NSDictionary *)forkentry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
 +(nullable XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)entry resourceForkDictionary:(nullable NSDictionary<XADArchiveKeys,id> *)forkentry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum error:(nullable XADError *)errorptr NS_REFINED_FOR_SWIFT;
 
++(nullable XADArchiveParser *)archiveParserForFileURL:(NSURL *)filename NS_SWIFT_UNAVAILABLE("Throws uncaught exception!");
+
 #pragma mark NSError functions
 +(nullable __kindof XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle name:(NSString *)name nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr NS_SWIFT_NAME(archiveParser(for:name:));
 +(nullable XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)entry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr NS_SWIFT_NAME(archiveParser(with:archiveParser:wantChecksum:));
@@ -125,6 +127,7 @@ resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name propertiesTo
 +(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr NS_SWIFT_NAME(archiveParser(for:firstBytes:resourceFork:name:));
 +(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr NS_SWIFT_NAME(archiveParser(for:resourceFork:name:));
 +(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header name:(NSString *)name nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr NS_SWIFT_NAME(archiveParser(for:firstBytes:name:));
++(nullable XADArchiveParser *)archiveParserForFileURL:(NSURL *)filename error:(NSError *_Nullable __autoreleasing *_Nullable)errorptr NS_SWIFT_NAME(archiveParser(for:));
 
 
 -(instancetype)init NS_DESIGNATED_INITIALIZER;

@@ -447,7 +447,61 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 	return nil;
 }
 
-
++(XADArchiveParser *)archiveParserForFileURL:(NSURL *)filename
+{
+	CSHandle *handle=[CSFileHandle fileHandleForReadingAtFileURL:filename];
+	NSData *header=[handle readDataOfLengthAtMost:maxheader];
+	
+	CSHandle *forkhandle=[XADPlatform handleForReadingResourceForkAtFileURL:filename];
+	XADResourceFork *fork=[XADResourceFork resourceForkWithHandle:forkhandle error:NULL];
+	
+	NSMutableDictionary *props=[NSMutableDictionary dictionary];
+	
+	Class parserclass=[self archiveParserClassForHandle:handle
+											 firstBytes:header resourceFork:fork name:filename.path propertiesToAdd:props];
+	if(!parserclass) return nil;
+	
+	// Attempt to create a multi-volume parser, if we can find the volumes.
+	@try
+	{
+		NSArray *volumes=[parserclass volumesForHandle:handle firstBytes:header name:filename.path];
+		[handle seekToFileOffset:0];
+		
+		if(volumes)
+		{
+			if(volumes.count>1)
+			{
+				CSHandle *multihandle=[CSMultiFileHandle handleWithPathArray:volumes];
+				
+				XADArchiveParser *parser=[[parserclass new] autorelease];
+				parser.handle = multihandle;
+				parser.resourceFork = fork;
+				parser.allFilenames = volumes;
+				[parser addPropertiesFromDictionary:props];
+				
+				return parser;
+			}
+			else if(volumes)
+			{
+				// An empty array means scanning failed. Set a flag to
+				// warn the caller, and fall through to single-file mode.
+				props[XADVolumeScanningFailedKey] = @YES;
+			}
+		}
+	}
+	@catch(id e) { } // Fall through to a single file instead.
+	
+	XADArchiveParser *parser=[[parserclass alloc] init];
+	parser.handle = handle;
+	parser.resourceFork = fork;
+	parser.filename = filename.path;
+	[parser addPropertiesFromDictionary:props];
+	
+	props[XADVolumesKey] = @[filename];
+	[parser addPropertiesFromDictionary:props];
+	
+	return [parser autorelease];
+}
 
 
 
@@ -1329,6 +1383,25 @@ name:(NSString *)name { return nil; }
 	}
 	if (errorptr) {
 		*errorptr = [NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:nil];
+	}
+	return nil;
+}
+
++(XADArchiveParser *)archiveParserForFileURL:(NSURL *)filename error:(NSError * _Nullable *)errorptr
+{
+	@try {
+		XADArchiveParser *tmpParse = [self archiveParserForFileURL:filename];
+		if (tmpParse) {
+			return tmpParse;
+		}
+	} @catch(id exception) {
+		if(errorptr)
+			*errorptr=[XADException parseExceptionReturningNSError:exception];
+		
+		return nil;
+	}
+	if (errorptr) {
+		*errorptr = [NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:@{NSURLErrorKey: filename}];
 	}
 	return nil;
 }

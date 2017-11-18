@@ -15,6 +15,37 @@ NSString *const CSFileErrorException=@"CSFileErrorException";
 @implementation CSFileHandle
 @synthesize filePointer = fh;
 
++(CSFileHandle *)fileHandleForReadingAtFileURL:(NSURL *)path
+{ return [self fileHandleForFileURL:path modes:@"rb"]; }
+
++(CSFileHandle *)fileHandleForWritingAtFileURL:(NSURL *)path
+{ return [self fileHandleForFileURL:path modes:@"wb"]; }
+
++(CSFileHandle *)fileHandleForFileURL:(NSURL *)path modes:(NSString *)modes
+{
+	if(!path) return nil;
+	
+#if defined(__COCOTRON__) // Cocotron
+	FILE *fileh=_wfopen([path fileSystemRepresentationW],
+						(const wchar_t *)[modes cStringUsingEncoding:NSUnicodeStringEncoding]);
+#elif defined(__MINGW32__) // GNUstep under mingw32 - sort of untested
+	FILE *fileh=_wfopen((const wchar_t *)[path fileSystemRepresentation],
+						(const wchar_t *)[modes cStringUsingEncoding:NSUnicodeStringEncoding]);
+#else // Cocoa or GNUstep under Linux
+	FILE *fileh=fopen(path.fileSystemRepresentation,modes.UTF8String);
+#endif
+	
+	if(!fileh) [[NSException exceptionWithName:CSCannotOpenFileException
+										reason: [NSString stringWithFormat:@"Error attempting to open file \"%@\" in mode \"%@\" (%d).",path,modes, (int)errno]
+									  userInfo:@{NSUnderlyingErrorKey: [NSError errorWithDomain:NSPOSIXErrorDomain code:errno userInfo:nil]}] raise];
+	
+	CSFileHandle *handle=[[CSFileHandle alloc] initWithFilePointer:fileh closeOnDealloc:YES path:path.path];
+	if(handle) return handle;
+	
+	fclose(fileh);
+	return nil;
+}
+
 +(CSFileHandle *)fileHandleForReadingAtPath:(NSString *)path
 { return [self fileHandleForPath:path modes:@"rb"]; }
 

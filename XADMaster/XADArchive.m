@@ -94,6 +94,26 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	return nil;
 }
 
+-(instancetype)initWithFileURL:(NSURL *)file delegate:(id)del error:(NSError *_Nullable __autoreleasing *_Nullable)error
+{
+	if (self = [self init]) {
+		delegate = del;
+		
+		parser=[XADArchiveParser archiveParserForFileURL:file error:error];
+		if (parser) {
+			XADError tmpErr;
+			if ([self _parseWithErrorPointer:&tmpErr]) {
+				return self;
+			} else if (error) {
+				*error = [NSError errorWithDomain:XADErrorDomain code:tmpErr userInfo:nil];
+			}
+		} else if (error) {
+			*error = [NSError errorWithDomain:XADErrorDomain code:XADErrorDataFormat userInfo:nil];
+		}
+	}
+	
+	return nil;
+}
 
 
 -(instancetype)initWithData:(NSData *)data { return [self initWithData:data delegate:nil error:NULL]; }
