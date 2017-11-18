@@ -283,6 +283,14 @@ encodingName:(NSString *)encoding
     return actualstring;
 }
 
+-(NSString *)debugDescription
+{
+	// TODO: more info
+	NSString *actualstring=self.string;
+	if(!actualstring) return @"(nil)";
+	return actualstring;
+}
+
 -(id)copyWithZone:(NSZone *)zone
 {
     if(string) return [[XADString allocWithZone:zone] initWithString:string];

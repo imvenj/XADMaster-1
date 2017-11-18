@@ -588,6 +588,12 @@ separators:(const char *)pathseparators
 	return self.string;
 }
 
+-(NSString *)debugDescription
+{
+	// TODO: more info?
+	return self.string;
+}
+
 -(NSUInteger)hash
 {
 	return 0;
