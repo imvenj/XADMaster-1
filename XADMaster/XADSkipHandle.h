@@ -10,7 +10,6 @@ typedef struct XADSkipRegion
 
 @interface XADSkipHandle:CSHandle
 {
-	CSHandle *parent;
 	XADSkipRegion *regions;
 	int numregions;
 }

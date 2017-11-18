@@ -33,7 +33,7 @@
 	int shortoffsettable[256];
 }
 
--(instancetype)initWithRARParser:(XADRARParser *)parent files:(NSArray *)filearray;
+-(id)initWithRARParser:(XADRARParser *)parentparser files:(NSArray *)filearray;
 
 -(void)resetLZSSHandle;
 -(void)startNextFile;

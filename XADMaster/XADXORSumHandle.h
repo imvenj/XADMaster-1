@@ -4,7 +4,6 @@
 
 @interface XADXORSumHandle:CSStreamHandle
 {
-	CSHandle *parent;
 	uint8_t correctchecksum,checksum;
 }
 

@@ -2,7 +2,6 @@
 
 @interface XAD7ZipBranchHandle:CSBlockStreamHandle
 {
-	CSHandle *parent;
 	off_t startoffs;
 	uint8_t inbuffer[4096];
 	int leftoverstart,leftoverlength;

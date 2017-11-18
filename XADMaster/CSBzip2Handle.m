@@ -19,20 +19,19 @@ NSString *const CSBzip2Exception=@"CSBzip2Exception";
 
 +(CSBzip2Handle *)bzip2HandleWithHandle:(CSHandle *)handle
 {
-	return [[self alloc] initWithHandle:handle length:CSHandleMaxLength name:handle.name];
+	return [[self alloc] initWithHandle:handle length:CSHandleMaxLength];
 }
 
 +(CSBzip2Handle *)bzip2HandleWithHandle:(CSHandle *)handle length:(off_t)length
 {
-	return [[self alloc] initWithHandle:handle length:length name:handle.name];
+	return [[self alloc] initWithHandle:handle length:length];
 }
 
--(id)initWithHandle:(CSHandle *)handle length:(off_t)length name:(NSString *)descname
+-(id)initWithHandle:(CSHandle *)handle length:(off_t)length
 {
-	if((self=[super initWithName:descname]))
+	if((self=[super initWithParentHandle:handle length:length]))
 	{
-		parent=handle;
-		startoffs=parent.offsetInFile;
+		startoffs=[parent offsetInFile];
 		inited=NO;
 		checksumcorrect=YES;
 	}
@@ -112,7 +111,7 @@ NSString *const CSBzip2Exception=@"CSBzip2Exception";
 -(void)_raiseBzip2:(int)error
 {
 	[NSException raise:CSBzip2Exception
-	format:@"Bzlib error while attepting to read from \"%@\": %d.",name,error];
+	format:@"Bzlib error while attepting to read from \"%@\": %d.",[self name],error];
 }
 
 @end

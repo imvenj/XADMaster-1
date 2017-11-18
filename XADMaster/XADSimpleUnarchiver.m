@@ -763,9 +763,23 @@
 
 	*pathptr=path;
 
-	// If we have a delegate, ask it if we should extract.
-	if(delegate && [delegate respondsToSelector:@selector(simpleUnarchiver:shouldExtractEntryWithDictionary:to:)]) {
-		return [delegate simpleUnarchiver:self shouldExtractEntryWithDictionary:dict to:path];
+	if(delegate && [delegate respondsToSelector:@selector(simpleUnarchiver:shouldExtractEntryWithDictionary:to:)])
+	{
+		// If we have a delegate, ask it if we should extract.
+		if(![delegate simpleUnarchiver:self shouldExtractEntryWithDictionary:dict to:path]) return NO;
+
+		// Check if the user wants to extract the entry to his own filehandle.
+		// In such case, call into the lower-level API to run the extraction
+		// and return without doing further work.
+		CSHandle *handle=nil;
+		if ([delegate respondsToSelector:@selector(simpleUnarchiver:outputHandleForEntryWithDictionary:)]) {
+			handle=[delegate simpleUnarchiver:self outputHandleForEntryWithDictionary:dict];
+		}
+		if(handle)
+		{
+			[unarchiver runExtractorWithDictionary:dict outputHandle:handle];
+			return NO;
+		}
 	}
 
 	// Otherwise, just extract.

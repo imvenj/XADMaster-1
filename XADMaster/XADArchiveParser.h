@@ -180,9 +180,9 @@ regex:(XADRegex *)regex firstFileExtension:(nullable NSString *)firstext;
 -(CSHandle *)zeroLengthHandleWithChecksum:(BOOL)checksum;
 -(nullable CSHandle *)subHandleFromSolidStreamForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict;
 
-@property (NS_NONATOMIC_IOSONLY, readonly, copy, nullable) NSArray<CSHandle*> *volumes;
+@property (NS_NONATOMIC_IOSONLY, readonly) BOOL hasVolumes;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray<NSNumber*> *volumeSizes;
 @property (NS_NONATOMIC_IOSONLY, readonly, retain) CSHandle *currentHandle;
--(off_t)offsetForVolume:(NSInteger)disk offset:(off_t)offset;
 
 -(void)setObject:(id)object forPropertyKey:(XADArchiveKeys)key;
 -(void)addPropertiesFromDictionary:(NSDictionary<XADArchiveKeys,id> *)dict;

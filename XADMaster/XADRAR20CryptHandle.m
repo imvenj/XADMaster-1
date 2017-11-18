@@ -5,10 +5,9 @@
 
 -(id)initWithHandle:(CSHandle *)handle length:(off_t)length password:(NSData *)passdata
 {
-	if((self=[super initWithName:handle.name length:length]))
+	if((self=[super initWithParentHandle:handle length:length]))
 	{
-		parent=[handle retain];
-		startoffs=handle.offsetInFile;
+		startoffs=[handle offsetInFile];
 		password=[passdata retain];
 	}
 	return self;
@@ -16,7 +15,6 @@
 
 -(void)dealloc
 {
-	[parent release];
 	[password release];
 	[super dealloc];
 }

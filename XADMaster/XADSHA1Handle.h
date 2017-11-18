@@ -18,7 +18,6 @@ typedef SHA_CTX XADSHA1;
 
 @interface XADSHA1Handle:CSStreamHandle
 {
-	CSHandle *parent;
 	NSData *digest;
 
 	XADSHA1 context;

@@ -127,10 +127,9 @@ typedef SHA_CTX XADSHA256;
 
 -(id)initWithHandle:(CSHandle *)handle length:(off_t)length key:(NSData *)keydata IV:(NSData *)ivdata
 {
-	if((self=[super initWithName:handle.name length:length]))
+	if(self=[super initWithParentHandle:handle length:length])
 	{
-		parent=[handle retain];
-		startoffs=handle.offsetInFile;
+		startoffs=[handle offsetInFile];
 
 		NSInteger ivlength=ivdata.length;
 		const uint8_t *ivbytes=ivdata.bytes;
@@ -142,11 +141,6 @@ typedef SHA_CTX XADSHA256;
 	}
 
 	return self;
-}
-
--(void)dealloc
-{
-	[super dealloc];
 }
 
 -(void)resetBlockStream

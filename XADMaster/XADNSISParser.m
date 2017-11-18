@@ -81,7 +81,7 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 	const uint8_t *bytes=data.bytes;
 	NSInteger length=data.length;
 
-	for(NSInteger offs=0;offs<length+4+16;offs+=512)
+	for(int offs=0;offs+4+16<=length;offs+=512)
 	{
 		if(IsOlderSignature(bytes+offs))
 		{
@@ -439,7 +439,7 @@ newDateTimeOrder:(BOOL)neworder
 	for(int i=startoffs;i<endoffs&&i+24<=length;i+=4*stride)
 	{
 		int opcode=CSUInt32LE(bytes+i);
-		uint32_t args[6] = {0};
+		uint32_t args[6]={0};
 		for(int j=1;j<stride;j++) args[j-1]=CSUInt32LE(bytes+i+j*4);
 
 		if(opcode==extractopcode)
@@ -1197,6 +1197,8 @@ stringStartOffset:(int)stringoffs stringEndOffset:(int)stringendoffs currentPath
 			}
 		}
 	}
+
+	[XADException raiseNotSupportedException];
 	return nil;
 }
 

@@ -5,7 +5,6 @@
 
 @interface CSSubHandle:CSHandle
 {
-	CSHandle *parent;
 	off_t start,end;
 }
 
@@ -14,7 +13,6 @@
 -(instancetype)initAsCopyOf:(CSSubHandle *)other;
 
 // Public methods
-@property (readonly, strong) CSHandle *parentHandle;
 @property (readonly) off_t startOffsetInParent;
 
 // Implemented by this class

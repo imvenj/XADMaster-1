@@ -17,19 +17,14 @@ static xadUINT8 xadIOGetFunc(struct xadInOut *io);
 {
 	if((self=[super initWithData:[NSMutableData dataWithCapacity:(long)outlength]]))
 	{
-		parent=[handle retain];
-		inlen=handle.fileSize;
+		[self setParentHandle:handle];
+		inlen=[handle fileSize];
 		outlen=outlength;
 		unpacked=NO;
 	}
 	return self;
 }
 
--(void)dealloc
-{
-	[parent release];
-	[super dealloc];
-}
 
 
 
@@ -109,6 +104,7 @@ static xadUINT8 xadIOGetFunc(struct xadInOut *io);
 	if(!unpacked) [self runUnpacker];
 	return [super copyDataOfLengthAtMost:length];
 }
+
 
 
 

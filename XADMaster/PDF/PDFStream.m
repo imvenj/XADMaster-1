@@ -6,8 +6,6 @@
 #import "LZWHandle.h"
 
 #import "../CSZlibHandle.h"
-#import "../CSMemoryHandle.h"
-#import "../CSMultiHandle.h"
 
 
 
@@ -523,6 +521,11 @@ offset:(off_t)offset reference:(PDFObjectReference *)reference parser:(PDFParser
 
 @implementation PDFASCII85Handle
 
+-(id)initWithHandle:(CSHandle *)handle
+{
+	return [super initWithInputBufferForHandle:handle];
+}
+
 -(void)resetByteStream
 {
 	finalbytes=0;
@@ -588,7 +591,7 @@ static uint8_t ASCII85NextByte(CSInputBuffer *input)
 -(id)initWithHandle:(CSHandle *)handle columns:(int)columns
 components:(int)components bitsPerComponent:(int)bitspercomp
 {
-	if(self=[super initWithHandle:handle])
+	if(self=[super initWithInputBufferForHandle:handle])
 	{
 		cols=columns;
 		comps=components;
@@ -622,7 +625,7 @@ static inline int iabs(int a) { return a>=0?a:-a; }
 -(id)initWithHandle:(CSHandle *)handle columns:(int)columns
 components:(int)components bitsPerComponent:(int)bitspercomp
 {
-	if(self=[super initWithHandle:handle])
+	if(self=[super initWithInputBufferForHandle:handle])
 	{
 		cols=columns;
 		comps=components;
@@ -665,7 +668,7 @@ components:(int)components bitsPerComponent:(int)bitspercomp
 		int a=prevbuf[(cols*comps+comps+bufoffs)%buflen];
 		int b=prevbuf[(comps+bufoffs)%buflen];
 		int c=prevbuf[bufoffs];
-		int val = 0;
+		int val=0;
 
 		switch(type)
 		{

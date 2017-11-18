@@ -4,7 +4,6 @@
 
 @interface XAD7ZipAESHandle:CSBlockStreamHandle
 {
-	CSHandle *parent;
 	off_t startoffs;
 
 	aes_decrypt_ctx aes;

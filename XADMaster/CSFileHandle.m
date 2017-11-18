@@ -39,34 +39,59 @@ NSString *const CSFileErrorException=@"CSFileErrorException";
 										reason: [NSString stringWithFormat:@"Error attempting to open file \"%@\" in mode \"%@\" (%d).",path,modes, (int)errno]
 									  userInfo:@{NSUnderlyingErrorKey: [NSError errorWithDomain:NSPOSIXErrorDomain code:errno userInfo:nil]}] raise];
 
-	CSFileHandle *handle=[[CSFileHandle alloc] initWithFilePointer:fileh closeOnDealloc:YES name:path];
+	CSFileHandle *handle=[[CSFileHandle alloc] initWithFilePointer:fileh closeOnDealloc:YES path:path];
 	if(handle) return handle;
 
 	fclose(fileh);
 	return nil;
 }
 
-
-
--(id)initWithFilePointer:(FILE *)file closeOnDealloc:(BOOL)closeondealloc name:(NSString *)descname
++(CSFileHandle *)fileHandleForStandardInput
 {
-	if((self=[super initWithName:descname]))
+	static CSFileHandle *handle=nil;
+	if(!handle) handle=[[CSFileHandle alloc] initWithFilePointer:stdin closeOnDealloc:NO path:@"/dev/stdin"];
+	return handle;
+}
+
++(CSFileHandle *)fileHandleForStandardOutput
+{
+	static CSFileHandle *handle=nil;
+	if(!handle) handle=[[CSFileHandle alloc] initWithFilePointer:stdout closeOnDealloc:NO path:@"/dev/stdout"];
+	return handle;
+}
+
++(CSFileHandle *)fileHandleForStandardError
+{
+	static CSFileHandle *handle=nil;
+	if(!handle) handle=[[CSFileHandle alloc] initWithFilePointer:stderr closeOnDealloc:NO path:@"/dev/stderr"];
+	return handle;
+}
+
+
+
+
+-(id)initWithFilePointer:(FILE *)file closeOnDealloc:(BOOL)closeondealloc path:(NSString *)filepath
+{
+	if(self=[super init])
 	{
 		fh=file;
-		close=closeondealloc;
+		path=[filepath copy];
+ 		close=closeondealloc;
 		multilock=nil;
-		parent=nil;
+		fhowner=nil;
 	}
 	return self;
 }
 
 -(id)initAsCopyOf:(CSFileHandle *)other
 {
-	if((self=[super initAsCopyOf:other]))
+	if(self=[super initAsCopyOf:other])
 	{
 		fh=other->fh;
-		close=NO;
-		parent=other;
+		path=[other->path copy];
+ 		close=NO;
+		if(other->fhowner) fhowner=other->fhowner;
+		else fhowner=other;
 
 		if(!other->multilock) [other _setMultiMode];
 
@@ -85,7 +110,7 @@ NSString *const CSFileErrorException=@"CSFileErrorException";
 
 -(void)close
 {
-	if(fh&&close) fclose(fh);
+	if(fh && close) fclose(fh);
 	fh=NULL;
 }
 
@@ -158,6 +183,11 @@ NSString *const CSFileErrorException=@"CSFileErrorException";
 	if(multilock) { pos=ftello(fh); [multilock unlock]; }
 }
 
+-(NSString *)name
+{
+	return path;
+}
+
 
 
 
@@ -165,8 +195,8 @@ NSString *const CSFileErrorException=@"CSFileErrorException";
 {
 	if(feof(fh)) [self _raiseEOF];
 	else [[[NSException alloc] initWithName:CSFileErrorException
-	reason:[NSString stringWithFormat:@"Error while attempting to read file \"%@\": %s.",name,strerror(errno)]
-	userInfo:@{@"ErrNo": @errno}] raise];
+	reason:[NSString stringWithFormat:@"Error while attempting to read file \"%@\": %s.",[self name],strerror(errno)]
+								   userInfo:@{@"ErrNo": @(errno)}] raise];
 }
 
 -(void)_setMultiMode

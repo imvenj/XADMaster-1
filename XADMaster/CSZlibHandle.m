@@ -28,33 +28,32 @@ NSString *const CSZlibException=@"CSZlibException";
 
 +(CSZlibHandle *)zlibHandleWithHandle:(CSHandle *)handle
 {
-	return [[CSZlibHandle alloc] initWithHandle:handle length:CSHandleMaxLength header:YES name:handle.name];
+	return [[CSZlibHandle alloc] initWithHandle:handle length:CSHandleMaxLength header:YES];
 }
 
 +(CSZlibHandle *)zlibHandleWithHandle:(CSHandle *)handle length:(off_t)length
 {
-	return [[CSZlibHandle alloc] initWithHandle:handle length:length header:YES name:handle.name];
+	return [[CSZlibHandle alloc] initWithHandle:handle length:length header:YES];
 }
 
 +(CSZlibHandle *)deflateHandleWithHandle:(CSHandle *)handle
 {
-	return [[CSZlibHandle alloc] initWithHandle:handle length:CSHandleMaxLength header:NO name:handle.name];
+	return [[CSZlibHandle alloc] initWithHandle:handle length:CSHandleMaxLength header:NO];
 }
 
 +(CSZlibHandle *)deflateHandleWithHandle:(CSHandle *)handle length:(off_t)length
 {
-	return [[CSZlibHandle alloc] initWithHandle:handle length:length header:NO name:handle.name];
+	return [[CSZlibHandle alloc] initWithHandle:handle length:length header:NO];
 }
 
 
 
 
--(id)initWithHandle:(CSHandle *)handle length:(off_t)length header:(BOOL)header name:(NSString *)descname
+-(id)initWithHandle:(CSHandle *)handle length:(off_t)length header:(BOOL)header
 {
-	if((self=[super initWithName:descname length:length]))
+	if(self=[super initWithParentHandle:handle length:length])
 	{
-		parent=handle;
-		startoffs=parent.offsetInFile;
+		startoffs=[parent offsetInFile];
 		inited=YES;
 		seekback=NO;
 
@@ -68,9 +67,8 @@ NSString *const CSZlibException=@"CSZlibException";
 
 -(id)initAsCopyOf:(CSZlibHandle *)other
 {
-	if((self=[super initAsCopyOf:other]))
+	if(self=[super initAsCopyOf:other])
 	{
-		parent=[other->parent copy];
 		startoffs=other->startoffs;
 		inited=NO;
 		seekback=other->seekback;
@@ -144,7 +142,7 @@ NSString *const CSZlibException=@"CSZlibException";
 -(void)_raiseZlib
 {
 	[NSException raise:CSZlibException
-	format:@"Zlib error while attepting to read from \"%@\": %s.",name,zs.msg];
+	format:@"Zlib error while attepting to read from \"%@\": %s.",[self name],zs.msg];
 }
 
 @end

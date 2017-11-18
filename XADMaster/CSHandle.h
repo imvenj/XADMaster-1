@@ -27,16 +27,16 @@ extern NSExceptionName const CSNotSupportedException;
 
 @interface CSHandle:NSObject <NSCopying>
 {
-	NSString *name;
+	CSHandle *parent;
 	off_t bitoffs;
 	uint8_t readbyte,readbitsleft;
 	uint8_t writebyte,writebitsleft;
 }
 
--(instancetype)initWithName:(NSString *)descname;
+-(instancetype)init;
+-(instancetype)initWithParentHandle:(CSHandle *)parenthandle;
 -(instancetype)initAsCopyOf:(CSHandle *)other;
 -(void)close;
-
 
 // Methods implemented by subclasses
 
@@ -141,8 +141,8 @@ extern NSExceptionName const CSNotSupportedException;
 -(void)_raiseNotImplemented:(SEL)selector NS_SWIFT_UNAVAILABLE("Call throws exception");
 -(void)_raiseNotSupported:(SEL)selector NS_SWIFT_UNAVAILABLE("Call throws exception");
 
-@property (readonly, copy) NSString *name;
-@property (readonly, copy) NSString *description;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *name;
+@property (NS_NONATOMIC_IOSONLY, strong) CSHandle *parentHandle;
 
 @end
 

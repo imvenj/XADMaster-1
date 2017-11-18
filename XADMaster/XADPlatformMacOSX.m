@@ -302,7 +302,7 @@ preservePermissions:(BOOL)preservepermissions
 
 +(void)writeCloneableMetadata:(id)metadata toPath:(NSString *)path
 {
-	[[NSURL fileURLWithPath:path] setResourceValue:metadata forKey:NSURLQuarantinePropertiesKey error:NULL];
+	[[NSURL fileURLWithPath:path] setResourceValue:metadata forKey:@"NSURLQuarantinePropertiesKey" error:NULL];
 }
 
 #endif

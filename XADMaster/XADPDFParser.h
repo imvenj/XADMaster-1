@@ -28,7 +28,7 @@
 	int numchannels,currentchannel;
 }
 
--(instancetype)initWithHandle:(CSHandle *)parent length:(off_t)length
+-(instancetype)initWithHandle:(CSHandle *)handle length:(off_t)length
 numberOfChannels:(int)numberofchannels palette:(NSData *)palettedata;
 
 -(void)resetByteStream;

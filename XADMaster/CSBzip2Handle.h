@@ -6,15 +6,12 @@
 extern NSString *const CSBzip2Exception;
 
 @interface CSBzip2Handle:CSStreamHandle
-{
-	CSHandle *parent;
-}
 
 +(CSBzip2Handle *)bzip2HandleWithHandle:(CSHandle *)handle;
 +(CSBzip2Handle *)bzip2HandleWithHandle:(CSHandle *)handle length:(off_t)length;
 
 // Initializers.
--(instancetype)initWithHandle:(CSHandle *)handle length:(off_t)length name:(NSString *)descname;
+-(instancetype)initWithHandle:(CSHandle *)handle length:(off_t)length;
 
 // Implemented by this class.
 -(void)resetStream;

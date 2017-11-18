@@ -42,7 +42,6 @@ typedef struct {
 
 @interface XADNSISBzip2Handle:CSBlockStreamHandle
 {
-	CSHandle *parent;
 	off_t startoffs;
 	BOOL hasrand;
 

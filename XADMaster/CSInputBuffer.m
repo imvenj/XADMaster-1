@@ -184,6 +184,8 @@ void _CSInputFillBits(CSInputBuffer *self)
 //		shift-=8;
 //	}
 
+	if(startoffset+numbytes>_CSInputBytesLeftInBuffer(self)) _CSInputBufferRaiseEOF(self);
+
 	switch(numbytes)
 	{
 		case 4:

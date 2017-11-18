@@ -4,7 +4,6 @@
 
 @interface XADChecksumHandle:CSStreamHandle
 {
-	CSHandle *parent;
 	uint32_t correctchecksum,summask,checksum;
 }
 

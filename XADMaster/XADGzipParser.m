@@ -163,11 +163,9 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 
 -(id)initWithHandle:(CSHandle *)handle
 {
-    
-	if((self=[super initWithName:handle.name]))
+	if(self=[super initWithParentHandle:handle])
 	{
-		parent=[handle retain];
-		startoffs=parent.offsetInFile;
+		startoffs=[parent offsetInFile];
 		currhandle=nil;
 	}
 	return self;
@@ -175,7 +173,6 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props
 
 -(void)dealloc
 {
-	[parent release];
 	[currhandle release];
 	[super dealloc];
 }

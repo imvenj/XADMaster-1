@@ -7,7 +7,7 @@ NSString *const LZWInvalidCodeException=@"LZWInvalidCodeException";
 
 -(id)initWithHandle:(CSHandle *)handle earlyChange:(BOOL)earlychange
 {
-	if(self=[super initWithHandle:handle])
+	if(self=[super initWithInputBufferForHandle:handle])
 	{
 		early=earlychange;
 		lzw=AllocLZW(4096+1,2);

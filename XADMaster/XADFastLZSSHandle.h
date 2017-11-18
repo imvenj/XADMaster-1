@@ -12,10 +12,10 @@
 	uint8_t *bufferpointer;
 }
 
--(instancetype)initWithName:(NSString *)descname windowSize:(int)windowsize;
--(instancetype)initWithName:(NSString *)descname length:(off_t)length windowSize:(int)windowsize;
--(instancetype)initWithHandle:(CSHandle *)handle windowSize:(int)windowsize;
--(instancetype)initWithHandle:(CSHandle *)handle length:(off_t)length windowSize:(int)windowsize;
+-(instancetype)initWithParentHandle:(CSHandle *)handle windowSize:(int)windowsize;
+-(instancetype)initWithParentHandle:(CSHandle *)handle length:(off_t)length windowSize:(int)windowsize;
+-(instancetype)initWithInputBufferForHandle:(CSHandle *)handle windowSize:(int)windowsize;
+-(instancetype)initWithInputBufferForHandle:(CSHandle *)handle length:(off_t)length windowSize:(int)windowsize;
 
 -(void)resetStream;
 -(int)streamAtMost:(int)num toBuffer:(void *)buffer;

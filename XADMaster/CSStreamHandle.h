@@ -15,12 +15,14 @@
 }
 
 // Initializers
--(instancetype)initWithName:(NSString *)descname;
--(instancetype)initWithName:(NSString *)descname length:(off_t)length;
--(instancetype)initWithHandle:(CSHandle *)handle;
--(instancetype)initWithHandle:(CSHandle *)handle length:(off_t)length;
--(instancetype)initWithHandle:(CSHandle *)handle bufferSize:(int)buffersize;
--(instancetype)initWithHandle:(CSHandle *)handle length:(off_t)length bufferSize:(int)buffersize;
+//-(instancetype)initWithName:(NSString *)descname;
+//-(instancetype)initWithName:(NSString *)descname length:(off_t)length;
+-(instancetype)initWithParentHandle:(CSHandle *)handle;
+-(instancetype)initWithParentHandle:(CSHandle *)handle length:(off_t)length;
+-(instancetype)initWithInputBufferForHandle:(CSHandle *)handle;
+-(instancetype)initWithInputBufferForHandle:(CSHandle *)handle length:(off_t)length;
+-(instancetype)initWithInputBufferForHandle:(CSHandle *)handle bufferSize:(int)buffersize;
+-(instancetype)initWithInputBufferForHandle:(CSHandle *)handle length:(off_t)length bufferSize:(int)buffersize;
 -(instancetype)initAsCopyOf:(CSStreamHandle *)other;
 
 // Implemented by this class

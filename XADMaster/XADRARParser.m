@@ -10,7 +10,6 @@
 #import "XADCRCHandle.h"
 #import "CSFileHandle.h"
 #import "CSMemoryHandle.h"
-#import "CSMultiHandle.h"
 #import "XADException.h"
 #import "NSDateXAD.h"
 #import "Scanning.h"
@@ -172,7 +171,11 @@ static const uint8_t *FindSignature(const uint8_t *ptr,NSInteger length)
 
 -(void)parse
 {
-	CSHandle *handle=self.handle;
+	// Parsing the RAR format and keeping track of missing volumes here is quite a mess.
+	// The RAR5 parser is somewhat cleaner, and this code should probably be rewritten
+	// to match its structure.
+
+	CSHandle *handle=[self handle];
 
 	uint8_t buf[7];
 	[handle readBytes:7 toBuffer:buf];
@@ -728,7 +731,7 @@ isCorrupted:(BOOL)iscorrupted
 -(CSHandle *)inputHandleWithParts:(NSArray *)parts encrypted:(BOOL)encrypted
 cryptoVersion:(int)version salt:(NSData *)salt
 {
-	CSHandle *handle=[[[XADRARInputHandle alloc] initWithRARParser:self parts:parts] autorelease];
+	CSHandle *handle=[[[XADRARInputHandle alloc] initWithHandle:[self handle] parts:parts] autorelease];
 
 	if(encrypted)
 	{
@@ -743,8 +746,7 @@ cryptoVersion:(int)version salt:(NSData *)salt
 			case 20: return [[[XADRAR20CryptHandle alloc] initWithHandle:handle
 			length:handle.fileSize password:self.encodedPassword] autorelease];
 
-			default:
-			return [[[XADRARAESHandle alloc] initWithHandle:handle
+			default: return [[[XADRARAESHandle alloc] initWithHandle:handle
 			length:handle.fileSize key:[self keyForSalt:salt]] autorelease];
 		}
 	}

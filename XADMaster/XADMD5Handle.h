@@ -18,7 +18,6 @@ typedef MD5_CTX XADMD5;
 
 @interface XADMD5Handle:CSStreamHandle
 {
-	CSHandle *parent;
 	NSData *digest;
 
 	XADMD5 context;

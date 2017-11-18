@@ -1,5 +1,7 @@
 #import <Foundation/Foundation.h>
 
+#import "ClangAnalyser.h"
+
 typedef NS_ENUM(int, XADError) {
 	XADErrorNone =			0x0000, /*!< no error */
 	XADErrorUnknown =		0x0001, /*!< unknown error */
@@ -31,18 +33,6 @@ typedef NS_ENUM(int, XADError) {
 
 	XADErrorSubArchive = 0x10000
 };
-
-#ifndef CLANG_ANALYZER_NORETURN
-	#ifdef __clang__
-		#if __has_feature(attribute_analyzer_noreturn)
-			#define CLANG_ANALYZER_NORETURN __attribute__((analyzer_noreturn))
-		#else
-			#define CLANG_ANALYZER_NORETURN
-		#endif
-	#else
-		#define CLANG_ANALYZER_NORETURN
-	#endif
-#endif
 
 extern NSExceptionName __nonnull const XADExceptionName;
 extern NSErrorDomain __nonnull const XADErrorDomain;

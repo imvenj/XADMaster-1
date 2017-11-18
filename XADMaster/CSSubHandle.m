@@ -5,14 +5,12 @@
 #endif
 
 @implementation CSSubHandle
-@synthesize parentHandle = parent;
 @synthesize startOffsetInParent = start;
 
 -(id)initWithHandle:(CSHandle *)handle from:(off_t)from length:(off_t)length
 {
-	if((self=[super initWithName:[NSString stringWithFormat:@"%@ (Subrange from %qd, length %qd)",handle.name,from,length]]))
+	if((self=[super initWithParentHandle:handle]))
 	{
-		parent=handle;
 		start=from;
 		end=from+length;
 
@@ -25,9 +23,8 @@
 
 -(id)initAsCopyOf:(CSSubHandle *)other
 {
-	if((self=[super initAsCopyOf:other]))
+	if(self=[super initAsCopyOf:other])
 	{
-		parent=[other->parent copy];
 		start=other->start;
 		end=other->end;
 	}
@@ -79,6 +76,12 @@
 	if(curr+num>end) num=(int)(end-curr);
 	if(num<=0) return 0;
 	else return [parent readAtMost:num toBuffer:buffer];
+}
+
+-(NSString *)description
+{
+	return [NSString stringWithFormat:@"%@ @ %qu from %qu length %qu for %@",
+	[self class],[self offsetInFile],start,end-start,[parent description]];
 }
 
 @end

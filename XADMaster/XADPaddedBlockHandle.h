@@ -3,7 +3,6 @@
 
 @interface XADPaddedBlockHandle:CSHandle
 {
-	CSHandle *parent;
 	off_t startoffset;
 	int logicalsize,physicalsize;
 }

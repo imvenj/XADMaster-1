@@ -24,7 +24,7 @@
 	int lengthtable[1028];
 }
 
--(instancetype)initWithRARParser:(XADRARParser *)parent files:(NSArray *)filearray;
+-(id)initWithRARParser:(XADRARParser *)parentparser files:(NSArray *)filearray;
 
 -(void)resetLZSSHandle;
 -(void)startNextFile;

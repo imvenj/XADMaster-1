@@ -3,12 +3,9 @@
 
 #define CSZlibHandle XADZlibHandle
 
-extern NSString *const CSZlibException;
+extern NSExceptionName const CSZlibException;
 
 @interface CSZlibHandle:CSStreamHandle
-{
-	CSHandle *parent;
-}
 
 +(CSZlibHandle *)zlibHandleWithHandle:(CSHandle *)handle;
 +(CSZlibHandle *)zlibHandleWithHandle:(CSHandle *)handle length:(off_t)length;
@@ -16,7 +13,7 @@ extern NSString *const CSZlibException;
 +(CSZlibHandle *)deflateHandleWithHandle:(CSHandle *)handle length:(off_t)length;
 
 // Intializers
--(instancetype)initWithHandle:(CSHandle *)handle length:(off_t)length header:(BOOL)header name:(NSString *)descname;
+-(instancetype)initWithHandle:(CSHandle *)handle length:(off_t)length header:(BOOL)header ;
 -(instancetype)initAsCopyOf:(CSZlibHandle *)other;
 
 // Public methods

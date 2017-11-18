@@ -27,7 +27,7 @@
 
 @interface CSChecksumWrapperHandle:CSHandle
 {
-	CSHandle *parent,*checksum;
+	CSHandle *checksum;
 }
 
 -(instancetype)initWithHandle:(CSHandle *)handle checksumHandle:(CSHandle *)checksumhandle;

@@ -2,18 +2,7 @@
 
 #import "PDFStream.h"
 #import "PDFEncryptionHandler.h"
-
-#ifndef CLANG_ANALYZER_NORETURN
-#ifdef __clang__
-#if __has_feature(attribute_analyzer_noreturn)
-#define CLANG_ANALYZER_NORETURN __attribute__((analyzer_noreturn))
-#else
-#define CLANG_ANALYZER_NORETURN
-#endif
-#else
-#define CLANG_ANALYZER_NORETURN
-#endif
-#endif
+#import "../ClangAnalyser.h"
 
 extern NSExceptionName const PDFWrongMagicException;
 extern NSExceptionName const PDFInvalidFormatException;
