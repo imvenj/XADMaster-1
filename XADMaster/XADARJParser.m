@@ -148,7 +148,7 @@ static NSData *ReadNullTerminatedString(CSHandle *fh);
 			@(compsize),XADDataLengthKey,
 			@(compsize),XADCompressedSizeKey,
 			@(size),XADFileSizeKey,
-			[NSDate XADDateWithMSDOSDateTime:modification],XADLastModificationDateKey,
+			modificationdate,XADLastModificationDateKey,
 			@(accessmode),XADDOSFileAttributesKey,
 			@(version),@"ARJVersion",
 			@(minversion),@"ARJMinimumVersion",
