@@ -43,9 +43,10 @@ preservePermissions:(BOOL)preservepermissions NS_REFINED_FOR_SWIFT;
 +(nullable CSHandle *)handleForReadingResourceForkAtFileURL:(NSURL *)path;
 
 // Time functions.
-+(double)currentTimeInSeconds;
 #if __has_feature(objc_class_property)
 @property (class, readonly) double currentTimeInSeconds;
+#else
++(double)currentTimeInSeconds;
 #endif
 
 @end

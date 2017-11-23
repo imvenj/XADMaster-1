@@ -281,6 +281,11 @@ _SWFParseRect
 _SWFNoMoreTagsException
 _SWFWrongMagicException
 
+_XADUnixPathSeparator
+_XADWindowsPathSeparator
+_XADEitherPathSeparator
+_XADNoPathSeparator
+
 # iVars needed by Xee
 _OBJC_IVAR_$_XADByteStreamHandle.eofenv
 _OBJC_IVAR_$_XADFileHandle.fh

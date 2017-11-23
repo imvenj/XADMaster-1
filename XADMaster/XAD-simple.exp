@@ -233,3 +233,8 @@ _CSInputFileOffset
 _CSInputBufferBitOffset
 
 __CSInputFillBuffer
+
+_XADUnixPathSeparator
+_XADWindowsPathSeparator
+_XADEitherPathSeparator
+_XADNoPathSeparator

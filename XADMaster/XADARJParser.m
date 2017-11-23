@@ -132,7 +132,7 @@ static NSData *ReadNullTerminatedString(CSHandle *fh);
 		int extlen=[fh readUInt16LE];
 		if(extlen) [fh skipBytes:extlen+4];
 
-		const char *separator;
+		XADPathSeparator separator;
 		if(flags&0x10) separator=XADUnixPathSeparator;
 		else separator=XADWindowsPathSeparator;
 

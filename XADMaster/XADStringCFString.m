@@ -21,7 +21,7 @@
 	if([encoding isKindOfClass:[NSNumber class]])
 	{
 		// If the encodingname is actually an NSNumber, just unpack it and convert.
-		return ((NSNumber *)encoding).longValue;
+		return ((NSNumber *)encoding).unsignedIntegerValue;
 	}
 	else
 	{
