@@ -113,7 +113,7 @@ immediateExtractionTo:(NSString *)destination nserror:(NSError *_Nullable __auto
 -(nullable instancetype)initWithArchive:(nullable XADArchive *)otherarchive entry:(NSInteger)n
 immediateExtractionTo:(NSString *)destination subArchives:(BOOL)sub nserror:(NSError *_Nullable __autoreleasing *_Nullable)error;
 
--(instancetype)initWithFileURL:(NSURL *)file delegate:(nullable id<XADArchiveDelegate>)del error:(NSError *_Nullable __autoreleasing *_Nullable)error;
+-(nullable instancetype)initWithFileURL:(NSURL *)file delegate:(nullable id<XADArchiveDelegate>)del error:(NSError *_Nullable __autoreleasing *_Nullable)error;
 
 
 -(BOOL)_parseWithErrorPointer:(nullable XADError *)error;
