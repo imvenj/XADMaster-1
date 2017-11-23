@@ -101,7 +101,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 		
 		parser=[XADArchiveParser archiveParserForFileURL:file error:error];
 		if (parser) {
-			XADError tmpErr;
+			XADError tmpErr=XADErrorNone;
 			if ([self _parseWithErrorPointer:&tmpErr]) {
 				return self;
 			} else if (error) {

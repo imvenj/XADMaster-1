@@ -79,7 +79,7 @@
 
 	crc=0xffffffff;
 	NSNumber *crcnum=[dict objectForKey:@"CRC32"];
-	if(crcnum) correctcrc=[crcnum unsignedIntValue];
+	if(crcnum!=nil) correctcrc=[crcnum unsignedIntValue];
 	else correctcrc=0xffffffff;
 }
 

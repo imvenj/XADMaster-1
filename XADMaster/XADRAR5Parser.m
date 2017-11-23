@@ -265,7 +265,7 @@ inputParts:(NSArray *)parts isCorrupted:(BOOL)iscorrupted
 	// Set up solid stream paramters for the current file.
 	[dict setObject:[NSNumber numberWithInteger:[solidstreams count]-1] forKey:XADSolidObjectKey];
 	[dict setObject:[NSNumber numberWithLongLong:totalsolidsize] forKey:XADSolidOffsetKey];
-	if(length) [dict setObject:length forKey:XADSolidLengthKey];
+	if(length!=nil) [dict setObject:length forKey:XADSolidLengthKey];
 
 	// Calculate and set the total compressed size.
 	off_t compsize=0;
@@ -668,7 +668,7 @@ inputParts:(NSArray *)parts isCorrupted:(BOOL)iscorrupted
 	if(checksum)
 	{
 		NSNumber *crc=[dict objectForKey:@"RAR5CRC32"];
-		if(crc)
+		if(crc!=nil)
 		{
 			XADCRCHandle *crchandle=[XADCRCHandle IEEECRC32HandleWithHandle:handle length:[handle fileSize]
 			correctCRC:[crc unsignedIntValue] conditioned:YES];
