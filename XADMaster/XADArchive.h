@@ -91,10 +91,10 @@ extern NSString *const XADFinderFlags;
 -(nullable instancetype)initWithFile:(NSString *)file NS_SWIFT_UNAVAILABLE("Call throws on failure");
 -(nullable instancetype)initWithFile:(NSString *)file error:(nullable XADError *)error;
 -(nullable instancetype)initWithFile:(NSString *)file delegate:(nullable id<XADArchiveDelegate>)del error:(nullable XADError *)error;
--(instancetype)initWithData:(NSData *)data NS_SWIFT_UNAVAILABLE("Call throws on failure");
+-(nullable instancetype)initWithData:(NSData *)data NS_SWIFT_UNAVAILABLE("Call throws on failure");
 -(nullable instancetype)initWithData:(NSData *)data error:(nullable XADError *)error;
 -(nullable instancetype)initWithData:(NSData *)data delegate:(nullable id<XADArchiveDelegate>)del error:(nullable XADError *)error;
--(instancetype)initWithArchive:(XADArchive *)archive entry:(NSInteger)n NS_SWIFT_UNAVAILABLE("Call throws on failure");
+-(nullable instancetype)initWithArchive:(XADArchive *)archive entry:(NSInteger)n NS_SWIFT_UNAVAILABLE("Call throws on failure");
 -(nullable instancetype)initWithArchive:(XADArchive *)archive entry:(NSInteger)n error:(nullable XADError *)error;
 -(nullable instancetype)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n delegate:(nullable id<XADArchiveDelegate>)del error:(nullable XADError *)error;
 -(nullable instancetype)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n
