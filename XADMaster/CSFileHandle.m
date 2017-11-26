@@ -37,7 +37,9 @@ NSString *const CSFileErrorException=@"CSFileErrorException";
 	
 	if(!fileh) [[NSException exceptionWithName:CSCannotOpenFileException
 										reason: [NSString stringWithFormat:@"Error attempting to open file \"%@\" in mode \"%@\" (%d).",path,modes, (int)errno]
-									  userInfo:@{NSUnderlyingErrorKey: [NSError errorWithDomain:NSPOSIXErrorDomain code:errno userInfo:nil]}] raise];
+									  userInfo:@{NSUnderlyingErrorKey: [NSError errorWithDomain:NSPOSIXErrorDomain code:errno userInfo:nil],
+												 NSURLErrorKey: path
+												 }] raise];
 	
 	CSFileHandle *handle=[[CSFileHandle alloc] initWithFilePointer:fileh closeOnDealloc:YES path:path.path];
 	if(handle) return handle;
@@ -68,7 +70,9 @@ NSString *const CSFileErrorException=@"CSFileErrorException";
 
 	if(!fileh) [[NSException exceptionWithName:CSCannotOpenFileException
 										reason: [NSString stringWithFormat:@"Error attempting to open file \"%@\" in mode \"%@\" (%d).",path,modes, (int)errno]
-									  userInfo:@{NSUnderlyingErrorKey: [NSError errorWithDomain:NSPOSIXErrorDomain code:errno userInfo:nil]}] raise];
+									  userInfo:@{NSUnderlyingErrorKey: [NSError errorWithDomain:NSPOSIXErrorDomain code:errno userInfo:nil],
+												 NSFilePathErrorKey: path
+												 }] raise];
 
 	CSFileHandle *handle=[[CSFileHandle alloc] initWithFilePointer:fileh closeOnDealloc:YES path:path];
 	if(handle) return handle;

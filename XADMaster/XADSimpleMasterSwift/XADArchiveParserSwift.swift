@@ -55,22 +55,11 @@ extension XADArchiveParser {
 		}
 	}
 	
-	/// Exception-free wrapper for subclass method
-	/// Will throw `XADErrorBreak` if the delegate
-	/// requested parsing to stop.
-	@nonobjc open func parse() throws {
-		let err = __parseWithoutExceptions()
-		if err != .none {
-			throw err
-		}
-	}
-	
 	open func reportInterestingFile(withReason reason: String, _ args: [CVarArg]) {
 		withVaList(args) { (valist) -> Void in
 			reportInterestingFile(withReason: reason, format: valist)
 		}
 	}
-
 	
 	@available(*, deprecated, renamed: "testChecksum()")
 	@nonobjc open func testChecksumWithoutExceptions() throws {

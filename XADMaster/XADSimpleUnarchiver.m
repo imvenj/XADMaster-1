@@ -109,10 +109,10 @@
 	else return parser;
 }
 
--(XADArchiveParser *)outerArchiveParser { return parser; }
+@synthesize outerArchiveParser=parser;
 -(XADArchiveParser *)innerArchiveParser { return subunarchiver.archiveParser; }
 
--(NSArray *)reasonsForInterest { return reasonsforinterest; }
+@synthesize reasonsForInterest=reasonsforinterest;
 
 
 -(NSString *)password { return parser.password; }
@@ -122,23 +122,8 @@
 	subunarchiver.archiveParser.password = password;
 }
 
--(NSString *)destination { return destination; }
--(void)setDestination:(NSString *)destpath
-{
-	if(destpath!=destination)
-	{
-		destination=[destpath copy];
-	}
-}
-
--(NSString *)enclosingDirectoryName { return enclosingdir; }
--(void)setEnclosingDirectoryName:(NSString *)dirname
-{
-	if(dirname!=enclosingdir)
-	{
-		enclosingdir=[dirname copy];
-	}
-}
+@synthesize destination;
+@synthesize enclosingDirectoryName=enclosingdir;
 
 @synthesize removesEnclosingDirectoryForSoloItems = removesolo;
 @synthesize alwaysOverwritesFiles = overwrite;
@@ -151,8 +136,8 @@
 @synthesize propagatesRelevantMetadata=propagatemetadata;
 
 
--(int)macResourceForkStyle { return unarchiver.macResourceForkStyle; }
--(void)setMacResourceForkStyle:(int)style
+-(XADForkStyle)macResourceForkStyle { return unarchiver.macResourceForkStyle; }
+-(void)setMacResourceForkStyle:(XADForkStyle)style
 {
 	unarchiver.macResourceForkStyle = style;
 	subunarchiver.macResourceForkStyle = style;

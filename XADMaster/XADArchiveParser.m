@@ -1256,6 +1256,25 @@ name:(NSString *)name { return nil; }
 	return XADErrorNone;
 }
 
+-(BOOL)parseWithError:(NSError**)error
+{
+	@try {
+		[self parse];
+	} @catch(id exception) {
+		if (error) {
+			*error = [XADException parseExceptionReturningNSError:exception];
+		}
+		return NO;
+	}
+	if(shouldstop) {
+		if (error) {
+			*error = [NSError errorWithDomain:XADErrorDomain code:XADErrorBreak userInfo:nil];
+		}
+		return NO;
+	}
+	return YES;
+}
+
 -(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum error:(XADError *)errorptr
 {
 	if(errorptr) *errorptr=XADErrorNone;

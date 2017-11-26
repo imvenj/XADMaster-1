@@ -247,6 +247,11 @@ name:(NSString *)name;
 //! requested parsing to stop.
 -(XADError)parseWithoutExceptions NS_REFINED_FOR_SWIFT;
 
+//! Exception-free wrapper for subclass method.<br>
+//! Will, in addition, pass \c XADBreakError on return if the delegate
+//! requested parsing to stop.
+-(BOOL)parseWithError:(NSError *__autoreleasing __nullable*__nullable)error;
+
 //! Exception-free wrapper for subclass method.
 -(nullable CSHandle *)handleForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict wantChecksum:(BOOL)checksum error:(nullable XADError *)errorptr NS_REFINED_FOR_SWIFT;
 //! Exception-free wrapper for subclass method.

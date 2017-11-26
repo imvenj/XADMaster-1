@@ -83,7 +83,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (NS_NONATOMIC_IOSONLY) BOOL propagatesRelevantMetadata;
 
-@property (NS_NONATOMIC_IOSONLY) int macResourceForkStyle;
+@property (NS_NONATOMIC_IOSONLY) XADForkStyle macResourceForkStyle;
 
 @property (NS_NONATOMIC_IOSONLY, setter=setPreserevesPermissions:) BOOL preservesPermissions;
 
