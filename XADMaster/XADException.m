@@ -6,6 +6,7 @@
 
 NSString *const XADExceptionName=@"XADException";
 NSString *const XADErrorDomain=@"de.dstoecker.xadmaster.error";
+NSString *const XADExceptionReasonKey=@"XADExceptionReason";
 
 @implementation XADException
 
@@ -59,7 +60,7 @@ NSString *const XADErrorDomain=@"de.dstoecker.xadmaster.error";
         NSException *e=exception;
         NSString *name=[e name];
 		NSMutableDictionary *usrInfo = [NSMutableDictionary dictionaryWithDictionary:e.userInfo ?: @{}];
-		usrInfo[NSLocalizedFailureReasonErrorKey] = e.reason;
+		usrInfo[XADExceptionReasonKey] = e.reason;
         if([name isEqual:XADExceptionName]) {
             XADError errVal = [[e userInfo][@"XADError"] intValue];
             return [NSError errorWithDomain:XADErrorDomain code:errVal userInfo:usrInfo];

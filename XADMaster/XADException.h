@@ -36,6 +36,7 @@ typedef NS_ENUM(int, XADError) {
 
 extern NSExceptionName __nonnull const XADExceptionName;
 extern NSErrorDomain __nonnull const XADErrorDomain;
+extern NSErrorUserInfoKey __nonnull const XADExceptionReasonKey;
 
 NS_SWIFT_UNAVAILABLE("Exceptions aren't supported by Swift")
 @interface XADException:NSObject
