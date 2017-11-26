@@ -162,7 +162,7 @@
 					@YES,XADIsResourceForkKey,
 					@(resourcecomplen),XADDataLengthKey,
 					@(fileoffs),XADDataOffsetKey,
-					[NSNumber numberWithBool:(flags&2)?YES:NO],@"CompactProLZH",
+					@((flags&2) != 0),@"CompactProLZH",
 					@(flags),@"CompactProFlags",
 					@(crc),crckey,
 					@(volume),@"CompactProVolume",

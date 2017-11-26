@@ -76,7 +76,7 @@ static inline void CSInputSkipBytes(CSInputBuffer *self,int num)
 	self->currbyte+=num;
 }
 
-static inline int _CSInputPeekByteWithoutEOF(CSInputBuffer *self,int offs)
+static inline uint32_t _CSInputPeekByteWithoutEOF(CSInputBuffer *self,int offs)
 {
 	return self->buffer[self->currbyte+offs];
 }
