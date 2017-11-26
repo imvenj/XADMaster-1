@@ -39,8 +39,6 @@ extern NSErrorDomain __nonnull const XADErrorDomain;
 
 NS_SWIFT_UNAVAILABLE("Exceptions aren't supported by Swift")
 @interface XADException:NSObject
-{
-}
 
 +(void)raiseUnknownException CLANG_ANALYZER_NORETURN;
 +(void)raiseInputException CLANG_ANALYZER_NORETURN;

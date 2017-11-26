@@ -2130,6 +2130,9 @@
 		55541F771EA91BE1001A6927 /* XADSimpleUnarchiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55541F761EA91BE0001A6927 /* XADSimpleUnarchiver.swift */; };
 		555EF0741EA7DB1F000CAE58 /* XADMasterSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = 555EF0721EA7DB1F000CAE58 /* XADMasterSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		555EF07C1EA7DB57000CAE58 /* XADArchiveParserSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555EF07B1EA7DB57000CAE58 /* XADArchiveParserSwift.swift */; };
+		557C6A921FCB597700936524 /* XADErrors.strings in Resources */ = {isa = PBXBuildFile; fileRef = 557C6A961FCB597700936524 /* XADErrors.strings */; };
+		557C6A931FCB597700936524 /* XADErrors.strings in Resources */ = {isa = PBXBuildFile; fileRef = 557C6A961FCB597700936524 /* XADErrors.strings */; };
+		557C6A941FCB597700936524 /* XADErrors.strings in Resources */ = {isa = PBXBuildFile; fileRef = 557C6A961FCB597700936524 /* XADErrors.strings */; };
 		5591220C1EB3D07D007CF99D /* XADMasterSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = 555EF0721EA7DB1F000CAE58 /* XADMasterSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5591220E1EB3D07D007CF99D /* XADPlatformSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55541F6D1EA7EF90001A6927 /* XADPlatformSwift.swift */; };
 		5591220F1EB3D07D007CF99D /* XADArchiveParserSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555EF07B1EA7DB57000CAE58 /* XADArchiveParserSwift.swift */; };
@@ -2590,7 +2593,7 @@
 		1B4E973F1426147D00640F59 /* XADRARInputHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XADRARInputHandle.m; sourceTree = "<group>"; };
 		1B4E97441426149800640F59 /* XADRARInputHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADRARInputHandle.h; sourceTree = "<group>"; };
 		1B578C320DDBC8BF005B0F68 /* XADException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADException.h; sourceTree = "<group>"; };
-		1B578C330DDBC8BF005B0F68 /* XADException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XADException.m; sourceTree = "<group>"; };
+		1B578C330DDBC8BF005B0F68 /* XADException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XADException.m; sourceTree = "<group>"; usesTabs = 0; };
 		1B578C560DDCFFD0005B0F68 /* XADGzipParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADGzipParser.h; sourceTree = "<group>"; };
 		1B578C570DDCFFD0005B0F68 /* XADGzipParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XADGzipParser.m; sourceTree = "<group>"; };
 		1B578C5A0DDCFFE0005B0F68 /* XADBzip2Parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADBzip2Parser.h; sourceTree = "<group>"; };
@@ -2885,6 +2888,26 @@
 		555EF0721EA7DB1F000CAE58 /* XADMasterSwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XADMasterSwift.h; sourceTree = "<group>"; };
 		555EF0731EA7DB1F000CAE58 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		555EF07B1EA7DB57000CAE58 /* XADArchiveParserSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XADArchiveParserSwift.swift; sourceTree = "<group>"; };
+		557C6A951FCB597700936524 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/XADErrors.strings; sourceTree = "<group>"; };
+		557C6A971FCB59C500936524 /* de */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/XADErrors.strings; sourceTree = "<group>"; };
+		557C6A981FCB59C800936524 /* fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/XADErrors.strings; sourceTree = "<group>"; };
+		557C6A991FCB5A2400936524 /* it */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/XADErrors.strings; sourceTree = "<group>"; };
+		557C6A9A1FCB5A2900936524 /* ru */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/XADErrors.strings; sourceTree = "<group>"; };
+		557C6A9B1FCB5A3800936524 /* pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/XADErrors.strings; sourceTree = "<group>"; };
+		557C6A9C1FCB5A4000936524 /* es */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/XADErrors.strings; sourceTree = "<group>"; };
+		557C6A9D1FCB5A4A00936524 /* tr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/XADErrors.strings; sourceTree = "<group>"; };
+		557C6A9E1FCB5A5B00936524 /* lv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = lv; path = lv.lproj/XADErrors.strings; sourceTree = "<group>"; };
+		557C6A9F1FCB5A6E00936524 /* pt-PT */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = "pt-PT"; path = "pt-PT.lproj/XADErrors.strings"; sourceTree = "<group>"; };
+		557C6AA01FCB5A7300936524 /* nb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/XADErrors.strings; sourceTree = "<group>"; };
+		557C6AA11FCB5A7A00936524 /* ar */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/XADErrors.strings; sourceTree = "<group>"; };
+		557C6AA21FCB5A8300936524 /* cs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/XADErrors.strings; sourceTree = "<group>"; };
+		557C6AA31FCB5A8F00936524 /* zh-Hans */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/XADErrors.strings"; sourceTree = "<group>"; };
+		557C6AA41FCB5A9B00936524 /* bg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = bg; path = bg.lproj/XADErrors.strings; sourceTree = "<group>"; };
+		557C6AA51FCB5AA300936524 /* pt-BR */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/XADErrors.strings"; sourceTree = "<group>"; };
+		557C6AA61FCB5AA900936524 /* nl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/XADErrors.strings; sourceTree = "<group>"; };
+		557C6AA71FCB5AAF00936524 /* hu */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = hu; path = hu.lproj/XADErrors.strings; sourceTree = "<group>"; };
+		557C6AA81FCB5ABB00936524 /* sv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/XADErrors.strings; sourceTree = "<group>"; };
+		557C6AA91FCB5AC200936524 /* ja */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/XADErrors.strings; sourceTree = "<group>"; };
 		557EA8751DB1C37C00A5AE04 /* XAD-simple.exp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.exports; path = "XAD-simple.exp"; sourceTree = "<group>"; };
 		558A1EDB1E70E00C00C41ADA /* XAD.exp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.exports; path = XAD.exp; sourceTree = "<group>"; };
 		5591221B1EB3D07D007CF99D /* XADMasterSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = XADMasterSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3161,6 +3184,7 @@
 				56FBC92B0A57541300BE98CF /* Info.plist */,
 				557EA8751DB1C37C00A5AE04 /* XAD-simple.exp */,
 				558A1EDB1E70E00C00C41ADA /* XAD.exp */,
+				557C6A961FCB597700936524 /* XADErrors.strings */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -5272,10 +5296,26 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
-				English,
-				Japanese,
-				French,
-				German,
+				en,
+				de,
+				fr,
+				it,
+				ru,
+				ja,
+				pl,
+				es,
+				tr,
+				lv,
+				"pt-PT",
+				nb,
+				ar,
+				cs,
+				"zh-Hans",
+				bg,
+				"pt-BR",
+				nl,
+				hu,
+				sv,
 			);
 			mainGroup = 0867D691FE84028FC02AAC07 /* XADMaster */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
@@ -5310,6 +5350,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				557C6A941FCB597700936524 /* XADErrors.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5317,6 +5358,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				557C6A931FCB597700936524 /* XADErrors.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5338,6 +5380,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				557C6A921FCB597700936524 /* XADErrors.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6854,6 +6897,36 @@
 			targetProxy = 5591220A1EB3D07D007CF99D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		557C6A961FCB597700936524 /* XADErrors.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				557C6A951FCB597700936524 /* en */,
+				557C6A971FCB59C500936524 /* de */,
+				557C6A981FCB59C800936524 /* fr */,
+				557C6A991FCB5A2400936524 /* it */,
+				557C6A9A1FCB5A2900936524 /* ru */,
+				557C6AA91FCB5AC200936524 /* ja */,
+				557C6A9B1FCB5A3800936524 /* pl */,
+				557C6A9C1FCB5A4000936524 /* es */,
+				557C6A9D1FCB5A4A00936524 /* tr */,
+				557C6A9E1FCB5A5B00936524 /* lv */,
+				557C6A9F1FCB5A6E00936524 /* pt-PT */,
+				557C6AA01FCB5A7300936524 /* nb */,
+				557C6AA11FCB5A7A00936524 /* ar */,
+				557C6AA21FCB5A8300936524 /* cs */,
+				557C6AA31FCB5A8F00936524 /* zh-Hans */,
+				557C6AA41FCB5A9B00936524 /* bg */,
+				557C6AA51FCB5AA300936524 /* pt-BR */,
+				557C6AA61FCB5AA900936524 /* nl */,
+				557C6AA71FCB5AAF00936524 /* hu */,
+				557C6AA81FCB5ABB00936524 /* sv */,
+			);
+			name = XADErrors.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		1B23DDC21185EBA500620319 /* Debug */ = {
