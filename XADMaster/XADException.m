@@ -126,6 +126,17 @@ NSString *const XADErrorDomain=@"de.dstoecker.xadmaster.error";
 	}
 }
 
++(NSString *)localizedDescribeXADError:(XADError)errnum
+{
+    NSString *nonLocDes = [self describeXADError:errnum];
+    if (!nonLocDes) {
+        return nil;
+    }
+    NSString *locDes = [[NSBundle bundleForClass:[XADException class]] localizedStringForKey:nonLocDes value:nonLocDes table:@"XADErrors"];
+
+    return locDes;
+}
+
 @end
 
 extern NSString *XADDescribeError(XADError errnum)
