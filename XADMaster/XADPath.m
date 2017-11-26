@@ -495,7 +495,7 @@ separators:(const char *)pathseparators
 		}
 	}
 
-	return string;
+	return [NSString stringWithString:string];
 }
 
 -(NSData *)data
