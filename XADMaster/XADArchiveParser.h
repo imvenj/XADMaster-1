@@ -121,13 +121,13 @@ resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name propertiesTo
 
 #pragma mark NSError functions
 +(nullable __kindof XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle name:(NSString *)name nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr NS_SWIFT_NAME(archiveParser(for:name:));
-+(nullable XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)entry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr NS_SWIFT_NAME(archiveParser(with:archiveParser:wantChecksum:));
-+(nullable XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)entry resourceForkDictionary:(nullable NSDictionary<XADArchiveKeys,id> *)forkentry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr NS_SWIFT_NAME(archiveParser(with:resourceForkDictionary:archiveParser:wantChecksum:));
-+(nullable XADArchiveParser *)archiveParserForPath:(NSString *)filename nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr NS_SWIFT_NAME(archiveParser(forPath:));
-+(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr NS_SWIFT_NAME(archiveParser(for:firstBytes:resourceFork:name:));
-+(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr NS_SWIFT_NAME(archiveParser(for:resourceFork:name:));
-+(nullable XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header name:(NSString *)name nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr NS_SWIFT_NAME(archiveParser(for:firstBytes:name:));
-+(nullable XADArchiveParser *)archiveParserForFileURL:(NSURL *)filename error:(NSError *_Nullable __autoreleasing *_Nullable)errorptr NS_SWIFT_NAME(archiveParser(for:));
++(nullable __kindof XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)entry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr NS_SWIFT_NAME(archiveParser(with:archiveParser:wantChecksum:));
++(nullable __kindof XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)entry resourceForkDictionary:(nullable NSDictionary<XADArchiveKeys,id> *)forkentry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr NS_SWIFT_NAME(archiveParser(with:resourceForkDictionary:archiveParser:wantChecksum:));
++(nullable __kindof XADArchiveParser *)archiveParserForPath:(NSString *)filename nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr NS_SWIFT_NAME(archiveParser(forPath:));
++(nullable __kindof XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr NS_SWIFT_NAME(archiveParser(for:firstBytes:resourceFork:name:));
++(nullable __kindof XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle resourceFork:(nullable XADResourceFork *)fork name:(NSString *)name nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr NS_SWIFT_NAME(archiveParser(for:resourceFork:name:));
++(nullable __kindof XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header name:(NSString *)name nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr NS_SWIFT_NAME(archiveParser(for:firstBytes:name:));
++(nullable __kindof XADArchiveParser *)archiveParserForFileURL:(NSURL *)filename error:(NSError *_Nullable __autoreleasing *_Nullable)errorptr NS_SWIFT_NAME(archiveParser(for:));
 
 
 -(instancetype)init NS_DESIGNATED_INITIALIZER;
