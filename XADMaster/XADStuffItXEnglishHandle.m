@@ -8,7 +8,7 @@
 #define UncompressedSize 881863
 #define CompressedSize 325602
 
-extern uint8_t StuffItXEnglishDictionary[];
+extern const uint8_t StuffItXEnglishDictionary[];
 
 @implementation XADStuffItXEnglishHandle
 

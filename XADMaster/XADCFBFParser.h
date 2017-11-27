@@ -20,7 +20,7 @@
 -(void)seekToSector:(uint32_t)sector;
 -(uint32_t)nextSectorAfter:(uint32_t)sector;
 
--(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum;
+-(CSHandle *)handleForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict wantChecksum:(BOOL)checksum;
 -(NSString *)formatName;
 
 @end

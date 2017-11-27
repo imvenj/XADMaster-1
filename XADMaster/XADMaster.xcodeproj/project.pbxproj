@@ -1208,7 +1208,7 @@
 		1BC88FF20ED39F39006B47FE /* XADStuffItHuffmanHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC88FF00ED39F39006B47FE /* XADStuffItHuffmanHandle.m */; };
 		1BC890430ED47D76006B47FE /* CSInputBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BC8903D0ED47D76006B47FE /* CSInputBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1BC890440ED47D76006B47FE /* XADLibXADIOHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC8903E0ED47D76006B47FE /* XADLibXADIOHandle.m */; };
-		1BC890450ED47D76006B47FE /* CSInputBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC8903F0ED47D76006B47FE /* CSInputBuffer.m */; };
+		1BC890450ED47D76006B47FE /* CSInputBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC8903F0ED47D76006B47FE /* CSInputBuffer.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		1BC890460ED47D76006B47FE /* XADStuffItOldHandles.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC890400ED47D76006B47FE /* XADStuffItOldHandles.m */; };
 		1BC893890ED6F51D006B47FE /* XADTest2.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBAB67A0EC2749B007FE6A2 /* XADTest2.m */; };
 		1BC8938A0ED6F539006B47FE /* XADMaster.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* XADMaster.framework */; };
@@ -1566,7 +1566,7 @@
 		5500A5471D776ADB00321300 /* XADPrefixCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC88A260ED06D76006B47FE /* XADPrefixCode.m */; };
 		5500A54B1D776ADB00321300 /* LZW.c in Sources */ = {isa = PBXBuildFile; fileRef = 1BC88D440ED31A31006B47FE /* LZW.c */; };
 		5500A5521D776ADB00321300 /* XADLibXADIOHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC8903E0ED47D76006B47FE /* XADLibXADIOHandle.m */; };
-		5500A5531D776ADB00321300 /* CSInputBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC8903F0ED47D76006B47FE /* CSInputBuffer.m */; };
+		5500A5531D776ADB00321300 /* CSInputBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC8903F0ED47D76006B47FE /* CSInputBuffer.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5500A5561D776ADB00321300 /* CSBlockStreamHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAFB0EC3859F006D2F06 /* CSBlockStreamHandle.m */; };
 		5500A5591D776ADB00321300 /* XADLZSSHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC89A740EDB12F8006B47FE /* XADLZSSHandle.m */; };
 		5500A55B1D776ADB00321300 /* XADRARParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B06D5A70DDA667A00D9C000 /* XADRARParser.m */; };
@@ -1938,7 +1938,7 @@
 		551BAD131EB032B500EAF64E /* XADDiskDoublerParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC88D7C0ED31ED9006B47FE /* XADDiskDoublerParser.m */; };
 		551BAD141EB032B500EAF64E /* XADStuffItHuffmanHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC88FF00ED39F39006B47FE /* XADStuffItHuffmanHandle.m */; };
 		551BAD151EB032B500EAF64E /* XADLibXADIOHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC8903E0ED47D76006B47FE /* XADLibXADIOHandle.m */; };
-		551BAD161EB032B500EAF64E /* CSInputBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC8903F0ED47D76006B47FE /* CSInputBuffer.m */; };
+		551BAD161EB032B500EAF64E /* CSInputBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC8903F0ED47D76006B47FE /* CSInputBuffer.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		551BAD171EB032B500EAF64E /* XADStuffItOldHandles.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC890400ED47D76006B47FE /* XADStuffItOldHandles.m */; };
 		551BAD181EB032B500EAF64E /* XADStuffItArsenicHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC894F50ED7ABBE006B47FE /* XADStuffItArsenicHandle.m */; };
 		551BAD191EB032B500EAF64E /* CSBlockStreamHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FAAFB0EC3859F006D2F06 /* CSBlockStreamHandle.m */; };
@@ -2136,7 +2136,6 @@
 		5591220C1EB3D07D007CF99D /* XADMasterSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = 555EF0721EA7DB1F000CAE58 /* XADMasterSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5591220E1EB3D07D007CF99D /* XADPlatformSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55541F6D1EA7EF90001A6927 /* XADPlatformSwift.swift */; };
 		5591220F1EB3D07D007CF99D /* XADArchiveParserSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555EF07B1EA7DB57000CAE58 /* XADArchiveParserSwift.swift */; };
-		559122101EB3D07D007CF99D /* XADResourceForkSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D508E01EA7E63D008A3F63 /* XADResourceForkSwift.swift */; };
 		559122111EB3D07D007CF99D /* XADSimpleUnarchiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55541F761EA91BE0001A6927 /* XADSimpleUnarchiver.swift */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		559122121EB3D07D007CF99D /* XADUnarchiverSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55541F6B1EA7EBC5001A6927 /* XADUnarchiverSwift.swift */; };
 		559122131EB3D07D007CF99D /* XADArchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55541F711EA7FBC3001A6927 /* XADArchive.swift */; };
@@ -2146,7 +2145,6 @@
 		55A2D4AB1FBFB2D000939897 /* ClangAnalyser.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B4B51DD1C061E3100C1074D /* ClangAnalyser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		55B3B2541DBCC51400ECC61D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55B3B2531DBCC51400ECC61D /* Security.framework */; };
 		55B3B2551DBCC51C00ECC61D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55B3B2531DBCC51400ECC61D /* Security.framework */; };
-		55D508E11EA7E63D008A3F63 /* XADResourceForkSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D508E01EA7E63D008A3F63 /* XADResourceForkSwift.swift */; };
 		C99DC7321E4B31E500F54201 /* XADTestUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = C99DC7301E4B31E500F54201 /* XADTestUtilities.m */; };
 		C99DC7331E4B31E500F54201 /* XADTestUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = C99DC7301E4B31E500F54201 /* XADTestUtilities.m */; };
 		C99DC7341E4B31E500F54201 /* XADTestUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = C99DC7301E4B31E500F54201 /* XADTestUtilities.m */; };
@@ -2915,7 +2913,6 @@
 		559B9CCC1A13F30E006BDB74 /* XAD.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = XAD.modulemap; sourceTree = "<group>"; };
 		559B9CCF1A13F443006BDB74 /* XADMaster-umbrella.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XADMaster-umbrella.h"; sourceTree = "<group>"; };
 		55B3B2531DBCC51400ECC61D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		55D508E01EA7E63D008A3F63 /* XADResourceForkSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XADResourceForkSwift.swift; sourceTree = "<group>"; };
 		55D93FE91DB9E6AC00F01BBC /* XAD-whole.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = "XAD-whole.modulemap"; sourceTree = "<group>"; };
 		56FBC92B0A57541300BE98CF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
 		8DC2EF5B0486A6940098B216 /* XADMaster.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = XADMaster.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -4096,7 +4093,6 @@
 				555EF0721EA7DB1F000CAE58 /* XADMasterSwift.h */,
 				555EF0731EA7DB1F000CAE58 /* Info.plist */,
 				555EF07B1EA7DB57000CAE58 /* XADArchiveParserSwift.swift */,
-				55D508E01EA7E63D008A3F63 /* XADResourceForkSwift.swift */,
 				55541F6B1EA7EBC5001A6927 /* XADUnarchiverSwift.swift */,
 				55541F6D1EA7EF90001A6927 /* XADPlatformSwift.swift */,
 				55541F6F1EA7F339001A6927 /* XADStringSwift.swift */,
@@ -6541,7 +6537,6 @@
 			files = (
 				55541F6E1EA7EF90001A6927 /* XADPlatformSwift.swift in Sources */,
 				555EF07C1EA7DB57000CAE58 /* XADArchiveParserSwift.swift in Sources */,
-				55D508E11EA7E63D008A3F63 /* XADResourceForkSwift.swift in Sources */,
 				55541F771EA91BE1001A6927 /* XADSimpleUnarchiver.swift in Sources */,
 				55541F6C1EA7EBC5001A6927 /* XADUnarchiverSwift.swift in Sources */,
 				55541F721EA7FBC3001A6927 /* XADArchive.swift in Sources */,
@@ -6555,7 +6550,6 @@
 			files = (
 				5591220E1EB3D07D007CF99D /* XADPlatformSwift.swift in Sources */,
 				5591220F1EB3D07D007CF99D /* XADArchiveParserSwift.swift in Sources */,
-				559122101EB3D07D007CF99D /* XADResourceForkSwift.swift in Sources */,
 				559122111EB3D07D007CF99D /* XADSimpleUnarchiver.swift in Sources */,
 				559122121EB3D07D007CF99D /* XADUnarchiverSwift.swift in Sources */,
 				559122131EB3D07D007CF99D /* XADArchive.swift in Sources */,

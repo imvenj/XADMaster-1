@@ -33,7 +33,7 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props;
 -(NSMutableDictionary *)dictionaryForFileInfo:(struct xadFileInfo *)info;
 -(NSMutableDictionary *)dictionaryForDiskInfo:(struct xadDiskInfo *)info;
 
--(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum;
+-(CSHandle *)handleForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict wantChecksum:(BOOL)checksum;
 
 -(NSString *)formatName;
 

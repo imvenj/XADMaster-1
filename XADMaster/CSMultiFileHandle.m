@@ -4,6 +4,7 @@
 #include <sys/stat.h>
 
 @implementation CSMultiFileHandle
+@synthesize paths;
 
 +(CSHandle *)handleWithPathArray:(NSArray *)patharray
 {
@@ -14,11 +15,11 @@
 	else return [[[self alloc] initWithPaths:patharray] autorelease];
 }
 
-+(CSHandle *)handleWithPaths:(CSHandle *)firstpath,...
++(CSHandle *)handleWithPaths:(NSString *)firstpath,...
 {
 	if(!firstpath) return nil;
 
-	NSMutableArray *array=[NSMutableArray arrayWithObject:firstpath];
+	NSMutableArray<NSString *> *array=[NSMutableArray arrayWithObject:firstpath];
 	NSString *path;
 	va_list va;
 
@@ -52,8 +53,6 @@
 	[paths release];
 	[super dealloc];
 }
-
--(NSArray *)paths { return paths; }
 
 -(NSInteger)numberOfSegments { return [paths count]; }
 

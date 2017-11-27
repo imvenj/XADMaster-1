@@ -1,7 +1,7 @@
 #import "CSSegmentedHandle.h"
 
-NSString *CSNoSegmentsException=@"CSNoSegmentsException";
-NSString *CSSizeOfSegmentUnknownException=@"CSSizeOfSegmentUnknownException";
+NSString *const CSNoSegmentsException=@"CSNoSegmentsException";
+NSString *const CSSizeOfSegmentUnknownException=@"CSSizeOfSegmentUnknownException";
 
 @implementation CSSegmentedHandle
 

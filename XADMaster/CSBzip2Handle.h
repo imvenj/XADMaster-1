@@ -3,7 +3,7 @@
 
 #define CSBzip2Handle XADBzip2Handle
 
-extern NSString *const CSBzip2Exception;
+extern NSExceptionName const CSBzip2Exception;
 
 @interface CSBzip2Handle:CSStreamHandle
 

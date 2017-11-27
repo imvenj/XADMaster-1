@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 	off_t totalsize,currsize,totalprogress;
 }
 
-+(instancetype)simpleUnarchiverForPath:(NSString *)path NS_SWIFT_UNAVAILABLE("Call may throw exceptions, use init(for:error:) instead");
++(nullable instancetype)simpleUnarchiverForPath:(NSString *)path NS_SWIFT_UNAVAILABLE("Call may throw exceptions, use init(for:error:) instead");
 +(nullable instancetype)simpleUnarchiverForPath:(NSString *)path error:(nullable XADError *)errorptr;
 +(nullable instancetype)simpleUnarchiverForPath:(NSString *)path nserror:(NSError *__autoreleasing _Nullable*_Nullable)errorptr;
 

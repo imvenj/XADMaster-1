@@ -25,7 +25,7 @@ offset:(off_t)offset length:(off_t)length;
 width:(int)width height:(int)height alpha:(BOOL)alpha
 offset:(off_t)offset length:(off_t)length;
 
--(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum;
+-(CSHandle *)handleForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict wantChecksum:(BOOL)checksum;
 -(NSData *)convertLosslessFormat:(int)format width:(int)width height:(int)height
 alpha:(BOOL)alpha handle:(CSHandle *)handle;
 

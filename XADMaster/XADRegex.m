@@ -12,11 +12,11 @@ static BOOL IsRegexSpecialCharacter(unichar c)
 
 @implementation XADRegex
 
-+(XADRegex *)regexWithPattern:(NSString *)pattern options:(int)options
-{ return [[XADRegex alloc] initWithPattern:pattern options:options]; }
++(instancetype)regexWithPattern:(NSString *)pattern options:(int)options
+{ return [[self alloc] initWithPattern:pattern options:options]; }
 
-+(XADRegex *)regexWithPattern:(NSString *)pattern
-{ return [[XADRegex alloc] initWithPattern:pattern options:0]; }
++(instancetype)regexWithPattern:(NSString *)pattern
+{ return [[self alloc] initWithPattern:pattern options:0]; }
 
 +(NSString *)null
 {

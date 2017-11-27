@@ -7,7 +7,7 @@
 
 @interface XADRAR50Handle:CSBlockStreamHandle
 {
-	XADRAR5Parser *parser;
+	__unsafe_unretained XADRAR5Parser *parser;
 
 	NSArray *files;
 	int file;

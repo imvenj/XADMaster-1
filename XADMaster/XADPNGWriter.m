@@ -1,8 +1,18 @@
 #import "XADPNGWriter.h"
 #import "CSHandle.h"
 #import "CRC.h"
+#include <zlib.h>
 
 @implementation XADPNGWriter
+{
+	NSMutableData *data;
+	int bytesperrow;
+	
+	z_stream zs;
+	BOOL streaminited;
+	
+	NSInteger idatstart;
+}
 
 +(XADPNGWriter *)PNGWriter { return [[self new] autorelease]; }
 

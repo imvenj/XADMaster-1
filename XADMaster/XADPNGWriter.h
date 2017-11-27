@@ -1,18 +1,9 @@
 #import <Foundation/Foundation.h>
-#import <zlib.h>
 
 @interface XADPNGWriter:NSObject
-{
-	NSMutableData *data;
-	int bytesperrow;
 
-	z_stream zs;
-	BOOL streaminited;
 
-	NSInteger idatstart;
-}
-
-+(XADPNGWriter *)PNGWriter;
++(instancetype)PNGWriter;
 
 -(instancetype)init;
 

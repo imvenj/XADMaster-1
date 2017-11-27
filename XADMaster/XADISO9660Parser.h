@@ -24,7 +24,7 @@ name:(NSString *)name propertiesToAdd:(NSMutableDictionary *)props;
 -(NSDate *)parseLongDateAndTimeWithBytes:(const uint8_t *)buffer;
 -(NSDate *)parseShortDateAndTimeWithBytes:(const uint8_t *)buffer;
 
--(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum;
+-(CSHandle *)handleForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict wantChecksum:(BOOL)checksum;
 -(NSString *)formatName;
 
 @end

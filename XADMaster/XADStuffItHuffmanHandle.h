@@ -6,8 +6,8 @@
 	XADPrefixCode *code;
 }
 
--(id)initWithHandle:(CSHandle *)handle;
--(id)initWithHandle:(CSHandle *)handle length:(off_t)length;
+-(instancetype)initWithHandle:(CSHandle *)handle;
+-(instancetype)initWithHandle:(CSHandle *)handle length:(off_t)length;
 
 -(void)resetByteStream;
 -(void)parseTree;

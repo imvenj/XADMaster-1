@@ -6,6 +6,8 @@
 #import <regex.h>
 #endif
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface XADRegex:NSObject
 {
 	NSString *patternstring;
@@ -15,8 +17,8 @@
 	NSData *currdata;
 }
 
-+(XADRegex *)regexWithPattern:(NSString *)pattern options:(int)options;
-+(XADRegex *)regexWithPattern:(NSString *)pattern;
++(nullable instancetype)regexWithPattern:(NSString *)pattern options:(int)options;
++(instancetype)regexWithPattern:(NSString *)pattern;
 
 +(NSString *)patternForLiteralString:(NSString *)string;
 +(NSString *)patternForGlob:(NSString *)glob;
@@ -24,7 +26,7 @@
 +(NSString *)null;
 
 -(instancetype)init UNAVAILABLE_ATTRIBUTE;
--(instancetype)initWithPattern:(NSString *)pattern options:(int)options NS_DESIGNATED_INITIALIZER;
+-(nullable instancetype)initWithPattern:(NSString *)pattern options:(int)options NS_DESIGNATED_INITIALIZER;
 
 -(void)beginMatchingString:(NSString *)string;
 //-(void)beginMatchingString:(NSString *)string range:(NSRange)range;
@@ -36,8 +38,8 @@
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray<NSString*> *allMatches;
 
 -(BOOL)matchesString:(NSString *)string;
--(NSString *)matchedSubstringOfString:(NSString *)string;
--(NSArray *)capturedSubstringsOfString:(NSString *)string;
+-(nullable NSString *)matchedSubstringOfString:(NSString *)string;
+-(nullable NSArray *)capturedSubstringsOfString:(NSString *)string;
 -(NSArray *)allMatchedSubstringsOfString:(NSString *)string;
 -(NSArray *)allCapturedSubstringsOfString:(NSString *)string;
 -(NSArray *)componentsOfSeparatedString:(NSString *)string;
@@ -56,11 +58,11 @@
 -(BOOL)matchedByPattern:(NSString *)pattern;
 -(BOOL)matchedByPattern:(NSString *)pattern options:(int)options;
 
--(NSString *)substringMatchedByPattern:(NSString *)pattern;
--(NSString *)substringMatchedByPattern:(NSString *)pattern options:(int)options;
+-(nullable NSString *)substringMatchedByPattern:(NSString *)pattern;
+-(nullable NSString *)substringMatchedByPattern:(NSString *)pattern options:(int)options;
 
--(NSArray<NSString*> *)substringsCapturedByPattern:(NSString *)pattern;
--(NSArray<NSString*> *)substringsCapturedByPattern:(NSString *)pattern options:(int)options;
+-(nullable NSArray<NSString*> *)substringsCapturedByPattern:(NSString *)pattern;
+-(nullable NSArray<NSString*> *)substringsCapturedByPattern:(NSString *)pattern options:(int)options;
 
 -(NSArray<NSString*> *)allSubstringsMatchedByPattern:(NSString *)pattern;
 -(NSArray<NSString*> *)allSubstringsMatchedByPattern:(NSString *)pattern options:(int)options;
@@ -87,3 +89,5 @@
 -(void)replaceEveryPattern:(NSString *)pattern usingSelector:(SEL)selector onObject:(id)object options:(int)options;
 
 @end*/
+
+NS_ASSUME_NONNULL_END

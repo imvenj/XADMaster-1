@@ -14,7 +14,7 @@
 -(void)parse;
 -(NSString *)compressionNameForStream:(PDFStream *)stream excludingLast:(BOOL)excludelast;
 
--(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum;
+-(CSHandle *)handleForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict wantChecksum:(BOOL)checksum;
 
 -(NSString *)formatName;
 

@@ -1,8 +1,6 @@
 #import "XADLZSSHandle.h"
 
 @interface XADARJFastestHandle:XADLZSSHandle
-{
-}
 
 -(instancetype)initWithHandle:(CSHandle *)handle length:(off_t)length;
 -(void)resetLZSSHandle;

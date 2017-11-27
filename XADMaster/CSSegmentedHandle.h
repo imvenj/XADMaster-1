@@ -2,8 +2,8 @@
 
 #define CSSegmentedHandle XADSegmentedHandle
 
-extern NSString *CSNoSegmentsException;
-extern NSString *CSSizeOfSegmentUnknownException;
+extern NSExceptionName const CSNoSegmentsException;
+extern NSExceptionName const CSSizeOfSegmentUnknownException;
 
 @interface CSSegmentedHandle:CSHandle
 {

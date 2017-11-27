@@ -30,6 +30,9 @@
 			*errorptr=[XADException parseExceptionReturningNSError:exception];
 		return nil;
 	}
+	if(errorptr)
+		*errorptr=[NSError errorWithDomain:XADErrorDomain code:XADErrorUnknown userInfo:nil];
+
 	return nil;
 }
 
