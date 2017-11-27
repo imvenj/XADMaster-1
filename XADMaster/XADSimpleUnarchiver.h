@@ -133,7 +133,7 @@ NS_ASSUME_NONNULL_BEGIN
 @optional
 -(void)simpleUnarchiverNeedsPassword:(XADSimpleUnarchiver *)unarchiver;
 
--(CSHandle *)simpleUnarchiver:(XADSimpleUnarchiver *)unarchiver outputHandleForEntryWithDictionary:(NSDictionary *)dict;
+-(CSHandle *)simpleUnarchiver:(XADSimpleUnarchiver *)unarchiver outputHandleForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict;
 
 -(nullable XADStringEncodingName)simpleUnarchiver:(XADSimpleUnarchiver *)unarchiver encodingNameForXADString:(id <XADString>)string;
 
